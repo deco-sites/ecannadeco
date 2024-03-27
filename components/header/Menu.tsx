@@ -1,28 +1,35 @@
 import Icon from "../../components/ui/Icon.tsx";
+import type { Logo } from "./Header.tsx";
 import type { SiteNavigationElement } from "apps/commerce/types.ts";
 
 export interface Props {
   items: SiteNavigationElement[];
+  logo?: Logo;
 }
 
 function MenuItem({ item }: { item: SiteNavigationElement }) {
   return (
-    <div class="collapse collapse-plus">
-      <input type="checkbox" />
-      <div class="collapse-title">{item.name}</div>
-      <div class="collapse-content">
-        <ul>
-          <li>
-            <a class="underline text-sm" href={item.url}>Ver todos</a>
-          </li>
-          {item.children?.map((node) => (
-            <li>
-              <MenuItem item={node} />
-            </li>
-          ))}
-        </ul>
+    <a href={item.url}>
+      <div class="p-5 border-b border-[#d5d5d5]">
+        <span class="uppercase">{item.name}</span>
       </div>
-    </div>
+    </a>
+    // <div class="collapse collapse-plus">
+    //   <input type="checkbox" />
+    //   <div class="collapse-title">{item.name}</div>
+    //   <div class="collapse-content">
+    //     <ul>
+    //       <li>
+    //         <a class="underline text-sm" href={item.url}>Ver todos</a>
+    //       </li>
+    //       {item.children?.map((node) => (
+    //         <li>
+    //           <MenuItem item={node} />
+    //         </li>
+    //       ))}
+    //     </ul>
+    //   </div>
+    // </div>
   );
 }
 
@@ -36,7 +43,8 @@ function Menu({ items }: Props) {
           </li>
         ))}
       </ul>
-
+      {
+        /*
       <ul class="flex flex-col py-2 bg-base-200">
         <li>
           <a
@@ -74,7 +82,8 @@ function Menu({ items }: Props) {
             <span class="text-sm">Minha conta</span>
           </a>
         </li>
-      </ul>
+      </ul> */
+      }
     </div>
   );
 }

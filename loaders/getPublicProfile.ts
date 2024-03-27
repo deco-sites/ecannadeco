@@ -35,12 +35,7 @@ const getPublicProfile = async (
   _req: Request,
 ): Promise<PublicProfile> => {
   try {
-    const response = await fetch("http://localhost:3000/auth/public/" + slug, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch("http://localhost:3000/auth/public/" + slug);
 
     const res = await response.json();
     return res;

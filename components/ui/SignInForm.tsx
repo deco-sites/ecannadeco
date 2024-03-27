@@ -32,7 +32,7 @@ function SignInForm({ formTitle }: Props) {
         data.data.AuthenticationResult.AccessToken,
       );
       setLoading(false);
-      window.location.href = "/dashboard";
+      window.location.href = "/meus-dados";
       setEmail("");
       setPassword("");
     } catch (e) {
