@@ -23,7 +23,7 @@ export interface Buttons {
 }
 
 export interface Props {
-  alerts?: string[];
+  // alerts?: string[];
 
   /** @title Search Bar */
   searchbar?: Omit<SearchbarProps, "platform">;
@@ -39,11 +39,13 @@ export interface Props {
 
   logoPosition?: "left" | "center";
 
+  /** @title Logo do Menu */
+  logoMenu?: Logo;
+
   buttons?: Buttons;
 }
 
 function Header({
-  alerts,
   searchbar,
   navItems = [
     {
@@ -74,6 +76,7 @@ function Header({
     height: 16,
     alt: "Logo",
   },
+  logoMenu,
   logoPosition = "center",
   buttons,
   device,
@@ -85,12 +88,11 @@ function Header({
     <>
       <header style={{ height: headerHeight }}>
         <Drawers
-          menu={{ items }}
+          menu={{ items, logo: logoMenu }}
           searchbar={searchbar}
           platform={platform}
         >
-          <div class="bg-base-100 fixed w-full z-50">
-            {alerts && alerts.length > 0 && <Alert alerts={alerts} />}
+          <div class="bg-base-100 w-full z-50">
             <Navbar
               device={device}
               items={items}

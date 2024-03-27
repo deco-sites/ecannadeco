@@ -8,6 +8,8 @@ import { useUI } from "../../sdk/useUI.ts";
 import { usePlatform } from "../../sdk/usePlatform.tsx";
 import type { ComponentChildren } from "preact";
 import { lazy, Suspense } from "preact/compat";
+import type { Logo } from "./Header.tsx";
+import Image from "apps/website/components/Image.tsx";
 
 const Menu = lazy(() => import("../../components/header/Menu.tsx"));
 const Searchbar = lazy(() => import("../../components/search/Searchbar.tsx"));
@@ -23,7 +25,8 @@ export interface Props {
 }
 
 const Aside = (
-  { title, onClose, children }: {
+  { logo, title, onClose, children }: {
+    logo?: Logo;
     title: string;
     onClose?: () => void;
     children: ComponentChildren;
@@ -32,7 +35,16 @@ const Aside = (
   <div class="bg-base-100 grid grid-rows-[auto_1fr] h-full divide-y max-w-[100vw]">
     <div class="flex justify-between items-center">
       <h1 class="px-4 py-3">
-        <span class="font-medium text-2xl">{title}</span>
+        {logo
+          ? (
+            <Image
+              src={logo.src}
+              alt={logo.alt}
+              width={logo.width || 100}
+              height={logo.height || 13}
+            />
+          )
+          : <span class="font-medium text-2xl">{title}</span>}
       </h1>
       {onClose && (
         <Button aria-label="X" class="btn btn-ghost" onClick={onClose}>
@@ -57,8 +69,9 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
 
   return (
     <>
-      <Drawer // left drawer
+      <Drawer
         open={displayMenu.value || displaySearchDrawer.value}
+        class="drawer-end z-10"
         onClose={() => {
           displayMenu.value = false;
           displaySearchDrawer.value = false;
@@ -69,6 +82,7 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
               displayMenu.value = false;
               displaySearchDrawer.value = false;
             }}
+            logo={menu.logo}
             title={displayMenu.value ? "Menu" : "Buscar"}
           >
             {displayMenu.value && <Menu {...menu} />}
@@ -82,7 +96,8 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
       >
         {children}
       </Drawer>
-      <Drawer // right drawer
+      {
+        /* <Drawer // right drawer
         class="drawer-end"
         open={displayCart.value !== false}
         onClose={() => displayCart.value = false}
@@ -96,7 +111,8 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
         }
       >
         {children}
-      </Drawer>
+      </Drawer> */
+      }
     </>
   );
 }
