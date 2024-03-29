@@ -8,6 +8,8 @@ import { invoke } from "../../runtime.ts";
 import Image from "apps/website/components/Image.tsx";
 import { h } from "preact";
 import { Props as UpdateDataProps } from "../../actions/updateUserData.ts";
+import Icon from "../../components/ui/Icon.tsx";
+import PageWrap from "../../components/ui/PageWrap.tsx";
 
 function MyInfo() {
   const [isLoading, setIsLoading] = useState(false);
@@ -210,152 +212,186 @@ function MyInfo() {
     isLoading
       ? <span class="loading loading-spinner text-green-600"></span>
       : (
-        <div>
-          <h3>Meus Dados</h3>
-          <div>
-            {/* Perosnal Info */}
-            <h2>Dados Pessoais</h2>
+        <PageWrap>
+          <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center mb-10">
+            Meus Dados
+          </h3>
+          <div class="flex flex-col items-center">
             {/* Selfie */}
             <div>
-              {!userImg
-                ? (
-                  <div class="h-[144px] w-[108px] bg-slate-500 flex justify-center items-center">
-                    <span class="text-white font-medium">
-                      Faça o upload da sua foto
-                    </span>
+              <label for="selfieInput">
+                <div class="relative h-[144px] w-[108px] shadow-md cursor-pointer">
+                  <div class="absolute h-7 w-7 flex justify-center items-center rounded-full bg-black bg-opacity-40 top-[10px] left-[71px]">
+                    <div class="text-white">
+                      <Icon id="Edit" size={12} />
+                    </div>
                   </div>
-                )
-                : (
                   <div class="h-[144px] w-[108px]flex justify-center items-center">
                     <Image
-                      src={userImg}
+                      class="rounded-md"
+                      src={userImg
+                        ? userImg
+                        : "http://drive.google.com/uc?export=view&id=1hLMYkRlOko2T-VSRO8AOUIH7ytvHDKeD"}
                       alt={"user selfie"}
                       width={108}
                       height={144}
                     />
                   </div>
-                )}
+                </div>
+              </label>
               <input
+                id="selfieInput"
                 type="file"
-                class="file-input file-input-bordered file-input-xs w-full max-w-xs"
+                class="hidden"
                 onChange={(e) => handleUploadSelfie(e)}
               />
             </div>
 
-            <div class="flex gap-5">
-              <label class="input input-bordered flex items-center gap-2">
-                Nome
+            {/* Personal info */}
+            <h2 class="text-[#8b8b8b] font-semibold mb-1 mt-10 w-full">
+              Dados Pessoais
+            </h2>
+            <div class="flex flex-wrap gap-[4%] w-full">
+              <label class="form-control w-[48%]">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Nome
+                  </span>
+                </div>
                 <input
                   placeholder="Nome"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
                   name="name"
                   disabled={name ? true : false}
                   value={name}
-                  // onFocus={() => setDisplayCidResults(true)}
-                  // onBlur={() => setDisplayCidResults(false)}
                 />
               </label>
-              <label class="input input-bordered flex items-center gap-2">
-                CPF
+              <label class="w-[48%]">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">CPF</span>
+                </div>
                 <input
                   placeholder="CPF"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
                   name="cpf"
                   disabled={cpf ? true : false}
                   value={cpf}
-                  // onFocus={() => setDisplayCidResults(true)}
-                  // onBlur={() => setDisplayCidResults(false)}
                 />
               </label>
             </div>
 
             {/* Adrress */}
-            <h2>Endereço Residencial - Também usado para entregas</h2>
-            <div class="join">
-              <label class="input input-bordered flex items-center gap-2 join-item">
-                CEP
-                <input
-                  placeholder="CEP"
-                  name="cep"
-                  disabled={addressStreet != "" ? true : false}
-                  value={postalCode}
-                  onChange={(e) => {
-                    setPostalCode(e.currentTarget.value);
-                  }}
-                  // onFocus={() => setDisplayCidResults(true)}
-                  // onBlur={() => setDisplayCidResults(false)}
-                />
-              </label>
-              <button
-                class="btn btn-secondary join-item"
-                onClick={() => handleValidatePostalCode(postalCode)}
+            <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+              Endereço e Contato
+            </h2>
+            <div class="flex flex-wrap gap-5 justify-left">
+              <div class="join">
+                <label class="join-item">
+                  <div class="label pb-1">
+                    <span class="label-text text-xs text-[#585858]">
+                      CEP
+                    </span>
+                  </div>
+                  <input
+                    placeholder="CEP"
+                    name="cep"
+                    class="input rounded-md text-[#8b8b8b] border-none"
+                    // disabled={addressStreet != "" ? true : false}
+                    value={postalCode}
+                    onChange={(e) => {
+                      setPostalCode(e.currentTarget.value);
+                    }}
+                    // onFocus={() => setDisplayCidResults(true)}
+                    // onBlur={() => setDisplayCidResults(false)}
+                  />
+                  <button
+                    class="btn btn-ghost bg-[#dedede] text-[#5d5d5d] join-item"
+                    onClick={() => handleValidatePostalCode(postalCode)}
+                  >
+                    Validar CEP{" "}
+                    {isLoadingPostalCode && (
+                      <span class="loading loading-spinner text-green-600">
+                      </span>
+                    )}
+                  </button>
+                </label>
+              </div>
+              <div
+                class={`flex flex-wrap gap-[2%] justify-left ${
+                  addressStreet !== "" ? "" : "hidden"
+                }`}
               >
-                Validar CEP{" "}
-                {isLoadingPostalCode && (
-                  <span class="loading loading-spinner text-green-600"></span>
-                )}
-              </button>
-            </div>
-
-            <div class={addressStreet !== "" ? "" : "hidden"}>
-              <label>
-                <div class="label">
-                  <span class="label-text">Logradouro</span>
-                </div>
-                <input
-                  class="input input-ghost"
-                  placeholder="logradouro"
-                  name="cep"
-                  disabled
-                  value={addressStreet}
-                />
-              </label>
-              <label>
-                <div class="label">
-                  <span class="label-text">Número*</span>
-                </div>
-                <input
-                  class="input input-bordered"
-                  placeholder="número"
-                  name="cep"
-                  value={addressNumber}
-                  onChange={(e) => {
-                    setAddressNumber(e.currentTarget.value);
-                  }}
-                />
-              </label>
-              <label>
-                <div class="label">
-                  <span class="label-text">Complemento (casa, ap, etc)</span>
-                </div>
-                <input
-                  class="input input-bordered"
-                  placeholder="complemento"
-                  name="cep"
-                  value={addressComplement}
-                  onChange={(e) => {
-                    setAddressComplement(e.currentTarget.value);
-                  }}
-                />
-              </label>
-              <label>
-                <div class="label">
-                  <span class="label-text">Bairro - cidade/uf</span>
-                </div>
-                <input
-                  class="input input-ghost w-full"
-                  placeholder="Bairro - cidade/uf"
-                  name="localidade"
-                  disabled
-                  value={`${addressNeighborhood} - ${addressCity}`}
-                />
-              </label>
+                <label class="w-[32%]">
+                  <div class="label pb-1">
+                    <span class="label-text text-xs text-[#585858]">
+                      Logradouro
+                    </span>
+                  </div>
+                  <input
+                    class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                    placeholder="logradouro"
+                    name="cep"
+                    disabled
+                    value={addressStreet}
+                  />
+                </label>
+                <label class="w-[32%]">
+                  <div class="label pb-1">
+                    <span class="label-text text-xs text-[#585858]">
+                      Número*
+                    </span>
+                  </div>
+                  <input
+                    class="input rounded-md text-[#8b8b8b] border-none w-full"
+                    placeholder="número"
+                    name="cep"
+                    value={addressNumber}
+                    onChange={(e) => {
+                      setAddressNumber(e.currentTarget.value);
+                    }}
+                  />
+                </label>
+                <label class="w-[32%]">
+                  <div class="label pb-1">
+                    <span class="label-text text-xs text-[#585858]">
+                      Complemento (casa, ap, etc)
+                    </span>
+                  </div>
+                  <input
+                    class="input rounded-md text-[#8b8b8b] border-none w-full"
+                    placeholder="complemento"
+                    name="cep"
+                    value={addressComplement}
+                    onChange={(e) => {
+                      setAddressComplement(e.currentTarget.value);
+                    }}
+                  />
+                </label>
+                <label class="w-[32%]">
+                  <div class="label pb-1">
+                    <span class="label-text text-xs text-[#585858]">
+                      Bairro - cidade/uf
+                    </span>
+                  </div>
+                  <input
+                    class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                    placeholder="Bairro - cidade/uf"
+                    name="localidade"
+                    disabled
+                    value={`${addressNeighborhood} - ${addressCity}`}
+                  />
+                </label>
+              </div>
             </div>
 
             {/* CIDs */}
-            <h2>Selecione seus CIDs</h2>
-            <div class="join flex flex-col">
+            <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+              CIDs (Diagnósticos)
+            </h2>
+            <div class="join flex flex-col w-full">
               <input
-                placeholder="Pesquise seus CIDs"
-                class="input input-bordered join-item"
+                placeholder="Pesquise e selecione seus CIDs"
+                class="input rounded-md text-[#8b8b8b] border-none join-item mb-2"
                 name="cids"
                 value={cidSearchTerm}
                 onChange={(e) => {
@@ -365,8 +401,12 @@ function MyInfo() {
                 // onFocus={() => setDisplayCidResults(true)}
                 // onBlur={() => setDisplayCidResults(false)}
               />
-              <div class={`join-item`}>
-                <ul>
+              <div
+                class={`join-item ${
+                  cidSearchResponse.length > 0 ? "" : "hidden"
+                } `}
+              >
+                <ul class="flex flex-col gap-4 bg-white px-4 pb-4 pt-0 text-sm">
                   {cidSearchResponse.slice(0, 5).map((c) => {
                     const cid = c as {
                       full_code: string;
@@ -387,15 +427,20 @@ function MyInfo() {
                 </ul>
               </div>
               <div>
-                {cids.map((c) => {
+                {cids.map((c, index) => {
                   const cid = c as { full_code: string; name: string };
                   return (
-                    <div class="badge badge-success gap-2">
+                    <div class="badge badge-secondary text-white gap-2 p-3 my-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        class="inline-block w-4 h-4 stroke-current"
+                        class="inline-block w-4 h-4 stroke-current cursor-pointer"
+                        onClick={() => {
+                          const newCids = [...cids];
+                          newCids.splice(index, 1);
+                          setCids(newCids);
+                        }}
                       >
                         <path
                           stroke-linecap="round"
@@ -417,21 +462,23 @@ function MyInfo() {
               <input
                 type="checkbox"
                 checked={termsAgree}
-                class="checkbox checkbox-xs border-white"
+                class="checkbox checkbox-xs border-[#8b8b8b] bg-white"
                 onChange={(e) => {
                   setTermsAgree(e.currentTarget.checked);
                 }}
               />
-              <span class="label-text text-xs text-black">
+              <span class="label-text text-xs text-[#8b8b8b]">
                 Declaro, sob minha responsabilidade, que todas as informações
                 inseridas neste formulário são verdadeiras
               </span>
             </label>
           </div>
-          <button class="btn btn-primary" onClick={handleSubmit}>
-            Salvar Dados
-          </button>
-        </div>
+          <div class="flex justify-end mt-4 w-full">
+            <button class="btn btn-primary" onClick={handleSubmit}>
+              Salvar Dados
+            </button>
+          </div>
+        </PageWrap>
       )
   );
 }
