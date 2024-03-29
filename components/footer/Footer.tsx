@@ -17,7 +17,7 @@ function Footer({
 }: Props) {
   return (
     <footer>
-      <div class="bg-[#eeeeee] flex justify-center items-center fixed bottom-0 w-full p-4 gap-5">
+      <div class="bg-[#eeeeee] flex justify-center items-center bottom-0 w-full p-4 gap-5 mt-20">
         <Image
           loading="lazy"
           src={logo?.image || ""}

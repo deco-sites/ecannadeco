@@ -16,6 +16,7 @@ export type AvailableIcons =
   | "Discount"
   | "Elo"
   | "Ecanna"
+  | "Edit"
   | "Facebook"
   | "FilterList"
   | "Heart"
