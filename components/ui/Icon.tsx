@@ -14,6 +14,7 @@ export type AvailableIcons =
   | "Diners"
   | "Discord"
   | "Discount"
+  | "Download"
   | "Elo"
   | "Ecanna"
   | "Edit"
