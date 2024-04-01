@@ -11,7 +11,7 @@ function PageWrap(props: Props) {
 
   return (
     <div class="flex justify-center">
-      <div class="rounded-xl bg-[#ededed] shadow-md p-14 max-w-[800px]">
+      <div class="rounded-xl bg-[#ededed] shadow-md p-14 w-[90%] sm:max-w-[800px]">
         <div class="flex flex-col items-center">
           {children}
         </div>
