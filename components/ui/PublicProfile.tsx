@@ -1,5 +1,7 @@
 import type { PublicProfile } from "../../loaders/getPublicProfile.ts";
+import PageWrap from "../../components/ui/PageWrap.tsx";
 import Image from "apps/website/components/Image.tsx";
+import Icon from "../../components/ui/Icon.tsx";
 
 interface Props {
   publicProfile: PublicProfile;
@@ -11,31 +13,56 @@ function PublicProfileComponent(
   const { cpf, name, cids, plan, documents, avatar_photo, association } =
     publicProfile;
   return (
-    <div>
+    <PageWrap>
       {!publicProfile.cpf
         ? <span>Usuário não encontrado</span>
         : (
-          <div class="flex flex-col items-center gap-5">
-            <h1>Cadastro de Paciente Medicinal de Canabis</h1>
+          <div class="flex flex-col items-center gap-5 max-w-[95%]">
+            <div class="flex items-center gap-4 text-secondary">
+              <Icon id="MedCanna" size={34} />
+              <h1 class="font-semibold">
+                Cadastro de Paciente Medicinal de Canabis
+              </h1>
+            </div>
             <Image
+              class="rounded-md"
               src={avatar_photo}
               alt={"user selfie"}
               width={108}
               height={144}
             />
-            <div class="flex flex-col items-center gap-2">
-              <span>{name}</span>
-              <span>{cpf}</span>
-              {association && <span>Associação: {association.name}</span>}
+            <div class="flex flex-col items-center">
+              <span class="text-2xl text-secondary font-semibold">{name}</span>
+              <span class="text-secondary font-semibold">
+                CPF:{" " + cpf.replace(
+                  /(\d{3})(\d{3})(\d{3})(\d{2})/,
+                  "$1.$2.$3-$4",
+                )}
+              </span>
+              {association && (
+                <div class="flex flex-col items-center mt-4">
+                  <span class="text-[#5B5B5B] font-semibold text-sm">
+                    Associação: {association.name}
+                  </span>
+                  <span class="text-[#5B5B5B] font-semibold text-sm">
+                    CNPJ {association.cnpj.replace(
+                      /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
+                      "$1.$2.$3/$4-$5",
+                    )}
+                  </span>
+                </div>
+              )}
             </div>
-            <div class="flex flex-col items-start">
-              <span>Diagnóstico</span>
-              <ul class="flex flex-col gap-2">
+            <div class="flex flex-col items-start w-full overflow-hidden">
+              <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+                CIDs (Diagnósticos)
+              </h2>
+              <ul class="flex flex-col gap-2 max-w-[100%]">
                 {cids.map((c) => {
                   return (
                     <li>
-                      <div class="bg-slate-300 w-full flex items-center">
-                        <span>
+                      <div class="badge badge-secondary text-white gap-2 p-3 max-w-[100%]">
+                        <span class="text-[10px] sm:text-sm truncate">
                           CID{" " + c.full_code + " - " + c.name}
                         </span>
                       </div>
@@ -44,19 +71,26 @@ function PublicProfileComponent(
                 })}
               </ul>
             </div>
-            <div class="flex flex-col items-start">
-              <span>Documentos do Paciente</span>
-              <ul class="flex flex-col gap-2">
+            <div class="flex flex-col items-start w-full">
+              <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+                Documentos do Paciente
+              </h2>
+              <ul class="flex flex-col gap-2 w-full">
                 {documents.map((doc) => {
                   return (
                     <li>
-                      <a href={doc.file_url}>
-                        <div class="bg-slate-300 w-full flex items-center gap-11">
-                          <span>
-                            {doc.title}
-                          </span>
-                          <span>
-                            {doc.category}
+                      <a class="w-full" href={doc.file_url}>
+                        <div class="flex justify-between rounded-md bg-[#C8C8C8] w-full px-5 h-10 items-center">
+                          <div class="flex gap-2">
+                            <span class="text-[#8F8D8D]">
+                              <Icon id="Anexo" size={24} />
+                            </span>
+                            <span class="text-[#393939] font-semibold">
+                              {doc.title}
+                            </span>
+                          </div>
+                          <span class="text-[#8F8D8D] flex justify-end w-6">
+                            <Icon id="Download" height={19} />
                           </span>
                         </div>
                       </a>
@@ -67,7 +101,7 @@ function PublicProfileComponent(
             </div>
           </div>
         )}
-    </div>
+    </PageWrap>
   );
 }
 

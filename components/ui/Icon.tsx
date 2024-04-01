@@ -28,6 +28,7 @@ export type AvailableIcons =
   | "MagnifyingGlass"
   | "Mastercard"
   | "Message"
+  | "MedCanna"
   | "Phone"
   | "Pix"
   | "Plus"
