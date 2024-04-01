@@ -252,7 +252,7 @@ function MyInfo() {
               Dados Pessoais
             </h2>
             <div class="flex flex-wrap gap-[4%] w-full">
-              <label class="form-control w-[48%]">
+              <label class="form-control w-full sm:w-[48%]">
                 <div class="label pb-1">
                   <span class="label-text text-xs text-[#585858]">
                     Nome
@@ -266,7 +266,7 @@ function MyInfo() {
                   value={name}
                 />
               </label>
-              <label class="w-[48%]">
+              <label class="w-full sm:w-[48%]">
                 <div class="label pb-1">
                   <span class="label-text text-xs text-[#585858]">CPF</span>
                 </div>
@@ -321,7 +321,7 @@ function MyInfo() {
                   addressStreet !== "" ? "" : "hidden"
                 }`}
               >
-                <label class="w-[32%]">
+                <label class="w-full sm:w-[32%]">
                   <div class="label pb-1">
                     <span class="label-text text-xs text-[#585858]">
                       Logradouro
@@ -335,7 +335,7 @@ function MyInfo() {
                     value={addressStreet}
                   />
                 </label>
-                <label class="w-[32%]">
+                <label class="w-full sm:w-[32%]">
                   <div class="label pb-1">
                     <span class="label-text text-xs text-[#585858]">
                       Número*
@@ -351,7 +351,7 @@ function MyInfo() {
                     }}
                   />
                 </label>
-                <label class="w-[32%]">
+                <label class="w-full sm:w-[32%]">
                   <div class="label pb-1">
                     <span class="label-text text-xs text-[#585858]">
                       Complemento (casa, ap, etc)
@@ -367,7 +367,7 @@ function MyInfo() {
                     }}
                   />
                 </label>
-                <label class="w-[32%]">
+                <label class="w-full sm:w-[32%]">
                   <div class="label pb-1">
                     <span class="label-text text-xs text-[#585858]">
                       Bairro - cidade/uf
@@ -430,7 +430,7 @@ function MyInfo() {
                 {cids.map((c, index) => {
                   const cid = c as { full_code: string; name: string };
                   return (
-                    <div class="badge badge-secondary text-white gap-2 p-3 my-2">
+                    <div class="badge badge-secondary text-white gap-2 p-3 my-2 ">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -450,7 +450,9 @@ function MyInfo() {
                         >
                         </path>
                       </svg>
-                      {cid.full_code} - {cid.name}
+                      <span class="text-[10px] sm:text-sm truncate">
+                        {cid.full_code} - {cid.name}
+                      </span>
                     </div>
                   );
                 })}
