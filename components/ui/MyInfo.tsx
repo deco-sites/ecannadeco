@@ -420,7 +420,14 @@ function MyInfo() {
                       <li
                         class="cursor-pointer"
                         onClick={() => {
-                          setCids([...cids, cid]);
+                          if (
+                            !cids.find((c) =>
+                              (c as { full_code: string }).full_code ===
+                                cid.full_code
+                            )
+                          ) {
+                            setCids([...cids, cid]);
+                          }
                         }}
                       >
                         {cid.full_code} - {cid.name}

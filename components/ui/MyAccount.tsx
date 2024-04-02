@@ -6,6 +6,10 @@
 import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import { Plan } from "../../components/ui/Checkout.tsx";
+import PageWrap from "../../components/ui/PageWrap.tsx";
+import Icon from "../../components/ui/Icon.tsx";
+import Slider from "../../components/ui/Slider.tsx";
+import SliderJS from "../../islands/SliderJS.tsx";
 
 function MyAccount() {
   const [isLoading, setIsLoading] = useState(false);
@@ -105,130 +109,225 @@ function MyAccount() {
   };
 
   return (
-    <div class="container flex justify-center">
-      <div class="w-[70%] p-16 bg-slate-300">
-        {isLoading
-          ? <span class="loading loading-spinner text-green-600"></span>
-          : (
-            <div class="flex flex-col gap-4">
-              <div class="flex justify-center mb-8">
-                <h3 class="text-xl font-semibold">Minha Conta</h3>
-              </div>
-              <div>
-                <label class="input input-bordered flex items-center gap-2">
+    <PageWrap>
+      {isLoading
+        ? <span class="loading loading-spinner text-green-600"></span>
+        : (
+          <div class="flex flex-col gap-3 w-full">
+            <div class="flex justify-center">
+              <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
+                Minha Conta
+              </h3>
+            </div>
+            <div class="flex flex-col gap-3">
+              <label class="form-control w-full">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Email
+                  </span>
+                </div>
+                <input
+                  placeholder="Email"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  name="name"
+                  disabled
+                  value={email}
+                />
+              </label>
+            </div>
+            <div class="w-full sm:w-[60%] md:w-[40%] flex flex-col gap-3">
+              <h2 class="text-[#8b8b8b] font-semibold mb-4 w-full">
+                Alterar Senha
+              </h2>
+              <label class="form-control w-full">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Senha Atual
+                  </span>
+                </div>
+                <input
+                  type="password"
+                  placeholder="*********"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  name="currentPassword"
+                  value={currentPassword}
+                  onChange={(e) =>
+                    e.target &&
+                    setCurrentPassword(e.currentTarget.value)}
+                  disabled={isChanging}
+                />
+              </label>
+              <label class="form-control w-full">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Nova Senha
+                  </span>
+                </div>
+                <input
+                  type="password"
+                  placeholder="*********"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  name="newPassword"
+                  value={newPassword}
+                  onChange={(e) =>
+                    e.target &&
+                    setNewPassword(e.currentTarget.value)}
+                  disabled={isChanging}
+                />
+              </label>
+              <label
+                class={`form-control w-full ${
+                  confirmNewPassword !== newPassword && "input-error"
+                }`}
+              >
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Confirmar Nova Senha
+                  </span>
+                </div>
+                <input
+                  type="password"
+                  placeholder="*********"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  name="confirmNewPassword"
+                  value={confirmNewPassword}
+                  onChange={(e) =>
+                    e.target &&
+                    setConfirmNewPassword(e.currentTarget.value)}
+                  disabled={isChanging}
+                />
+                {confirmNewPassword !== newPassword && (
                   <div class="label">
-                    <span class="label-text">Email</span>
+                    <span class="label-text-alt"></span>
+                    <span class="label-text-alt text-red-500">
+                      Não é igual à nova senha
+                    </span>
                   </div>
-                  <input
-                    placeholder="Email"
-                    name="email"
-                    disabled
-                    value={email}
-                  />
-                </label>
-              </div>
-              <div>
-                <h3>Alterar Senha</h3>
-                <label class="input input-bordered flex items-center gap-2">
-                  <div class="label">
-                    <span class="label-text">Senha Atual</span>
-                  </div>
-                  <input
-                    type="password"
-                    placeholder="até 8 caracteres"
-                    name="currentPassword"
-                    value={currentPassword}
-                    onChange={(e) =>
-                      e.target &&
-                      setCurrentPassword(e.currentTarget.value)}
-                    disabled={isChanging}
-                  />
-                </label>
-                <label class="input input-bordered flex items-center gap-2">
-                  <div class="label">
-                    <span class="label-text">Nova Senha</span>
-                  </div>
-                  <input
-                    type="password"
-                    placeholder="até 8 caracteres"
-                    name="newPassword"
-                    value={newPassword}
-                    onChange={(e) =>
-                      e.target &&
-                      setNewPassword(e.currentTarget.value)}
-                    disabled={isChanging}
-                  />
-                </label>
-                <label
-                  class={`input input-bordered flex items-center gap-2 ${
-                    confirmNewPassword !== newPassword && "input-error"
-                  }`}
+                )}
+              </label>
+              <div class="w-full flex justify-end">
+                <button
+                  class="btn btn-primary text-white"
+                  onClick={handleChangePassword}
                 >
-                  <div class="label">
-                    <span class="label-text">Confirmar Nova Senha</span>
-                  </div>
-                  <input
-                    type="password"
-                    placeholder="até 8 caracteres"
-                    name="ConfirmNewPassword"
-                    value={confirmNewPassword}
-                    onChange={(e) =>
-                      e.target &&
-                      setConfirmNewPassword(e.currentTarget.value)}
-                    disabled={isChanging}
-                  />
-                  {confirmNewPassword !== newPassword && (
-                    <div class="label">
-                      <span class="label-text-alt"></span>
-                      <span class="label-text-alt text-red-500">
-                        Não é igual à nova senha
-                      </span>
-                    </div>
-                  )}
-                </label>
-
-                <button class="btn btn-outline" onClick={handleChangePassword}>
                   Alterar Senha{" "}
                   {isChanging && (
                     <span class="loading loading-spinner text-green-600"></span>
                   )}
                 </button>
               </div>
-              <div>
-                <h3>Plano</h3>
-                <select
-                  class="select select-bordered"
-                  value={newPlan?.name}
-                  onChange={(e) =>
-                    e.target &&
-                    setNewPlan(
-                      plans.find((p) => p.name === e.currentTarget.value),
-                    )}
-                >
-                  {plans.map((plan) => (
-                    <option
-                      value={plan.skus[0]}
-                      onClick={(e) =>
-                        e.target &&
+            </div>
+            <div>
+              <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+                Plano
+              </h2>
+              {/* <div class="flex gap-3"> */}
+              <Slider class="carousel gap-3 max-w-[105%]">
+                {plans.map((plan, i) => (
+                  <Slider.Item class="carousel-item" index={i}>
+                    <div
+                      class="bg-white rounded-md p-3 flex flex-col justify-between"
+                      onClick={() =>
                         setNewPlan(
-                          plans.find((p) => p.name === e.currentTarget.value),
+                          plans.find((p) =>
+                            p.name === plan.name
+                          ),
                         )}
                     >
-                      {plan.name + (plan.name == currentPlan ? " (atual)" : "")}
-                    </option>
-                  ))}
-                </select>
+                      <div class="flex items-center gap-4">
+                        <div
+                          class={`h-8 w-8 rounded-full ${
+                            plan.name == (newPlan?.name || currentPlan)
+                              ? "bg-primary flex items-center justify-center"
+                              : "bg-white"
+                          }`}
+                          style={{
+                            "box-shadow": "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                          }}
+                        >
+                          {plan.name == (newPlan?.name || currentPlan) && (
+                            <Icon class="text-white" id="Check" size={19} />
+                          )}
+                        </div>
+                        <div class="flex flex-col text-[#898989]">
+                          <span class=" uppercase text-sm">{plan.name}</span>
+                          <span class="text-xs">
+                            {"R$ " + (plan.price / 100).toFixed(2) + "/" +
+                              (plan.period === "MONTHLY" && "mês")}
+                          </span>
+                        </div>
+                      </div>
+                      <div class="flex flex-col gap-2">
+                        {plan.name === "FREE" && (
+                          <span class="text-xs font-semibold mt-2 text-primary">
+                            30 dias grátis
+                          </span>
+                        )}
+                        <ul class="flex flex-col gap-3">
+                          <li class="flex gap-3 items-center">
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Carteirinha digital oficial
+                            </span>
+                          </li>
+                          <li class="flex gap-3 items-center">
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Upload até 2 documentos
+                            </span>
+                          </li>
+                          <li
+                            class={`flex gap-3 items-center ${
+                              plan.name == "FREE" && "opacity-20"
+                            }`}
+                          >
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Upload ilimitado de documentos
+                            </span>
+                          </li>
+                          <li
+                            class={`flex gap-3 items-center ${
+                              plan.name == "FREE" && "opacity-20"
+                            }`}
+                          >
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">Carteirinha física</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </Slider.Item>
+                ))}
+              </Slider>
+              <div class="flex justify-end mt-4">
                 <button
-                  class="btn btn-outline"
-                  disabled={newPlan?.name == currentPlan}
+                  class="btn btn-primary text-white"
+                  disabled={(newPlan?.name || currentPlan) == currentPlan}
                 >
                   Alterar Plano
                 </button>
               </div>
             </div>
-          )}
-      </div>
-    </div>
+          </div>
+        )}
+    </PageWrap>
   );
 }
 
