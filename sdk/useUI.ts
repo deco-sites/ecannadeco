@@ -11,6 +11,8 @@ const displaySearchPopup = signal(false);
 const displaySearchDrawer = signal(false);
 const displayNewDocModal = signal(false);
 const displayPlanLimit = signal(false);
+const updatedData = signal(true);
+const uploadedFile = signal(true);
 
 const state = {
   displayCart,
@@ -19,6 +21,8 @@ const state = {
   displaySearchDrawer,
   displayNewDocModal,
   displayPlanLimit,
+  updatedData,
+  uploadedFile,
 };
 
 // Keyboard event listeners
