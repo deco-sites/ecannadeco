@@ -275,7 +275,10 @@ function MyInfo() {
                   class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
                   name="cpf"
                   disabled={cpf ? true : false}
-                  value={cpf}
+                  value={cpf.replace(
+                    /(\d{3})(\d{3})(\d{3})(\d{2})/,
+                    "$1.$2.$3-$4",
+                  )}
                 />
               </label>
             </div>
