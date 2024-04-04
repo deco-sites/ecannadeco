@@ -1,25 +1,21 @@
 export interface Props {
   email: string;
-  password: string;
-  name: string;
-  cpf: string;
+  code: string;
 }
 
-const signUpCognito = async (
+const confirmCognitoSignup = async (
   props: Props,
   _req: Request,
 ): Promise<unknown | null> => {
   try {
-    const response = await fetch("http://localhost:3000/auth", {
+    const response = await fetch("http://localhost:3000/auth/confirm-signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email: props.email,
-        password: props.password,
-        name: props.name,
-        cpf: props.cpf,
+        code: props.code,
       }),
     });
 
@@ -31,4 +27,4 @@ const signUpCognito = async (
   }
 };
 
-export default signUpCognito;
+export default confirmCognitoSignup;

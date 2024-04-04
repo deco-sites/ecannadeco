@@ -26,6 +26,7 @@ function MyInfo() {
   const [addressComplement, setAddressComplement] = useState("");
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
+  const [phone, setPhone] = useState("");
   const [cidSearchTerm, setCidSearchTerm] = useState("");
   const [cidSearchResponse, setCidSearchResponse] = useState<unknown[]>([]);
   const [cids, setCids] = useState<unknown[]>([]);
@@ -65,15 +66,19 @@ function MyInfo() {
         setName(userName?.Value || "NOME NÃO CADASTRADO");
         setCpf(userCpf?.Value || "CPF NÃO CADASTRADO");
 
+        setPhone(res.dataProfile.phone);
+
         const address = res.dataProfile.address[0];
 
-        setPostalCode(address.cep);
-        setAddressStreet(address.street);
-        setAddressNeighborhood(address.neighborhood);
-        setAddressNumber(address.number);
-        setAddressComplement(address.complement);
-        setCids(res.dataProfile.cids);
-        setUserImg(res.dataProfile.avatar_photo);
+        if (address) {
+          setPostalCode(address.cep);
+          setAddressStreet(address.street);
+          setAddressNeighborhood(address.neighborhood);
+          setAddressNumber(address.number);
+          setAddressComplement(address.complement);
+          setCids(res.dataProfile.cids);
+          setUserImg(res.dataProfile.avatar_photo);
+        }
 
         console.log({ r });
         setIsLoading(false);
@@ -176,6 +181,7 @@ function MyInfo() {
       avatar_photo: userImg || "no_img",
       name,
       cpf,
+      phone,
       cids: idsCids,
       address: {
         cep: postalCode,
@@ -231,7 +237,7 @@ function MyInfo() {
                       class="rounded-md"
                       src={userImg
                         ? userImg
-                        : "http://drive.google.com/uc?export=view&id=1hLMYkRlOko2T-VSRO8AOUIH7ytvHDKeD"}
+                        : "http://drive.google.com/uc?export=view&id=1tSFTp0YZKVQVGJHOqzKaJw6SEe7Q8LL7"}
                       alt={"user selfie"}
                       width={108}
                       height={144}
@@ -287,7 +293,7 @@ function MyInfo() {
             <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
               Endereço e Contato
             </h2>
-            <div class="flex flex-wrap gap-5 justify-left">
+            <div class="flex flex-wrap gap-5 justify-left w-full">
               <div class="join">
                 <label class="join-item">
                   <div class="label pb-1">
@@ -370,20 +376,24 @@ function MyInfo() {
                     }}
                   />
                 </label>
-                <label class="w-full sm:w-[32%]">
-                  <div class="label pb-1">
-                    <span class="label-text text-xs text-[#585858]">
-                      Bairro - cidade/uf
-                    </span>
-                  </div>
-                  <input
-                    class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
-                    placeholder="Bairro - cidade/uf"
-                    name="localidade"
-                    disabled
-                    value={`${addressNeighborhood} - ${addressCity}`}
-                  />
-                </label>
+                <div class="w-full sm:w-[32%]">
+                  <label class="w-full">
+                    <div class="label pb-1">
+                      <span class="label-text text-xs text-[#585858]">
+                        Whatsapp
+                      </span>
+                    </div>
+                    <input
+                      class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                      placeholder="Bairro - cidade/uf"
+                      name="localidade"
+                      value={phone}
+                      onChange={(e) => {
+                        setPhone(e.currentTarget.value);
+                      }}
+                    />
+                  </label>
+                </div>
               </div>
             </div>
 

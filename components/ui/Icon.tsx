@@ -38,6 +38,7 @@ export type AvailableIcons =
   | "Return"
   | "Ruler"
   | "ShoppingCart"
+  | "Secure"
   | "Star"
   | "Tiktok"
   | "Trash"

@@ -1,9 +1,5 @@
 export interface Props {
   email: string;
-  code: string;
-  cids: string[];
-  cpf_cnpj: string;
-  name: string;
   sku: string;
   credit_card: {
     holder: string;
@@ -20,6 +16,14 @@ export interface Props {
     address_number: string;
     address_complement: string;
     phone: string;
+  };
+  address: {
+    cep: string;
+    street: string;
+    number: string;
+    complement: string;
+    neighborhood: string;
+    addressType: string;
   };
 }
 
