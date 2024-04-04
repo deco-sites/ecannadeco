@@ -1,18 +1,13 @@
 import { invoke } from "../../runtime.ts";
 import { useState } from "preact/hooks";
-import { Plan } from "../../components/ui/Checkout.tsx";
+import Icon from "../../components/ui/Icon.tsx";
 
 export interface Props {
   formTitle?: string;
-  plans: Plan[];
 }
 
-function CheckoutForm({ formTitle, plans }: Props) {
-  const email = localStorage.getItem("emailConfirmCheckout");
-  const [code, setCode] = useState<string>("");
-  const [cpf, setCPF] = useState<string>("");
+function CheckoutForm() {
   const [name, setName] = useState<string>("");
-  const [plan, setPlan] = useState<string>("");
   // const [creditCartHolder, setCreditCardHolder] = useState<string>("");
   const [creditCardNumber, setCreditCardNumber] = useState<string>("");
   const [creditCardExpMonth, setCreditCardExpMonth] = useState<string>("");
@@ -31,24 +26,47 @@ function CheckoutForm({ formTitle, plans }: Props) {
   const [billingAddressComplement, setBillingAddressComplement] = useState<
     string
   >("");
-  const [cids, setCids] = useState<string[]>([]);
+  const [billingAddressNeighborhood, setBillingAddressNeighborhood] = useState<
+    string
+  >("");
+  const [billingAddressCity, setBillingAddressCity] = useState<
+    string
+  >("");
+  const [billingAddressStreet, setBillingAddressStreet] = useState<
+    string
+  >("");
   const [loading, setLoading] = useState<boolean>(false);
   const [termsAgree, setTermsAgree] = useState<boolean>(false);
+  const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
+
+  setHolderEmail(localStorage.getItem("emailConfirm") || "");
+
+  const planSku = localStorage.getItem("planSKU") || "";
+  const planName = localStorage.getItem("planName") || "";
+  const planPrice = localStorage.getItem("planPrice") || "";
+  const planPeriod = localStorage.getItem("planPeriod") || "";
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
-    if (termsAgree) {
-      setLoading(true);
+    setLoading(true);
+
+    if (planSku == "" || planName == "" || planPrice == "") {
+      alert(
+        "Não foi escolhido nenhum plano. Escolha um plano e continue para o pagamento",
+      );
+      window.location.href = "/confirmar-cadastro/plano";
+    } else if (holderEmail == "") {
+      alert(
+        "Não foi encontrado email. Reinicie o cadastro",
+      );
+      window.location.href = "/cadastrar";
+    } else {
       try {
-        await invoke["deco-sites/ecannadeco"].actions
+        const r = await invoke["deco-sites/ecannadeco"].actions
           .checkout(
             {
               email: holderEmail,
-              code,
-              cids,
-              cpf_cnpj: cpf,
-              name,
-              sku: plan,
+              sku: planSku,
               credit_card: {
                 holder: holderName,
                 number: creditCardNumber,
@@ -65,186 +83,366 @@ function CheckoutForm({ formTitle, plans }: Props) {
                 address_complement: billingAddressComplement,
                 phone: holderPhone,
               },
+              address: {
+                cep: billingAddressPostalCode,
+                street: billingAddressStreet,
+                number: billingAddressNumber,
+                complement: billingAddressComplement,
+                neighborhood: billingAddressNeighborhood + ", " +
+                  billingAddressCity,
+                addressType: "BILLING",
+              },
             },
           );
-        setLoading(false);
+        console.log({ r });
 
-        alert(
-          "Assinatura criada!",
-        );
+        const rCheckout = r as { errors?: Array<unknown> };
 
-        // window.location.href = "/";
+        if (rCheckout.errors && rCheckout.errors.length > 0) {
+          alert(
+            "Não foi possível fazer pagamento. Verifique as informações fornecidas e tente novamente.",
+          );
+          setLoading(false);
+        } else {
+          localStorage.setItem("planSKU", "");
+          localStorage.setItem("planName", "");
+          localStorage.setItem("planPrice", "");
+          localStorage.setItem("planPeriod", "");
+
+          alert(
+            "Assinatura criada! Agora, faça o login para acessar sua conta.",
+          );
+
+          setLoading(false);
+
+          window.location.href = "/entrar";
+        }
       } catch (e) {
-        alert(
-          "Não foi possível fazer o checkout. Verifique as informações fornecidas e tente novamente.",
-        );
-        setLoading(false);
+        alert("Falha em criar assinatura. Fale com o suporte!");
       }
-    } else {
-      alert(
-        "Você deve concordar com os Termos de Uso e Políticas de Privacidade para continuar seu cadastro",
-      );
+    }
+  };
+
+  const handleValidatePostalCode = async (code: string) => {
+    setIsLoadingPostalCode(true);
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${code}/json`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const r = await response.json();
+
+      setBillingAddressStreet(r.logradouro);
+      setBillingAddressCity(r.localidade + "/" + r.uf);
+      setBillingAddressNeighborhood(r.bairro);
+      setIsLoadingPostalCode(false);
+    } catch (e) {
+      setIsLoadingPostalCode(false);
+
+      console.log({ e });
     }
   };
 
   return (
     <div class="max-w-[480px]">
+      {planName == "FREE" && (
+        <div
+          role="alert"
+          class="alert bg-primary text-white w-full"
+        >
+          <Icon id="CircleCheck" size={32} />
+          <span class="text-sm">
+            Muito bem! Você ganhou <span class="font-bold">30 dias</span>{" "}
+            para usar o ecanna{" "}
+            <span class="font-bold">GRÁTIS</span>! Precisaremos dos seus dados
+            de cobrança, mas não se preocupe, pois nenhuma cobrança será
+            realizada durante este período e você poderá cancelar a qualquer
+            momento.
+          </span>
+        </div>
+      )}
       <form
-        class="form-control justify-start gap-2 py-8 px-10 bg-[#931C31] rounded-xl"
+        class="form-control justify-start gap-2"
         onSubmit={(event) => {
           handleSubmit(event);
         }}
       >
-        <span class="text-sm text-white font-semibold w-[80%] mb-4">
-          {formTitle}
-        </span>
-
-        {/* Confirmation code */}
-        <label class="cursor-pointer label flex justify-start gap-2">
-          <span>
-            Insira o código de confirmação de cadastro enviado para{" "}
-            <span class="font-bold">{email}</span>
+        <div class="flex flex-col items-center">
+          <span class="text-2xl text-[#8b8b8b] font-semibold text-center my-4">
+            Dados de Cobrança
           </span>
-          <input
-            placeholder="Código"
-            class="input input-bordered"
-            name="code"
-            value={code}
-            onChange={(e) => e.target && setCode(e.currentTarget.value)}
-          />
-        </label>
-
-        {/* Personal Info */}
-        <h3>Seus Dados</h3>
-        <input
-          placeholder="Nome Completo"
-          class="input input-bordered"
-          value={name}
-          onChange={(e) => e.target && setName(e.currentTarget.value)}
-        />
-        <input
-          placeholder="CPF"
-          class="input input-bordered"
-          value={cpf}
-          onChange={(e) => e.target && setCPF(e.currentTarget.value)}
-        />
-
-        {/* Plan Selection */}
-        <h3>Selecione o Plano</h3>
-
-        <select
-          class="select select-bordered"
-          value={plan}
-          onChange={(e) => e.target && setPlan(e.currentTarget.value)}
-        >
-          {plans.map((plan) => (
-            <option
-              value={plan.skus[0]}
-              onClick={(e) => {
-                e.preventDefault();
-                setPlan(plan.skus[0]);
-              }}
-            >
-              {plan.name}
-            </option>
-          ))}
-        </select>
+          <div class="flex items-center gap-3 text-[#8b8b8b] ">
+            <Icon id="Secure" size={19} />
+            <span class="text-sm">Checkout Seguro</span>
+          </div>
+        </div>
 
         {/* Creditcard Info */}
-        <h3>Dados do Cartão</h3>
-        <input
-          placeholder="Número do Cartão"
-          class="input input-bordered"
-          value={creditCardNumber}
-          onChange={(e) =>
-            e.target && setCreditCardNumber(e.currentTarget.value)}
-        />
-        <fieldset>
-          <legend>Validade do Cartão</legend>
-          <input
-            placeholder="Mês"
-            class="input input-bordered"
-            value={creditCardExpMonth}
-            onChange={(e) =>
-              e.target && setCreditCardExpMonth(e.currentTarget.value)}
-          />
-          <input
-            placeholder="Ano"
-            class="input input-bordered"
-            value={creditCardExpYear}
-            onChange={(e) =>
-              e.target && setCreditCardExpYear(e.currentTarget.value)}
-          />
-        </fieldset>
-        <input
-          placeholder="Código Verificador"
-          class="input input-bordered"
-          value={creditCardCCV}
-          onChange={(e) => e.target && setCreditCardCCV(e.currentTarget.value)}
-        />
+        <h2 class="text-[#8b8b8b] font-semibold mb-1 mt-10 w-full">
+          Dados do Cartão
+        </h2>
+        <div class="flex flex-wrap gap-[4%]">
+          <label class="w-full sm:w-[48%]">
+            <div class="label pb-1">
+              <span class="label-text text-xs text-[#585858]">
+                Número do Cartão
+              </span>
+            </div>
+            <input
+              class="input rounded-md text-[#8b8b8b] border-none w-full"
+              placeholder="0000 0000 0000 0000"
+              name="creditCardNumber"
+              value={creditCardNumber}
+              onChange={(e) => {
+                setCreditCardNumber(e.currentTarget.value);
+              }}
+            />
+          </label>
+          <fieldset class="w-full sm:w-[48%]">
+            <legend class="label-text text-xs text-[#585858] p-1 pt-2">
+              Validade do Cartão
+            </legend>
+            <div class="flex gap-2">
+              <input
+                placeholder="Mês"
+                class="input rounded-md text-[#8b8b8b] border-none w-1/2"
+                value={creditCardExpMonth}
+                onChange={(e) =>
+                  e.target && setCreditCardExpMonth(e.currentTarget.value)}
+              />
+              <input
+                placeholder="Ano"
+                class="input rounded-md text-[#8b8b8b] border-none w-1/2"
+                value={creditCardExpYear}
+                onChange={(e) =>
+                  e.target && setCreditCardExpYear(e.currentTarget.value)}
+              />
+            </div>
+          </fieldset>
+          <label class="w-full sm:w-[48%]">
+            <div class="label pb-1">
+              <span class="label-text text-xs text-[#585858]">
+                Código Verificador
+              </span>
+            </div>
+            <input
+              class="input rounded-md text-[#8b8b8b] border-none w-full"
+              placeholder="Código Verificador"
+              value={creditCardCCV}
+              onChange={(e) =>
+                e.target && setCreditCardCCV(e.currentTarget.value)}
+            />
+          </label>
+          <label class="w-full sm:w-[48%]">
+            <div class="label pb-1">
+              <span class="label-text text-xs text-[#585858]">
+                Nome do Titular
+              </span>
+            </div>
+            <input
+              class="input rounded-md text-[#8b8b8b] border-none w-full"
+              placeholder="Nome"
+              value={holderName}
+              onChange={(e) => e.target && setHolderName(e.currentTarget.value)}
+            />
+          </label>
+          <label class="w-full sm:w-[48%]">
+            <div class="label pb-1">
+              <span class="label-text text-xs text-[#585858]">
+                CPF do Titular
+              </span>
+            </div>
+            <input
+              class="input rounded-md text-[#8b8b8b] border-none w-full"
+              placeholder="CPF"
+              value={holderCPF}
+              onChange={(e) => e.target && setHolderCPF(e.currentTarget.value)}
+            />
+          </label>
+        </div>
 
-        {/* Creditcard Holder Info */}
-        <h3>Dados do Titular do Cartão</h3>
-        <input
-          placeholder="Nome do Titular"
-          class="input input-bordered"
-          name="code"
-          value={holderName}
-          onChange={(e) => e.target && setHolderName(e.currentTarget.value)}
-        />
-        <input
-          placeholder="CPF do Titular"
-          class="input input-bordered"
-          name="code"
-          value={holderCPF}
-          onChange={(e) => e.target && setHolderCPF(e.currentTarget.value)}
-        />
-        <input
-          placeholder="Email do Titular"
-          class="input input-bordered"
-          name="code"
-          value={holderEmail}
-          onChange={(e) => e.target && setHolderEmail(e.currentTarget.value)}
-        />
-        <input
-          placeholder="Telefone do Titular"
-          class="input input-bordered"
-          name="code"
-          value={holderPhone}
-          onChange={(e) => e.target && setHolderPhone(e.currentTarget.value)}
-        />
+        {/* Contact Info */}
+        <h2 class="text-[#8b8b8b] font-semibold mb-1 mt-10 w-full">
+          Dados de Contato
+        </h2>
+        <div class="flex flex-wrap gap-[4%]">
+          <label class="w-full sm:w-[48%]">
+            <div class="label pb-1">
+              <span class="label-text text-xs text-[#585858]">
+                Email
+              </span>
+            </div>
+            <input
+              class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+              placeholder="Email de cobrança"
+              name="holderEmail"
+              value={holderEmail}
+              disabled
+            />
+          </label>
+          <label class="w-full sm:w-[48%]">
+            <div class="label pb-1">
+              <span class="label-text text-xs text-[#585858]">
+                Telefone
+              </span>
+            </div>
+            <input
+              class="input rounded-md text-[#8b8b8b] border-none w-full"
+              placeholder="Número com Whatsapp"
+              name="holderPhone"
+              value={holderPhone}
+              onChange={(e) =>
+                e.target && setHolderPhone(e.currentTarget.value)}
+            />
+          </label>
+        </div>
 
         {/* Billing Address */}
-        <h3>Endereço de Cobrança</h3>
-        <input
-          placeholder="CEP*"
-          class="input input-bordered"
-          name="code"
-          value={billingAddressPostalCode}
-          onChange={(e) =>
-            e.target && setBillingAddressPostalCode(e.currentTarget.value)}
-        />
-        <input
-          placeholder="Número*"
-          class="input input-bordered"
-          name="code"
-          value={billingAddressNumber}
-          onChange={(e) =>
-            e.target && setBillingAddressNumber(e.currentTarget.value)}
-        />
-        <input
-          placeholder="Complemento"
-          class="input input-bordered"
-          name="code"
-          value={billingAddressComplement}
-          onChange={(e) =>
-            e.target && setBillingAddressComplement(e.currentTarget.value)}
-        />
+        <h2 class="text-[#8b8b8b] font-semibold mb-1 mt-10 w-full">
+          Endereço de Cobrança
+        </h2>
+        <div class="flex flex-wrap gap-[4%]">
+          <div class="join w-full">
+            <label class="join-item w-[70%]">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  CEP
+                </span>
+              </div>
+              <input
+                placeholder="CEP"
+                name="cep"
+                class="input rounded-md text-[#8b8b8b] border-none"
+                value={billingAddressPostalCode}
+                onChange={(e) => e.target &&
+                  setBillingAddressPostalCode(e.currentTarget.value)}
+              />
+              <button
+                class="btn btn-ghost bg-[#dedede] text-[#5d5d5d] join-item"
+                type="button"
+                onClick={() =>
+                  handleValidatePostalCode(billingAddressPostalCode)}
+              >
+                Validar CEP{" "}
+                {isLoadingPostalCode && (
+                  <span class="loading loading-spinner text-green-600">
+                  </span>
+                )}
+              </button>
+            </label>
+          </div>
+          <div
+            class={`flex flex-wrap w-full gap-[4%] ${
+              billingAddressStreet == "" && "hidden"
+            }`}
+          >
+            <label class="w-full">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Logradouro
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                placeholder="Logradouro"
+                name="addressnumber"
+                value={billingAddressStreet}
+                disabled
+              />
+            </label>
+            <label class="w-full sm:w-[48%]">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Número*
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Número"
+                name="addressnumber"
+                value={billingAddressNumber}
+                onChange={(e) =>
+                  e.target && setBillingAddressNumber(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Complemento
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Ex: casa 9, apartamento 101"
+                name="addressnumber"
+                value={billingAddressComplement}
+                onChange={(e) => e.target &&
+                  setBillingAddressComplement(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Bairro
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                placeholder="Bairro"
+                name="addressNeighborhood"
+                value={billingAddressNeighborhood}
+                disabled
+              />
+            </label>
+            <label class="w-full sm:w-[48%]">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Cidade
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                placeholder="Cidade"
+                name="addressCity"
+                value={billingAddressCity}
+                disabled
+              />
+            </label>
+          </div>
+        </div>
+
+        {(planName && planPrice && planPeriod) && (
+          <div class="bg-[#8D8D8D] rounded-xl flex flex-col items-center mt-4 py-4">
+            <span>
+              Plano Escolhido: <span class="font-semibold">{planName}</span>
+            </span>
+            <span>
+              Valor:{" "}
+              <span class="font-semibold">
+                R$ {planName == "FREE"
+                  ? `${(0).toFixed(2)}*`
+                  : (Number(planPrice) / 100).toFixed(2)}{" "}
+                /{planPeriod == "MONTHLY" && "mês"}
+              </span>
+            </span>
+            {planName === "FREE" && (
+              <span class="text-[10px]">
+                * R$ {(Number(planPrice) / 100).toFixed(
+                  2,
+                )}/{planPeriod == "MONTHLY" && "mês"} depois do primeiro mês
+              </span>
+            )}
+          </div>
+        )}
+
         <button
           type={"submit"}
-          class="btn bg-[#2B2B30] text-white mt-5 disabled:loading border-none"
+          class="btn bg-primary text-white rounded-md mt-5 disabled:loading border-none"
         >
-          {loading ? "Concluindo..." : "Concluir Cadastro"}
+          {loading ? "Concluindo..." : "Concluir"}
         </button>
       </form>
     </div>
