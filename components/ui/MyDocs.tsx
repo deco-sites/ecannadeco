@@ -1,12 +1,14 @@
 import Icon from "../../components/ui/Icon.tsx";
 import Modal from "../../components/ui/Modal.tsx";
 import PageWrap from "../../components/ui/PageWrap.tsx";
+import Loading from "../../components/daisy/Loading.tsx";
 import { useEffect, useState } from "preact/hooks";
 import { useUI } from "../../sdk/useUI.ts";
 import { h } from "preact";
 import { invoke } from "../../runtime.ts";
 
 interface DocListType {
+  _id: string;
   title: string;
   file_url: string;
   created_at: Date;
@@ -14,32 +16,111 @@ interface DocListType {
   status: string;
 }
 
-const DocList = ({ docs }: { docs: DocListType[] }) => {
-  const { displayNewDocModal } = useUI();
+const DocList = (
+  { docs, onFinishDelete }: { docs: DocListType[]; onFinishDelete: () => void },
+) => {
+  const { displayNewDocModal, displayConfirmDeleteDoc } = useUI();
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+
+  const handleDelete = async ({ id }: { id: string }) => {
+    setIsDeleting(true);
+    try {
+      const r = await invoke["deco-sites/ecannadeco"].actions.deleteDocument({
+        docId: id,
+        token: localStorage.getItem("AccessToken") || "",
+      });
+
+      const resp = r as { message?: string };
+
+      if (resp.message) {
+        alert(`Algo deu errado: ${resp.message}`);
+      } else {
+        onFinishDelete();
+      }
+
+      setIsDeleting(false);
+    } catch (e) {
+      console.log({ e });
+      alert("Não foi possível apagar o documento. Tente mais tarde.");
+      setIsDeleting(false);
+    }
+  };
+
+  const ModalConfirmDelete = ({ id }: { id: string }) => {
+    return (
+      <Modal
+        open={displayConfirmDeleteDoc.value}
+        onClose={() => displayConfirmDeleteDoc.value = false}
+      >
+        <div class="flex flex-col p-16 gap-3 bg-[#EDEDED] rounded-xl">
+          <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
+            Tem certeza que deseja deletar este documento?
+          </h3>
+          <div class="flex flex-col items-center gap-2">
+            <button
+              class="btn bg-red-500 text-white"
+              onClick={() => {
+                handleDelete({ id });
+                displayConfirmDeleteDoc.value = false;
+              }}
+            >
+              Deletar
+            </button>
+            <button
+              class="btn btn-ghost"
+              onClick={() => {
+                setDeleteId("");
+                displayConfirmDeleteDoc.value = false;
+              }}
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </Modal>
+    );
+  };
+
   if (docs.length) {
     return (
-      <ul>
-        {docs.map((d) => {
-          return (
-            <li class="flex items-center gap-4">
-              <a class="w-full" href={d.file_url}>
-                <div class="flex justify-between rounded-md bg-[#C8C8C8] w-full px-5 h-10 items-center">
-                  <div class="flex gap-2">
-                    <span class="text-[#8F8D8D]">
-                      <Icon id="Anexo" size={24} />
+      <>
+        <ul>
+          {docs.map((d) => {
+            return (
+              <li class="flex items-center gap-4">
+                <a class="w-full" href={d.file_url}>
+                  <div class="flex justify-between rounded-md bg-[#C8C8C8] w-full px-5 h-10 items-center">
+                    <div class="flex gap-2">
+                      <span class="text-[#8F8D8D]">
+                        <Icon id="Anexo" size={24} />
+                      </span>
+                      <span class="text-[#393939] font-semibold">
+                        {d.title}
+                      </span>
+                    </div>
+                    <span class="text-[#8F8D8D] flex justify-end w-6">
+                      <Icon id="Download" height={19} />
                     </span>
-                    <span class="text-[#393939] font-semibold">{d.title}</span>
                   </div>
-                  <span class="text-[#8F8D8D] flex justify-end w-6">
-                    <Icon id="Download" height={19} />
-                  </span>
-                </div>
-              </a>
-              <Icon id="Trash" size={24} />
-            </li>
-          );
-        })}
-      </ul>
+                </a>
+                <ModalConfirmDelete id={d._id} />
+                {isDeleting
+                  ? <Loading style="loading-spinner" size="loading-md" />
+                  : (
+                    <Icon
+                      onClick={() => {
+                        displayConfirmDeleteDoc.value = true;
+                      }}
+                      id="Trash"
+                      size={24}
+                    />
+                  )}
+              </li>
+            );
+          })}
+        </ul>
+      </>
     );
   } else {
     return (
@@ -105,8 +186,6 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
     formData.append("file", file!);
     formData.append("title", docTitle);
     formData.append("category", docCategory);
-
-    console.log({ file, docTitle, docCategory });
 
     try {
       const response = await fetch("http://localhost:3000/documents", {
@@ -216,7 +295,6 @@ function MyDocs() {
       invoke["deco-sites/ecannadeco"].actions.getDocs({
         token: accessToken,
       }).then((r) => {
-        console.log({ documents: r });
         setDocs((r as { docs: DocListType[] }).docs);
         setIsLoading(false);
       });
@@ -261,29 +339,29 @@ function MyDocs() {
       </div>
       <div class="flex flex-col gap-3">
         <h2 class="text-[#8b8b8b] font-semibold mb-1 mt-10 w-full">
-          Dados Pessoais
+          Documentos de Anvisa
         </h2>
         {isLoading
           ? <span class="loading loading-spinner text-black"></span>
-          : <DocList docs={anvisaDocs} />}
+          : <DocList onFinishDelete={getDocuments} docs={anvisaDocs} />}
         <h2 class="text-[#8b8b8b] font-semibold mb-1 mt-10 w-full">
           Documentos Médicos
         </h2>
         {isLoading
           ? <span class="loading loading-spinner text-black"></span>
-          : <DocList docs={medicalDocs} />}
+          : <DocList onFinishDelete={getDocuments} docs={medicalDocs} />}
         <h2 class="text-[#8b8b8b] font-semibold mb-1 mt-10 w-full">
           Documentos Judiciais
         </h2>
         {isLoading
           ? <span class="loading loading-spinner text-black"></span>
-          : <DocList docs={habeasDocs} />}
+          : <DocList onFinishDelete={getDocuments} docs={habeasDocs} />}
         <h2 class="text-[#8b8b8b] font-semibold mb-1 mt-10 w-full">
           Documentos de Identificação
         </h2>
         {isLoading
           ? <span class="loading loading-spinner text-black"></span>
-          : <DocList docs={idDocs} />}
+          : <DocList onFinishDelete={getDocuments} docs={idDocs} />}
       </div>
     </PageWrap>
   );

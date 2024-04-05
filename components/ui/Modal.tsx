@@ -48,7 +48,9 @@ function Modal(props: Props) {
       />
       <div class="modal">
         {!lazy.value && children}
-        <label class="modal-backdrop" for={id}>Close</label>
+        <label class="modal-backdrop fixed w-screen h-screen" for={id}>
+          Close
+        </label>
       </div>
     </>
   );
