@@ -25,6 +25,7 @@ import * as $Header_Searchbar from "./islands/Header/Searchbar.tsx";
 import * as $MyAccount from "./islands/MyAccount.tsx";
 import * as $MyDocs from "./islands/MyDocs.tsx";
 import * as $MyInfo from "./islands/MyInfo.tsx";
+import * as $NewTicketModal from "./islands/NewTicketModal.tsx";
 import * as $Newsletter from "./islands/Newsletter.tsx";
 import * as $OutOfStock from "./islands/OutOfStock.tsx";
 import * as $PrivatePageControl from "./islands/PrivatePageControl.tsx";
@@ -68,6 +69,7 @@ const manifest = {
     "./islands/MyAccount.tsx": $MyAccount,
     "./islands/MyDocs.tsx": $MyDocs,
     "./islands/MyInfo.tsx": $MyInfo,
+    "./islands/NewTicketModal.tsx": $NewTicketModal,
     "./islands/Newsletter.tsx": $Newsletter,
     "./islands/OutOfStock.tsx": $OutOfStock,
     "./islands/PrivatePageControl.tsx": $PrivatePageControl,
