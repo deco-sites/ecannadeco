@@ -8,14 +8,15 @@ import * as $$$$$$$$$2 from "./actions/cognitoSignIn.ts";
 import * as $$$$$$$$$3 from "./actions/cognitoSignUp.ts";
 import * as $$$$$$$$$4 from "./actions/confirmCognitoSignup.ts";
 import * as $$$$$$$$$5 from "./actions/createTicket.ts";
-import * as $$$$$$$$$6 from "./actions/getCids.ts";
-import * as $$$$$$$$$7 from "./actions/getDocs.ts";
-import * as $$$$$$$$$8 from "./actions/getPlans.ts";
-import * as $$$$$$$$$9 from "./actions/getProfile.ts";
-import * as $$$$$$$$$10 from "./actions/getUser.ts";
-import * as $$$$$$$$$11 from "./actions/updateProfile.ts";
-import * as $$$$$$$$$12 from "./actions/updateUserData.ts";
-import * as $$$$$$$$$13 from "./actions/uploadFile.ts";
+import * as $$$$$$$$$6 from "./actions/deleteDocument.ts";
+import * as $$$$$$$$$7 from "./actions/getCids.ts";
+import * as $$$$$$$$$8 from "./actions/getDocs.ts";
+import * as $$$$$$$$$9 from "./actions/getPlans.ts";
+import * as $$$$$$$$$10 from "./actions/getProfile.ts";
+import * as $$$$$$$$$11 from "./actions/getUser.ts";
+import * as $$$$$$$$$12 from "./actions/updateProfile.ts";
+import * as $$$$$$$$$13 from "./actions/updateUserData.ts";
+import * as $$$$$$$$$14 from "./actions/uploadFile.ts";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
@@ -182,14 +183,15 @@ const manifest = {
     "deco-sites/ecannadeco/actions/cognitoSignUp.ts": $$$$$$$$$3,
     "deco-sites/ecannadeco/actions/confirmCognitoSignup.ts": $$$$$$$$$4,
     "deco-sites/ecannadeco/actions/createTicket.ts": $$$$$$$$$5,
-    "deco-sites/ecannadeco/actions/getCids.ts": $$$$$$$$$6,
-    "deco-sites/ecannadeco/actions/getDocs.ts": $$$$$$$$$7,
-    "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$8,
-    "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$9,
-    "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$10,
-    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$11,
-    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$12,
-    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$13,
+    "deco-sites/ecannadeco/actions/deleteDocument.ts": $$$$$$$$$6,
+    "deco-sites/ecannadeco/actions/getCids.ts": $$$$$$$$$7,
+    "deco-sites/ecannadeco/actions/getDocs.ts": $$$$$$$$$8,
+    "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$9,
+    "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$10,
+    "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$11,
+    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$12,
+    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$13,
+    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$14,
   },
   "apps": {
     "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,
