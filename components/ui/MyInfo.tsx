@@ -21,6 +21,7 @@ function MyInfo() {
   const [postalCode, setPostalCode] = useState("");
   const [addressStreet, setAddressStreet] = useState("");
   const [addressCity, setAddressCity] = useState("");
+  const [addressState, setAddressState] = useState("");
   const [addressNeighborhood, setAddressNeighborhood] = useState("");
   const [addressNumber, setAddressNumber] = useState("");
   const [addressComplement, setAddressComplement] = useState("");
@@ -74,6 +75,8 @@ function MyInfo() {
           setPostalCode(address.cep);
           setAddressStreet(address.street);
           setAddressNeighborhood(address.neighborhood);
+          setAddressCity(address.city);
+          setAddressState(address.state);
           setAddressNumber(address.number);
           setAddressComplement(address.complement);
           setCids(res.dataProfile.cids);
@@ -150,7 +153,8 @@ function MyInfo() {
       const r = await response.json();
 
       setAddressStreet(r.logradouro);
-      setAddressCity(r.localidade + "/" + r.uf);
+      setAddressCity(r.localidade);
+      setAddressState(r.uf);
       setAddressNeighborhood(r.bairro);
       setIsLoadingPostalCode(false);
     } catch (e) {
@@ -187,8 +191,10 @@ function MyInfo() {
         cep: postalCode,
         street: addressStreet,
         number: addressNumber,
+        city: addressCity,
+        state: addressState,
         complement: addressComplement,
-        neighborhood: addressNeighborhood + ", " + addressCity,
+        neighborhood: addressNeighborhood,
         addressType: "BILLING",
       },
     };
@@ -376,6 +382,20 @@ function MyInfo() {
                     }}
                   />
                 </label>
+                <label class="w-full sm:w-[32%]">
+                  <div class="label pb-1">
+                    <span class="label-text text-xs text-[#585858]">
+                      Cidade / Estado
+                    </span>
+                  </div>
+                  <input
+                    class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                    placeholder="Cidade / Estado"
+                    name="cidadeestado"
+                    disabled
+                    value={`${addressCity + "/" + addressState}`}
+                  />
+                </label>
                 <div class="w-full sm:w-[32%]">
                   <label class="w-full">
                     <div class="label pb-1">
@@ -497,7 +517,7 @@ function MyInfo() {
           </div>
           <div class="flex justify-end mt-4 w-full">
             <button class="btn btn-primary" onClick={handleSubmit}>
-              Salvar Dados
+              {isSubmiting ? "Salvando..." : "Salvar Dados"}
             </button>
           </div>
         </PageWrap>

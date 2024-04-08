@@ -32,6 +32,9 @@ function CheckoutForm() {
   const [billingAddressCity, setBillingAddressCity] = useState<
     string
   >("");
+  const [billingAddressState, setBillingAddressState] = useState<
+    string
+  >("");
   const [billingAddressStreet, setBillingAddressStreet] = useState<
     string
   >("");
@@ -88,8 +91,9 @@ function CheckoutForm() {
                 street: billingAddressStreet,
                 number: billingAddressNumber,
                 complement: billingAddressComplement,
-                neighborhood: billingAddressNeighborhood + ", " +
-                  billingAddressCity,
+                neighborhood: billingAddressNeighborhood,
+                city: billingAddressCity,
+                state: billingAddressState,
                 addressType: "BILLING",
               },
             },
@@ -136,7 +140,8 @@ function CheckoutForm() {
       const r = await response.json();
 
       setBillingAddressStreet(r.logradouro);
-      setBillingAddressCity(r.localidade + "/" + r.uf);
+      setBillingAddressCity(r.localidade);
+      setBillingAddressState(r.uf);
       setBillingAddressNeighborhood(r.bairro);
       setIsLoadingPostalCode(false);
     } catch (e) {
