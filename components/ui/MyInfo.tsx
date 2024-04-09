@@ -175,6 +175,14 @@ function MyInfo() {
       return null;
     }
 
+    if (!userImg) {
+      alert(
+        "Você deve subir uma foto 3x4 para continuar",
+      );
+      setIsSubmitting(false);
+      return null;
+    }
+
     const idsCids = cids.map((c) => {
       const cid = c as { _id: string };
       return cid._id;

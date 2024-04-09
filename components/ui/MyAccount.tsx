@@ -8,12 +8,15 @@ import { invoke } from "../../runtime.ts";
 import { Plan } from "../../components/ui/Checkout.tsx";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 import Icon from "../../components/ui/Icon.tsx";
+import ModalConfirm from "../../components/ui/ModalConfirm.tsx";
 import Slider from "../../components/ui/Slider.tsx";
+import { useUI } from "../../sdk/useUI.ts";
 import SliderJS from "../../islands/SliderJS.tsx";
 
 function MyAccount() {
   const [isLoading, setIsLoading] = useState(false);
   const [isChanging, setIsChanging] = useState(false);
+  const [isCanceling, setIsCanceling] = useState(false);
   const [email, setEmail] = useState("");
   const [currentPlan, setCurrentPlan] = useState<string>("");
   const [newPlan, setNewPlan] = useState<Plan>();
@@ -21,6 +24,7 @@ function MyAccount() {
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");
+  const { displayConfirmCancelSubscription } = useUI();
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -105,6 +109,36 @@ function MyAccount() {
         );
         setIsChanging(false);
       }
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    setIsCanceling(true);
+    try {
+      const r = await invoke["deco-sites/ecannadeco"].actions.createTicket({
+        email,
+        subject: "[CANCELAR] Pedido para cancelar assinatura",
+        content: "Olá, gostaria de cancelar minha assinatura.",
+      });
+
+      const resp = r as { inlineMessage?: string };
+
+      if (
+        resp.inlineMessage &&
+        resp.inlineMessage == "Obrigado por enviar o formulário."
+      ) {
+        console.log({ responseTicker: r });
+
+        displayConfirmCancelSubscription.value = false;
+        setIsCanceling(false);
+
+        alert(
+          "Foi aberto chamado com requisição de cancelar assinatura! Em breve, te retornaremos no email da conta.",
+        );
+      }
+    } catch (e) {
+      alert("Erro ao enviar solicitação. Tente mais tarde");
+      setIsCanceling(false);
     }
   };
 
@@ -316,12 +350,30 @@ function MyAccount() {
                   </Slider.Item>
                 ))}
               </Slider>
-              <div class="flex justify-end mt-4">
+              <div class="flex  flex-col justify-end mt-4">
+                <ModalConfirm
+                  text="Tem certeza que deseja encerrar sua assinatura?"
+                  confirmButtonText="Encerrar"
+                  open={displayConfirmCancelSubscription.value}
+                  onClose={() => {
+                    displayConfirmCancelSubscription.value = false;
+                  }}
+                  onConfirm={handleCancelSubscription}
+                  loading={isCanceling}
+                />
                 <button
                   class="btn btn-primary text-white"
                   disabled={(newPlan?.name || currentPlan) == currentPlan}
                 >
                   Alterar Plano
+                </button>
+                <button
+                  class="btn btn-ghost text-xs font-normal text-red-500"
+                  onClick={() => {
+                    displayConfirmCancelSubscription.value = true;
+                  }}
+                >
+                  Cancelar Assinatura
                 </button>
               </div>
             </div>

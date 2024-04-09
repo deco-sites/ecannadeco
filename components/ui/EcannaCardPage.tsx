@@ -53,6 +53,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
       setIsLoading(false);
     }
   }, []); // Passando um array de dependências vazio
+
   return (
     <div class="flex flex-col justify-center items-center my-10 gap-[100px] sm:gap-[30px]">
       <div class="rotate-90 sm:rotate-0 flex justify-center p-3 sm:p-12 bg-[#252525] rounded-xl max-w-[424px] sm:max-w-[90%]">
@@ -79,6 +80,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
       <div class="flex flex-col sm:flex-row gap-2 sm:gap-[4%] max-w-[90%]">
         <a
           href={cardUrl}
+          download="carteirinha.png"
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
         >
           <span>Baixar Carteirinha</span> <Icon id="Download" height={19} />
