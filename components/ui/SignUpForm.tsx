@@ -44,6 +44,8 @@ function SignUpForm({ formTitle }: Props) {
           setLoading(false);
         } else {
           localStorage.setItem("emailConfirm", email);
+          localStorage.setItem("cpfUserAsaas", cpf);
+          localStorage.setItem("nameUserAsaas", name);
           setLoading(false);
           window.location.href = "/confirmar-cadastro";
         }
