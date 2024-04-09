@@ -8,6 +8,7 @@ export interface Props {
 
 function CheckoutForm() {
   const [name, setName] = useState<string>("");
+  const [cpf, setCPF] = useState<string>("");
   // const [creditCartHolder, setCreditCardHolder] = useState<string>("");
   const [creditCardNumber, setCreditCardNumber] = useState<string>("");
   const [creditCardExpMonth, setCreditCardExpMonth] = useState<string>("");
@@ -43,6 +44,8 @@ function CheckoutForm() {
   const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
 
   setHolderEmail(localStorage.getItem("emailConfirm") || "");
+  setName(localStorage.getItem("nameUserAsaas") || "");
+  setCPF(localStorage.getItem("cpfUserAsaas") || "");
 
   const planSku = localStorage.getItem("planSKU") || "";
   const planName = localStorage.getItem("planName") || "";
@@ -63,11 +66,18 @@ function CheckoutForm() {
         "Não foi encontrado email. Reinicie o cadastro",
       );
       window.location.href = "/cadastrar";
+    } else if (cpf == "" || name == "") {
+      alert(
+        "Não foi encontrado o usuário deste processo de pagamento. Por favor, reinicie o cadastro",
+      );
+      window.location.href = "/cadastrar";
     } else {
       try {
         const r = await invoke["deco-sites/ecannadeco"].actions
           .checkout(
             {
+              name,
+              cpf_cnpj: cpf,
               email: holderEmail,
               sku: planSku,
               credit_card: {

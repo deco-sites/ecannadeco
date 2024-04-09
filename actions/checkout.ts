@@ -1,4 +1,6 @@
 export interface Props {
+  name: string;
+  cpf_cnpj: string;
   email: string;
   sku: string;
   credit_card: {
