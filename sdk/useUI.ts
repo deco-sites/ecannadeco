@@ -12,6 +12,7 @@ const displaySearchDrawer = signal(false);
 const displayNewDocModal = signal(false);
 const displayNewTicketModal = signal(false);
 const displayConfirmDeleteDoc = signal(false);
+const displayConfirmCancelSubscription = signal(false);
 const displayPlanLimit = signal(false);
 const updatedData = signal(true);
 const uploadedFile = signal(true);
@@ -27,6 +28,7 @@ const state = {
   uploadedFile,
   displayNewTicketModal,
   displayConfirmDeleteDoc,
+  displayConfirmCancelSubscription,
 };
 
 // Keyboard event listeners
