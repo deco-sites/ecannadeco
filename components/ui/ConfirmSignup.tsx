@@ -6,9 +6,40 @@ import { invoke } from "../../runtime.ts";
 function ConfirmSignup() {
   const [code, setCode] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [codeSent, setCodeSent] = useState(false);
+  const [timer, setTimer] = useState(30);
   const [email, setEmail] = useState(
     localStorage.getItem("emailConfirm") || "",
   );
+
+  const resendConfirmationCode = async () => {
+    setSending(true);
+    try {
+      const r = await invoke["deco-sites/ecannadeco"].actions
+        .resendConfirmationCode(
+          { email },
+        );
+      console.log({ r });
+      setSending(false);
+      setCodeSent(true);
+
+      const thistimer = setInterval(() => {
+        setTimer((prevTimer) => {
+          if (prevTimer == 0) {
+            setCodeSent(false);
+            clearInterval(thistimer); // Stop the interval
+            return (59);
+          } else {
+            return (prevTimer - 1);
+          }
+        });
+      }, 1000); // Interval of 1000 milliseconds (1 second)
+    } catch (e) {
+      setSending(false);
+      alert("Erro ao reenviar código. Contacte o suporte");
+    }
+  };
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
@@ -19,12 +50,20 @@ function ConfirmSignup() {
 
     try {
       setLoading(true);
-      const data = await invoke["deco-sites/ecannadeco"].actions
+      const r = await invoke["deco-sites/ecannadeco"].actions
         .confirmCognitoSignup(
           { email, code },
         );
-      setLoading(false);
-      window.location.href = "/confirmar-cadastro/plano";
+
+      const data = r as { message?: string };
+
+      if (data.message) {
+        setLoading(false);
+        alert(data.message);
+      } else {
+        setLoading(false);
+        window.location.href = "/confirmar-cadastro/plano";
+      }
     } catch (e) {
       alert(
         "Não foi possível confirmar o email. Verifique o código fornecido e tente novamente.",
@@ -63,13 +102,29 @@ function ConfirmSignup() {
               }}
             />
           </label>
-
+          <div class="flex gap-2">
+          </div>
           <button
             type={"submit"}
             class="btn btn-primary text-white mt-5 disabled:loading border-none"
           >
             {loading ? "Cadastrando..." : "Confirmar"}
           </button>
+          {codeSent
+            ? (
+              <span class="text-green-500 text-xs">
+                Código Enviado... {timer}s
+              </span>
+            )
+            : (
+              <button
+                type="button"
+                onClick={resendConfirmationCode}
+                class="btn btn-ghost text-slate-400"
+              >
+                {sending ? "Enviando..." : "Reenviar Código"}
+              </button>
+            )}
         </form>
       </div>
     </FormWrap>

@@ -14,9 +14,10 @@ import * as $$$$$$$$$8 from "./actions/getDocs.ts";
 import * as $$$$$$$$$9 from "./actions/getPlans.ts";
 import * as $$$$$$$$$10 from "./actions/getProfile.ts";
 import * as $$$$$$$$$11 from "./actions/getUser.ts";
-import * as $$$$$$$$$12 from "./actions/updateProfile.ts";
-import * as $$$$$$$$$13 from "./actions/updateUserData.ts";
-import * as $$$$$$$$$14 from "./actions/uploadFile.ts";
+import * as $$$$$$$$$12 from "./actions/resendConfirmationCode.ts";
+import * as $$$$$$$$$13 from "./actions/updateProfile.ts";
+import * as $$$$$$$$$14 from "./actions/updateUserData.ts";
+import * as $$$$$$$$$15 from "./actions/uploadFile.ts";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
@@ -192,9 +193,10 @@ const manifest = {
     "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$9,
     "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$10,
     "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$11,
-    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$12,
-    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$13,
-    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$14,
+    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$12,
+    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$13,
+    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$14,
+    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$15,
   },
   "apps": {
     "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,
