@@ -30,6 +30,7 @@ import * as $Newsletter from "./islands/Newsletter.tsx";
 import * as $OutOfStock from "./islands/OutOfStock.tsx";
 import * as $PrivatePageControl from "./islands/PrivatePageControl.tsx";
 import * as $ProductImageZoom from "./islands/ProductImageZoom.tsx";
+import * as $PublicPageControl from "./islands/PublicPageControl.tsx";
 import * as $SearchControls from "./islands/SearchControls.tsx";
 import * as $ShippingSimulation from "./islands/ShippingSimulation.tsx";
 import * as $ShowMore from "./islands/ShowMore.tsx";
@@ -74,6 +75,7 @@ const manifest = {
     "./islands/OutOfStock.tsx": $OutOfStock,
     "./islands/PrivatePageControl.tsx": $PrivatePageControl,
     "./islands/ProductImageZoom.tsx": $ProductImageZoom,
+    "./islands/PublicPageControl.tsx": $PublicPageControl,
     "./islands/SearchControls.tsx": $SearchControls,
     "./islands/ShippingSimulation.tsx": $ShippingSimulation,
     "./islands/ShowMore.tsx": $ShowMore,
