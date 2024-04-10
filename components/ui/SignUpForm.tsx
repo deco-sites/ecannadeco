@@ -33,9 +33,14 @@ function SignUpForm({ formTitle }: Props) {
             { email, password, name, cpf },
           );
 
-        const dataS = dataSignup as { errors?: Array<unknown> };
+        const dataS = dataSignup as {
+          errors?: Array<unknown>;
+          data?: { association?: { "_id": string } };
+        };
 
-        console.log({ dataS });
+        const association = dataS.data?.association;
+
+        console.log({ dataSignup, dataS });
 
         if (dataS.errors && dataS.errors.length > 0) {
           alert(
@@ -46,6 +51,12 @@ function SignUpForm({ formTitle }: Props) {
           localStorage.setItem("emailConfirm", email);
           localStorage.setItem("cpfUserAsaas", cpf);
           localStorage.setItem("nameUserAsaas", name);
+
+          if (association) {
+            localStorage.setItem("associationSignup", association._id);
+            localStorage.setItem("nameUserAssociationSignup", name);
+          }
+
           setLoading(false);
           window.location.href = "/confirmar-cadastro";
         }

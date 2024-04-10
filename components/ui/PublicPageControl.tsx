@@ -20,7 +20,7 @@ function PublicPageControl(props: Props) {
         },
       }).then((r) => r.json());
 
-      const username = response.data?.Username;
+      const username = response.data.Username;
 
       if (username) {
         window.location.href = props.redirectTo || "/meus-dados";

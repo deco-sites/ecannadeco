@@ -67,8 +67,6 @@ const Aside = (
 function Drawers({ menu, searchbar, children, platform }: Props) {
   const { displayCart, displayMenu, displaySearchDrawer, user } = useUI();
 
-  console.log({ userDrawers: user.value });
-
   //if user is not loggedin, use the public navitems in the menu
   if (localStorage.getItem("AccessToken") == "") {
     menu.items = menu.publicItems || [];

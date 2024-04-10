@@ -11,15 +11,16 @@ import * as $$$$$$$$$5 from "./actions/confirmForgotPassword.ts";
 import * as $$$$$$$$$6 from "./actions/createTicket.ts";
 import * as $$$$$$$$$7 from "./actions/deleteDocument.ts";
 import * as $$$$$$$$$8 from "./actions/forgotPassword.ts";
-import * as $$$$$$$$$9 from "./actions/getCids.ts";
-import * as $$$$$$$$$10 from "./actions/getDocs.ts";
-import * as $$$$$$$$$11 from "./actions/getPlans.ts";
-import * as $$$$$$$$$12 from "./actions/getProfile.ts";
-import * as $$$$$$$$$13 from "./actions/getUser.ts";
-import * as $$$$$$$$$14 from "./actions/resendConfirmationCode.ts";
-import * as $$$$$$$$$15 from "./actions/updateProfile.ts";
-import * as $$$$$$$$$16 from "./actions/updateUserData.ts";
-import * as $$$$$$$$$17 from "./actions/uploadFile.ts";
+import * as $$$$$$$$$9 from "./actions/getAssociation.ts";
+import * as $$$$$$$$$10 from "./actions/getCids.ts";
+import * as $$$$$$$$$11 from "./actions/getDocs.ts";
+import * as $$$$$$$$$12 from "./actions/getPlans.ts";
+import * as $$$$$$$$$13 from "./actions/getProfile.ts";
+import * as $$$$$$$$$14 from "./actions/getUser.ts";
+import * as $$$$$$$$$15 from "./actions/resendConfirmationCode.ts";
+import * as $$$$$$$$$16 from "./actions/updateProfile.ts";
+import * as $$$$$$$$$17 from "./actions/updateUserData.ts";
+import * as $$$$$$$$$18 from "./actions/uploadFile.ts";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
@@ -83,21 +84,22 @@ import * as $$$$$$53 from "./sections/Miscellaneous/Signout.tsx";
 import * as $$$$$$52 from "./sections/Miscellaneous/SignUp.tsx";
 import * as $$$$$$54 from "./sections/Miscellaneous/Slide.tsx";
 import * as $$$$$$55 from "./sections/Miscellaneous/UserAlerts.tsx";
-import * as $$$$$$56 from "./sections/Newsletter/Newsletter.tsx";
-import * as $$$$$$57 from "./sections/Product/ImageGalleryFrontBack.tsx";
-import * as $$$$$$58 from "./sections/Product/ImageGallerySlider.tsx";
-import * as $$$$$$59 from "./sections/Product/NotFound.tsx";
-import * as $$$$$$60 from "./sections/Product/NotFoundChallenge.tsx";
-import * as $$$$$$61 from "./sections/Product/ProductDetails.tsx";
-import * as $$$$$$62 from "./sections/Product/ProductInfo.tsx";
-import * as $$$$$$63 from "./sections/Product/ProductShelf.tsx";
-import * as $$$$$$64 from "./sections/Product/ProductShelfTabbed.tsx";
-import * as $$$$$$65 from "./sections/Product/SearchResult.tsx";
-import * as $$$$$$66 from "./sections/Product/ShelfWithImage.tsx";
-import * as $$$$$$67 from "./sections/Product/Wishlist.tsx";
-import * as $$$$$$68 from "./sections/Social/InstagramPosts.tsx";
-import * as $$$$$$69 from "./sections/Social/WhatsApp.tsx";
-import * as $$$$$$70 from "./sections/Theme/Theme.tsx";
+import * as $$$$$$56 from "./sections/Miscellaneous/UserAssociatedSignup.tsx";
+import * as $$$$$$57 from "./sections/Newsletter/Newsletter.tsx";
+import * as $$$$$$58 from "./sections/Product/ImageGalleryFrontBack.tsx";
+import * as $$$$$$59 from "./sections/Product/ImageGallerySlider.tsx";
+import * as $$$$$$60 from "./sections/Product/NotFound.tsx";
+import * as $$$$$$61 from "./sections/Product/NotFoundChallenge.tsx";
+import * as $$$$$$62 from "./sections/Product/ProductDetails.tsx";
+import * as $$$$$$63 from "./sections/Product/ProductInfo.tsx";
+import * as $$$$$$64 from "./sections/Product/ProductShelf.tsx";
+import * as $$$$$$65 from "./sections/Product/ProductShelfTabbed.tsx";
+import * as $$$$$$66 from "./sections/Product/SearchResult.tsx";
+import * as $$$$$$67 from "./sections/Product/ShelfWithImage.tsx";
+import * as $$$$$$68 from "./sections/Product/Wishlist.tsx";
+import * as $$$$$$69 from "./sections/Social/InstagramPosts.tsx";
+import * as $$$$$$70 from "./sections/Social/WhatsApp.tsx";
+import * as $$$$$$71 from "./sections/Theme/Theme.tsx";
 
 const manifest = {
   "loaders": {
@@ -170,22 +172,24 @@ const manifest = {
     "deco-sites/ecannadeco/sections/Miscellaneous/SignUp.tsx": $$$$$$52,
     "deco-sites/ecannadeco/sections/Miscellaneous/Slide.tsx": $$$$$$54,
     "deco-sites/ecannadeco/sections/Miscellaneous/UserAlerts.tsx": $$$$$$55,
-    "deco-sites/ecannadeco/sections/Newsletter/Newsletter.tsx": $$$$$$56,
+    "deco-sites/ecannadeco/sections/Miscellaneous/UserAssociatedSignup.tsx":
+      $$$$$$56,
+    "deco-sites/ecannadeco/sections/Newsletter/Newsletter.tsx": $$$$$$57,
     "deco-sites/ecannadeco/sections/Product/ImageGalleryFrontBack.tsx":
-      $$$$$$57,
-    "deco-sites/ecannadeco/sections/Product/ImageGallerySlider.tsx": $$$$$$58,
-    "deco-sites/ecannadeco/sections/Product/NotFound.tsx": $$$$$$59,
-    "deco-sites/ecannadeco/sections/Product/NotFoundChallenge.tsx": $$$$$$60,
-    "deco-sites/ecannadeco/sections/Product/ProductDetails.tsx": $$$$$$61,
-    "deco-sites/ecannadeco/sections/Product/ProductInfo.tsx": $$$$$$62,
-    "deco-sites/ecannadeco/sections/Product/ProductShelf.tsx": $$$$$$63,
-    "deco-sites/ecannadeco/sections/Product/ProductShelfTabbed.tsx": $$$$$$64,
-    "deco-sites/ecannadeco/sections/Product/SearchResult.tsx": $$$$$$65,
-    "deco-sites/ecannadeco/sections/Product/ShelfWithImage.tsx": $$$$$$66,
-    "deco-sites/ecannadeco/sections/Product/Wishlist.tsx": $$$$$$67,
-    "deco-sites/ecannadeco/sections/Social/InstagramPosts.tsx": $$$$$$68,
-    "deco-sites/ecannadeco/sections/Social/WhatsApp.tsx": $$$$$$69,
-    "deco-sites/ecannadeco/sections/Theme/Theme.tsx": $$$$$$70,
+      $$$$$$58,
+    "deco-sites/ecannadeco/sections/Product/ImageGallerySlider.tsx": $$$$$$59,
+    "deco-sites/ecannadeco/sections/Product/NotFound.tsx": $$$$$$60,
+    "deco-sites/ecannadeco/sections/Product/NotFoundChallenge.tsx": $$$$$$61,
+    "deco-sites/ecannadeco/sections/Product/ProductDetails.tsx": $$$$$$62,
+    "deco-sites/ecannadeco/sections/Product/ProductInfo.tsx": $$$$$$63,
+    "deco-sites/ecannadeco/sections/Product/ProductShelf.tsx": $$$$$$64,
+    "deco-sites/ecannadeco/sections/Product/ProductShelfTabbed.tsx": $$$$$$65,
+    "deco-sites/ecannadeco/sections/Product/SearchResult.tsx": $$$$$$66,
+    "deco-sites/ecannadeco/sections/Product/ShelfWithImage.tsx": $$$$$$67,
+    "deco-sites/ecannadeco/sections/Product/Wishlist.tsx": $$$$$$68,
+    "deco-sites/ecannadeco/sections/Social/InstagramPosts.tsx": $$$$$$69,
+    "deco-sites/ecannadeco/sections/Social/WhatsApp.tsx": $$$$$$70,
+    "deco-sites/ecannadeco/sections/Theme/Theme.tsx": $$$$$$71,
   },
   "actions": {
     "deco-sites/ecannadeco/actions/changePassword.ts": $$$$$$$$$0,
@@ -197,15 +201,16 @@ const manifest = {
     "deco-sites/ecannadeco/actions/createTicket.ts": $$$$$$$$$6,
     "deco-sites/ecannadeco/actions/deleteDocument.ts": $$$$$$$$$7,
     "deco-sites/ecannadeco/actions/forgotPassword.ts": $$$$$$$$$8,
-    "deco-sites/ecannadeco/actions/getCids.ts": $$$$$$$$$9,
-    "deco-sites/ecannadeco/actions/getDocs.ts": $$$$$$$$$10,
-    "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$11,
-    "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$12,
-    "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$13,
-    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$14,
-    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$15,
-    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$16,
-    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$17,
+    "deco-sites/ecannadeco/actions/getAssociation.ts": $$$$$$$$$9,
+    "deco-sites/ecannadeco/actions/getCids.ts": $$$$$$$$$10,
+    "deco-sites/ecannadeco/actions/getDocs.ts": $$$$$$$$$11,
+    "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$12,
+    "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$13,
+    "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$14,
+    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$15,
+    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$16,
+    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$17,
+    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$18,
   },
   "apps": {
     "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,
