@@ -40,7 +40,7 @@ function UserAssociatedSignup() {
   const handleProceed = () => {
     localStorage.setItem("associationSignup", "");
     window.location.href = "/entrar";
-  }
+  };
 
   return (
     <FormWrap>
@@ -122,7 +122,10 @@ function UserAssociatedSignup() {
                 Agora que o seu cadastro está feito, basta prosseguir para o
                 login e acessar sua conta.
               </span>
-              <button onClick={handleProceed} class="btn btn-primary text-white w-full mt-2">
+              <button
+                onClick={handleProceed}
+                class="btn btn-primary text-white w-full mt-2"
+              >
                 PROSSEGUIR
               </button>
             </div>
