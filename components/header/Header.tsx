@@ -34,6 +34,12 @@ export interface Props {
    */
   navItems?: SiteNavigationElement[] | null;
 
+  /**
+   * @title Public Navigation items
+   * @description Navigation items used both on mobile and desktop menus
+   */
+  publicNavItems?: SiteNavigationElement[] | null;
+
   /** @title Logo */
   logo?: Logo;
 
@@ -69,6 +75,28 @@ function Header({
       url: "/",
     },
   ],
+  publicNavItems = [
+    {
+      "@type": "SiteNavigationElement",
+      name: "Feminino",
+      url: "/",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      name: "Masculino",
+      url: "/",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      name: "Sale",
+      url: "/",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      name: "Linktree",
+      url: "/",
+    },
+  ],
   logo = {
     src:
       "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/2291/986b61d4-3847-4867-93c8-b550cb459cc7",
@@ -82,24 +110,23 @@ function Header({
   device,
 }: SectionProps<typeof loader>) {
   const platform = usePlatform();
-  const items = navItems ?? [];
 
   return (
     <>
       <header style={{ height: headerHeight }}>
         <Drawers
-          menu={{ items, logo: logoMenu }}
+          menu={{
+            items: navItems || [],
+            publicItems: publicNavItems ||
+              [],
+            logo: logoMenu,
+          }}
           searchbar={searchbar}
           platform={platform}
         >
           <div class="bg-base-100 w-full z-50">
             <Navbar
-              device={device}
-              items={items}
-              searchbar={searchbar && { ...searchbar, platform }}
               logo={logo}
-              logoPosition={logoPosition}
-              buttons={buttons}
             />
           </div>
         </Drawers>

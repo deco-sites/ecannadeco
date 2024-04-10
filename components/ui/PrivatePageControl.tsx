@@ -10,7 +10,7 @@ export interface Props {
 }
 
 function PrivatePageControl(props: Props) {
-  const { updatedData, uploadedFile } = useUI();
+  const { updatedData, uploadedFile, user } = useUI();
 
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
@@ -28,10 +28,24 @@ function PrivatePageControl(props: Props) {
       }).then((r) => r.json());
 
       const username = response.data.Username;
+
+      user.value = {
+        id: username,
+        name: response.data.UserAttributes.find((
+          a: { Name: string; Value: string },
+        ) => a.Name === "name").Value,
+        email: response.dataProfile.email,
+        plan: response.dataProfile.plan,
+      };
+
+      console.log({ userhere: user.value });
+
       updatedData.value = response.dataProfile.updatedData;
       uploadedFile.value = response.dataProfile.uploadedFile;
 
       if (!username) {
+        user.value = null;
+        localStorage.setItem("AccessToken", "");
         window.location.href = "/";
       }
 

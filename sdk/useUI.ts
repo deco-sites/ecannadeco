@@ -5,6 +5,13 @@
 
 import { signal } from "@preact/signals";
 
+export type UserSession = {
+  id: string;
+  name: string;
+  email: string;
+  plan: string;
+};
+
 const displayCart = signal(false);
 const displayMenu = signal(false);
 const displaySearchPopup = signal(false);
@@ -16,6 +23,7 @@ const displayConfirmCancelSubscription = signal(false);
 const displayPlanLimit = signal(false);
 const updatedData = signal(true);
 const uploadedFile = signal(true);
+const user = signal<UserSession | null>(null);
 
 const state = {
   displayCart,
@@ -29,6 +37,7 @@ const state = {
   displayNewTicketModal,
   displayConfirmDeleteDoc,
   displayConfirmCancelSubscription,
+  user,
 };
 
 // Keyboard event listeners

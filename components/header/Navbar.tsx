@@ -1,6 +1,5 @@
 import type { Props as SearchbarProps } from "../../components/search/Searchbar.tsx";
 import { MenuButton, SearchButton } from "../../islands/Header/Buttons.tsx";
-import { usePlatform } from "../../sdk/usePlatform.tsx";
 import type { SiteNavigationElement } from "apps/commerce/types.ts";
 import Image from "apps/website/components/Image.tsx";
 import NavItem from "./NavItem.tsx";
@@ -9,17 +8,10 @@ import { Buttons, Logo } from "../../components/header/Header.tsx";
 
 // Make it sure to render it on the server only. DO NOT render it on an island
 function Navbar(
-  { items, searchbar, logo, buttons, logoPosition = "left", device }: {
-    items: SiteNavigationElement[];
-    searchbar?: SearchbarProps;
+  { logo }: {
     logo?: Logo;
-    buttons?: Buttons;
-    logoPosition?: "left" | "center";
-    device: "mobile" | "desktop" | "tablet";
   },
 ) {
-  const platform = usePlatform();
-
   return (
     <div
       style={{ height: navbarHeight }}

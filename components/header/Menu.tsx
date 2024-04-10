@@ -4,6 +4,7 @@ import type { SiteNavigationElement } from "apps/commerce/types.ts";
 
 export interface Props {
   items: SiteNavigationElement[];
+  publicItems?: SiteNavigationElement[];
   logo?: Logo;
 }
 
