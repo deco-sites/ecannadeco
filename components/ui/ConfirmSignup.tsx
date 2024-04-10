@@ -9,6 +9,9 @@ function ConfirmSignup() {
   const [sending, setSending] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
   const [timer, setTimer] = useState(30);
+  const [association, setAssociation] = useState(
+    localStorage.getItem("associationSignup") || "",
+  );
   const [email, setEmail] = useState(
     localStorage.getItem("emailConfirm") || "",
   );
@@ -59,10 +62,14 @@ function ConfirmSignup() {
 
       if (data.message) {
         setLoading(false);
-        alert(data.message);
+        alert(`Erro: ${data.message}`);
       } else {
         setLoading(false);
-        window.location.href = "/confirmar-cadastro/plano";
+        if (association != "") {
+          window.location.href = "/confirmar-cadastro/associacao";
+        } else {
+          window.location.href = "/confirmar-cadastro/plano";
+        }
       }
     } catch (e) {
       alert(

@@ -62,6 +62,7 @@ function PrivatePageControl(props: Props) {
       }
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
+      localStorage.setItem("AccessToken", "");
       window.location.href = "/";
     }
   }
