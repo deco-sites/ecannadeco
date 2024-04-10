@@ -11,8 +11,10 @@ import * as $AddToCartButton_vtex from "./islands/AddToCartButton/vtex.tsx";
 import * as $AddToCartButton_wake from "./islands/AddToCartButton/wake.tsx";
 import * as $CheckoutForm from "./islands/CheckoutForm.tsx";
 import * as $ChoosePlanSignup from "./islands/ChoosePlanSignup.tsx";
+import * as $ConfirmForgotPasswordForm from "./islands/ConfirmForgotPasswordForm.tsx";
 import * as $ConfirmSignup from "./islands/ConfirmSignup.tsx";
 import * as $EcannaCardPage from "./islands/EcannaCardPage.tsx";
+import * as $ForgotPasswordForm from "./islands/ForgotPasswordForm.tsx";
 import * as $Header_Buttons from "./islands/Header/Buttons.tsx";
 import * as $Header_Cart_linx from "./islands/Header/Cart/linx.tsx";
 import * as $Header_Cart_nuvemshop from "./islands/Header/Cart/nuvemshop.tsx";
@@ -56,8 +58,10 @@ const manifest = {
     "./islands/AddToCartButton/wake.tsx": $AddToCartButton_wake,
     "./islands/CheckoutForm.tsx": $CheckoutForm,
     "./islands/ChoosePlanSignup.tsx": $ChoosePlanSignup,
+    "./islands/ConfirmForgotPasswordForm.tsx": $ConfirmForgotPasswordForm,
     "./islands/ConfirmSignup.tsx": $ConfirmSignup,
     "./islands/EcannaCardPage.tsx": $EcannaCardPage,
+    "./islands/ForgotPasswordForm.tsx": $ForgotPasswordForm,
     "./islands/Header/Buttons.tsx": $Header_Buttons,
     "./islands/Header/Cart/linx.tsx": $Header_Cart_linx,
     "./islands/Header/Cart/nuvemshop.tsx": $Header_Cart_nuvemshop,

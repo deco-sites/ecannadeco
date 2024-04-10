@@ -54,21 +54,44 @@ function SignInForm({ formTitle }: Props) {
           {formTitle}
         </span>
         <div class="flex flex-col gap-4">
-          <input
-            placeholder="Email"
-            class="input rounded-md text-[#8b8b8b] outline-none"
-            name="email"
-            value={email}
-            onChange={(e) => e.target && setEmail(e.currentTarget.value)}
-          />
-          <input
-            type="password"
-            placeholder="Senha"
-            class="input rounded-md text-[#8b8b8b] outline-none"
-            value={password}
-            onChange={(e) => e.target && setPassword(e.currentTarget.value)}
-            name="email"
-          />
+          <label class="w-full">
+            <div class="label pb-1">
+              <span class="label-text text-xs text-[#585858]">
+                Email
+              </span>
+            </div>
+            <input
+              class="input rounded-md text-[#8b8b8b] border-none w-full"
+              placeholder="Seu email"
+              name="email"
+              value={email}
+              onChange={(e) => e.target && setEmail(e.currentTarget.value)}
+            />
+          </label>
+          <label class="w-full">
+            <div class="label pb-1">
+              <span class="label-text text-xs text-[#585858]">
+                Senha
+              </span>
+            </div>
+            <input
+              type="password"
+              class="input rounded-md text-[#8b8b8b] border-none w-full"
+              placeholder="Sua senha"
+              name="password"
+              value={password}
+              onChange={(e) => e.target && setPassword(e.currentTarget.value)}
+            />
+            <div class="label">
+              <span class="label-text-alt"></span>
+              <a
+                href="/recuperar-senha"
+                class="label-text-alt text-xs text-[#585858] underline"
+              >
+                Esqueci minha senha
+              </a>
+            </div>
+          </label>
         </div>
         <button
           type={"submit"}
