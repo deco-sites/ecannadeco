@@ -10,6 +10,7 @@ import * as $AddToCartButton_vnda from "./islands/AddToCartButton/vnda.tsx";
 import * as $AddToCartButton_vtex from "./islands/AddToCartButton/vtex.tsx";
 import * as $AddToCartButton_wake from "./islands/AddToCartButton/wake.tsx";
 import * as $CheckoutForm from "./islands/CheckoutForm.tsx";
+import * as $CheckoutUpsellModal from "./islands/CheckoutUpsellModal.tsx";
 import * as $ChoosePlanSignup from "./islands/ChoosePlanSignup.tsx";
 import * as $ConfirmForgotPasswordForm from "./islands/ConfirmForgotPasswordForm.tsx";
 import * as $ConfirmSignup from "./islands/ConfirmSignup.tsx";
@@ -58,6 +59,7 @@ const manifest = {
     "./islands/AddToCartButton/vtex.tsx": $AddToCartButton_vtex,
     "./islands/AddToCartButton/wake.tsx": $AddToCartButton_wake,
     "./islands/CheckoutForm.tsx": $CheckoutForm,
+    "./islands/CheckoutUpsellModal.tsx": $CheckoutUpsellModal,
     "./islands/ChoosePlanSignup.tsx": $ChoosePlanSignup,
     "./islands/ConfirmForgotPasswordForm.tsx": $ConfirmForgotPasswordForm,
     "./islands/ConfirmSignup.tsx": $ConfirmSignup,

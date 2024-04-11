@@ -9,9 +9,18 @@ import { Plan } from "../../components/ui/Checkout.tsx";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 import Icon from "../../components/ui/Icon.tsx";
 import ModalConfirm from "../../components/ui/ModalConfirm.tsx";
+import { SavedCreditCard } from "../../components/ui/CheckoutUpsellModal.tsx";
+import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
 import Slider from "../../components/ui/Slider.tsx";
 import { useUI } from "../../sdk/useUI.ts";
 import SliderJS from "../../islands/SliderJS.tsx";
+
+export type Address = {
+  cep: string;
+  number: string;
+  complement: string;
+  addressType: string;
+};
 
 function MyAccount() {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,9 +31,12 @@ function MyAccount() {
   const [newPlan, setNewPlan] = useState<Plan>();
   const [plans, setPlans] = useState<Plan[]>([]);
   const [currentPassword, setCurrentPassword] = useState<string>("");
+  const [address, setAddress] = useState<Address>();
+  const [creditCards, setCreditCards] = useState<SavedCreditCard[]>([]);
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");
-  const { displayConfirmCancelSubscription } = useUI();
+  const { displayConfirmCancelSubscription, displayCheckoutUpsellModal } =
+    useUI();
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -42,18 +54,28 @@ function MyAccount() {
       }).then((r) => {
         const res = r as {
           data: { UserAttributes: { Name: string; Value: string }[] };
-          dataProfile: { plan: string };
+          dataProfile: {
+            plan: string;
+            credit_cards: SavedCreditCard[];
+            address: Address[];
+          };
         };
+
+        const billingAddress = res.dataProfile.address.find((a) =>
+          a.addressType === "BILLING"
+        );
 
         const email = res.data.UserAttributes.find((a) =>
           a["Name"] === "email"
         );
 
-        console.log({ currentPlan: res.dataProfile.plan });
+        console.log({ dataProfile: res.dataProfile });
 
+        setAddress(billingAddress);
         setEmail(email?.Value || "");
         setCurrentPlan(res.dataProfile.plan);
         setNewPlan(plans.find((p) => p.name === res.dataProfile.plan));
+        setCreditCards(res.dataProfile.credit_cards);
 
         setIsLoading(false);
       });
@@ -361,9 +383,18 @@ function MyAccount() {
                   onConfirm={handleCancelSubscription}
                   loading={isCanceling}
                 />
+                <CheckoutUpsellModal
+                  creditCards={creditCards}
+                  plan={newPlan!}
+                  address={address!}
+                />
                 <button
                   class="btn btn-primary text-white"
                   disabled={(newPlan?.name || currentPlan) == currentPlan}
+                  onClick={() => {
+                    console.log({ creditCards });
+                    displayCheckoutUpsellModal.value = true;
+                  }}
                 >
                   Alterar Plano
                 </button>

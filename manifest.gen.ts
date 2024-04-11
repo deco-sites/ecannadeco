@@ -3,24 +3,25 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import * as $$$$$$$$$0 from "./actions/changePassword.ts";
-import * as $$$$$$$$$1 from "./actions/checkout.ts";
-import * as $$$$$$$$$2 from "./actions/cognitoSignIn.ts";
-import * as $$$$$$$$$3 from "./actions/cognitoSignUp.ts";
-import * as $$$$$$$$$4 from "./actions/confirmCognitoSignup.ts";
-import * as $$$$$$$$$5 from "./actions/confirmForgotPassword.ts";
-import * as $$$$$$$$$6 from "./actions/createTicket.ts";
-import * as $$$$$$$$$7 from "./actions/deleteDocument.ts";
-import * as $$$$$$$$$8 from "./actions/forgotPassword.ts";
-import * as $$$$$$$$$9 from "./actions/getAssociation.ts";
-import * as $$$$$$$$$10 from "./actions/getCids.ts";
-import * as $$$$$$$$$11 from "./actions/getDocs.ts";
-import * as $$$$$$$$$12 from "./actions/getPlans.ts";
-import * as $$$$$$$$$13 from "./actions/getProfile.ts";
-import * as $$$$$$$$$14 from "./actions/getUser.ts";
-import * as $$$$$$$$$15 from "./actions/resendConfirmationCode.ts";
-import * as $$$$$$$$$16 from "./actions/updateProfile.ts";
-import * as $$$$$$$$$17 from "./actions/updateUserData.ts";
-import * as $$$$$$$$$18 from "./actions/uploadFile.ts";
+import * as $$$$$$$$$1 from "./actions/changeSubscription.ts";
+import * as $$$$$$$$$2 from "./actions/checkout.ts";
+import * as $$$$$$$$$3 from "./actions/cognitoSignIn.ts";
+import * as $$$$$$$$$4 from "./actions/cognitoSignUp.ts";
+import * as $$$$$$$$$5 from "./actions/confirmCognitoSignup.ts";
+import * as $$$$$$$$$6 from "./actions/confirmForgotPassword.ts";
+import * as $$$$$$$$$7 from "./actions/createTicket.ts";
+import * as $$$$$$$$$8 from "./actions/deleteDocument.ts";
+import * as $$$$$$$$$9 from "./actions/forgotPassword.ts";
+import * as $$$$$$$$$10 from "./actions/getAssociation.ts";
+import * as $$$$$$$$$11 from "./actions/getCids.ts";
+import * as $$$$$$$$$12 from "./actions/getDocs.ts";
+import * as $$$$$$$$$13 from "./actions/getPlans.ts";
+import * as $$$$$$$$$14 from "./actions/getProfile.ts";
+import * as $$$$$$$$$15 from "./actions/getUser.ts";
+import * as $$$$$$$$$16 from "./actions/resendConfirmationCode.ts";
+import * as $$$$$$$$$17 from "./actions/updateProfile.ts";
+import * as $$$$$$$$$18 from "./actions/updateUserData.ts";
+import * as $$$$$$$$$19 from "./actions/uploadFile.ts";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
@@ -193,24 +194,25 @@ const manifest = {
   },
   "actions": {
     "deco-sites/ecannadeco/actions/changePassword.ts": $$$$$$$$$0,
-    "deco-sites/ecannadeco/actions/checkout.ts": $$$$$$$$$1,
-    "deco-sites/ecannadeco/actions/cognitoSignIn.ts": $$$$$$$$$2,
-    "deco-sites/ecannadeco/actions/cognitoSignUp.ts": $$$$$$$$$3,
-    "deco-sites/ecannadeco/actions/confirmCognitoSignup.ts": $$$$$$$$$4,
-    "deco-sites/ecannadeco/actions/confirmForgotPassword.ts": $$$$$$$$$5,
-    "deco-sites/ecannadeco/actions/createTicket.ts": $$$$$$$$$6,
-    "deco-sites/ecannadeco/actions/deleteDocument.ts": $$$$$$$$$7,
-    "deco-sites/ecannadeco/actions/forgotPassword.ts": $$$$$$$$$8,
-    "deco-sites/ecannadeco/actions/getAssociation.ts": $$$$$$$$$9,
-    "deco-sites/ecannadeco/actions/getCids.ts": $$$$$$$$$10,
-    "deco-sites/ecannadeco/actions/getDocs.ts": $$$$$$$$$11,
-    "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$12,
-    "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$13,
-    "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$14,
-    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$15,
-    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$16,
-    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$17,
-    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$18,
+    "deco-sites/ecannadeco/actions/changeSubscription.ts": $$$$$$$$$1,
+    "deco-sites/ecannadeco/actions/checkout.ts": $$$$$$$$$2,
+    "deco-sites/ecannadeco/actions/cognitoSignIn.ts": $$$$$$$$$3,
+    "deco-sites/ecannadeco/actions/cognitoSignUp.ts": $$$$$$$$$4,
+    "deco-sites/ecannadeco/actions/confirmCognitoSignup.ts": $$$$$$$$$5,
+    "deco-sites/ecannadeco/actions/confirmForgotPassword.ts": $$$$$$$$$6,
+    "deco-sites/ecannadeco/actions/createTicket.ts": $$$$$$$$$7,
+    "deco-sites/ecannadeco/actions/deleteDocument.ts": $$$$$$$$$8,
+    "deco-sites/ecannadeco/actions/forgotPassword.ts": $$$$$$$$$9,
+    "deco-sites/ecannadeco/actions/getAssociation.ts": $$$$$$$$$10,
+    "deco-sites/ecannadeco/actions/getCids.ts": $$$$$$$$$11,
+    "deco-sites/ecannadeco/actions/getDocs.ts": $$$$$$$$$12,
+    "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$13,
+    "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$14,
+    "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$15,
+    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$16,
+    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$17,
+    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$18,
+    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$19,
   },
   "apps": {
     "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,
