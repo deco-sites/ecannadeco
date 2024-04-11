@@ -134,10 +134,13 @@ const CheckoutUpsellModal = (props: Props) => {
               {creditCards.length == 0 && (
                 <li>
                   <div
-                      class={`flex justify-center gap-2  rounded-md p-3 text-[#696969] bg-[#d4d4d4]`}
-                    >
-                      <span>Você ainda não possui cartões cadastrados. Cadastre o primeiro cartõa clicando em "Adicionar Novo Cartão".</span>
-                    </div>
+                    class={`flex justify-center gap-2  rounded-md p-3 text-[#696969] bg-[#d4d4d4]`}
+                  >
+                    <span>
+                      Você ainda não possui cartões cadastrados. Cadastre o
+                      primeiro cartõa clicando em "Adicionar Novo Cartão".
+                    </span>
+                  </div>
                 </li>
               )}
               {creditCards.length > 0 && creditCards.map((card, i) => {

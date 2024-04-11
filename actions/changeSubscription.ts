@@ -22,15 +22,15 @@ export interface Props {
 
 const changeSubscription = async (
   props: Props,
-  _req: Request
+  _req: Request,
 ): Promise<unknown | null> => {
   const params = { ...props };
   delete params.token;
   try {
-    const response = await fetch('http://localhost:3000/checkout/upgrade', {
-      method: 'POST',
+    const response = await fetch("http://localhost:3000/checkout/upgrade", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: props.token!,
       },
       body: JSON.stringify({ ...params }),
