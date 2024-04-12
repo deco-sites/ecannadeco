@@ -4,6 +4,15 @@ import Modal from "./Modal.tsx";
 import { Plan } from "../../components/ui/Checkout.tsx";
 import { invoke } from "../../runtime.ts";
 import { Props as ChangeSubscriptionProps } from "../../actions/changeSubscription.ts";
+import { Props as Checkoutv2Props } from "../../actions/checkoutv2.ts";
+
+export interface Product {
+  description: string;
+  name: string;
+  skus: string[];
+  status: string;
+  price: number;
+}
 
 export type SavedCreditCard = {
   number: string;
@@ -13,7 +22,8 @@ export type SavedCreditCard = {
 
 export interface Props {
   creditCards: SavedCreditCard[];
-  plan: Plan;
+  plan?: Plan;
+  product?: Product;
   address: {
     cep: string;
     number: string;
@@ -22,7 +32,7 @@ export interface Props {
 }
 
 const CheckoutUpsellModal = (props: Props) => {
-  const { creditCards, plan } = props;
+  const { creditCards, plan, product } = props;
   const { displayCheckoutUpsellModal } = useUI();
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
@@ -39,17 +49,42 @@ const CheckoutUpsellModal = (props: Props) => {
   const [holderCPF, setHolderCPF] = useState<string>("");
   const [cardSelected, setCardSelected] = useState(0);
 
-  // console.log({ plan, creditCards });
+  console.log({ plan, product, creditCards });
 
   const handleCheckout = async () => {
     setLoading(true);
 
-    let params = {} as ChangeSubscriptionProps;
+    let paramsChangeSubscription = {} as ChangeSubscriptionProps;
+    let paramsCheckoutV2 = {} as Checkoutv2Props;
 
     if (addNewCard) {
-      params = {
+      paramsChangeSubscription = {
         token: localStorage.getItem("AccessToken") || "",
-        sku: plan.skus[0],
+        sku: plan!.skus[0],
+        credit_card: {
+          holder: holderName,
+          number: creditCardNumber,
+          exp_month: creditCardExpMonth,
+          exp_year: creditCardExpYear,
+          ccv: creditCardCCV,
+        },
+        holder_info: {
+          full_name: holderName,
+          email: holderEmail,
+          cpf_cnpj: holderCPF,
+          postal_code: props.address.cep,
+          address_number: props.address.number,
+          address_complement: props.address.complement,
+          phone: holderPhone,
+        },
+      };
+
+      paramsCheckoutV2 = {
+        token: localStorage.getItem("AccessToken") || "",
+        items: [{
+          sku: product!.skus[0],
+          quantity: 1,
+        }],
         credit_card: {
           holder: holderName,
           number: creditCardNumber,
@@ -68,33 +103,65 @@ const CheckoutUpsellModal = (props: Props) => {
         },
       };
     } else {
-      params = {
-        token: localStorage.getItem("AccessToken") || "",
-        sku: plan.skus[0],
-        credit_card_token: creditCards[cardSelected].token,
-      };
+      if (plan) {
+        paramsChangeSubscription = {
+          token: localStorage.getItem("AccessToken") || "",
+          sku: plan!.skus[0],
+          credit_card_token: creditCards[cardSelected].token,
+        };
+      } else if (product) {
+        console.log({ product });
+        paramsCheckoutV2 = {
+          token: localStorage.getItem("AccessToken") || "",
+          items: [{
+            sku: product!.skus[0],
+            quantity: 1,
+          }],
+          credit_card_token: creditCards[cardSelected].token,
+        };
+      }
     }
 
-    console.log({ params });
+    console.log({ paramsChangeSubscription, paramsCheckoutV2 });
 
     try {
-      const r = await invoke["deco-sites/ecannadeco"].actions
-        .changeSubscription(params);
+      //choose which checkout to call based on wheter its selling plan or product
+      if (plan) {
+        const rchangeSubs = await invoke["deco-sites/ecannadeco"].actions
+          .changeSubscription(paramsChangeSubscription);
 
-      const resp = r as { message?: string };
+        const respChangesubs = rchangeSubs as {
+          errors?: unknown[];
+          message?: string;
+        };
 
-      console.log({ r });
+        console.log({ respChangesubs });
 
-      if (resp.message) {
-        throw new Error();
+        if (respChangesubs.errors) {
+          throw new Error();
+        }
+      } else if (product) {
+        const rcheckoutv2 = await invoke["deco-sites/ecannadeco"].actions
+          .checkoutv2(paramsCheckoutV2);
+
+        const respCheckoutV2 = rcheckoutv2 as {
+          errors?: unknown[];
+          message?: string;
+        };
+
+        console.log({ respCheckoutV2 });
+
+        if (respCheckoutV2.errors) {
+          throw new Error();
+        }
       }
 
       displayCheckoutUpsellModal.value = false;
-      alert("Sua assinatura foi alterada com sucesso!");
+      alert("Operação realizada com sucesso!");
       setLoading(false);
-      window.location.reload();
+      // window.location.reload();
     } catch (e) {
-      alert("Não foi possível alterar a assinatura. Contacte o suporte.");
+      alert("Não foi possível finalizar o checkout. Contacte o suporte.");
       setLoading(false);
     }
   };
@@ -111,16 +178,34 @@ const CheckoutUpsellModal = (props: Props) => {
         </h3>
         <div class="flex flex-col gap-2">
           <span>
-            Você está fazendo a mudança do seu plano atual para o plano:{" "}
-            <span class="font-bold">{plan && plan.name}</span>
+            {plan
+              ? "Você está fazendo a mudança do seu plano atual para o plano: "
+              : "Você está comprando: "}
+            <span class="font-bold">
+              {plan ? plan.name : (product && product.name)}
+            </span>
           </span>
           <span>
-            Valor da assinatura:{" "}
-            <span class="font-bold">
-              {plan &&
-                ("R$ " + (plan.price / 100).toFixed(2) +
-                  (plan?.period == "MONTHLY" && "/mês"))}
-            </span>
+            {plan
+              ? (
+                <>
+                  Valor da assinatura:{" "}
+                  <span class="font-bold">
+                    {plan &&
+                      ("R$ " + (plan.price / 100).toFixed(2) +
+                        (plan?.period == "MONTHLY" && "/mês"))}
+                  </span>
+                </>
+              )
+              : (
+                <>
+                  Valor do produto:{" "}
+                  <span class="font-bold">
+                    {product &&
+                      ("R$ " + (product.price / 100).toFixed(2))}
+                  </span>
+                </>
+              )}
           </span>
         </div>
         <div>
@@ -131,7 +216,7 @@ const CheckoutUpsellModal = (props: Props) => {
                 addNewCard && "hidden"
               } bg-[#e1e1e1] p-3 text-xs flex flex-col gap-2`}
             >
-              {creditCards.length == 0 && (
+              {(creditCards && creditCards.length == 0) && (
                 <li>
                   <div
                     class={`flex justify-center gap-2  rounded-md p-3 text-[#696969] bg-[#d4d4d4]`}
@@ -143,30 +228,31 @@ const CheckoutUpsellModal = (props: Props) => {
                   </div>
                 </li>
               )}
-              {creditCards.length > 0 && creditCards.map((card, i) => {
-                return (
-                  <li
-                    class="cursor-pointer "
-                    onClick={() => setCardSelected(i)}
-                  >
-                    <div
-                      class={`flex flex-col gap-2  rounded-md p-3 ${
-                        cardSelected === i
-                          ? "shadow-md text-[#252525] bg-[#36a69c]"
-                          : "text-[#696969] bg-[#d4d4d4]"
-                      }`}
+              {(creditCards && creditCards.length) > 0 &&
+                creditCards.map((card, i) => {
+                  return (
+                    <li
+                      class="cursor-pointer "
+                      onClick={() => setCardSelected(i)}
                     >
-                      <span>
-                        Cartão de crédito{" "}
-                        <span class="font-bold">{"*****" + card.number}</span>
-                      </span>
-                      <span>
-                        Bandeira <span class="font-bold">{card.brand}</span>
-                      </span>
-                    </div>
-                  </li>
-                );
-              })}
+                      <div
+                        class={`flex flex-col gap-2  rounded-md p-3 ${
+                          cardSelected === i
+                            ? "shadow-md text-[#252525] bg-[#36a69c]"
+                            : "text-[#696969] bg-[#d4d4d4]"
+                        }`}
+                      >
+                        <span>
+                          Cartão de crédito{" "}
+                          <span class="font-bold">{"*****" + card.number}</span>
+                        </span>
+                        <span>
+                          Bandeira <span class="font-bold">{card.brand}</span>
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
             </ul>
             <span
               class="text-xs cursor-pointer underline"

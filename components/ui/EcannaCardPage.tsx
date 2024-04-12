@@ -4,6 +4,14 @@ import { Props as UpdateDataProps } from "../../actions/updateUserData.ts";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 import Image from "apps/website/components/Image.tsx";
 import Icon from "../../components/ui/Icon.tsx";
+import type { Address } from "../../components/ui/MyAccount.tsx";
+import Loading from "../../components/daisy/Loading.tsx";
+import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
+import {
+  Product,
+  SavedCreditCard,
+} from "../../components/ui/CheckoutUpsellModal.tsx";
+import { useUI } from "../../sdk/useUI.ts";
 
 export interface UserData {
   data: { UserAttributes: { Name: string; Value: string }[] };
@@ -13,6 +21,7 @@ export interface UserData {
     association: { name: string; logo_url: string };
     qrcode_url: string;
     ecannacard_url?: string;
+    credit_cards: SavedCreditCard[];
   };
 }
 
@@ -21,8 +30,13 @@ export interface Props {
 }
 
 function EcannaCardPage({ cardSkeleton }: Props) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProduct, setLoadingProduct] = useState(true);
   const [cardUrl, setCardUrl] = useState<string>();
+  const [address, setAddress] = useState<Address>();
+  const [creditCards, setCreditCards] = useState<SavedCreditCard[]>([]);
+  const [cardProduct, setCardProduct] = useState<Product>({} as Product);
+  const { displayCheckoutUpsellModal } = useUI();
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -39,10 +53,23 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         .getUser({
           token: accessToken,
         })
-        .then((r) => {
+        .then(async (r) => {
           const res = r as UserData;
 
+          setLoadingProduct(true);
+
+          const cardsResponse = await invoke["deco-sites/ecannadeco"].actions
+            .getCardProduct();
+
+          setLoadingProduct(false);
+
+          const cardProducts = cardsResponse as { docs: Product[] };
+          console.log({ cardProducts });
+          setCardProduct(cardProducts.docs[0]);
+
           setCardUrl(res.dataProfile.ecannacard_url);
+
+          setCreditCards(res.dataProfile.credit_cards);
 
           setIsLoading(false);
         });
@@ -57,7 +84,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
   return (
     <div class="flex flex-col justify-center items-center my-10 gap-[100px] sm:gap-[30px]">
       <div class="rotate-90 sm:rotate-0 flex justify-center p-3 sm:p-12 bg-[#252525] rounded-xl max-w-[424px] sm:max-w-[90%]">
-        {cardUrl
+        {(cardUrl && !isLoading)
           ? (
             <Image
               class="card"
@@ -70,21 +97,51 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           )
           : (
             <div>
-              <span class="text-white">
-                Este usuário não possui carteirinha. Atualize seus dados de
-                paciente na página de "Meus Dados".
-              </span>
+              {isLoading
+                ? (
+                  <span class="text-white">
+                    <Loading style="loading-spinner" size="loading-md" />
+                  </span>
+                )
+                : (
+                  <span class="text-white">
+                    Este usuário não possui carteirinha. Atualize seus dados de
+                    paciente na página de "Meus Dados".
+                  </span>
+                )}
             </div>
           )}
       </div>
       <div class="flex flex-col sm:flex-row gap-2 sm:gap-[4%] max-w-[90%]">
+        <CheckoutUpsellModal
+          creditCards={creditCards}
+          product={cardProduct}
+          address={address!}
+        />
         <a
           href={cardUrl}
           download="carteirinha.png"
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
+          target="_blank"
         >
-          <span>Baixar Carteirinha</span> <Icon id="Download" height={19} />
+          <span>Baixar Carteirinha</span> <Icon id="Download" size={19} />
         </a>
+        <button
+          type="button"
+          download="carteirinha.png"
+          class="flex btn btn-primary text-white w-full sm:w-[48%]"
+          onClick={() => displayCheckoutUpsellModal.value = true}
+        >
+          <div class="flex items-center">
+            <span>Nova Via Física</span> {loadingProduct
+              ? <Loading style="loading-spinner" size="loading-xs" />
+              : (
+                <div class="p-2 bg-white text-primary text-xs rounded-md">
+                  {"R$" + (cardProduct.price / 100).toFixed(2)}
+                </div>
+              )}
+          </div>
+        </button>
       </div>
     </div>
   );

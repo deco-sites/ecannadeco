@@ -283,7 +283,7 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
 
 function MyDocs() {
   const { displayNewDocModal } = useUI();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [docs, setDocs] = useState<DocListType[]>([]);
 
   const getDocuments = () => {
@@ -330,7 +330,7 @@ function MyDocs() {
           <span class="text-sm font-medium">Subir</span>
           <Icon id="Upload" size={18} />
         </button>
-        <NewDocModal onFinishCreate={getDocuments} />
+        <NewDocModal onFinishCreate={() => window.location.reload()} />
         <PlanLimitAlert
           message="Seu plano permite upload de 2 documentos. Evolua seu plano para PREMIUM e suba mais documentos!"
           ctaLink="/"
