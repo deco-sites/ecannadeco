@@ -1,7 +1,7 @@
 {
   "imports": {
     "deco-sites/ecannadeco/": "./",
-
+    "datetime": "https://deno.land/std@0.222.1/datetime/mod.ts",
     "deco/": "https://cdn.jsdelivr.net/gh/deco-cx/deco@1.57.30/",
     "apps/": "https://cdn.jsdelivr.net/gh/deco-cx/apps@0.35.20/",
     "$fresh/": "https://deno.land/x/fresh@1.6.5/",
