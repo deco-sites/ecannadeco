@@ -26,8 +26,10 @@ import * as $Header_Cart_wake from "./islands/Header/Cart/wake.tsx";
 import * as $Header_Drawers from "./islands/Header/Drawers.tsx";
 import * as $Header_Searchbar from "./islands/Header/Searchbar.tsx";
 import * as $MyAccount from "./islands/MyAccount.tsx";
+import * as $MyDocs_copy from "./islands/MyDocs copy.tsx";
 import * as $MyDocs from "./islands/MyDocs.tsx";
 import * as $MyInfo from "./islands/MyInfo.tsx";
+import * as $MyOrders from "./islands/MyOrders.tsx";
 import * as $NewTicketModal from "./islands/NewTicketModal.tsx";
 import * as $Newsletter from "./islands/Newsletter.tsx";
 import * as $OutOfStock from "./islands/OutOfStock.tsx";
@@ -75,8 +77,10 @@ const manifest = {
     "./islands/Header/Drawers.tsx": $Header_Drawers,
     "./islands/Header/Searchbar.tsx": $Header_Searchbar,
     "./islands/MyAccount.tsx": $MyAccount,
+    "./islands/MyDocs copy.tsx": $MyDocs_copy,
     "./islands/MyDocs.tsx": $MyDocs,
     "./islands/MyInfo.tsx": $MyInfo,
+    "./islands/MyOrders.tsx": $MyOrders,
     "./islands/NewTicketModal.tsx": $NewTicketModal,
     "./islands/Newsletter.tsx": $Newsletter,
     "./islands/OutOfStock.tsx": $OutOfStock,
