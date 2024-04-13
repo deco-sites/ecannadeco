@@ -71,11 +71,13 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
   if (localStorage.getItem("AccessToken") == "") {
     menu.items = menu.publicItems || [];
   } else if (localStorage.getItem("AssociationAdmin")) {
-    menu.items[menu.items.length] = {
-      "@type": "SiteNavigationElement",
-      name: "Admin Associação",
-      url: "/admin/associacao",
-    };
+    if (!menu.items.find((i) => i.name === "Admin Associação")) {
+      menu.items[menu.items.length] = {
+        "@type": "SiteNavigationElement",
+        name: "Admin Associação",
+        url: "/admin/associacao",
+      };
+    }
   }
 
   return (

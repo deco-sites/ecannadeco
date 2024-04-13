@@ -205,13 +205,30 @@ function MyAccount() {
                 Pacientes da Associação
               </h2>
               <div>
+                <div class="flex pb-2 px-2 border-b border-[#cdcdcd] mb-4">
+                  <div class="w-[32%] flex justify-start">
+                    <span>Nome</span>
+                  </div>
+                  <div class="w-[32%] flex justify-start">
+                    <span>Email</span>
+                  </div>
+                  <div class="w-[32%] flex justify-end">
+                    <span>CPF</span>
+                  </div>
+                </div>
                 <ul class="flex flex-col gap-2">
                   {associationUsers && associationUsers.map((u) => {
                     return (
-                      <li class="p-3 bg-[#cacaca] flex justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
-                        <span>{u.cognito_data.name}</span>
-                        <span>{u.email}</span>
-                        <span>{u.cognito_data.cpf}</span>
+                      <li class="p-3 bg-[#cacaca] flex gap-[2%] justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
+                        <div class="w-[32%] flex justify-start">
+                          <span>{u.cognito_data.name}</span>
+                        </div>
+                        <div class="w-[32%] flex justify-start">
+                          <span>{u.email}</span>
+                        </div>
+                        <div class="w-[32%] flex justify-end">
+                          <span>{u.cognito_data.cpf}</span>
+                        </div>
                       </li>
                     );
                   })}

@@ -12,7 +12,7 @@ import Icon from "../../components/ui/Icon.tsx";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 
 function MyInfo() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isLoadingCids, setIsLoadingCids] = useState(false);
   const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
   const [isSubmiting, setIsSubmitting] = useState(false);

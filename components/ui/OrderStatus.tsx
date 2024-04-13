@@ -43,7 +43,7 @@ function OrderStatus({ status }: Props) {
 
   return (
     <span
-      class={`badge badge-xs border-none text-white text-[10px] sm:text-xs md:text-sm ${
+      class={`badge badge-sm border-none text-white text-[10px] sm:text-xs md:text-sm ${
         style[status].style
       }`}
     >

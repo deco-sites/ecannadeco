@@ -81,6 +81,32 @@ function EcannaCardPage({ cardSkeleton }: Props) {
     }
   }, []); // Passando um array de dependências vazio
 
+  function downloadFile(fileUrl: string, filename: string) {
+    // Fetch the file data
+    fetch(fileUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        // Create a temporary anchor element
+        const a = document.createElement("a");
+        a.style.display = "none";
+
+        // Set the download attribute and file URL
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+
+        // Append the anchor to the body and trigger the download
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up
+        window.URL.revokeObjectURL(a.href);
+        document.body.removeChild(a);
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
+  }
+
   return (
     <div class="flex flex-col justify-center items-center my-10 gap-[100px] sm:gap-[30px]">
       <div class="rotate-90 sm:rotate-0 flex justify-center p-3 sm:p-12 bg-[#252525] rounded-xl max-w-[424px] sm:max-w-[90%]">
@@ -118,14 +144,16 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           product={cardProduct}
           address={address!}
         />
-        <a
+        <button
+          type="button"
           href={cardUrl}
-          download="carteirinha.png"
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
-          target="_blank"
+          onClick={() => {
+            downloadFile(cardUrl!, "carteirinha-ecanna.png");
+          }}
         >
           <span>Baixar Carteirinha</span> <Icon id="Download" size={19} />
-        </a>
+        </button>
         <button
           type="button"
           download="carteirinha.png"
