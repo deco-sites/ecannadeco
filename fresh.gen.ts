@@ -9,6 +9,7 @@ import * as $AddToCartButton_shopify from "./islands/AddToCartButton/shopify.tsx
 import * as $AddToCartButton_vnda from "./islands/AddToCartButton/vnda.tsx";
 import * as $AddToCartButton_vtex from "./islands/AddToCartButton/vtex.tsx";
 import * as $AddToCartButton_wake from "./islands/AddToCartButton/wake.tsx";
+import * as $AssociationAdmin from "./islands/AssociationAdmin.tsx";
 import * as $CheckoutForm from "./islands/CheckoutForm.tsx";
 import * as $CheckoutUpsellModal from "./islands/CheckoutUpsellModal.tsx";
 import * as $ChoosePlanSignup from "./islands/ChoosePlanSignup.tsx";
@@ -26,7 +27,6 @@ import * as $Header_Cart_wake from "./islands/Header/Cart/wake.tsx";
 import * as $Header_Drawers from "./islands/Header/Drawers.tsx";
 import * as $Header_Searchbar from "./islands/Header/Searchbar.tsx";
 import * as $MyAccount from "./islands/MyAccount.tsx";
-import * as $MyDocs_copy from "./islands/MyDocs copy.tsx";
 import * as $MyDocs from "./islands/MyDocs.tsx";
 import * as $MyInfo from "./islands/MyInfo.tsx";
 import * as $MyOrders from "./islands/MyOrders.tsx";
@@ -60,6 +60,7 @@ const manifest = {
     "./islands/AddToCartButton/vnda.tsx": $AddToCartButton_vnda,
     "./islands/AddToCartButton/vtex.tsx": $AddToCartButton_vtex,
     "./islands/AddToCartButton/wake.tsx": $AddToCartButton_wake,
+    "./islands/AssociationAdmin.tsx": $AssociationAdmin,
     "./islands/CheckoutForm.tsx": $CheckoutForm,
     "./islands/CheckoutUpsellModal.tsx": $CheckoutUpsellModal,
     "./islands/ChoosePlanSignup.tsx": $ChoosePlanSignup,
@@ -77,7 +78,6 @@ const manifest = {
     "./islands/Header/Drawers.tsx": $Header_Drawers,
     "./islands/Header/Searchbar.tsx": $Header_Searchbar,
     "./islands/MyAccount.tsx": $MyAccount,
-    "./islands/MyDocs copy.tsx": $MyDocs_copy,
     "./islands/MyDocs.tsx": $MyDocs,
     "./islands/MyInfo.tsx": $MyInfo,
     "./islands/MyOrders.tsx": $MyOrders,

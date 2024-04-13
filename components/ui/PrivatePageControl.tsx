@@ -29,6 +29,16 @@ function PrivatePageControl(props: Props) {
 
       const username = response.data.Username;
 
+      //control to display association admin link in menu
+      if (response.dataProfile && response.dataProfile.association) {
+        if (response.dataProfile.association.user == username) {
+          localStorage.setItem(
+            "AssociationAdmin",
+            response.dataProfile.association._id,
+          );
+        }
+      }
+
       user.value = {
         id: username,
         name: response.data.UserAttributes.find((
@@ -46,6 +56,10 @@ function PrivatePageControl(props: Props) {
       if (!username) {
         user.value = null;
         localStorage.setItem("AccessToken", "");
+        localStorage.setItem(
+          "AssociationAdmin",
+          "",
+        );
         window.location.href = "/";
       }
 
@@ -63,6 +77,10 @@ function PrivatePageControl(props: Props) {
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
       localStorage.setItem("AccessToken", "");
+      localStorage.setItem(
+        "AssociationAdmin",
+        "",
+      );
       window.location.href = "/";
     }
   }
