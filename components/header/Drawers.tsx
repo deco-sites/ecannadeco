@@ -70,6 +70,12 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
   //if user is not loggedin, use the public navitems in the menu
   if (localStorage.getItem("AccessToken") == "") {
     menu.items = menu.publicItems || [];
+  } else if (localStorage.getItem("AssociationAdmin")) {
+    menu.items[menu.items.length] = {
+      "@type": "SiteNavigationElement",
+      name: "Admin Associação",
+      url: "/admin/associacao",
+    };
   }
 
   return (

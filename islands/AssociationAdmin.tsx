@@ -1,4 +1,4 @@
-import Component from "deco-sites/ecannadeco/components/ui/MyOrders.tsx";
+import Component from "deco-sites/ecannadeco/components/ui/AssociationAdmin.tsx";
 // import type { Props } from "$store/components/ui/MyDocs.tsx";
 
 function Island() {
