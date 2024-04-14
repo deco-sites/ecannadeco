@@ -5,17 +5,11 @@
 // import { useUI } from "../../sdk/useUI.ts";
 import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
-import { Plan } from "../../components/ui/Checkout.tsx";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 import Icon from "../../components/ui/Icon.tsx";
-import ModalConfirm from "../../components/ui/ModalConfirm.tsx";
-import { SavedCreditCard } from "../../components/ui/CheckoutUpsellModal.tsx";
-import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
-import Slider from "../../components/ui/Slider.tsx";
 import type {
-  AssociationAdmin,
   AssociationUsers,
-} from "../../actions/adminGetAssociation.ts";
+} from "../../actions/adminGetAssociationUsers.ts";
 import { useUI } from "../../sdk/useUI.ts";
 import SliderJS from "../../islands/SliderJS.tsx";
 import Image from "apps/website/components/Image.tsx";
@@ -30,10 +24,17 @@ export type Address = {
 
 function MyAccount() {
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [updating, setUpdating] = useState(false);
+  const [emailSearch, setEmailSearch] = useState("");
   const [associationName, setAssociationName] = useState("");
   const [associationCnpj, setAssociationCnpj] = useState("");
   const [associationLogo, setAssociationLogo] = useState("");
+  const [limit, setLimit] = useState<number>();
+  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
+  const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
+  const [page, setPage] = useState<number>();
+  const [totalPages, setTotalPages] = useState<number>();
   const [associationUsers, setAssociationUsers] = useState<AssociationUsers>();
 
   const handleUploadSelfie = async (
@@ -83,10 +84,23 @@ function MyAccount() {
         setAssociationName(r.name);
         setAssociationCnpj(r.cnpj);
         setAssociationLogo(r.logo_url);
-        setAssociationUsers(r.association_users);
-        setIsLoading(false);
+        invoke["deco-sites/ecannadeco"].actions.adminGetAssociationUsers({
+          token: accessToken,
+        }).then((r) => {
+          if (r.message) {
+            throw new Error(r.message);
+          }
+          setPage(r.page);
+          setTotalPages(r.totalPages);
+          setLimit(r.limit);
+          setHasNextPage(r.hasNextPage);
+          setHasPrevPage(r.hasPrevPage);
+          setAssociationUsers(r.docs);
+          setIsLoading(false);
+        });
       });
     } catch (e) {
+      console.log({ e });
       alert(
         "Não foi possível carregar dados da associação. Tente novamente mais tarde ou contecte o suporte.",
       );
@@ -115,6 +129,38 @@ function MyAccount() {
     } catch (e) {
       alert(
         "Não foi possível Atualizar dados da associação. Tente novamente mais tarde ou contecte o suporte.",
+      );
+      setUpdating(false);
+    }
+  };
+
+  const handleGetUsers = (pageParam: number, email?: string) => {
+    const accessToken = localStorage.getItem("AccessToken") || "";
+    setIsLoadingUsers(true);
+
+    try {
+      invoke["deco-sites/ecannadeco"].actions.adminGetAssociationUsers({
+        token: accessToken,
+        params: {
+          email: emailSearch,
+          page: pageParam,
+          limit: limit || 25,
+        },
+      }).then((r) => {
+        if (r.message) {
+          throw new Error(r.message);
+        }
+        setPage(r.page);
+        setTotalPages(r.totalPages);
+        setLimit(r.limit);
+        setHasNextPage(r.hasNextPage);
+        setHasPrevPage(r.hasPrevPage);
+        setAssociationUsers(r.docs);
+        setIsLoadingUsers(false);
+      });
+    } catch (e) {
+      alert(
+        "Não foi possível carregar usuários. Tente novamente mais tarde ou contecte o suporte.",
       );
       setUpdating(false);
     }
@@ -205,6 +251,18 @@ function MyAccount() {
                 Pacientes da Associação
               </h2>
               <div>
+                <input
+                  placeholder="Pesquise por email"
+                  class="input rounded-full text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] sm:w-1/2 h-[35px] mb-4 text-xs"
+                  name="emailSearch"
+                  value={emailSearch}
+                  onChange={(e) => {
+                    setEmailSearch(e.currentTarget.value);
+                    handleGetUsers(page!, e.currentTarget.value);
+                  }}
+                />
+              </div>
+              <div>
                 <div class="flex pb-2 px-2 border-b border-[#cdcdcd] mb-4">
                   <div class="w-[32%] flex justify-start">
                     <span class="text-xs">Nome</span>
@@ -216,23 +274,58 @@ function MyAccount() {
                     <span class="text-xs">CPF</span>
                   </div>
                 </div>
-                <ul class="flex flex-col gap-2">
-                  {associationUsers && associationUsers.map((u) => {
-                    return (
-                      <li class="p-3 bg-[#cacaca] flex gap-[2%] justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
-                        <div class="w-[32%] flex justify-start">
-                          <span>{u.cognito_data.name}</span>
-                        </div>
-                        <div class="w-[32%] flex justify-start">
-                          <span>{u.email}</span>
-                        </div>
-                        <div class="w-[32%] flex justify-end">
-                          <span>{u.cognito_data.cpf}</span>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
+                {isLoadingUsers
+                  ? <span>Carregando...</span>
+                  : (
+                    <ul class="flex flex-col gap-2">
+                      {associationUsers && associationUsers.map((u) => {
+                        return (
+                          <a
+                            href={`http://localhost:8000/ficha/${u.cognito_id}`}
+                            target="_blank"
+                          >
+                            <li class="p-3 bg-[#cacaca] flex gap-[2%] justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
+                              <div class="w-[32%] flex justify-start">
+                                <span>{u.cognito_data.name}</span>
+                              </div>
+                              <div class="w-[32%] flex justify-start">
+                                <span>{u.email}</span>
+                              </div>
+                              <div class="w-[32%] flex justify-end">
+                                <span>{u.cognito_data.cpf}</span>
+                              </div>
+                            </li>
+                          </a>
+                        );
+                      })}
+                    </ul>
+                  )}
+              </div>
+              {/* pagination */}
+              <div class="flex justify-center mt-4 font-xs">
+                <div>
+                  {hasPrevPage && (
+                    <Icon
+                      onClick={() => handleGetUsers(page! - 1)}
+                      id="ChevronLeft"
+                      size={19}
+                    />
+                  )}
+                </div>
+                <div>
+                  <span>
+                    {isLoadingUsers ? "..." : `Página ${page}/${totalPages}`}
+                  </span>
+                </div>
+                <div>
+                  {hasNextPage && (
+                    <Icon
+                      onClick={() => handleGetUsers(page! + 1)}
+                      id="ChevronRight"
+                      size={19}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>

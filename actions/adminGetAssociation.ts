@@ -3,16 +3,6 @@ export interface Props {
   token: string;
 }
 
-export type AssociationUsers = {
-  _id: string;
-  email: string;
-  cognito_id: string;
-  cognito_data: {
-    cpf: string;
-    name: string;
-  };
-}[];
-
 export type AssociationAdmin = {
   _id: string;
   user: string;
@@ -20,7 +10,6 @@ export type AssociationAdmin = {
   cnpj: string;
   logo_url: string;
   status: string;
-  association_users: AssociationUsers;
 };
 
 const getAssociation = async (
