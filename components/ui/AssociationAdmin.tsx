@@ -207,13 +207,13 @@ function MyAccount() {
               <div>
                 <div class="flex pb-2 px-2 border-b border-[#cdcdcd] mb-4">
                   <div class="w-[32%] flex justify-start">
-                    <span>Nome</span>
+                    <span class="text-xs">Nome</span>
                   </div>
                   <div class="w-[32%] flex justify-start">
-                    <span>Email</span>
+                    <span class="text-xs">Email</span>
                   </div>
                   <div class="w-[32%] flex justify-end">
-                    <span>CPF</span>
+                    <span class="text-xs">CPF</span>
                   </div>
                 </div>
                 <ul class="flex flex-col gap-2">
