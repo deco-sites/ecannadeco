@@ -52,7 +52,6 @@ const getAssociation = async (
     });
 
     const res = await response.json();
-    console.log({ responseAdminAssociationUsers: res });
     return res;
   } catch (e) {
     // console.log({ e });

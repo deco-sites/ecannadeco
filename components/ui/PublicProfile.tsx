@@ -10,11 +10,22 @@ interface Props {
 function PublicProfileComponent(
   { publicProfile }: Props,
 ) {
-  const { cpf, name, cids, plan, documents, avatar_photo, association } =
-    publicProfile;
+  const {
+    cpf,
+    name,
+    cids,
+    plan,
+    documents,
+    avatar_photo,
+    association,
+    _id,
+    email,
+  } = publicProfile;
+
+  console.log({ publicProfile });
   return (
     <PageWrap>
-      {!publicProfile.cpf
+      {!_id
         ? <span>Usuário não encontrado</span>
         : (
           <div class="flex flex-col items-center gap-5 max-w-[95%]">
@@ -26,19 +37,44 @@ function PublicProfileComponent(
             </div>
             <Image
               class="rounded-md"
-              src={avatar_photo}
+              src={avatar_photo
+                ? avatar_photo
+                : "http://drive.google.com/uc?export=view&id=1tSFTp0YZKVQVGJHOqzKaJw6SEe7Q8LL7"}
               alt={"user selfie"}
               width={108}
               height={144}
             />
             <div class="flex flex-col items-center">
-              <span class="text-2xl text-secondary font-semibold">{name}</span>
-              <span class="text-secondary font-semibold">
-                CPF:{" " + cpf.replace(
-                  /(\d{3})(\d{3})(\d{3})(\d{2})/,
-                  "$1.$2.$3-$4",
+              {name && cpf
+                ? (
+                  <div class="flex flex-col items-center">
+                    <span class="text-2xl text-secondary font-semibold">
+                      {name}
+                    </span>
+                    <span class="text-secondary font-semibold">
+                      CPF:{" " + cpf.replace(
+                        /(\d{3})(\d{3})(\d{3})(\d{2})/,
+                        "$1.$2.$3-$4",
+                      )}
+                    </span>
+                  </div>
+                )
+                : (
+                  <div class="p-3 flex flex-col items-center text-[#5e5e5e] text-sm bg-[#cecece] rounded-md gap-3">
+                    <span class="text-center">
+                      Informação Pendente: Paciente deve fazer cadastro com
+                      email <span class="font-bold">{email}</span>{" "}
+                      e atualizar dados médicos / pessoais.
+                    </span>
+                    <a
+                      href="/cadastrar"
+                      class="btn btn-primary btn-xs text-white"
+                    >
+                      Clique aqui para cadastrar
+                    </a>
+                  </div>
                 )}
-              </span>
+
               {association && (
                 <div class="flex flex-col items-center mt-4">
                   <span class="text-[#5B5B5B] font-semibold text-sm">
@@ -57,19 +93,37 @@ function PublicProfileComponent(
               <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
                 CIDs (Diagnósticos)
               </h2>
-              <ul class="flex flex-col gap-2 max-w-[100%]">
-                {cids.map((c) => {
-                  return (
-                    <li>
-                      <div class="badge badge-secondary text-white gap-2 p-3 max-w-[100%]">
-                        <span class="text-[10px] sm:text-sm truncate">
-                          CID{" " + c.full_code + " - " + c.name}
-                        </span>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
+              {cids && cids.length
+                ? (
+                  <ul class="flex flex-col gap-2 max-w-[100%]">
+                    {cids.map((c) => {
+                      return (
+                        <li>
+                          <div class="badge badge-secondary text-white gap-2 p-3 max-w-[100%]">
+                            <span class="text-[10px] sm:text-sm truncate">
+                              CID{" " + c.full_code + " - " + c.name}
+                            </span>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )
+                : (
+                  <div class="p-3 flex flex-col items-center text-[#5e5e5e] text-sm bg-[#cecece] rounded-md gap-3">
+                    <span class="text-center">
+                      Informação Pendente: Paciente deve fazer cadastro com
+                      email <span class="font-bold">{email}</span>{" "}
+                      e atualizar dados médicos / pessoais.
+                    </span>
+                    <a
+                      href="/cadastrar"
+                      class="btn btn-primary btn-xs text-white"
+                    >
+                      Clique aqui para cadastrar
+                    </a>
+                  </div>
+                )}
             </div>
             <div class="flex flex-col items-start w-full">
               <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">

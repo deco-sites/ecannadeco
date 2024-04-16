@@ -21,6 +21,7 @@ const displayNewTicketModal = signal(false);
 const displayConfirmDeleteDoc = signal(false);
 const displayConfirmCancelSubscription = signal(false);
 const displayCheckoutUpsellModal = signal(false);
+const displayPreSignupUsersModal = signal(false);
 const displayPlanLimit = signal(false);
 const updatedData = signal(true);
 const uploadedFile = signal(true);
@@ -39,6 +40,7 @@ const state = {
   displayConfirmDeleteDoc,
   displayConfirmCancelSubscription,
   displayCheckoutUpsellModal,
+  displayPreSignupUsersModal,
   user,
 };
 
