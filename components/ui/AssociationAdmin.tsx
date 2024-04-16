@@ -7,6 +7,7 @@ import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 import Icon from "../../components/ui/Icon.tsx";
+import AdminNewDocModal from "../../islands/AdminNewDocModal.tsx";
 import PreSignupUsersModal from "../../islands/PreSignupUsersModal.tsx";
 import type {
   AssociationUsers,
@@ -37,7 +38,11 @@ function MyAccount() {
   const [page, setPage] = useState<number>();
   const [totalPages, setTotalPages] = useState<number>();
   const [associationUsers, setAssociationUsers] = useState<AssociationUsers>();
-  const { displayPreSignupUsersModal } = useUI();
+  const {
+    displayPreSignupUsersModal,
+    displayAssociationAdminNewDoc,
+    userToAdminCreateDoc,
+  } = useUI();
 
   const handleUploadSelfie = async (
     event: h.JSX.TargetedEvent<HTMLInputElement, Event>,
@@ -291,6 +296,7 @@ function MyAccount() {
                 <PreSignupUsersModal
                   onFinish={() => console.log("on finish")}
                 />
+                <AdminNewDocModal createType="user" />
                 {isLoadingUsers
                   ? <span class="loading loading-spinner text-green-600"></span>
                   : (
@@ -349,7 +355,17 @@ function MyAccount() {
                                 <a>Baixar QR Code</a>
                               </li>
                               <li>
-                                <a>Subir Documento</a>
+                                <a
+                                  onClick={() => {
+                                    displayAssociationAdminNewDoc.value = true;
+                                    userToAdminCreateDoc.value = {
+                                      _id: u._id,
+                                      email: u.email,
+                                    };
+                                  }}
+                                >
+                                  Subir Documento
+                                </a>
                               </li>
                             </ul>
                           </div>
