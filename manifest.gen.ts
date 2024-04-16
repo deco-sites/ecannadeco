@@ -14,20 +14,22 @@ import * as $$$$$$$$$8 from "./actions/cognitoSignUp.ts";
 import * as $$$$$$$$$9 from "./actions/confirmCognitoSignup.ts";
 import * as $$$$$$$$$10 from "./actions/confirmForgotPassword.ts";
 import * as $$$$$$$$$11 from "./actions/createTicket.ts";
-import * as $$$$$$$$$12 from "./actions/deleteDocument.ts";
-import * as $$$$$$$$$13 from "./actions/forgotPassword.ts";
-import * as $$$$$$$$$14 from "./actions/getAssociation.ts";
-import * as $$$$$$$$$15 from "./actions/getCardProduct.ts";
-import * as $$$$$$$$$16 from "./actions/getCids.ts";
-import * as $$$$$$$$$17 from "./actions/getDocs.ts";
-import * as $$$$$$$$$18 from "./actions/getPlans.ts";
-import * as $$$$$$$$$19 from "./actions/getProfile.ts";
-import * as $$$$$$$$$20 from "./actions/getUser.ts";
-import * as $$$$$$$$$21 from "./actions/getUserOrders.ts";
-import * as $$$$$$$$$22 from "./actions/resendConfirmationCode.ts";
-import * as $$$$$$$$$23 from "./actions/updateProfile.ts";
-import * as $$$$$$$$$24 from "./actions/updateUserData.ts";
-import * as $$$$$$$$$25 from "./actions/uploadFile.ts";
+import * as $$$$$$$$$12 from "./actions/deleteAssociationDocument.ts";
+import * as $$$$$$$$$13 from "./actions/deleteDocument.ts";
+import * as $$$$$$$$$14 from "./actions/forgotPassword.ts";
+import * as $$$$$$$$$15 from "./actions/getAssociation.ts";
+import * as $$$$$$$$$16 from "./actions/getAssociationDocs.ts";
+import * as $$$$$$$$$17 from "./actions/getCardProduct.ts";
+import * as $$$$$$$$$18 from "./actions/getCids.ts";
+import * as $$$$$$$$$19 from "./actions/getDocs.ts";
+import * as $$$$$$$$$20 from "./actions/getPlans.ts";
+import * as $$$$$$$$$21 from "./actions/getProfile.ts";
+import * as $$$$$$$$$22 from "./actions/getUser.ts";
+import * as $$$$$$$$$23 from "./actions/getUserOrders.ts";
+import * as $$$$$$$$$24 from "./actions/resendConfirmationCode.ts";
+import * as $$$$$$$$$25 from "./actions/updateProfile.ts";
+import * as $$$$$$$$$26 from "./actions/updateUserData.ts";
+import * as $$$$$$$$$27 from "./actions/uploadFile.ts";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
@@ -216,20 +218,22 @@ const manifest = {
     "deco-sites/ecannadeco/actions/confirmCognitoSignup.ts": $$$$$$$$$9,
     "deco-sites/ecannadeco/actions/confirmForgotPassword.ts": $$$$$$$$$10,
     "deco-sites/ecannadeco/actions/createTicket.ts": $$$$$$$$$11,
-    "deco-sites/ecannadeco/actions/deleteDocument.ts": $$$$$$$$$12,
-    "deco-sites/ecannadeco/actions/forgotPassword.ts": $$$$$$$$$13,
-    "deco-sites/ecannadeco/actions/getAssociation.ts": $$$$$$$$$14,
-    "deco-sites/ecannadeco/actions/getCardProduct.ts": $$$$$$$$$15,
-    "deco-sites/ecannadeco/actions/getCids.ts": $$$$$$$$$16,
-    "deco-sites/ecannadeco/actions/getDocs.ts": $$$$$$$$$17,
-    "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$18,
-    "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$19,
-    "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$20,
-    "deco-sites/ecannadeco/actions/getUserOrders.ts": $$$$$$$$$21,
-    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$22,
-    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$23,
-    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$24,
-    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$25,
+    "deco-sites/ecannadeco/actions/deleteAssociationDocument.ts": $$$$$$$$$12,
+    "deco-sites/ecannadeco/actions/deleteDocument.ts": $$$$$$$$$13,
+    "deco-sites/ecannadeco/actions/forgotPassword.ts": $$$$$$$$$14,
+    "deco-sites/ecannadeco/actions/getAssociation.ts": $$$$$$$$$15,
+    "deco-sites/ecannadeco/actions/getAssociationDocs.ts": $$$$$$$$$16,
+    "deco-sites/ecannadeco/actions/getCardProduct.ts": $$$$$$$$$17,
+    "deco-sites/ecannadeco/actions/getCids.ts": $$$$$$$$$18,
+    "deco-sites/ecannadeco/actions/getDocs.ts": $$$$$$$$$19,
+    "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$20,
+    "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$21,
+    "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$22,
+    "deco-sites/ecannadeco/actions/getUserOrders.ts": $$$$$$$$$23,
+    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$24,
+    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$25,
+    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$26,
+    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$27,
   },
   "apps": {
     "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,

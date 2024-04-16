@@ -7,7 +7,7 @@ import { useUI } from "../../sdk/useUI.ts";
 import { h } from "preact";
 import { invoke } from "../../runtime.ts";
 
-interface DocListType {
+export interface DocListType {
   _id: string;
   title: string;
   file_url: string;
