@@ -7,6 +7,7 @@ import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 import Icon from "../../components/ui/Icon.tsx";
+import PreSignupUsersModal from "../../islands/PreSignupUsersModal.tsx";
 import type {
   AssociationUsers,
 } from "../../actions/adminGetAssociationUsers.ts";
@@ -36,6 +37,7 @@ function MyAccount() {
   const [page, setPage] = useState<number>();
   const [totalPages, setTotalPages] = useState<number>();
   const [associationUsers, setAssociationUsers] = useState<AssociationUsers>();
+  const { displayPreSignupUsersModal } = useUI();
 
   const handleUploadSelfie = async (
     event: h.JSX.TargetedEvent<HTMLInputElement, Event>,
@@ -250,17 +252,29 @@ function MyAccount() {
               <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
                 Pacientes da Associação
               </h2>
-              <div>
+              <div class="flex flex-col sm:flex-row gap-4 justify-between mb-4">
                 <input
                   placeholder="Pesquise por email"
-                  class="input rounded-full text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] sm:w-1/2 h-[35px] mb-4 text-xs"
+                  class="input rounded-full text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] sm:w-1/2 h-[35px] text-xs"
                   name="emailSearch"
                   value={emailSearch}
                   onChange={(e) => {
                     setEmailSearch(e.currentTarget.value);
-                    handleGetUsers(page!, e.currentTarget.value);
+                    if (e.currentTarget.value.length >= 3) {
+                      handleGetUsers(page!, e.currentTarget.value);
+                    }
                   }}
                 />
+                <div class="flex sm:w-1/2 justify-end">
+                  <button
+                    class="btn btn-sm btn-primary text-white"
+                    onClick={() => {
+                      displayPreSignupUsersModal.value = true;
+                    }}
+                  >
+                    <Icon id="UserData" size={19} />Pré-cadastrar Pacientes
+                  </button>
+                </div>
               </div>
               <div>
                 <div class="flex pb-2 px-2 border-b border-[#cdcdcd] mb-4">
@@ -274,35 +288,78 @@ function MyAccount() {
                     <span class="text-xs">CPF</span>
                   </div>
                 </div>
+                <PreSignupUsersModal
+                  onFinish={() => console.log("on finish")}
+                />
                 {isLoadingUsers
-                  ? <span>Carregando...</span>
+                  ? <span class="loading loading-spinner text-green-600"></span>
                   : (
                     <ul class="flex flex-col gap-2">
                       {associationUsers && associationUsers.map((u) => {
                         return (
-                          <a
-                            href={`http://localhost:8000/ficha/${u.cognito_id}`}
-                            target="_blank"
-                          >
-                            <li class="p-3 bg-[#cacaca] flex gap-[2%] justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
-                              <div class="w-[32%] flex justify-start">
-                                <span>{u.cognito_data.name}</span>
+                          <div class="dropdown dropdown-top dropdown-end">
+                            <div tabindex={0} role="button" class="">
+                              <div target="_blank">
+                                <li class="p-3 bg-[#cacaca] flex gap-[2%] justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
+                                  <div class="w-[32%] flex justify-start">
+                                    <span>
+                                      {u.cognito_data
+                                        ? u.cognito_data.name
+                                        : (
+                                          <span class="badge text-xs font-bold">
+                                            Cadastro Pendente
+                                          </span>
+                                        )}
+                                    </span>
+                                  </div>
+                                  <div class="w-[32%] flex justify-start">
+                                    <span>{u.email}</span>
+                                  </div>
+                                  <div class="w-[32%] flex justify-end">
+                                    <span>
+                                      {u.cognito_data
+                                        ? u.cognito_data.cpf
+                                        : (
+                                          <span class="badge text-xs font-bold">
+                                            Cadastro Pendente
+                                          </span>
+                                        )}
+                                    </span>
+                                  </div>
+                                </li>
                               </div>
-                              <div class="w-[32%] flex justify-start">
-                                <span>{u.email}</span>
-                              </div>
-                              <div class="w-[32%] flex justify-end">
-                                <span>{u.cognito_data.cpf}</span>
-                              </div>
-                            </li>
-                          </a>
+                            </div>
+                            <ul
+                              tabindex={0}
+                              class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                            >
+                              <span class="text-[10px] font-bold text-center">
+                                {u.email}
+                              </span>
+                              <li>
+                                <a
+                                  href={`http://localhost:8000/ficha/${u._id}`}
+                                  target="_blank"
+                                  class="flex items-center"
+                                >
+                                  Ficha do Paciente
+                                </a>
+                              </li>
+                              <li>
+                                <a>Baixar QR Code</a>
+                              </li>
+                              <li>
+                                <a>Subir Documento</a>
+                              </li>
+                            </ul>
+                          </div>
                         );
                       })}
                     </ul>
                   )}
               </div>
               {/* pagination */}
-              <div class="flex justify-center mt-4 font-xs">
+              <div class="flex justify-center mt-4">
                 <div>
                   {hasPrevPage && (
                     <Icon
@@ -313,8 +370,8 @@ function MyAccount() {
                   )}
                 </div>
                 <div>
-                  <span>
-                    {isLoadingUsers ? "..." : `Página ${page}/${totalPages}`}
+                  <span class="text-xs">
+                    {`Página ${page}/${totalPages}`}
                   </span>
                 </div>
                 <div>

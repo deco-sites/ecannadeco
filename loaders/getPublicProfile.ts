@@ -22,7 +22,9 @@ export interface Association {
 }
 
 export interface PublicProfile {
+  _id: string;
   cpf: string;
+  email: string;
   avatar_photo: string;
   name: string;
   cids: Cid[];
