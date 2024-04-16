@@ -13,9 +13,11 @@ import type {
   AssociationUsers,
 } from "../../actions/adminGetAssociationUsers.ts";
 import { useUI } from "../../sdk/useUI.ts";
-import SliderJS from "../../islands/SliderJS.tsx";
 import Image from "apps/website/components/Image.tsx";
 import { h } from "preact";
+import Loading from "../../components/daisy/Loading.tsx";
+import type { DocListType } from "../../components/ui/MyDocs.tsx";
+import Modal from "../../components/ui/Modal.tsx";
 
 export type Address = {
   cep: string;
@@ -26,23 +28,85 @@ export type Address = {
 
 function MyAccount() {
   const [isLoading, setIsLoading] = useState(true);
+  const [deleting, setDeleting] = useState(false);
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [emailSearch, setEmailSearch] = useState("");
   const [associationName, setAssociationName] = useState("");
   const [associationCnpj, setAssociationCnpj] = useState("");
   const [associationLogo, setAssociationLogo] = useState("");
+  const [createType, setCreateType] = useState<"user" | "association">(
+    "association",
+  );
   const [limit, setLimit] = useState<number>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(false);
   const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
   const [page, setPage] = useState<number>();
   const [totalPages, setTotalPages] = useState<number>();
   const [associationUsers, setAssociationUsers] = useState<AssociationUsers>();
+  const [docs, setDocs] = useState<DocListType[]>([]);
+
   const {
     displayPreSignupUsersModal,
     displayAssociationAdminNewDoc,
     userToAdminCreateDoc,
+    associationToAdminCreateDoc,
+    displayConfirmDeleteDoc,
   } = useUI();
+
+  const ModalConfirmDelete = ({ id }: { id: string }) => {
+    return (
+      <Modal
+        open={displayConfirmDeleteDoc.value}
+        onClose={() => displayConfirmDeleteDoc.value = false}
+      >
+        <div class="flex flex-col p-16 gap-3 bg-[#EDEDED] rounded-xl">
+          <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
+            Tem certeza que deseja deletar este documento?
+          </h3>
+          <div class="flex flex-col items-center gap-2">
+            <button
+              class="btn bg-red-500 text-white"
+              onClick={() => {
+                handleDeleteDoc({ id });
+                displayConfirmDeleteDoc.value = false;
+              }}
+            >
+              Deletar
+            </button>
+            <button
+              class="btn btn-ghost"
+              onClick={() => {
+                displayConfirmDeleteDoc.value = false;
+              }}
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </Modal>
+    );
+  };
+
+  const getDocuments = () => {
+    const accessToken = localStorage.getItem("AccessToken") || "";
+
+    try {
+      setIsLoading(true);
+
+      invoke["deco-sites/ecannadeco"].actions.getAssociationDocs({
+        token: accessToken,
+      }).then((r) => {
+        setDocs((r as { docs: DocListType[] }).docs);
+        setIsLoading(false);
+      });
+    } catch (e) {
+      alert(
+        "Não foi possível carregar os documentos. Tente novamente mais tarde ou contecte o suporte.",
+      );
+      setIsLoading(false);
+    }
+  };
 
   const handleUploadSelfie = async (
     event: h.JSX.TargetedEvent<HTMLInputElement, Event>,
@@ -84,10 +148,16 @@ function MyAccount() {
     try {
       setIsLoading(true);
 
+      getDocuments();
+
       invoke["deco-sites/ecannadeco"].actions.adminGetAssociation({
         token: accessToken,
         id: associationAdmin,
       }).then((r) => {
+        associationToAdminCreateDoc.value = {
+          _id: r._id,
+          name: r.name,
+        };
         setAssociationName(r.name);
         setAssociationCnpj(r.cnpj);
         setAssociationLogo(r.logo_url);
@@ -173,6 +243,31 @@ function MyAccount() {
     }
   };
 
+  const handleDeleteDoc = async ({ id }: { id: string }) => {
+    setDeleting(true);
+    try {
+      const r = await invoke["deco-sites/ecannadeco"].actions
+        .deleteAssociationDocument({
+          docId: id,
+          token: localStorage.getItem("AccessToken") || "",
+        });
+
+      const resp = r as { message?: string };
+
+      if (resp.message) {
+        alert(`Algo deu errado: ${resp.message}`);
+      } else {
+        getDocuments();
+      }
+
+      setDeleting(false);
+    } catch (e) {
+      console.log({ e });
+      alert("Não foi possível apagar o documento. Tente mais tarde.");
+      setDeleting(false);
+    }
+  };
+
   return (
     <PageWrap>
       {isLoading
@@ -254,6 +349,65 @@ function MyAccount() {
               </div>
             </div>
             <div>
+              <div class="flex justify-start gap-4 items-center mb-4 mt-10">
+                <h2 class="text-[#8b8b8b] font-semibold">
+                  Documentos da Associação
+                </h2>
+                <button
+                  class="rounded-md bg-secondary h-8 w-[85px] flex gap-2 items-center p-3 justify-between text-white"
+                  onClick={() => {
+                    setCreateType("association");
+                    displayAssociationAdminNewDoc.value = true;
+                  }}
+                >
+                  <span class="text-sm font-medium">Subir</span>
+                  <Icon id="Upload" size={18} />
+                </button>
+              </div>
+              <div>
+                <ul>
+                  {docs.map((d) => {
+                    return (
+                      <li class="flex items-center gap-4">
+                        <a class="w-full" href={d.file_url}>
+                          <div class="flex justify-between rounded-md bg-[#C8C8C8] w-full px-5 h-10 items-center">
+                            <div class="flex gap-2">
+                              <span class="text-[#8F8D8D]">
+                                <Icon id="Anexo" size={24} />
+                              </span>
+                              <span class="text-[#393939] font-semibold">
+                                {d.title}
+                              </span>
+                            </div>
+                            <span class="text-[#8F8D8D] flex justify-end w-6">
+                              <Icon id="Download" height={19} />
+                            </span>
+                          </div>
+                        </a>
+                        <ModalConfirmDelete id={d._id} />
+                        {deleting
+                          ? (
+                            <Loading
+                              style="loading-spinner"
+                              size="loading-md"
+                            />
+                          )
+                          : (
+                            <Icon
+                              onClick={() => {
+                                displayConfirmDeleteDoc.value = true;
+                              }}
+                              id="Trash"
+                              size={24}
+                            />
+                          )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            </div>
+            <div>
               <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
                 Pacientes da Associação
               </h2>
@@ -296,7 +450,7 @@ function MyAccount() {
                 <PreSignupUsersModal
                   onFinish={() => console.log("on finish")}
                 />
-                <AdminNewDocModal createType="user" />
+                <AdminNewDocModal createType={createType} />
                 {isLoadingUsers
                   ? <span class="loading loading-spinner text-green-600"></span>
                   : (
@@ -357,6 +511,7 @@ function MyAccount() {
                               <li>
                                 <a
                                   onClick={() => {
+                                    setCreateType("user");
                                     displayAssociationAdminNewDoc.value = true;
                                     userToAdminCreateDoc.value = {
                                       _id: u._id,

@@ -3,14 +3,14 @@ export interface Props {
   token: string;
 }
 
-const deleteDocument = async (
+const deleteAssociationDocument = async (
   props: Props,
   _req: Request,
 ): Promise<unknown | null> => {
   console.log({ docId: props.docId });
   try {
     const response = await fetch(
-      `http://localhost:3000/documents/${props.docId}`,
+      `http://localhost:3000/documents/association/${props.docId}`,
       {
         method: "DELETE",
         headers: {
@@ -28,4 +28,4 @@ const deleteDocument = async (
   }
 };
 
-export default deleteDocument;
+export default deleteAssociationDocument;

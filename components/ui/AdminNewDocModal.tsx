@@ -15,7 +15,11 @@ const AdminNewDocModal = (
   const [file, setFile] = useState<File>();
   const [docTitle, setDocTitle] = useState("");
   const [docCategory, setDocCategory] = useState("");
-  const { displayAssociationAdminNewDoc, userToAdminCreateDoc } = useUI();
+  const {
+    displayAssociationAdminNewDoc,
+    userToAdminCreateDoc,
+    associationToAdminCreateDoc,
+  } = useUI();
   const [isUploading, setIsUploading] = useState(false);
 
   const handleStoreDocument = (
@@ -31,7 +35,16 @@ const AdminNewDocModal = (
     setIsUploading(true);
 
     const formData = new FormData();
-    formData.append("user", userToAdminCreateDoc.value._id);
+    let url = "";
+
+    if (createType === "user") {
+      url = "http://localhost:3000/documents/admin/user";
+      formData.append("user", userToAdminCreateDoc.value._id);
+    } else if (createType === "association") {
+      url = "http://localhost:3000/documents/admin/association";
+      formData.append("association", associationToAdminCreateDoc.value._id);
+    }
+
     formData.append("file", file!);
     formData.append("title", docTitle);
     formData.append("category", docCategory);
@@ -42,7 +55,7 @@ const AdminNewDocModal = (
 
     try {
       const response = await fetch(
-        "http://localhost:3000/documents/admin/user",
+        url,
         {
           method: "POST",
           body: formData,
@@ -69,6 +82,9 @@ const AdminNewDocModal = (
 
       setIsUploading(false);
       displayAssociationAdminNewDoc.value = false;
+      setFile(undefined);
+      setDocTitle("");
+      setDocCategory("");
       alert("Upload concluído com sucesso");
     } catch (e) {
       alert("Ocorreu um erro ao subir o documento. Contacte o suporte");
@@ -87,7 +103,7 @@ const AdminNewDocModal = (
         <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
           Novo documento para{"  "}{createType === "user"
             ? `paciente ${userToAdminCreateDoc.value.email}`
-            : `Associação`}
+            : `Associação ${associationToAdminCreateDoc.value.name}`}
         </h3>
         <input
           class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] bg-white"

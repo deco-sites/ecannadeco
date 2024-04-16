@@ -1,21 +1,20 @@
 export interface Props {
-  docId: string;
   token: string;
+  associationId: string;
 }
 
-const deleteDocument = async (
-  props: Props,
+const getDocs = async (
+  { token, associationId }: Props,
   _req: Request,
 ): Promise<unknown | null> => {
-  console.log({ docId: props.docId });
   try {
     const response = await fetch(
-      `http://localhost:3000/documents/${props.docId}`,
+      `http://localhost:3000/documents/association/${associationId}`,
       {
-        method: "DELETE",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: props.token,
+          Authorization: token,
         },
       },
     );
@@ -28,4 +27,4 @@ const deleteDocument = async (
   }
 };
 
-export default deleteDocument;
+export default getDocs;

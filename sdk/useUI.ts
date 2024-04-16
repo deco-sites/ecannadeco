@@ -31,6 +31,10 @@ const userToAdminCreateDoc = signal({
   email: "",
   _id: "",
 });
+const associationToAdminCreateDoc = signal({
+  name: "",
+  _id: "",
+});
 
 const state = {
   displayCart,
@@ -48,6 +52,7 @@ const state = {
   displayPreSignupUsersModal,
   displayAssociationAdminNewDoc,
   userToAdminCreateDoc,
+  associationToAdminCreateDoc,
   user,
 };
 
