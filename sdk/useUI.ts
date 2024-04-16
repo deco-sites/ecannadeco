@@ -22,10 +22,15 @@ const displayConfirmDeleteDoc = signal(false);
 const displayConfirmCancelSubscription = signal(false);
 const displayCheckoutUpsellModal = signal(false);
 const displayPreSignupUsersModal = signal(false);
+const displayAssociationAdminNewDoc = signal(false);
 const displayPlanLimit = signal(false);
 const updatedData = signal(true);
 const uploadedFile = signal(true);
 const user = signal<UserSession | null>(null);
+const userToAdminCreateDoc = signal({
+  email: "",
+  _id: "",
+});
 
 const state = {
   displayCart,
@@ -41,6 +46,8 @@ const state = {
   displayConfirmCancelSubscription,
   displayCheckoutUpsellModal,
   displayPreSignupUsersModal,
+  displayAssociationAdminNewDoc,
+  userToAdminCreateDoc,
   user,
 };
 
