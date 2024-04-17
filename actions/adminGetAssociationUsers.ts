@@ -9,6 +9,7 @@ export interface Props {
 
 export type AssociationUsers = {
   _id: string;
+  qrcode_url: string;
   email: string;
   cognito_id: string;
   cognito_data: {
@@ -52,6 +53,7 @@ const getAssociation = async (
     });
 
     const res = await response.json();
+    console.log({ res });
     return res;
   } catch (e) {
     // console.log({ e });

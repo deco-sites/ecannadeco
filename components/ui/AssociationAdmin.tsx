@@ -54,6 +54,32 @@ function MyAccount() {
     displayConfirmDeleteDoc,
   } = useUI();
 
+  function downloadFile(fileUrl: string, filename: string) {
+    // Fetch the file data
+    fetch(fileUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        // Create a temporary anchor element
+        const a = document.createElement("a");
+        a.style.display = "none";
+
+        // Set the download attribute and file URL
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+
+        // Append the anchor to the body and trigger the download
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up
+        window.URL.revokeObjectURL(a.href);
+        document.body.removeChild(a);
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
+  }
+
   const ModalConfirmDelete = ({ id }: { id: string }) => {
     return (
       <Modal
@@ -505,7 +531,14 @@ function MyAccount() {
                                   Ficha do Paciente
                                 </a>
                               </li>
-                              <li>
+                              <li
+                                onClick={() => {
+                                  downloadFile(
+                                    u.qrcode_url,
+                                    `qrcode-${u.email}.png`,
+                                  );
+                                }}
+                              >
                                 <a>Baixar QR Code</a>
                               </li>
                               <li>
