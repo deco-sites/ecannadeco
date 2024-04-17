@@ -31,6 +31,7 @@ export interface PublicProfile {
   association: Association;
   plan: string;
   documents: Document[];
+  associationDocuments: Document[];
 }
 
 const getPublicProfile = async (

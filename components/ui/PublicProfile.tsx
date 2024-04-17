@@ -16,6 +16,7 @@ function PublicProfileComponent(
     cids,
     plan,
     documents,
+    associationDocuments,
     avatar_photo,
     association,
     _id,
@@ -131,6 +132,34 @@ function PublicProfileComponent(
               </h2>
               <ul class="flex flex-col gap-2 w-full">
                 {documents.map((doc) => {
+                  return (
+                    <li>
+                      <a class="w-full" href={doc.file_url}>
+                        <div class="flex justify-between rounded-md bg-[#C8C8C8] w-full px-5 h-10 items-center">
+                          <div class="flex gap-2">
+                            <span class="text-[#8F8D8D]">
+                              <Icon id="Anexo" size={24} />
+                            </span>
+                            <span class="text-[#393939] font-semibold">
+                              {doc.title}
+                            </span>
+                          </div>
+                          <span class="text-[#8F8D8D] flex justify-end w-6">
+                            <Icon id="Download" height={19} />
+                          </span>
+                        </div>
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+            <div class="flex flex-col items-start w-full">
+              <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+                Documentos da {association.name}
+              </h2>
+              <ul class="flex flex-col gap-2 w-full">
+                {associationDocuments.map((doc) => {
                   return (
                     <li>
                       <a class="w-full" href={doc.file_url}>
