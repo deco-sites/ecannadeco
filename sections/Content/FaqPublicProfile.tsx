@@ -1,12 +1,14 @@
 import Header from "../../components/ui/SectionHeader.tsx";
 
+export interface Answer {
+  videoUrl?: string;
+  /** @format html */
+  text: string;
+}
+
 export interface Question {
   question: string;
-  answer: {
-    videoUrl: string;
-    /** @format html */
-    text: string;
-  };
+  answer: Answer;
 }
 
 export interface Props {
@@ -57,17 +59,18 @@ function Question({ question, answer }: Question) {
         {question}
       </summary>
       <div class="collapse-content">
-        <div class="w-full flex justify-center mb-4">
-          <iframe
-            class="w-[370px] h-[210px]"
-            src={answer.videoUrl}
-            title="YouTube video player"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-          />
-        </div>
-
+        {answer.videoUrl && (
+          <div class="w-full flex justify-center mb-4">
+            <iframe
+              class="w-[370px] h-[210px]"
+              src={answer.videoUrl}
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            />
+          </div>
+        )}
         <div
           dangerouslySetInnerHTML={{ __html: answer.text }}
         />
