@@ -133,9 +133,10 @@ function ConfirmSignup() {
                         </span>
                       </li>
                       <li
-                        class={`flex gap-3 items-center ${
-                          plan.name == "FREE" && "opacity-20"
-                        }`}
+                        // class={`flex gap-3 items-center ${
+                        //   plan.name == "FREE" && "opacity-20"
+                        // }`}
+                        class={`flex gap-3 items-center`}
                       >
                         <Icon
                           class="text-primary"
@@ -147,9 +148,10 @@ function ConfirmSignup() {
                         </span>
                       </li>
                       <li
-                        class={`flex gap-3 items-center ${
-                          plan.name == "FREE" && "opacity-20"
-                        }`}
+                        // class={`flex gap-3 items-center ${
+                        //   plan.name == "FREE" && "opacity-20"
+                        // }`}
+                        class={`flex gap-3 items-center`}
                       >
                         <Icon
                           class="text-primary"
