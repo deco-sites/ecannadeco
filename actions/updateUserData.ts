@@ -29,6 +29,8 @@ const updateUserData = async (
   };
 
   const updateProfileBody = {
+    name,
+    cpf,
     avatar_photo,
     cids,
     address,
