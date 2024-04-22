@@ -2,6 +2,11 @@ import { Product } from "deco-sites/ecannadeco/components/ui/CheckoutUpsellModal
 
 export interface Props {
   token: string;
+  params?: {
+    status?: string;
+    page: number;
+    limit: number;
+  };
 }
 
 export interface Sku {
@@ -30,9 +35,6 @@ export interface Order {
     sku: Sku;
     quantity: number;
   }[];
-  user_data?: {
-    email: string;
-  };
 }
 
 export interface PaginationOrderResponse {
@@ -40,14 +42,27 @@ export interface PaginationOrderResponse {
   totalDocs: number;
   totalPages: number;
   page: number;
+  limit?: number;
+  pagingCounter?: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
 }
 
-const getUserOrders = async (
-  { token }: Props,
+const adminGetOrders = async (
+  { token, params }: Props,
   _req: Request,
 ): Promise<PaginationOrderResponse> => {
+  let url = `http://localhost:3000/admin/orders/`;
+
+  if (params) {
+    const query = `?limit=${params.limit}&page=${params.page}${
+      params.status && `&status=${params.status}`
+    }`;
+    url = `http://localhost:3000/admin/orders${query}`;
+  }
+
   try {
-    const response = await fetch("http://localhost:3000/orders/", {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -63,4 +78,4 @@ const getUserOrders = async (
   }
 };
 
-export default getUserOrders;
+export default adminGetOrders;
