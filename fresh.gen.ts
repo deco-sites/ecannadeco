@@ -10,6 +10,7 @@ import * as $AddToCartButton_vnda from "./islands/AddToCartButton/vnda.tsx";
 import * as $AddToCartButton_vtex from "./islands/AddToCartButton/vtex.tsx";
 import * as $AddToCartButton_wake from "./islands/AddToCartButton/wake.tsx";
 import * as $AdminNewDocModal from "./islands/AdminNewDocModal.tsx";
+import * as $AdminOrders from "./islands/AdminOrders.tsx";
 import * as $AssociationAdmin from "./islands/AssociationAdmin.tsx";
 import * as $CheckoutForm from "./islands/CheckoutForm.tsx";
 import * as $CheckoutUpsellModal from "./islands/CheckoutUpsellModal.tsx";
@@ -36,12 +37,14 @@ import * as $Newsletter from "./islands/Newsletter.tsx";
 import * as $OutOfStock from "./islands/OutOfStock.tsx";
 import * as $PreSignupUsersModal from "./islands/PreSignupUsersModal.tsx";
 import * as $PrivatePageControl from "./islands/PrivatePageControl.tsx";
+import * as $PrivatePageControlAdmin from "./islands/PrivatePageControlAdmin.tsx";
 import * as $ProductImageZoom from "./islands/ProductImageZoom.tsx";
 import * as $PublicPageControl from "./islands/PublicPageControl.tsx";
 import * as $SearchControls from "./islands/SearchControls.tsx";
 import * as $ShippingSimulation from "./islands/ShippingSimulation.tsx";
 import * as $ShowMore from "./islands/ShowMore.tsx";
 import * as $SignInForm from "./islands/SignInForm.tsx";
+import * as $SignInFormAdmin from "./islands/SignInFormAdmin.tsx";
 import * as $SignUpForm from "./islands/SignUpForm.tsx";
 import * as $Signout from "./islands/Signout.tsx";
 import * as $SliderJS from "./islands/SliderJS.tsx";
@@ -63,6 +66,7 @@ const manifest = {
     "./islands/AddToCartButton/vtex.tsx": $AddToCartButton_vtex,
     "./islands/AddToCartButton/wake.tsx": $AddToCartButton_wake,
     "./islands/AdminNewDocModal.tsx": $AdminNewDocModal,
+    "./islands/AdminOrders.tsx": $AdminOrders,
     "./islands/AssociationAdmin.tsx": $AssociationAdmin,
     "./islands/CheckoutForm.tsx": $CheckoutForm,
     "./islands/CheckoutUpsellModal.tsx": $CheckoutUpsellModal,
@@ -89,12 +93,14 @@ const manifest = {
     "./islands/OutOfStock.tsx": $OutOfStock,
     "./islands/PreSignupUsersModal.tsx": $PreSignupUsersModal,
     "./islands/PrivatePageControl.tsx": $PrivatePageControl,
+    "./islands/PrivatePageControlAdmin.tsx": $PrivatePageControlAdmin,
     "./islands/ProductImageZoom.tsx": $ProductImageZoom,
     "./islands/PublicPageControl.tsx": $PublicPageControl,
     "./islands/SearchControls.tsx": $SearchControls,
     "./islands/ShippingSimulation.tsx": $ShippingSimulation,
     "./islands/ShowMore.tsx": $ShowMore,
     "./islands/SignInForm.tsx": $SignInForm,
+    "./islands/SignInFormAdmin.tsx": $SignInFormAdmin,
     "./islands/SignUpForm.tsx": $SignUpForm,
     "./islands/Signout.tsx": $Signout,
     "./islands/SliderJS.tsx": $SliderJS,
