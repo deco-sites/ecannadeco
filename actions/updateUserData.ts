@@ -13,19 +13,19 @@ export interface Props {
     neighborhood: string;
     city: string;
     state: string;
-    addressType: "BILLING" | "SHIPPING";
+    addressType: 'BILLING' | 'SHIPPING';
   };
 }
 
 const updateUserData = async (
   props: Props,
-  _req: Request,
+  _req: Request
 ): Promise<unknown | null> => {
   const { token, avatar_photo, name, cpf, address, cids, phone } = props;
 
   const updateCognitoUserBody = {
     name,
-    "custom:cpfcnpj": cpf,
+    'custom:cpfcnpj': cpf,
   };
 
   const updateProfileBody = {
@@ -38,31 +38,31 @@ const updateUserData = async (
   };
 
   try {
-    const responseUpdateCognito = await fetch("http://localhost:3000/auth/me", {
-      method: "PUT",
-      body: JSON.stringify(updateCognitoUserBody),
-      headers: {
-        Authorization: token,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const resCognito = await responseUpdateCognito.json();
-
-    console.log({ resCognito });
-
-    const responseUpdateProfile = await fetch("http://localhost:3000/profile", {
-      method: "PUT",
+    const responseUpdateProfile = await fetch('http://localhost:3000/profile', {
+      method: 'PUT',
       body: JSON.stringify(updateProfileBody),
       headers: {
         Authorization: token,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
 
     const resProfile = await responseUpdateProfile.json();
 
     console.log({ resProfile });
+
+    const responseUpdateCognito = await fetch('http://localhost:3000/auth/me', {
+      method: 'PUT',
+      body: JSON.stringify(updateCognitoUserBody),
+      headers: {
+        Authorization: token,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const resCognito = await responseUpdateCognito.json();
+
+    console.log({ resCognito });
 
     return { resProfile, resCognito };
   } catch (e) {
