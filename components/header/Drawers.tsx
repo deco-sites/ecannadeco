@@ -75,7 +75,10 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
       localStorage.getItem("AccessToken") == ""
     ) {
       menu.items = menu.publicItems || [];
-    } else if (localStorage.getItem("AssociationAdmin")) {
+    } else if (
+      localStorage.getItem("AssociationAdmin") &&
+      localStorage.getItem("AssociationAdmin") != ""
+    ) {
       if (!menu.items.find((i) => i.name === "Admin Associação")) {
         menu.items[menu.items.length] = {
           "@type": "SiteNavigationElement",
