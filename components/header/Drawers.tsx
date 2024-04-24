@@ -70,7 +70,10 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
 
   //if user is not loggedin, use the public navitems in the menu
   if (IS_BROWSER) {
-    if (localStorage.getItem("AccessToken") == "") {
+    if (
+      !localStorage.getItem("AccessToken") ||
+      localStorage.getItem("AccessToken") == ""
+    ) {
       menu.items = menu.publicItems || [];
     } else if (localStorage.getItem("AssociationAdmin")) {
       if (!menu.items.find((i) => i.name === "Admin Associação")) {
