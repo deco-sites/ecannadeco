@@ -1,5 +1,5 @@
 import { clx } from "../../sdk/clx.ts";
-import { Section } from "deco/blocks/section.ts";
+import type { Section } from "deco/blocks/section.ts";
 import type { ComponentChildren } from "preact";
 import { flex } from "../../constants.tsx";
 

@@ -10,6 +10,7 @@ import type { ComponentChildren } from "preact";
 import { lazy, Suspense } from "preact/compat";
 import type { Logo } from "./Header.tsx";
 import Image from "apps/website/components/Image.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 const Menu = lazy(() => import("../../components/header/Menu.tsx"));
 const Searchbar = lazy(() => import("../../components/search/Searchbar.tsx"));
@@ -68,15 +69,17 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
   const { displayCart, displayMenu, displaySearchDrawer, user } = useUI();
 
   //if user is not loggedin, use the public navitems in the menu
-  if (localStorage.getItem("AccessToken") == "") {
-    menu.items = menu.publicItems || [];
-  } else if (localStorage.getItem("AssociationAdmin")) {
-    if (!menu.items.find((i) => i.name === "Admin Associação")) {
-      menu.items[menu.items.length] = {
-        "@type": "SiteNavigationElement",
-        name: "Admin Associação",
-        url: "/admin/associacao",
-      };
+  if (IS_BROWSER) {
+    if (localStorage.getItem("AccessToken") == "") {
+      menu.items = menu.publicItems || [];
+    } else if (localStorage.getItem("AssociationAdmin")) {
+      if (!menu.items.find((i) => i.name === "Admin Associação")) {
+        menu.items[menu.items.length] = {
+          "@type": "SiteNavigationElement",
+          name: "Admin Associação",
+          url: "/admin/associacao",
+        };
+      }
     }
   }
 
