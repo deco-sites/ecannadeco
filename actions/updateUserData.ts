@@ -39,7 +39,7 @@ const updateUserData = async (
 
   try {
     const responseUpdateProfile = await fetch(
-      "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//profile",
+      "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//profile",
       {
         method: "PUT",
         body: JSON.stringify(updateProfileBody),
@@ -55,7 +55,7 @@ const updateUserData = async (
     console.log({ resProfile });
 
     const responseUpdateCognito = await fetch(
-      "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth/me",
+      "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth/me",
       {
         method: "PUT",
         body: JSON.stringify(updateCognitoUserBody),

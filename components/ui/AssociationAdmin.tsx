@@ -146,7 +146,7 @@ function MyAccount() {
 
       try {
         const response = await fetch(
-          "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//files",
+          "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//files",
           {
             method: "POST",
             body: formData,

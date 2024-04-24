@@ -13,7 +13,7 @@ function PublicPageControl(props: Props) {
   async function isLogged({ accessToken }: { accessToken: string }) {
     try {
       const response = await fetch(
-        "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth/me",
+        "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth/me",
         {
           method: "GET",
           headers: {

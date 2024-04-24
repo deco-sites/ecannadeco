@@ -34,7 +34,7 @@ const checkoutv2 = async (
 
   try {
     const response = await fetch(
-      "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//checkout/v2",
+      "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//checkout/v2",
       {
         method: "POST",
         headers: {

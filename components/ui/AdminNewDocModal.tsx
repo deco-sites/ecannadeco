@@ -44,11 +44,11 @@ const AdminNewDocModal = (
 
     if (createType === "user") {
       url =
-        "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//documents/admin/user";
+        "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//documents/admin/user";
       formData.append("user", userToAdminCreateDoc.value._id);
     } else if (createType === "association") {
       url =
-        "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//documents/admin/association";
+        "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//documents/admin/association";
       formData.append("association", associationToAdminCreateDoc.value._id);
     }
 

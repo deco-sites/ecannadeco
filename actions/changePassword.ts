@@ -12,7 +12,7 @@ const changePassword = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth/change-password",
+      "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth/change-password",
       {
         method: "PUT",
         body: JSON.stringify(body),

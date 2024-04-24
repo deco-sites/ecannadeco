@@ -8,7 +8,7 @@ const getAssociation = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      `http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//associations/${id}`,
+      `http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//associations/${id}`,
       {
         method: "GET",
         headers: {
