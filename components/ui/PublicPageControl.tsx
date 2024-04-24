@@ -3,6 +3,7 @@
  */
 
 import { useEffect } from "preact/hooks";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   redirectTo?: string;
@@ -32,7 +33,11 @@ function PublicPageControl(props: Props) {
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
-    const accessToken = localStorage.getItem("AccessToken") || "";
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
 
     isLogged({ accessToken });
   }, []); // Passando um array de dependências vazio

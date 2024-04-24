@@ -1,5 +1,6 @@
 import { invoke } from "../../runtime.ts";
 import { useState } from "preact/hooks";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   formTitle?: string;
@@ -25,10 +26,12 @@ function SignInFormAdmin({ formTitle }: Props) {
           { email, password },
         ) as SignInResponse;
       console.log({ data });
-      localStorage.setItem(
-        "AdminAccessToken",
-        data.AuthenticationResult.AccessToken,
-      );
+      if (IS_BROWSER) {
+        localStorage.setItem(
+          "AdminAccessToken",
+          data.AuthenticationResult.AccessToken,
+        );
+      }
       setLoading(false);
       window.location.href = "/sys/admin/orders";
       setEmail("");

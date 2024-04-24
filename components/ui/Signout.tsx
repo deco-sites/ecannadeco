@@ -4,6 +4,7 @@
 // import type { SectionProps } from "deco/types.ts";
 // import { useUI } from "../../sdk/useUI.ts";
 import { useEffect } from "preact/hooks";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   redirectTo?: string;
@@ -11,7 +12,11 @@ export interface Props {
 
 function Signout(props: Props) {
   useEffect(() => {
-    const token = localStorage.getItem("AccessToken");
+    let token = "";
+
+    if (IS_BROWSER) {
+      token = localStorage.getItem("AccessToken") || "";
+    }
 
     try {
       fetch("http://localhost:3000/auth/sign-out", {
@@ -22,7 +27,9 @@ function Signout(props: Props) {
         },
       }).then((r) => {
         // apagar accress token
-        localStorage.setItem("AccessToken", "");
+        if (IS_BROWSER) {
+          localStorage.setItem("AccessToken", "");
+        }
         window.location.href = "/";
       });
     } catch (e) {

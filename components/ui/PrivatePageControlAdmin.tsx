@@ -4,6 +4,7 @@
 // import type { SectionProps } from "deco/types.ts";
 import { useUI } from "../../sdk/useUI.ts";
 import { useEffect, useState } from "preact/hooks";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   redirectTo?: string;
@@ -37,19 +38,27 @@ function PrivatePageControl(props: Props) {
 
       if (!username) {
         user.value = null;
-        localStorage.setItem("AdminAccessToken", "");
+        if (IS_BROWSER) {
+          localStorage.setItem("AdminAccessToken", "");
+        }
         window.location.href = "/";
       }
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
-      localStorage.setItem("AdminAccessToken", "");
+      if (IS_BROWSER) {
+        localStorage.setItem("AdminAccessToken", "");
+      }
       window.location.href = "/";
     }
   }
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
-    const accessToken = localStorage.getItem("AdminAccessToken") || "";
+    const accessToken = "";
+
+    if (IS_BROWSER) {
+      localStorage.getItem("AccessToken") || "";
+    }
 
     isLogged({ accessToken });
   }, []); // Passando um array de dependências vazio

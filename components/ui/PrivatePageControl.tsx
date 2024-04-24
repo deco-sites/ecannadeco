@@ -4,6 +4,7 @@
 // import type { SectionProps } from "deco/types.ts";
 import { useUI } from "../../sdk/useUI.ts";
 import { useEffect, useState } from "preact/hooks";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   redirectTo?: string;
@@ -29,13 +30,15 @@ function PrivatePageControl(props: Props) {
 
       const username = response.data.Username;
 
-      //control to display association admin link in menu
-      if (response.dataProfile && response.dataProfile.association) {
-        if (response.dataProfile.association.user == username) {
-          localStorage.setItem(
-            "AssociationAdmin",
-            response.dataProfile.association._id,
-          );
+      if (IS_BROWSER) {
+        //control to display association admin link in menu
+        if (response.dataProfile && response.dataProfile.association) {
+          if (response.dataProfile.association.user == username) {
+            localStorage.setItem(
+              "AssociationAdmin",
+              response.dataProfile.association._id,
+            );
+          }
         }
       }
 
@@ -55,11 +58,13 @@ function PrivatePageControl(props: Props) {
 
       if (!username) {
         user.value = null;
-        localStorage.setItem("AccessToken", "");
-        localStorage.setItem(
-          "AssociationAdmin",
-          "",
-        );
+        if (IS_BROWSER) {
+          localStorage.setItem("AccessToken", "");
+          localStorage.setItem(
+            "AssociationAdmin",
+            "",
+          );
+        }
         window.location.href = "/";
       }
 
@@ -76,18 +81,24 @@ function PrivatePageControl(props: Props) {
       }
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
-      localStorage.setItem("AccessToken", "");
-      localStorage.setItem(
-        "AssociationAdmin",
-        "",
-      );
+      if (IS_BROWSER) {
+        localStorage.setItem("AccessToken", "");
+        localStorage.setItem(
+          "AssociationAdmin",
+          "",
+        );
+      }
       window.location.href = "/";
     }
   }
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
-    const accessToken = localStorage.getItem("AccessToken") || "";
+    const accessToken = "";
+
+    if (IS_BROWSER) {
+      localStorage.getItem("AccessToken") || "";
+    }
 
     isLogged({ accessToken });
   }, []); // Passando um array de dependências vazio

@@ -1,6 +1,7 @@
 import { invoke } from "../../runtime.ts";
 import { useState } from "preact/hooks";
 import StepTimeline from "../../components/ui/StepTimeline.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   formTitle?: string;
@@ -48,13 +49,14 @@ function SignUpForm({ formTitle }: Props) {
           );
           setLoading(false);
         } else {
-          localStorage.setItem("emailConfirm", email);
-          localStorage.setItem("cpfUserAsaas", cpf);
-          localStorage.setItem("nameUserAsaas", name);
-
-          if (association) {
-            localStorage.setItem("associationSignup", association._id);
-            localStorage.setItem("nameUserAssociationSignup", name);
+          if (IS_BROWSER) {
+            localStorage.setItem("emailConfirm", email);
+            localStorage.setItem("cpfUserAsaas", cpf);
+            localStorage.setItem("nameUserAsaas", name);
+            if (association) {
+              localStorage.setItem("associationSignup", association._id);
+              localStorage.setItem("nameUserAssociationSignup", name);
+            }
           }
 
           setLoading(false);

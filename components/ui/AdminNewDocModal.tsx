@@ -4,6 +4,7 @@ import { useState } from "preact/hooks";
 import { h } from "preact";
 import { invoke } from "../../runtime.ts";
 import Icon from "./Icon.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   createType: "association" | "user";
@@ -15,6 +16,10 @@ const AdminNewDocModal = (
   const [file, setFile] = useState<File>();
   const [docTitle, setDocTitle] = useState("");
   const [docCategory, setDocCategory] = useState("");
+  const [accessToken, setAccessToken] = useState(
+    IS_BROWSER ? (localStorage.getItem("AccessToken") || "") : "",
+  );
+
   const {
     displayAssociationAdminNewDoc,
     userToAdminCreateDoc,
@@ -61,7 +66,7 @@ const AdminNewDocModal = (
           body: formData,
           headers: {
             ContentType: "multipart/form-data",
-            Authorization: localStorage.getItem("AccessToken") || "",
+            Authorization: accessToken,
           },
         },
       );

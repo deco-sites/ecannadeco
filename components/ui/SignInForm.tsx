@@ -1,5 +1,6 @@
 import { invoke } from "../../runtime.ts";
 import { useState } from "preact/hooks";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   formTitle?: string;
@@ -27,10 +28,12 @@ function SignInForm({ formTitle }: Props) {
           { email, password },
         ) as SignInResponse;
       console.log({ data });
-      localStorage.setItem(
-        "AccessToken",
-        data.data.AuthenticationResult.AccessToken,
-      );
+      if (IS_BROWSER) {
+        localStorage.setItem(
+          "AccessToken",
+          data.data.AuthenticationResult.AccessToken,
+        );
+      }
       setLoading(false);
       window.location.href = "/meus-dados";
       setEmail("");
