@@ -15,7 +15,7 @@ function PrivatePageControl(props: Props) {
 
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
-      // window.location.href = "/";
+      window.location.href = "/";
     }
 
     try {
@@ -70,7 +70,7 @@ function PrivatePageControl(props: Props) {
             "",
           );
         }
-        // window.location.href = "/";
+        window.location.href = "/";
       }
 
       if (!response.dataProfile.updatedData) {
@@ -93,7 +93,7 @@ function PrivatePageControl(props: Props) {
           "",
         );
       }
-      // window.location.href = "/";
+      window.location.href = "/";
     }
   }
 
