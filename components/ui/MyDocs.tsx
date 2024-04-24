@@ -203,7 +203,7 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/documents",
+        "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/documents",
         {
           method: "POST",
           body: formData,

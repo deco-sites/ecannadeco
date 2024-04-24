@@ -10,7 +10,7 @@ const confirmForgotPassword = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "http://localhost:3000/auth/forgot-password/confirm",
+      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/forgot-password/confirm",
       {
         method: "POST",
         headers: {

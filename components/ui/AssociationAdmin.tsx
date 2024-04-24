@@ -158,7 +158,7 @@ function MyAccount() {
 
       try {
         const response = await fetch(
-          "http://localhost:3000/files",
+          "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/files",
           {
             method: "POST",
             body: formData,

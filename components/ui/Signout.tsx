@@ -20,7 +20,7 @@ function Signout(props: Props) {
 
     try {
       fetch(
-        "http://localhost:3000/auth/sign-out",
+        "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/sign-out",
         {
           method: "POST",
           headers: {

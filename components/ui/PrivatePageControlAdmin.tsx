@@ -20,7 +20,7 @@ function PrivatePageControl(props: Props) {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/v1/admin/me",
+        "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/v1/admin/me",
         {
           method: "GET",
           headers: {

@@ -43,10 +43,12 @@ const AdminNewDocModal = (
     let url = "";
 
     if (createType === "user") {
-      url = "http://localhost:3000/documents/admin/user";
+      url =
+        "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/documents/admin/user";
       formData.append("user", userToAdminCreateDoc.value._id);
     } else if (createType === "association") {
-      url = "http://localhost:3000/documents/admin/association";
+      url =
+        "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/documents/admin/association";
       formData.append("association", associationToAdminCreateDoc.value._id);
     }
 

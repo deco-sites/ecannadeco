@@ -38,27 +38,33 @@ const updateUserData = async (
   };
 
   try {
-    const responseUpdateProfile = await fetch("http://localhost:3000/profile", {
-      method: "PUT",
-      body: JSON.stringify(updateProfileBody),
-      headers: {
-        Authorization: token,
-        "Content-Type": "application/json",
+    const responseUpdateProfile = await fetch(
+      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/profile",
+      {
+        method: "PUT",
+        body: JSON.stringify(updateProfileBody),
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
 
     const resProfile = await responseUpdateProfile.json();
 
     console.log({ resProfile });
 
-    const responseUpdateCognito = await fetch("http://localhost:3000/auth/me", {
-      method: "PUT",
-      body: JSON.stringify(updateCognitoUserBody),
-      headers: {
-        Authorization: token,
-        "Content-Type": "application/json",
+    const responseUpdateCognito = await fetch(
+      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/me",
+      {
+        method: "PUT",
+        body: JSON.stringify(updateCognitoUserBody),
+        headers: {
+          Authorization: token,
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
 
     const resCognito = await responseUpdateCognito.json();
 

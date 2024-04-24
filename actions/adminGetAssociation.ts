@@ -18,7 +18,7 @@ const getAssociation = async (
 ): Promise<AssociationAdmin> => {
   try {
     const response = await fetch(
-      `http://localhost:3000/associations/admin/${id}`,
+      `http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/associations/admin/${id}`,
       {
         method: "GET",
         headers: {

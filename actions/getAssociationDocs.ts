@@ -9,7 +9,7 @@ const getDocs = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      `http://localhost:3000/documents/association/${associationId}`,
+      `http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/documents/association/${associationId}`,
       {
         method: "GET",
         headers: {
