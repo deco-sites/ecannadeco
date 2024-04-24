@@ -35,13 +35,15 @@ const getAssociation = async (
   _req: Request,
 ): Promise<AssociationUsersResponse> => {
   try {
-    let url = `http://localhost:3000/profile/admin`;
+    let url =
+      `http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//profile/admin`;
 
     if (params) {
       const query = `?limit=${params.limit}&page=${params.page}${
         params.email && `&email=${params.email}`
       }`;
-      url = `http://localhost:3000/profile/admin${query}`;
+      url =
+        `http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//profile/admin${query}`;
     }
 
     const response = await fetch(url, {

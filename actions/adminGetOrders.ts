@@ -52,13 +52,15 @@ const adminGetOrders = async (
   { token, params }: Props,
   _req: Request,
 ): Promise<PaginationOrderResponse> => {
-  let url = `http://localhost:3000/admin/orders/`;
+  let url =
+    `http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//admin/orders/`;
 
   if (params) {
     const query = `?limit=${params.limit}&page=${params.page}${
       params.status && `&status=${params.status}`
     }`;
-    url = `http://localhost:3000/admin/orders${query}`;
+    url =
+      `http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//admin/orders${query}`;
   }
 
   try {

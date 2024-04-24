@@ -19,13 +19,16 @@ function Signout(props: Props) {
     }
 
     try {
-      fetch("http://localhost:3000/auth/sign-out", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token || "",
+      fetch(
+        "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth/sign-out",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token || "",
+          },
         },
-      }).then((r) => {
+      ).then((r) => {
         // apagar accress token
         if (IS_BROWSER) {
           localStorage.setItem("AccessToken", "");

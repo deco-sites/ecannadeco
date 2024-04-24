@@ -7,15 +7,18 @@ const forgotPassword = async (
   _req: Request,
 ): Promise<unknown | null> => {
   try {
-    const response = await fetch("http://localhost:3000/auth/forgot-password", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth/forgot-password",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: props.email,
+        }),
       },
-      body: JSON.stringify({
-        email: props.email,
-      }),
-    });
+    );
 
     const res = await response.json();
     return res;

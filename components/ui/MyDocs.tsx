@@ -188,14 +188,17 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
     formData.append("category", docCategory);
 
     try {
-      const response = await fetch("http://localhost:3000/documents", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: localStorage.getItem("AccessToken") || "",
-          ContentType: "multipart/form-data",
+      const response = await fetch(
+        "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//documents",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: localStorage.getItem("AccessToken") || "",
+            ContentType: "multipart/form-data",
+          },
         },
-      });
+      );
       const r = await response.json();
 
       // console.log({ r });

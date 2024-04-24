@@ -19,14 +19,17 @@ function PrivatePageControl(props: Props) {
     }
 
     try {
-      const response = await fetch("http://localhost:3000/v1/admin/me", {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json",
-          Authorization: accessToken,
+      const response = await fetch(
+        "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//v1/admin/me",
+        {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            accept: "application/json",
+            Authorization: accessToken,
+          },
         },
-      });
+      );
 
       console.log({ accessToken });
 

@@ -10,7 +10,7 @@ const deleteAssociationDocument = async (
   console.log({ docId: props.docId });
   try {
     const response = await fetch(
-      `http://localhost:3000/documents/association/${props.docId}`,
+      `http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//documents/association/${props.docId}`,
       {
         method: "DELETE",
         headers: {

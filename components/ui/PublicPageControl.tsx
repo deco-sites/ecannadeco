@@ -12,14 +12,17 @@ export interface Props {
 function PublicPageControl(props: Props) {
   async function isLogged({ accessToken }: { accessToken: string }) {
     try {
-      const response = await fetch("http://localhost:3000/auth/me", {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-          accept: "application/json",
-          Authorization: accessToken,
+      const response = await fetch(
+        "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth/me",
+        {
+          method: "GET",
+          headers: {
+            "content-type": "application/json",
+            accept: "application/json",
+            Authorization: accessToken,
+          },
         },
-      }).then((r) => r.json());
+      ).then((r) => r.json());
 
       const username = response.data.Username;
 

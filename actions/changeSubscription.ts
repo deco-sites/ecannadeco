@@ -27,14 +27,17 @@ const changeSubscription = async (
   const params = { ...props };
   delete params.token;
   try {
-    const response = await fetch("http://localhost:3000/checkout/upgrade", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: props.token!,
+    const response = await fetch(
+      "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//checkout/upgrade",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: props.token!,
+        },
+        body: JSON.stringify({ ...params }),
       },
-      body: JSON.stringify({ ...params }),
-    });
+    );
 
     const res = await response.json();
     return res;

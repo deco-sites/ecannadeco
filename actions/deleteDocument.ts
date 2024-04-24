@@ -10,7 +10,7 @@ const deleteDocument = async (
   console.log({ docId: props.docId });
   try {
     const response = await fetch(
-      `http://localhost:3000/documents/${props.docId}`,
+      `http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//documents/${props.docId}`,
       {
         method: "DELETE",
         headers: {

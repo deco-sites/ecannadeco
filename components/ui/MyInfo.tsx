@@ -105,14 +105,17 @@ function MyInfo() {
       formData.append("category", "selfie_photo");
 
       try {
-        const response = await fetch("http://localhost:3000/files", {
-          method: "POST",
-          body: formData,
-          headers: {
-            Authorization: localStorage.getItem("AccessToken") || "",
-            ContentType: "multipart/form-data",
+        const response = await fetch(
+          "http://http://production.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//files",
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: localStorage.getItem("AccessToken") || "",
+              ContentType: "multipart/form-data",
+            },
           },
-        });
+        );
         const r = await response.json();
 
         setUserImg(r.url);
