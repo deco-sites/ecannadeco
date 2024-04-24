@@ -2,6 +2,7 @@ import FormWrap from "./FormWrap.tsx";
 import { useState } from "preact/hooks";
 import StepTimeline from "../../components/ui/StepTimeline.tsx";
 import { invoke } from "../../runtime.ts";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 function ConfirmSignup() {
   const [code, setCode] = useState<string>("");
@@ -9,12 +10,17 @@ function ConfirmSignup() {
   const [sending, setSending] = useState(false);
   const [codeSent, setCodeSent] = useState(false);
   const [timer, setTimer] = useState(30);
-  const [association, setAssociation] = useState(
-    localStorage.getItem("associationSignup") || "",
-  );
-  const [email, setEmail] = useState(
-    localStorage.getItem("emailConfirm") || "",
-  );
+  const [association, setAssociation] = useState("");
+  const [email, setEmail] = useState("");
+
+  if (IS_BROWSER) {
+    setAssociation(
+      localStorage.getItem("associationSignup") || "",
+    );
+    setEmail(
+      localStorage.getItem("emailConfirm") || "",
+    );
+  }
 
   const resendConfirmationCode = async () => {
     setSending(true);

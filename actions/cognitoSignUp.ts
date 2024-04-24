@@ -10,21 +10,18 @@ const signUpCognito = async (
   _req: Request,
 ): Promise<unknown | null> => {
   try {
-    const response = await fetch(
-      "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: props.email,
-          password: props.password,
-          name: props.name,
-          cpf: props.cpf,
-        }),
+    const response = await fetch("http://localhost:3000/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({
+        email: props.email,
+        password: props.password,
+        name: props.name,
+        cpf: props.cpf,
+      }),
+    });
 
     const res = await response.json();
     return res;

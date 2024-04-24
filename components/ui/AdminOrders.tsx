@@ -9,6 +9,7 @@ import PageWrap from "./PageWrap.tsx";
 import OrderStatus from "./OrderStatus.tsx";
 import Icon from "deco-sites/ecannadeco/components/ui/Icon.tsx";
 import { format } from "datetime";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 import type {
   Order,
@@ -68,9 +69,15 @@ function AdminOrders() {
   useEffect(() => {
     setIsLoading(true);
 
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AdminAccessToken") || "";
+    }
+
     try {
       invoke["deco-sites/ecannadeco"].actions.adminGetOrders({
-        token: localStorage.getItem("AdminAccessToken") || "",
+        token: accessToken,
       }).then((r) => {
         setPage(r.page);
         setTotalPages(r.totalPages);
@@ -92,7 +99,12 @@ function AdminOrders() {
   }, []); // Passando um array de dependências vazio
 
   const handleGetOrders = (pageParam: number, status?: string) => {
-    const accessToken = localStorage.getItem("AdminAccessToken") || "";
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AdminAccessToken") || "";
+    }
+
     setIsLoading(true);
 
     try {

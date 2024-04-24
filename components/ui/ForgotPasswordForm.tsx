@@ -1,6 +1,7 @@
 import { invoke } from "../../runtime.ts";
 import { useState } from "preact/hooks";
 import StepTimeline from "./StepTimeline.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   formTitle?: string;
@@ -33,7 +34,9 @@ function ForgotPasswordForm({ formTitle }: Props) {
         );
         setLoading(false);
       } else {
-        localStorage.setItem("emailForgotPassword", email);
+        if (IS_BROWSER) {
+          localStorage.setItem("emailForgotPassword", email);
+        }
         setLoading(false);
         window.location.href = "/confirmar-recuperar-senha";
       }

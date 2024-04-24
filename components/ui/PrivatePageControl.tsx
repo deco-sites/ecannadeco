@@ -15,12 +15,12 @@ function PrivatePageControl(props: Props) {
 
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
-      window.location.href = "/";
+      // window.location.href = "/";
     }
 
     try {
       const response = await fetch(
-        "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//auth/me",
+        "http://localhost:3000/auth/me",
         {
           method: "GET",
           headers: {
@@ -32,6 +32,8 @@ function PrivatePageControl(props: Props) {
       ).then((r) => r.json());
 
       const username = response.data.Username;
+
+      console.log({ response });
 
       if (IS_BROWSER) {
         //control to display association admin link in menu
@@ -54,7 +56,7 @@ function PrivatePageControl(props: Props) {
         plan: response.dataProfile.plan,
       };
 
-      console.log({ userhere: user.value });
+      // console.log({ userhere: user.value });
 
       updatedData.value = response.dataProfile.updatedData;
       uploadedFile.value = response.dataProfile.uploadedFile;
@@ -68,7 +70,7 @@ function PrivatePageControl(props: Props) {
             "",
           );
         }
-        window.location.href = "/";
+        // window.location.href = "/";
       }
 
       if (!response.dataProfile.updatedData) {
@@ -91,17 +93,19 @@ function PrivatePageControl(props: Props) {
           "",
         );
       }
-      window.location.href = "/";
+      // window.location.href = "/";
     }
   }
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
-    const accessToken = "";
+    let accessToken = "";
 
     if (IS_BROWSER) {
-      localStorage.getItem("AccessToken") || "";
+      accessToken = localStorage.getItem("AccessToken") || "";
     }
+
+    console.log({ accessToken });
 
     isLogged({ accessToken });
   }, []); // Passando um array de dependências vazio

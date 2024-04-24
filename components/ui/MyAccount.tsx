@@ -14,6 +14,7 @@ import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
 import Slider from "../../components/ui/Slider.tsx";
 import { useUI } from "../../sdk/useUI.ts";
 import SliderJS from "../../islands/SliderJS.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export type Address = {
   cep: string;
@@ -40,7 +41,11 @@ function MyAccount() {
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
-    const accessToken = localStorage.getItem("AccessToken") || "";
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
 
     if (accessToken === "") {
       window.location.href = "/";
@@ -81,7 +86,7 @@ function MyAccount() {
       });
 
       const params = fetch(
-        `http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//v1/products/subscriptions`,
+        `http://localhost:3000/v1/products/subscriptions`,
       ).then(async (r) => {
         const c = await r.json();
         console.log({ plans: c.docs });
@@ -98,6 +103,12 @@ function MyAccount() {
   }, []); // Passando um array de dependências vazio
 
   const handleChangePassword = () => {
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+
     if ((confirmNewPassword !== newPassword) || (!currentPassword)) {
       alert(
         "Verifique os campos necessários para alterar a senha e tente novamente.",
@@ -107,7 +118,7 @@ function MyAccount() {
         setIsChanging(true);
 
         invoke["deco-sites/ecannadeco"].actions.changePassword({
-          token: localStorage.getItem("AccessToken") || "",
+          token: accessToken,
           body: {
             newPassword: confirmNewPassword,
             oldPassword: currentPassword,

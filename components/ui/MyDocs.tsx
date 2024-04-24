@@ -6,6 +6,7 @@ import { useEffect, useState } from "preact/hooks";
 import { useUI } from "../../sdk/useUI.ts";
 import { h } from "preact";
 import { invoke } from "../../runtime.ts";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface DocListType {
   _id: string;
@@ -25,10 +26,17 @@ const DocList = (
 
   const handleDelete = async ({ id }: { id: string }) => {
     setIsDeleting(true);
+
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+
     try {
       const r = await invoke["deco-sites/ecannadeco"].actions.deleteDocument({
         docId: id,
-        token: localStorage.getItem("AccessToken") || "",
+        token: accessToken,
       });
 
       const resp = r as { message?: string };
@@ -181,6 +189,12 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
   const handleCreate = async () => {
     setIsUploading(true);
 
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+
     const formData = new FormData();
 
     formData.append("file", file!);
@@ -189,12 +203,12 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
 
     try {
       const response = await fetch(
-        "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//documents",
+        "http://localhost:3000/documents",
         {
           method: "POST",
           body: formData,
           headers: {
-            Authorization: localStorage.getItem("AccessToken") || "",
+            Authorization: accessToken,
             ContentType: "multipart/form-data",
           },
         },
@@ -210,7 +224,7 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
       } else {
         //update uploadedFile flag state
         await invoke["deco-sites/ecannadeco"].actions.updateProfile({
-          token: localStorage.getItem("AccessToken") || "",
+          token: accessToken,
           body: { uploadedFile: true },
         });
 
@@ -288,10 +302,13 @@ function MyDocs() {
   const { displayNewDocModal } = useUI();
   const [isLoading, setIsLoading] = useState(true);
   const [docs, setDocs] = useState<DocListType[]>([]);
+  let accessToken = "";
+
+  if (IS_BROWSER) {
+    accessToken = localStorage.getItem("AccessToken") || "";
+  }
 
   const getDocuments = () => {
-    const accessToken = localStorage.getItem("AccessToken") || "";
-
     try {
       setIsLoading(true);
 

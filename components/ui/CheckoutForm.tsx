@@ -1,6 +1,7 @@
 import { invoke } from "../../runtime.ts";
 import { useState } from "preact/hooks";
 import Icon from "../../components/ui/Icon.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   formTitle?: string;
@@ -42,15 +43,21 @@ function CheckoutForm() {
   const [loading, setLoading] = useState<boolean>(false);
   const [termsAgree, setTermsAgree] = useState<boolean>(false);
   const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
+  let planSku = "";
+  let planName = "";
+  let planPrice = "";
+  let planPeriod = "";
 
-  setHolderEmail(localStorage.getItem("emailConfirm") || "");
-  setName(localStorage.getItem("nameUserAsaas") || "");
-  setCPF(localStorage.getItem("cpfUserAsaas") || "");
+  if (IS_BROWSER) {
+    setHolderEmail(localStorage.getItem("emailConfirm") || "");
+    setName(localStorage.getItem("nameUserAsaas") || "");
+    setCPF(localStorage.getItem("cpfUserAsaas") || "");
 
-  const planSku = localStorage.getItem("planSKU") || "";
-  const planName = localStorage.getItem("planName") || "";
-  const planPrice = localStorage.getItem("planPrice") || "";
-  const planPeriod = localStorage.getItem("planPeriod") || "";
+    planSku = localStorage.getItem("planSKU") || "";
+    planName = localStorage.getItem("planName") || "";
+    planPrice = localStorage.getItem("planPrice") || "";
+    planPeriod = localStorage.getItem("planPeriod") || "";
+  }
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
@@ -118,10 +125,12 @@ function CheckoutForm() {
           );
           setLoading(false);
         } else {
-          localStorage.setItem("planSKU", "");
-          localStorage.setItem("planName", "");
-          localStorage.setItem("planPrice", "");
-          localStorage.setItem("planPeriod", "");
+          if (IS_BROWSER) {
+            localStorage.setItem("planSKU", "");
+            localStorage.setItem("planName", "");
+            localStorage.setItem("planPrice", "");
+            localStorage.setItem("planPeriod", "");
+          }
 
           alert(
             "Assinatura criada! Agora, faça o login para acessar sua conta.",

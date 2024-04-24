@@ -10,7 +10,6 @@ import OrderStatus from "../../components/ui/OrderStatus.tsx";
 import { SavedCreditCard } from "../../components/ui/CheckoutUpsellModal.tsx";
 import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
 import { format } from "datetime";
-
 import type {
   Order,
   PaginationOrderResponse,
@@ -18,6 +17,7 @@ import type {
 import Slider from "../../components/ui/Slider.tsx";
 import { useUI } from "../../sdk/useUI.ts";
 import SliderJS from "../../islands/SliderJS.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 const OrderItem = (
   { name, value, created_at, status }: {
@@ -61,9 +61,15 @@ function MyOrders() {
   useEffect(() => {
     setIsLoading(true);
 
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+
     try {
       invoke["deco-sites/ecannadeco"].actions.getUserOrders({
-        token: localStorage.getItem("AccessToken") || "",
+        token: accessToken,
       }).then((r) => {
         const res = r as PaginationOrderResponse;
 

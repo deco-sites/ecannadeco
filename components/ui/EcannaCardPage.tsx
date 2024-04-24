@@ -12,6 +12,7 @@ import {
   SavedCreditCard,
 } from "../../components/ui/CheckoutUpsellModal.tsx";
 import { useUI } from "../../sdk/useUI.ts";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface UserData {
   data: { UserAttributes: { Name: string; Value: string }[] };
@@ -40,7 +41,11 @@ function EcannaCardPage({ cardSkeleton }: Props) {
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
-    const accessToken = localStorage.getItem("AccessToken") || "";
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
 
     if (accessToken === "") {
       window.location.href = "/";

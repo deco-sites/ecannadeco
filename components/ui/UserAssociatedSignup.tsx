@@ -4,6 +4,7 @@ import Image from "apps/website/components/Image.tsx";
 import Icon from "./Icon.tsx";
 import { invoke } from "../../runtime.ts";
 import Loading from "../../components/daisy/Loading.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export type Association = {
   cnpj: string;
@@ -15,15 +16,19 @@ function UserAssociatedSignup() {
   const [loading, setLoading] = useState(true);
   const [associationName, setAssociationName] = useState("");
   const [associationLogo, setAssociationLogo] = useState("");
-  const [userName, setUserName] = useState(
-    localStorage.getItem("nameUserAssociationSignup"),
-  );
+  const [userName, setUserName] = useState("");
+  let associationSignup = "";
+
+  if (IS_BROWSER) {
+    setUserName(localStorage.getItem("nameUserAssociationSignup") || "");
+    associationSignup = localStorage.getItem("associationSignup") || "";
+  }
 
   useEffect(() => {
     setLoading(true);
     try {
       invoke["deco-sites/ecannadeco"].actions.getAssociation({
-        id: localStorage.getItem("associationSignup") || "",
+        id: associationSignup,
       }).then((r) => {
         const resp = r as Association;
         setAssociationName(resp.name);
@@ -38,7 +43,9 @@ function UserAssociatedSignup() {
   }, []); // Passando um array de dependências vazio
 
   const handleProceed = () => {
-    localStorage.setItem("associationSignup", "");
+    if (IS_BROWSER) {
+      localStorage.setItem("associationSignup", "");
+    }
     window.location.href = "/entrar";
   };
 

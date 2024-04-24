@@ -10,6 +10,7 @@ import { h } from "preact";
 import { Props as UpdateDataProps } from "../../actions/updateUserData.ts";
 import Icon from "../../components/ui/Icon.tsx";
 import PageWrap from "../../components/ui/PageWrap.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 function MyInfo() {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,8 +37,12 @@ function MyInfo() {
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
-    const accessToken = localStorage.getItem("AccessToken") || "";
-    setAuthorization(accessToken);
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+      setAuthorization(accessToken);
+    }
 
     if (accessToken === "") {
       window.location.href = "/";
@@ -57,6 +62,9 @@ function MyInfo() {
               address: UpdateDataProps["address"][];
             };
         };
+
+        console.log({ res, accessToken });
+
         const userName = res.data.UserAttributes.find((a) =>
           a["Name"] === "name"
         );
@@ -99,6 +107,12 @@ function MyInfo() {
   ) => {
     const fileInput = event.target as HTMLInputElement;
     const file = fileInput.files && fileInput.files[0];
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
@@ -106,12 +120,12 @@ function MyInfo() {
 
       try {
         const response = await fetch(
-          "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//files",
+          "http://localhost:3000/files",
           {
             method: "POST",
             body: formData,
             headers: {
-              Authorization: localStorage.getItem("AccessToken") || "",
+              Authorization: accessToken,
               ContentType: "multipart/form-data",
             },
           },
@@ -170,6 +184,12 @@ function MyInfo() {
   const handleSubmit = () => {
     setIsSubmitting(true);
 
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+
     if (!termsAgree) {
       alert(
         "Aceite o termo de responsabilidade antes de atualizar seus dados.",
@@ -200,7 +220,7 @@ function MyInfo() {
     });
 
     const body: UpdateDataProps = {
-      token: localStorage.getItem("AccessToken") || "no_token",
+      token: accessToken,
       avatar_photo: userImg || "no_img",
       name,
       cpf,
@@ -223,7 +243,7 @@ function MyInfo() {
         (r) => {
           setIsSubmitting(false);
           invoke["deco-sites/ecannadeco"].actions.updateProfile({
-            token: localStorage.getItem("AccessToken") || "",
+            token: accessToken,
             body: { updatedData: true },
           }).then(
             (res) => {

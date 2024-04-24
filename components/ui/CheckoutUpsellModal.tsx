@@ -5,6 +5,7 @@ import { Plan } from "../../components/ui/Checkout.tsx";
 import { invoke } from "../../runtime.ts";
 import { Props as ChangeSubscriptionProps } from "../../actions/changeSubscription.ts";
 import { Props as Checkoutv2Props } from "../../actions/checkoutv2.ts";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Product {
   description: string;
@@ -54,12 +55,18 @@ const CheckoutUpsellModal = (props: Props) => {
   const handleCheckout = async () => {
     setLoading(true);
 
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+
     let paramsChangeSubscription = {} as ChangeSubscriptionProps;
     let paramsCheckoutV2 = {} as Checkoutv2Props;
 
     if (addNewCard) {
       paramsChangeSubscription = {
-        token: localStorage.getItem("AccessToken") || "",
+        token: accessToken,
         sku: plan!.skus[0],
         credit_card: {
           holder: holderName,
@@ -80,7 +87,7 @@ const CheckoutUpsellModal = (props: Props) => {
       };
 
       paramsCheckoutV2 = {
-        token: localStorage.getItem("AccessToken") || "",
+        token: accessToken,
         items: [{
           sku: product!.skus[0],
           quantity: 1,
@@ -105,14 +112,14 @@ const CheckoutUpsellModal = (props: Props) => {
     } else {
       if (plan) {
         paramsChangeSubscription = {
-          token: localStorage.getItem("AccessToken") || "",
+          token: accessToken,
           sku: plan!.skus[0],
           credit_card_token: creditCards[cardSelected].token,
         };
       } else if (product) {
         console.log({ product });
         paramsCheckoutV2 = {
-          token: localStorage.getItem("AccessToken") || "",
+          token: accessToken,
           items: [{
             sku: product!.skus[0],
             quantity: 1,

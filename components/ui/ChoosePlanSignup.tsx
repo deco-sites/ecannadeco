@@ -3,6 +3,7 @@ import { useEffect, useState } from "preact/hooks";
 import Slider from "../../components/ui/Slider.tsx";
 import { Plan } from "../../components/ui/Checkout.tsx";
 import Icon from "../../components/ui/Icon.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 function ConfirmSignup() {
   const [newPlan, setNewPlan] = useState<Plan>();
@@ -11,7 +12,7 @@ function ConfirmSignup() {
   useEffect(() => {
     try {
       const params = fetch(
-        `http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//v1/products/subscriptions`,
+        `http://localhost:3000/v1/products/subscriptions`,
       ).then(async (r) => {
         const c = await r.json();
         console.log({ plans: c.docs });
@@ -28,33 +29,15 @@ function ConfirmSignup() {
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();
-    localStorage.setItem("planSKU", newPlan!.skus[0]);
-    localStorage.setItem("planName", newPlan!.name);
-    localStorage.setItem("planPrice", String(newPlan!.price));
-    localStorage.setItem("planPeriod", newPlan!.period);
+
+    if (IS_BROWSER) {
+      localStorage.setItem("planSKU", newPlan!.skus[0]);
+      localStorage.setItem("planName", newPlan!.name);
+      localStorage.setItem("planPrice", String(newPlan!.price));
+      localStorage.setItem("planPeriod", newPlan!.period);
+    }
 
     window.location.href = "/confirmar-cadastro/checkout";
-    // if (code == "") {
-    //   alert("Preencha o código");
-    //   return null;
-    // }
-
-    // try {
-    //   setLoading(true);
-    //   const data = await invoke["deco-sites/ecannadeco"].actions
-    //     .confirmCognitoSignup(
-    //       { email, code },
-    //     );
-    //   localStorage.setItem("emailConfirm", "");
-    //   setLoading(false);
-    //   window.location.href = "/confirmar-cadastro/plano";
-    // } catch (e) {
-    //   alert(
-    //     "Não foi possível confirmar o email. Verifique o código fornecido e tente novamente.",
-    //   );
-    //   console.log({ e });
-    //   setLoading(false);
-    // }
   };
 
   return (

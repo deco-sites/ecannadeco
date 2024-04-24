@@ -1,14 +1,21 @@
 import { invoke } from "../../runtime.ts";
 import { useState } from "preact/hooks";
 import StepTimeline from "./StepTimeline.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   formTitle?: string;
 }
 
 function ConfirmForgotPasswordForm({ formTitle }: Props) {
+  let emailForgotPassword = "";
+
+  if (IS_BROWSER) {
+    emailForgotPassword = localStorage.getItem("emailForgotPassword") || "";
+  }
+
   const [email, setEmail] = useState<string>(
-    localStorage.getItem("emailForgotPassword") || "",
+    emailForgotPassword,
   );
   const [code, setCode] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -41,7 +48,9 @@ function ConfirmForgotPasswordForm({ formTitle }: Props) {
         alert(
           "Sua senha foi alterada com sucesso! Agora, você já pode fazer login na sua conta.",
         );
-        localStorage.setItem("emailConfirm", "");
+        if (IS_BROWSER) {
+          localStorage.setItem("emailConfirm", "");
+        }
         setLoading(false);
         window.location.href = "/entrar";
       }

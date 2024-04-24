@@ -18,6 +18,7 @@ import { h } from "preact";
 import Loading from "../../components/daisy/Loading.tsx";
 import type { DocListType } from "../../components/ui/MyDocs.tsx";
 import Modal from "../../components/ui/Modal.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export type Address = {
   cep: string;
@@ -115,7 +116,11 @@ function MyAccount() {
   };
 
   const getDocuments = () => {
-    const accessToken = localStorage.getItem("AccessToken") || "";
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AdminAccessToken") || "";
+    }
 
     try {
       setIsLoading(true);
@@ -139,6 +144,13 @@ function MyAccount() {
   ) => {
     const fileInput = event.target as HTMLInputElement;
     const file = fileInput.files && fileInput.files[0];
+
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AdminAccessToken") || "";
+    }
+
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
@@ -146,12 +158,12 @@ function MyAccount() {
 
       try {
         const response = await fetch(
-          "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//files",
+          "http://localhost:3000/files",
           {
             method: "POST",
             body: formData,
             headers: {
-              Authorization: localStorage.getItem("AccessToken") || "",
+              Authorization: accessToken,
               ContentType: "multipart/form-data",
             },
           },
@@ -167,8 +179,13 @@ function MyAccount() {
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
-    const accessToken = localStorage.getItem("AccessToken") || "";
-    const associationAdmin = localStorage.getItem("AssociationAdmin") || "";
+    let accessToken = "";
+    let associationAdmin = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AdminAccessToken") || "";
+      associationAdmin = localStorage.getItem("AssociationAdmin") || "";
+    }
 
     if (accessToken === "" || associationAdmin === "") {
       window.location.href = "/";
@@ -215,8 +232,13 @@ function MyAccount() {
   }, []); // Passando um array de dependências vazio
 
   const handleUpdate = () => {
-    const accessToken = localStorage.getItem("AccessToken") || "";
-    const associationAdmin = localStorage.getItem("AssociationAdmin") || "";
+    let accessToken = "";
+    let associationAdmin = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AdminAccessToken") || "";
+      associationAdmin = localStorage.getItem("AssociationAdmin") || "";
+    }
 
     setUpdating(true);
 
@@ -241,7 +263,13 @@ function MyAccount() {
   };
 
   const handleGetUsers = (pageParam: number, email?: string) => {
-    const accessToken = localStorage.getItem("AccessToken") || "";
+    let accessToken = "";
+    let associationAdmin = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AdminAccessToken") || "";
+      associationAdmin = localStorage.getItem("AssociationAdmin") || "";
+    }
     setIsLoadingUsers(true);
 
     try {
@@ -274,11 +302,18 @@ function MyAccount() {
 
   const handleDeleteDoc = async ({ id }: { id: string }) => {
     setDeleting(true);
+
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+
     try {
       const r = await invoke["deco-sites/ecannadeco"].actions
         .deleteAssociationDocument({
           docId: id,
-          token: localStorage.getItem("AccessToken") || "",
+          token: accessToken,
         });
 
       const resp = r as { message?: string };

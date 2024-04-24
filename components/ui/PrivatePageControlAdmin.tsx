@@ -20,7 +20,7 @@ function PrivatePageControl(props: Props) {
 
     try {
       const response = await fetch(
-        "http://http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com//v1/admin/me",
+        "http://localhost:3000/v1/admin/me",
         {
           method: "GET",
           headers: {
@@ -57,10 +57,10 @@ function PrivatePageControl(props: Props) {
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
-    const accessToken = "";
+    let accessToken = "";
 
     if (IS_BROWSER) {
-      localStorage.getItem("AccessToken") || "";
+      accessToken = localStorage.getItem("AccessToken") || "";
     }
 
     isLogged({ accessToken });
