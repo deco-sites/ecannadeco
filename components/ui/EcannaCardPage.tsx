@@ -21,7 +21,6 @@ export interface UserData {
     created_at?: Date;
     association: { name: string; logo_url: string };
     qrcode_url: string;
-    ecannacard_url?: string;
     credit_cards: SavedCreditCard[];
   };
 }
@@ -30,11 +29,22 @@ export interface Props {
   cardSkeleton: ImageWidget;
 }
 
+function formatDate(date: Date) {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Mês é baseado em zero
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
 function EcannaCardPage({ cardSkeleton }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProduct, setLoadingProduct] = useState(true);
-  const [cardUrl, setCardUrl] = useState<string>();
-  const [address, setAddress] = useState<Address>();
+  const [userData, setUserData] = useState<UserData>();
+  const [created_at, setCreatedAt] = useState<Date>();
+  const [association, setAssociation] = useState<
+    { name: string; logo_url: string }
+  >();
+  const [qrcode, setQrcode] = useState<string>();
   const [creditCards, setCreditCards] = useState<SavedCreditCard[]>([]);
   const [cardProduct, setCardProduct] = useState<Product>({} as Product);
   const { displayCheckoutUpsellModal } = useUI();
@@ -60,6 +70,15 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         })
         .then(async (r) => {
           const res = r as UserData;
+          console.log({ user: res });
+          const date = res.dataProfile?.created_at;
+          const associationObj = res.dataProfile?.association;
+          const qr = res.dataProfile?.qrcode_url;
+
+          setUserData(res);
+          setAssociation(associationObj);
+          setQrcode(qr);
+          setCreatedAt(new Date(String(date)));
 
           setLoadingProduct(true);
 
@@ -69,10 +88,8 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           setLoadingProduct(false);
 
           const cardProducts = cardsResponse as { docs: Product[] };
-          console.log({ cardProducts });
-          setCardProduct(cardProducts.docs[0]);
 
-          setCardUrl(res.dataProfile.ecannacard_url);
+          setCardProduct(cardProducts.docs[0]);
 
           setCreditCards(res.dataProfile.credit_cards);
 
@@ -114,32 +131,93 @@ function EcannaCardPage({ cardSkeleton }: Props) {
 
   return (
     <div class="flex flex-col justify-center items-center my-10 gap-[100px] sm:gap-[30px]">
-      <div class="rotate-90 sm:rotate-0 flex justify-center p-3 sm:p-12 bg-[#252525] rounded-xl max-w-[424px] sm:max-w-[90%]">
-        {(cardUrl && !isLoading)
-          ? (
-            <Image
-              class="card"
-              src={cardUrl}
-              alt={"Carteirinha eCanna"}
-              width={395}
-              height={260}
-              loading="lazy"
-            />
-          )
+      <div class="rotate-90 sm:rotate-0 flex justify-center p-3 sm:p-12 bg-[#252525] rounded-xl max-w-[424px] sm:max-w-[90%] text-[#1878b8]">
+        {isLoading
+          ? <span class="loading loading-spinner loading-xs" />
           : (
-            <div>
-              {isLoading
-                ? (
-                  <span class="text-white">
-                    <Loading style="loading-spinner" size="loading-md" />
+            <div class="relative text-[#1878b8]">
+              {userData && (
+                <div class="absolute z-10 top-[68px] left-[30px]">
+                  <Image
+                    class="rounded-md"
+                    src={userData.dataProfile.avatar_photo}
+                    alt={"user selfie"}
+                    width={78}
+                    height={104}
+                  />
+                </div>
+              )}
+              {userData && (
+                <div class="absolute z-10 flex flex-col top-[65px] left-[122px]">
+                  <span class="font-semibold text-lg">
+                    {userData?.data?.UserAttributes?.find((a) =>
+                      a.Name === "name"
+                    )?.Value}
                   </span>
-                )
-                : (
-                  <span class="text-white">
-                    Este usuário não possui carteirinha. Atualize seus dados de
-                    paciente na página de "Meus Dados".
+                  <span class="text-sm font-semibold">
+                    CPF{"  "}{userData?.data?.UserAttributes?.find((a) =>
+                      a.Name === "custom:cpfcnpj"
+                    )?.Value.replace(
+                      /(\d{3})(\d{3})(\d{3})(\d{2})/,
+                      "$1.$2.$3-$4",
+                    )}
                   </span>
-                )}
+                  {association && (
+                    <span class="text-sm font-semibold pr-1">
+                      {association.name}
+                    </span>
+                  )}
+                  <span class="text-sm font-semibold">
+                    {userData.dataProfile.address && (
+                      <span>
+                        {userData.dataProfile.address[0].city + " / " +
+                          userData.dataProfile.address[0].state}
+                      </span>
+                    )}
+                  </span>
+                </div>
+              )}
+              {association && (
+                <div class="absolute z-10 top-[185px] left-[130px]">
+                  <Image
+                    class=""
+                    src={association.logo_url}
+                    alt={"Logo Associação"}
+                    width={117}
+                    height={32}
+                  />
+                </div>
+              )}
+              {qrcode && (
+                <div class="absolute z-10 top-[137px] left-[259px] bg-[#262626] rounded-md p-2">
+                  <Image
+                    class=""
+                    src={qrcode}
+                    alt={"Logo Associação"}
+                    width={66}
+                    height={66}
+                  />
+                </div>
+              )}
+              {created_at && (
+                <div class="absolute z-10 flex flex-col top-[187px] left-[65px] items-start">
+                  <span class="text-[10px]">
+                    Emissão
+                  </span>
+                  <span class="text-[10px]">
+                    {formatDate(created_at)}
+                  </span>
+                </div>
+              )}
+
+              <Image
+                class="card"
+                src={cardSkeleton}
+                alt="Carteirinha eCanna"
+                width={352}
+                height={234}
+                loading="lazy"
+              />
             </div>
           )}
       </div>
@@ -147,14 +225,13 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         <CheckoutUpsellModal
           creditCards={creditCards}
           product={cardProduct}
-          address={address!}
+          address={userData?.dataProfile?.address[0]!}
         />
         <button
           type="button"
-          href={cardUrl}
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
           onClick={() => {
-            downloadFile(cardUrl!, "carteirinha-ecanna.png");
+            alert("Funcionalidade em desenvolvimento!");
           }}
         >
           <span>Baixar Carteirinha</span> <Icon id="Download" size={19} />
@@ -165,7 +242,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
           onClick={() => displayCheckoutUpsellModal.value = true}
         >
-          <div class="flex items-center">
+          <div class="flex items-center gap-2">
             <span>Nova Via Física</span> {loadingProduct
               ? <Loading style="loading-spinner" size="loading-xs" />
               : (
