@@ -240,7 +240,9 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           type="button"
           download="carteirinha.png"
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
-          onClick={() => displayCheckoutUpsellModal.value = true}
+          // onClick={() => displayCheckoutUpsellModal.value = true}
+          onClick={() =>
+            alert("Funcionalidade em Desenvolvimento! Lançaremos em Breve")}
         >
           <div class="flex items-center gap-2">
             <span>Nova Via Física</span> {loadingProduct
