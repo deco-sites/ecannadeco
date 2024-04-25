@@ -5,6 +5,7 @@
 import { useUI } from "../../sdk/useUI.ts";
 import { useEffect, useState } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { invoke } from "../../runtime.ts";
 
 export interface Props {
   redirectTo?: string;
@@ -19,21 +20,29 @@ function PrivatePageControl(props: Props) {
     }
 
     try {
-      const response = await fetch(
-        "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/v1/admin/me",
-        {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-            accept: "application/json",
-            Authorization: accessToken,
-          },
-        },
-      );
+      const res = await invoke["deco-sites/ecannadeco"].actions
+        .getUserAdmin({
+          token: accessToken,
+        });
+
+      const r = res as {
+        data: {
+          UserAttributes: { Name: string; Value: string }[];
+          Username: string;
+        };
+        dataProfile: {
+          association: {
+            _id: string;
+            user: string;
+          };
+          updatedData: boolean;
+          uploadedFile: boolean;
+          email: string;
+          plan: string;
+        };
+      };
 
       console.log({ accessToken });
-
-      const r = await response.json();
 
       console.log({ responseGetMeAdmin: r });
 

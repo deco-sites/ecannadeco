@@ -4,6 +4,7 @@
 
 import { useEffect } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { invoke } from "../../runtime.ts";
 
 export interface Props {
   redirectTo?: string;
@@ -12,17 +13,27 @@ export interface Props {
 function PublicPageControl(props: Props) {
   async function isLogged({ accessToken }: { accessToken: string }) {
     try {
-      const response = await fetch(
-        "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/me",
-        {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-            accept: "application/json",
-            Authorization: accessToken,
-          },
-        },
-      ).then((r) => r.json());
+      const r = await invoke["deco-sites/ecannadeco"].actions
+        .getUser({
+          token: accessToken,
+        });
+
+      const response = r as {
+        data: {
+          UserAttributes: { Name: string; Value: string }[];
+          Username: string;
+        };
+        dataProfile: {
+          association: {
+            _id: string;
+            user: string;
+          };
+          updatedData: boolean;
+          uploadedFile: boolean;
+          email: string;
+          plan: string;
+        };
+      };
 
       const username = response.data.Username;
 

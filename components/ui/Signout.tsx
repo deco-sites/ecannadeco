@@ -5,6 +5,7 @@
 // import { useUI } from "../../sdk/useUI.ts";
 import { useEffect } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { invoke } from "../../runtime.ts";
 
 export interface Props {
   redirectTo?: string;
@@ -19,24 +20,16 @@ function Signout(props: Props) {
     }
 
     try {
-      fetch(
-        "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/sign-out",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: token || "",
-          },
-        },
-      ).then((r) => {
-        // apagar accress token
-        if (IS_BROWSER) {
-          localStorage.setItem("AccessToken", "");
-        }
-        window.location.href = "/";
-      });
+      const r = invoke["deco-sites/ecannadeco"].actions
+        .signOut({
+          token,
+        });
+      if (IS_BROWSER) {
+        localStorage.setItem("AccessToken", "");
+      }
+      window.location.href = "/";
     } catch (e) {
-      // console.log({ e });
+      console.log({ e });
       return e;
     }
   }, []); // Passando um array de dependências vazio

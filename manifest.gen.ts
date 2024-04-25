@@ -27,11 +27,13 @@ import * as $$$$$$$$$21 from "./actions/getDocs.ts";
 import * as $$$$$$$$$22 from "./actions/getPlans.ts";
 import * as $$$$$$$$$23 from "./actions/getProfile.ts";
 import * as $$$$$$$$$24 from "./actions/getUser.ts";
-import * as $$$$$$$$$25 from "./actions/getUserOrders.ts";
-import * as $$$$$$$$$26 from "./actions/resendConfirmationCode.ts";
-import * as $$$$$$$$$27 from "./actions/updateProfile.ts";
-import * as $$$$$$$$$28 from "./actions/updateUserData.ts";
-import * as $$$$$$$$$29 from "./actions/uploadFile.ts";
+import * as $$$$$$$$$25 from "./actions/getUserAdmin.ts";
+import * as $$$$$$$$$26 from "./actions/getUserOrders.ts";
+import * as $$$$$$$$$27 from "./actions/resendConfirmationCode.ts";
+import * as $$$$$$$$$28 from "./actions/signOut.ts";
+import * as $$$$$$$$$29 from "./actions/updateProfile.ts";
+import * as $$$$$$$$$30 from "./actions/updateUserData.ts";
+import * as $$$$$$$$$31 from "./actions/uploadFile.ts";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
@@ -240,11 +242,13 @@ const manifest = {
     "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$22,
     "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$23,
     "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$24,
-    "deco-sites/ecannadeco/actions/getUserOrders.ts": $$$$$$$$$25,
-    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$26,
-    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$27,
-    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$28,
-    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$29,
+    "deco-sites/ecannadeco/actions/getUserAdmin.ts": $$$$$$$$$25,
+    "deco-sites/ecannadeco/actions/getUserOrders.ts": $$$$$$$$$26,
+    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$27,
+    "deco-sites/ecannadeco/actions/signOut.ts": $$$$$$$$$28,
+    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$29,
+    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$30,
+    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$31,
   },
   "apps": {
     "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,
