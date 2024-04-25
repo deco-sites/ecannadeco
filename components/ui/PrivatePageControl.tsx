@@ -5,6 +5,7 @@
 import { useUI } from "../../sdk/useUI.ts";
 import { useEffect, useState } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { invoke } from "../../runtime.ts";
 
 export interface Props {
   redirectTo?: string;
@@ -19,17 +20,27 @@ function PrivatePageControl(props: Props) {
     }
 
     try {
-      const response = await fetch(
-        "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/me",
-        {
-          method: "GET",
-          headers: {
-            "content-type": "application/json",
-            accept: "application/json",
-            Authorization: accessToken,
-          },
-        },
-      ).then((r) => r.json());
+      const r = await invoke["deco-sites/ecannadeco"].actions
+        .getUser({
+          token: accessToken,
+        });
+
+      const response = r as {
+        data: {
+          UserAttributes: { Name: string; Value: string }[];
+          Username: string;
+        };
+        dataProfile: {
+          association: {
+            _id: string;
+            user: string;
+          };
+          updatedData: boolean;
+          uploadedFile: boolean;
+          email: string;
+          plan: string;
+        };
+      };
 
       const username = response.data.Username;
 
@@ -51,7 +62,7 @@ function PrivatePageControl(props: Props) {
         id: username,
         name: response.data.UserAttributes.find((
           a: { Name: string; Value: string },
-        ) => a.Name === "name").Value,
+        ) => a.Name === "name")?.Value || "",
         email: response.dataProfile.email,
         plan: response.dataProfile.plan,
       };
