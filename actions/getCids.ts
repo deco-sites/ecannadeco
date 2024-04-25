@@ -9,7 +9,7 @@ const getCids = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      `http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/cids?name=${term}`,
+      `https://service.ecanna.com.br/cids?name=${term}`,
       {
         method: "GET",
         headers: {

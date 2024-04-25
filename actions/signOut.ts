@@ -8,7 +8,7 @@ const signOut = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/sign-out",
+      "https://service.ecanna.com.br/auth/sign-out",
       {
         method: "POST",
         headers: {

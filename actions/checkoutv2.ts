@@ -33,17 +33,14 @@ const checkoutv2 = async (
   console.log({ params });
 
   try {
-    const response = await fetch(
-      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/checkout/v2",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: props.token || "",
-        },
-        body: JSON.stringify(params),
+    const response = await fetch("https://service.ecanna.com.br/checkout/v2", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: props.token || "",
       },
-    );
+      body: JSON.stringify(params),
+    });
 
     const res = await response.json();
     return res;

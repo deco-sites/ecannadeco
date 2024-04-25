@@ -86,7 +86,7 @@ function MyAccount() {
       });
 
       const params = fetch(
-        `http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/v1/products/subscriptions`,
+        `https://service.ecanna.com.br/v1/products/subscriptions`,
       ).then(async (r) => {
         const c = await r.json();
         console.log({ plans: c.docs });

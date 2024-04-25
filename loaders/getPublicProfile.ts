@@ -40,8 +40,7 @@ const getPublicProfile = async (
 ): Promise<PublicProfile> => {
   try {
     const response = await fetch(
-      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/public/" +
-        slug,
+      "https://service.ecanna.com.br/auth/public/" + slug,
     );
 
     const res = await response.json();

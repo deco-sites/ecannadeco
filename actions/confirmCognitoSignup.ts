@@ -9,7 +9,7 @@ const confirmCognitoSignup = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/confirm-signup",
+      "https://service.ecanna.com.br/auth/confirm-signup",
       {
         method: "POST",
         headers: {

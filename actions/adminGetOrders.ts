@@ -52,15 +52,13 @@ const adminGetOrders = async (
   { token, params }: Props,
   _req: Request,
 ): Promise<PaginationOrderResponse> => {
-  let url =
-    `http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/admin/orders/`;
+  let url = `https://service.ecanna.com.br/admin/orders/`;
 
   if (params) {
     const query = `?limit=${params.limit}&page=${params.page}${
       params.status && `&status=${params.status}`
     }`;
-    url =
-      `http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/admin/orders${query}`;
+    url = `https://service.ecanna.com.br/admin/orders${query}`;
   }
 
   try {

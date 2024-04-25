@@ -8,7 +8,7 @@ const resendConfirmationCode = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/send-confirmation-code",
+      "https://service.ecanna.com.br/auth/send-confirmation-code",
       {
         method: "POST",
         headers: {

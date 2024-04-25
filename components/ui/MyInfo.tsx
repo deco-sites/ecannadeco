@@ -120,7 +120,7 @@ function MyInfo() {
 
       try {
         const response = await fetch(
-          "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/files",
+          "https://service.ecanna.com.br/files",
           {
             method: "POST",
             body: formData,

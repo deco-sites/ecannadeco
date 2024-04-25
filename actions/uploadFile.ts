@@ -19,17 +19,14 @@ const uploadFile = async (
 ): Promise<unknown | null> => {
   console.log({ dataBody: data });
   try {
-    const response = await fetch(
-      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/files",
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "multipart/form-data;",
-          // Authorization: token,
-        },
+    const response = await fetch("https://service.ecanna.com.br/files", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "multipart/form-data;",
+        // Authorization: token,
       },
-    );
+    });
 
     const res = await response.json();
     return res;

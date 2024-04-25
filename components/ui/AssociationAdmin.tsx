@@ -119,7 +119,7 @@ function MyAccount() {
     let accessToken = "";
 
     if (IS_BROWSER) {
-      accessToken = localStorage.getItem("AdminAccessToken") || "";
+      accessToken = localStorage.getItem("AccessToken") || "";
     }
 
     try {
@@ -148,7 +148,7 @@ function MyAccount() {
     let accessToken = "";
 
     if (IS_BROWSER) {
-      accessToken = localStorage.getItem("AdminAccessToken") || "";
+      accessToken = localStorage.getItem("AccessToken") || "";
     }
 
     if (file) {
@@ -158,7 +158,7 @@ function MyAccount() {
 
       try {
         const response = await fetch(
-          "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/files",
+          "https://service.ecanna.com.br/files",
           {
             method: "POST",
             body: formData,
@@ -183,7 +183,7 @@ function MyAccount() {
     let associationAdmin = "";
 
     if (IS_BROWSER) {
-      accessToken = localStorage.getItem("AdminAccessToken") || "";
+      accessToken = localStorage.getItem("AccessToken") || "";
       associationAdmin = localStorage.getItem("AssociationAdmin") || "";
     }
 
@@ -236,7 +236,7 @@ function MyAccount() {
     let associationAdmin = "";
 
     if (IS_BROWSER) {
-      accessToken = localStorage.getItem("AdminAccessToken") || "";
+      accessToken = localStorage.getItem("AccessToken") || "";
       associationAdmin = localStorage.getItem("AssociationAdmin") || "";
     }
 
@@ -267,7 +267,7 @@ function MyAccount() {
     let associationAdmin = "";
 
     if (IS_BROWSER) {
-      accessToken = localStorage.getItem("AdminAccessToken") || "";
+      accessToken = localStorage.getItem("AccessToken") || "";
       associationAdmin = localStorage.getItem("AssociationAdmin") || "";
     }
     setIsLoadingUsers(true);

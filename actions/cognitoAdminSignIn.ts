@@ -9,7 +9,7 @@ const signInCognito = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/admin/sign-in",
+      "https://service.ecanna.com.br/admin/sign-in",
       {
         method: "POST",
         headers: {

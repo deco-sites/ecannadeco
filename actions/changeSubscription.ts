@@ -28,7 +28,7 @@ const changeSubscription = async (
   delete params.token;
   try {
     const response = await fetch(
-      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/checkout/upgrade",
+      "https://service.ecanna.com.br/checkout/upgrade",
       {
         method: "POST",
         headers: {

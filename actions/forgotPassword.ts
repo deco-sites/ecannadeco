@@ -8,7 +8,7 @@ const forgotPassword = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "http://development.eba-93ecmjzh.us-east-1.elasticbeanstalk.com/auth/forgot-password",
+      "https://service.ecanna.com.br/auth/forgot-password",
       {
         method: "POST",
         headers: {
