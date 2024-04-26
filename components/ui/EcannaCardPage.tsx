@@ -13,6 +13,8 @@ import {
 } from "../../components/ui/CheckoutUpsellModal.tsx";
 import { useUI } from "../../sdk/useUI.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import domtoimage from "dom-to-image";
+// import puppeteer from "puppeteer";
 
 export interface UserData {
   data: { UserAttributes: { Name: string; Value: string }[] };
@@ -38,6 +40,7 @@ function formatDate(date: Date) {
 
 function EcannaCardPage({ cardSkeleton }: Props) {
   const [isLoading, setIsLoading] = useState(true);
+  const [downloading, setDownloading] = useState(false);
   const [loadingProduct, setLoadingProduct] = useState(true);
   const [userData, setUserData] = useState<UserData>();
   const [created_at, setCreatedAt] = useState<Date>();
@@ -103,6 +106,54 @@ function EcannaCardPage({ cardSkeleton }: Props) {
     }
   }, []); // Passando um array de dependências vazio
 
+  function generateCardImage() {
+    setDownloading(true);
+    const element = document.getElementById("ecannaCard");
+
+    if (element) {
+      // const browser = await puppeteer.launch({});
+      // const page = await browser.newPage();
+      // await page.setContent(element.outerHTML);
+      // const screenshotBuffer = await page.screenshot({
+      //   clip: { x: 0, y: 0, width: 395, height: 260 },
+      // });
+      // await browser.close();
+
+      // const blob = new Blob([screenshotBuffer], { type: 'image/png' });
+      // const url = URL.createObjectURL(blob);
+      // const link = document.createElement('a');
+      // link.href = url;
+      // link.download = ;
+      // document.body.appendChild(link);
+      // link.click();
+      // document.body.removeChild(link);
+      // URL.revokeObjectURL(url);
+
+      domtoimage.toPng(element)
+        .then(function (dataUrl1) {
+          domtoimage.toPng(element)
+            .then(function (dataUrl2) {
+              domtoimage.toPng(element)
+                .then(function (dataUrl3) {
+                  console.log({ dataUrl1 });
+                  const link = document.createElement("a");
+                  link.download = "my-image-name.png";
+                  link.href = dataUrl1;
+                  setDownloading(false);
+                  link.click();
+                });
+            });
+        })
+        .catch(function (error) {
+          setDownloading(false);
+          console.error("Oops, something went wrong!", error);
+        });
+    } else {
+      setDownloading(false);
+      alert("Erro ao gerar carteirinha. Contacte o suporte!");
+    }
+  }
+
   function downloadFile(fileUrl: string, filename: string) {
     // Fetch the file data
     fetch(fileUrl)
@@ -135,7 +186,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         {isLoading
           ? <span class="loading loading-spinner loading-xs" />
           : (
-            <div class="relative text-[#1878b8]">
+            <div id="ecannaCard" class="relative text-[#1878b8]">
               {userData && (
                 <div class="absolute z-10 top-[68px] left-[30px]">
                   <Image
@@ -231,10 +282,13 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           type="button"
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
           onClick={() => {
-            alert("Funcionalidade em desenvolvimento!");
+            // generateCardImage();
+            alert("Funcionalidade em Desenvolvimento! Lançaremos em Breve");
           }}
         >
-          <span>Baixar Carteirinha</span> <Icon id="Download" size={19} />
+          <span>Baixar Carteirinha</span> {downloading
+            ? <span class="loading loading-spinner loading-xs" />
+            : <Icon id="Download" size={19} />}
         </button>
         <button
           type="button"
