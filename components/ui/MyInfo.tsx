@@ -269,7 +269,7 @@ function MyInfo() {
           </h3>
           <div class="flex flex-col items-center">
             {/* Selfie */}
-            <div>
+            <div class="flex flex-col items-center gap-4">
               <label for="selfieInput">
                 <div class="relative h-[144px] w-[108px] shadow-md cursor-pointer">
                   <div class="absolute h-7 w-7 flex justify-center items-center rounded-full bg-black bg-opacity-40 top-[10px] left-[71px]">
@@ -296,6 +296,28 @@ function MyInfo() {
                 class="hidden"
                 onChange={(e) => handleUploadSelfie(e)}
               />
+              <div class="bg-[#e3e3e3] rounded-md p-4 flex flex-col items-center gap-2 text-[10px] text-[#808080]">
+                <span class="flex gap-2">
+                  <Icon id="Info" size={16} />Orientações para foto:
+                </span>
+                <ul class="list-decimal p-2">
+                  <li>
+                    <span>Foto em proporção 3x4</span>
+                  </li>
+                  <li>
+                    <span>Iluminação adequada, sem sombras</span>
+                  </li>
+                  <li>
+                    <span>Fundo claro - preferencialmente branco</span>
+                  </li>
+                  <li>
+                    <span>Rosto olhando para frente, direto para a câmera</span>
+                  </li>
+                  <li>
+                    <span>Retire óculos, chapéus e demais adereços</span>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             {/* Personal info */}

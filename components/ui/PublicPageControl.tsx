@@ -39,6 +39,10 @@ function PublicPageControl(props: Props) {
 
       if (username) {
         window.location.href = props.redirectTo || "/meus-dados";
+      } else {
+        if (IS_BROWSER) {
+          localStorage.setItem("AccessToken", "");
+        }
       }
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
