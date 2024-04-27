@@ -3,6 +3,7 @@
     "deco-sites/ecannadeco/": "./",
     "dom-to-image": "https://esm.sh/dom-to-image@2.6.0",
     "puppeteer": "https://deno.land/x/pptr/mod.ts",
+    "deno-canvas": "https://deno.land/x/canvas/mod.ts",
     "datetime": "https://deno.land/std@0.222.1/datetime/mod.ts",
     "deco/": "https://cdn.jsdelivr.net/gh/deco-cx/deco@1.60.25/",
     "apps/": "https://cdn.jsdelivr.net/gh/deco-cx/apps@0.36.0/",

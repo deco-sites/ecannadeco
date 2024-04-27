@@ -23,6 +23,7 @@ export type AvailableIcons =
   | "FilterList"
   | "Heart"
   | "Instagram"
+  | "Info"
   | "QRicon"
   | "CircleCheck"
   | "Linkedin"
