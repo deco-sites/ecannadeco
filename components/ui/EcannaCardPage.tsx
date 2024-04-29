@@ -86,7 +86,9 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           setLoadingProduct(true);
 
           const cardsResponse = await invoke["deco-sites/ecannadeco"].actions
-            .getCardProduct();
+            .getCardProduct({
+              token: accessToken,
+            });
 
           setLoadingProduct(false);
 
@@ -303,7 +305,9 @@ function EcannaCardPage({ cardSkeleton }: Props) {
               ? <Loading style="loading-spinner" size="loading-xs" />
               : (
                 <div class="p-2 bg-white text-primary text-xs rounded-md">
-                  {"R$" + (cardProduct.price / 100).toFixed(2)}
+                  {cardProduct.price == 0
+                    ? "Grátis"
+                    : ("R$" + (cardProduct.price / 100).toFixed(2))}
                 </div>
               )}
           </div>
