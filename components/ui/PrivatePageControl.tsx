@@ -13,10 +13,11 @@ export interface Props {
 
 function PrivatePageControl(props: Props) {
   const { updatedData, uploadedFile, user } = useUI();
+  const { redirectTo } = props;
 
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
-      window.location.href = "/";
+      window.location.href = redirectTo ? redirectTo : "/";
     }
 
     try {
@@ -81,7 +82,7 @@ function PrivatePageControl(props: Props) {
             "",
           );
         }
-        window.location.href = "/";
+        window.location.href = redirectTo ? redirectTo : "/";
       }
 
       if (!response.dataProfile.updatedData) {
@@ -104,7 +105,7 @@ function PrivatePageControl(props: Props) {
           "",
         );
       }
-      window.location.href = "/";
+      window.location.href = redirectTo ? redirectTo : "/";
     }
   }
 
