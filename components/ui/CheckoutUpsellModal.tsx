@@ -181,7 +181,7 @@ const CheckoutUpsellModal = (props: Props) => {
     >
       <div class="flex flex-col p-16 gap-3 bg-[#EDEDED] rounded-xl max-w-[90%] max-h-[90vh] overflow-scroll">
         <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
-          Confirmar Pagamento
+          Confirmar Pedido
         </h3>
         <div class="flex flex-col gap-2">
           <span>
@@ -358,7 +358,7 @@ const CheckoutUpsellModal = (props: Props) => {
           onClick={handleCheckout}
           disabled={loading}
         >
-          {loading ? "Processando..." : "Confirmar Pagamento"}
+          {loading ? "Processando..." : "Confirmar Pedido"}
         </button>
         <button
           onClick={() => displayCheckoutUpsellModal.value = false}

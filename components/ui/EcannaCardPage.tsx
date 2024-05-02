@@ -282,23 +282,27 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         />
         <button
           type="button"
+          disabled
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
           onClick={() => {
             // generateCardImage();
             alert("Funcionalidade em Desenvolvimento! Lançaremos em Breve");
           }}
         >
-          <span>Baixar Carteirinha</span> {downloading
+          <span>Baixar Carteirinha (Breve)</span>
+          {
+            /* {downloading
             ? <span class="loading loading-spinner loading-xs" />
-            : <Icon id="Download" size={19} />}
+            : <Icon id="Download" size={19} />} */
+          }
         </button>
         <button
           type="button"
           download="carteirinha.png"
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
-          // onClick={() => displayCheckoutUpsellModal.value = true}
-          onClick={() =>
-            alert("Funcionalidade em Desenvolvimento! Lançaremos em Breve")}
+          onClick={() => displayCheckoutUpsellModal.value = true}
+          // onClick={() =>
+          //   alert("Funcionalidade em Desenvolvimento! Lançaremos em Breve")}
         >
           <div class="flex items-center gap-2">
             <span>Nova Via Física</span> {loadingProduct
