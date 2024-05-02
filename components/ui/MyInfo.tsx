@@ -16,6 +16,8 @@ function MyInfo() {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingCids, setIsLoadingCids] = useState(false);
   const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
+  const [uploadingSelfie, setUploadingSelfie] = useState(false);
+  const [changedSelfie, setChangedSelfie] = useState(false);
   const [isSubmiting, setIsSubmitting] = useState(false);
   const [termsAgree, setTermsAgree] = useState(false);
   const [authorization, setAuthorization] = useState("");
@@ -109,6 +111,8 @@ function MyInfo() {
     const file = fileInput.files && fileInput.files[0];
     let accessToken = "";
 
+    setUploadingSelfie(true);
+
     if (IS_BROWSER) {
       accessToken = localStorage.getItem("AccessToken") || "";
     }
@@ -131,9 +135,11 @@ function MyInfo() {
           },
         );
         const r = await response.json();
-
+        setUploadingSelfie(false);
+        setChangedSelfie(true);
         setUserImg(r.url);
       } catch (e) {
+        setUploadingSelfie(false);
         console.log({ e });
       }
     }
@@ -247,6 +253,7 @@ function MyInfo() {
             body: { updatedData: true },
           }).then(
             (res) => {
+              setChangedSelfie(false);
               window.location.href = window.location.pathname;
             },
           );
@@ -278,15 +285,22 @@ function MyInfo() {
                     </div>
                   </div>
                   <div class="h-[144px] w-[108px]flex justify-center items-center">
-                    <Image
-                      class="rounded-md"
-                      src={userImg
-                        ? userImg
-                        : "http://drive.google.com/uc?export=view&id=1tSFTp0YZKVQVGJHOqzKaJw6SEe7Q8LL7"}
-                      alt={"user selfie"}
-                      width={108}
-                      height={144}
-                    />
+                    {uploadingSelfie
+                      ? (
+                        <span class="loading loading-spinner text-green-600">
+                        </span>
+                      )
+                      : (
+                        <Image
+                          class="rounded-md"
+                          src={userImg
+                            ? userImg
+                            : "http://drive.google.com/uc?export=view&id=1tSFTp0YZKVQVGJHOqzKaJw6SEe7Q8LL7"}
+                          alt={"user selfie"}
+                          width={108}
+                          height={144}
+                        />
+                      )}
                   </div>
                 </div>
               </label>
@@ -296,6 +310,14 @@ function MyInfo() {
                 class="hidden"
                 onChange={(e) => handleUploadSelfie(e)}
               />
+              {changedSelfie && (
+                <div class="px-2 bg-red-200 text-red-500 rounded-md">
+                  <span class="text-[10px]">
+                    Para confirmar o uso desta foto, clique em "Salvar" no fim
+                    do formulário
+                  </span>
+                </div>
+              )}
               <div class="bg-[#e3e3e3] rounded-md p-4 flex flex-col items-center gap-2 text-[10px] text-[#808080]">
                 <span class="flex gap-2">
                   <Icon id="Info" size={16} />Orientações para foto:
