@@ -46,6 +46,7 @@ import * as $ShowMore from "./islands/ShowMore.tsx";
 import * as $SignInForm from "./islands/SignInForm.tsx";
 import * as $SignInFormAdmin from "./islands/SignInFormAdmin.tsx";
 import * as $SignUpForm from "./islands/SignUpForm.tsx";
+import * as $SignUpFormPrescriber from "./islands/SignUpFormPrescriber.tsx";
 import * as $Signout from "./islands/Signout.tsx";
 import * as $SliderJS from "./islands/SliderJS.tsx";
 import * as $UserAlerts from "./islands/UserAlerts.tsx";
@@ -102,6 +103,7 @@ const manifest = {
     "./islands/SignInForm.tsx": $SignInForm,
     "./islands/SignInFormAdmin.tsx": $SignInFormAdmin,
     "./islands/SignUpForm.tsx": $SignUpForm,
+    "./islands/SignUpFormPrescriber.tsx": $SignUpFormPrescriber,
     "./islands/Signout.tsx": $Signout,
     "./islands/SliderJS.tsx": $SliderJS,
     "./islands/UserAlerts.tsx": $UserAlerts,

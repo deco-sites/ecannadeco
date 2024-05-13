@@ -308,6 +308,7 @@ function MyInfo() {
                 id="selfieInput"
                 type="file"
                 class="hidden"
+                accept="image/png, image/jpeg, image/jpg"
                 onChange={(e) => handleUploadSelfie(e)}
               />
               {changedSelfie && (

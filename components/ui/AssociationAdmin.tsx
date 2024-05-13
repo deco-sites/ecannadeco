@@ -562,7 +562,7 @@ function MyAccount() {
                               </span>
                               <li>
                                 <a
-                                  href={`http://localhost:8000/ficha/${u._id}`}
+                                  href={`https://service.ecanna.com.br/ficha/${u._id}`}
                                   target="_blank"
                                   class="flex items-center"
                                 >
