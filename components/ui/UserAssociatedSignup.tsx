@@ -60,7 +60,7 @@ function UserAssociatedSignup() {
             </span>
             <div class="flex flex-col gap-4 ietms-center">
               <span>
-                Reconhecemos que você possui associação com a{" "}
+                Reconhecemos que você possui vínculo com a{" "}
                 <span class="font-bold">{associationName}</span>
               </span>
               <div class="flex justify-center">
@@ -72,7 +72,7 @@ function UserAssociatedSignup() {
                 />
               </div>
               <span>
-                Por conta da sua associação, você tem condições especiais para
+                Por conta deste vínculo, você tem condições especiais para
                 garantir sua segurança como paciente de cannabis medicinal.
               </span>
             </div>

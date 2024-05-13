@@ -76,7 +76,7 @@ function PublicProfileComponent(
                   </div>
                 )}
 
-              {association && (
+              {association && association.cnpj !== "47774121000154" && (
                 <div class="flex flex-col items-center mt-4">
                   <span class="text-[#5B5B5B] font-semibold text-sm">
                     Associação: {association.name}
@@ -154,7 +154,7 @@ function PublicProfileComponent(
                 })}
               </ul>
             </div>
-            {association && (
+            {association && association.cnpj !== "47774121000154" && (
               <div class="flex flex-col items-start w-full">
                 <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
                   Documentos da {association.name}

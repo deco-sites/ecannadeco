@@ -21,7 +21,7 @@ export interface UserData {
   dataProfile: Omit<UpdateDataProps, "name cpf address"> & {
     address: UpdateDataProps["address"][];
     created_at?: Date;
-    association: { name: string; logo_url: string };
+    association: { name: string; logo_url: string; cnpj: string };
     qrcode_url: string;
     credit_cards: SavedCreditCard[];
   };
@@ -45,7 +45,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
   const [userData, setUserData] = useState<UserData>();
   const [created_at, setCreatedAt] = useState<Date>();
   const [association, setAssociation] = useState<
-    { name: string; logo_url: string }
+    { name: string; logo_url: string; cnpj: string }
   >();
   const [qrcode, setQrcode] = useState<string>();
   const [creditCards, setCreditCards] = useState<SavedCreditCard[]>([]);
@@ -215,7 +215,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
                       "$1.$2.$3-$4",
                     )}
                   </span>
-                  {association && (
+                  {association && association.cnpj !== "47774121000154" && (
                     <span class="text-sm font-semibold pr-1">
                       {association.name}
                     </span>
@@ -230,7 +230,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
                   </span>
                 </div>
               )}
-              {association && (
+              {association && association.cnpj !== "47774121000154" && (
                 <div class="absolute z-10 top-[185px] left-[130px]">
                   <Image
                     class=""
@@ -299,13 +299,14 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         <button
           type="button"
           download="carteirinha.png"
+          disabled
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
           onClick={() => displayCheckoutUpsellModal.value = true}
           // onClick={() =>
           //   alert("Funcionalidade em Desenvolvimento! Lançaremos em Breve")}
         >
           <div class="flex items-center gap-2">
-            <span>Nova Via Física</span> {loadingProduct
+            <span>Nova Via Física (Breve)</span> {loadingProduct
               ? <Loading style="loading-spinner" size="loading-xs" />
               : (
                 <div class="p-2 bg-white text-primary text-xs rounded-md">

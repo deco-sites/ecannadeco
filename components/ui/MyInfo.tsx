@@ -196,6 +196,14 @@ function MyInfo() {
       accessToken = localStorage.getItem("AccessToken") || "";
     }
 
+    if (addressNumber == "" || addressComplement == "") {
+      alert(
+        "Complete as informações do endereço antes de atualizar seus dados.",
+      );
+      setIsSubmitting(false);
+      return null;
+    }
+
     if (!termsAgree) {
       alert(
         "Aceite o termo de responsabilidade antes de atualizar seus dados.",
