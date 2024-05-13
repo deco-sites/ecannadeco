@@ -19,7 +19,7 @@ const uploadFile = async (
 ): Promise<unknown | null> => {
   console.log({ dataBody: data });
   try {
-    const response = await fetch("https://service.ecanna.com.br/files", {
+    const response = await fetch("http://localhost/files", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
