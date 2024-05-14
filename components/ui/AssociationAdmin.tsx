@@ -512,7 +512,10 @@ function MyAccount() {
                   </div>
                 </div>
                 <PreSignupUsersModal
-                  onFinish={() => console.log("on finish")}
+                  onFinish={() => {
+                    displayPreSignupUsersModal.value = false;
+                    handleGetUsers(1);
+                  }}
                 />
                 <AdminNewDocModal createType={createType} />
                 {isLoadingUsers

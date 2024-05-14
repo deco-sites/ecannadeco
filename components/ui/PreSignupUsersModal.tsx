@@ -3,6 +3,8 @@ import Icon from "../../components/ui/Icon.tsx";
 import { useState } from "preact/hooks";
 import { useUI } from "../../sdk/useUI.ts";
 import { h } from "preact";
+import { IS_BROWSER } from "$fresh/runtime.ts";
+import { invoke } from "../../runtime.ts";
 
 export interface Props {
   onFinish: () => void;
@@ -22,14 +24,41 @@ const PreSignupUsersModal = ({ onFinish }: Props) => {
     }
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+
     setIsUploading(true);
 
-    try {
-      console.log("oi");
-    } catch (e) {
-      console.log({ erroUpload: e });
-      setIsUploading(false);
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await fetch(
+          "https://service.ecanna.com.br/profile/",
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: accessToken,
+              ContentType: "multipart/form-data",
+            },
+          },
+        );
+        const r = await response.json();
+
+        console.log({ responsePresignup: r });
+        setIsUploading(false);
+
+        onFinish();
+      } catch (e) {
+        console.log({ erroUpload: e });
+        setIsUploading(false);
+      }
     }
   };
 
