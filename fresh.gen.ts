@@ -36,6 +36,7 @@ import * as $NewTicketModal from "./islands/NewTicketModal.tsx";
 import * as $Newsletter from "./islands/Newsletter.tsx";
 import * as $OutOfStock from "./islands/OutOfStock.tsx";
 import * as $PreSignupUsersModal from "./islands/PreSignupUsersModal.tsx";
+import * as $PrescriberPatients from "./islands/PrescriberPatients.tsx";
 import * as $PrivatePageControl from "./islands/PrivatePageControl.tsx";
 import * as $PrivatePageControlAdmin from "./islands/PrivatePageControlAdmin.tsx";
 import * as $ProductImageZoom from "./islands/ProductImageZoom.tsx";
@@ -94,6 +95,7 @@ const manifest = {
     "./islands/Newsletter.tsx": $Newsletter,
     "./islands/OutOfStock.tsx": $OutOfStock,
     "./islands/PreSignupUsersModal.tsx": $PreSignupUsersModal,
+    "./islands/PrescriberPatients.tsx": $PrescriberPatients,
     "./islands/PrivatePageControl.tsx": $PrivatePageControl,
     "./islands/PrivatePageControlAdmin.tsx": $PrivatePageControlAdmin,
     "./islands/ProductImageZoom.tsx": $ProductImageZoom,
