@@ -34,6 +34,7 @@ export type AvailableIcons =
   | "Message"
   | "MedCanna"
   | "Phone"
+  | "Profile"
   | "Pix"
   | "Plus"
   | "QuestionMarkCircle"
@@ -48,6 +49,7 @@ export type AvailableIcons =
   | "Twitter"
   | "Upload"
   | "User"
+  | "Update"
   | "Visa"
   | "WhatsApp"
   | "XMark"
@@ -58,6 +60,8 @@ export type AvailableIcons =
   | "AlertWarning"
   | "AlertError"
   | "UserData"
+  | "HappyFace"
+  | "SadFace"
   | "share";
 
 interface Props extends JSX.SVGAttributes<SVGSVGElement> {
