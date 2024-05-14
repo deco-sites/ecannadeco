@@ -138,14 +138,14 @@ function PublicProfileComponent(
                         <div class="flex justify-between rounded-md bg-[#C8C8C8] w-full px-5 h-10 items-center">
                           <div class="flex gap-2">
                             <span class="text-[#8F8D8D]">
-                              <Icon id="Anexo" size={24} />
+                              <Icon id="Anexo" size={19} />
                             </span>
-                            <span class="text-[#393939] font-semibold">
+                            <span class="text-[#393939]">
                               {doc.title}
                             </span>
                           </div>
                           <span class="text-[#8F8D8D] flex justify-end w-6">
-                            <Icon id="Download" height={19} />
+                            <Icon id="Download" height={16} />
                           </span>
                         </div>
                       </a>
@@ -167,14 +167,14 @@ function PublicProfileComponent(
                           <div class="flex justify-between rounded-md bg-[#C8C8C8] w-full px-5 h-10 items-center">
                             <div class="flex gap-2">
                               <span class="text-[#8F8D8D]">
-                                <Icon id="Anexo" size={24} />
+                                <Icon id="Anexo" size={19} />
                               </span>
-                              <span class="text-[#393939] font-semibold">
+                              <span class="text-[#393939]">
                                 {doc.title}
                               </span>
                             </div>
                             <span class="text-[#8F8D8D] flex justify-end w-6">
-                              <Icon id="Download" height={19} />
+                              <Icon id="Download" height={16} />
                             </span>
                           </div>
                         </a>
