@@ -53,7 +53,7 @@ const TreatmentCard = ({ treatment }: { treatment: Treatment }) => {
                   <span class="font-semibold">
                     {m.name}
                   </span>
-                  <span class="text-sm">
+                  <span class="text-xs">
                     {m.dosage}
                   </span>
                 </div>
