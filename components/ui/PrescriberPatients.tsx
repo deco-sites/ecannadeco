@@ -24,13 +24,24 @@ export type Address = {
   addressType: string;
 };
 
+export type Treatment = {
+  updated_at: string;
+  feedback: "positive" | "negative";
+  medication: {
+    name: string;
+    dosage: string;
+  }[];
+  current: boolean;
+};
+
 export type Patient = {
   name: string;
   email: string;
-  last_treatment: {
+  last_treatment?: {
     updated_at: string | Date;
     feedback: "positive" | "negative";
-  };
+  } | undefined;
+  treatments?: Treatment[];
 };
 
 function PrescriberPatients() {
@@ -70,10 +81,7 @@ function PrescriberPatients() {
     {
       name: "Tauane Rodrigues",
       email: "tauame@email.com",
-      last_treatment: {
-        updated_at: "2024-05-12T19:10:43.016+00:00",
-        feedback: "positive",
-      },
+      last_treatment: undefined,
     },
   ]);
   const [docs, setDocs] = useState<DocListType[]>([]);
@@ -109,7 +117,7 @@ function PrescriberPatients() {
         : (
           <div class="flex flex-col gap-3 w-full">
             <div class="flex justify-center">
-              <h3 class="text-2xl text-[#8b8b8b] text-center">
+              <h3 class="text-2xl text-[#8b8b8b] text-center mb-8">
                 Meus Pacientes
               </h3>
             </div>
@@ -143,12 +151,12 @@ function PrescriberPatients() {
                 <ul class="flex flex-col gap-4">
                   {patients && patients.map((p) => {
                     return (
-                      <div class="dropdown dropdown-top dropdown-end">
+                      <div class="">
                         <div tabindex={0} role="button" class="">
                           <div target="_blank">
                             <li
                               class={`p-3 ${
-                                p.last_treatment.feedback === "positive"
+                                p.last_treatment?.feedback === "positive"
                                   ? "bg-[#ffffff]"
                                   : "bg-[#fff8dc]"
                               } rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
@@ -167,32 +175,46 @@ function PrescriberPatients() {
                                     </span>
                                   </div>
                                 </div>
-                                <div class="flex flex-col items-end gap-2">
-                                  <div class="flex justify-between items-center gap-2 text-[#808080]">
-                                    <Icon id="Update" size={16} />
-                                    <span>
-                                      {timeAgo(
-                                        new Date(p.last_treatment.updated_at),
-                                      )}
-                                    </span>
-                                  </div>
-                                  <div
-                                    class={`${
-                                      p.last_treatment.feedback === "positive"
-                                        ? "text-green-600"
-                                        : "text-red-600"
-                                    }`}
-                                  >
-                                    <Icon
-                                      id={`${
-                                        p.last_treatment.feedback === "positive"
-                                          ? "HappyFace"
-                                          : "SadFace"
-                                      }`}
-                                      size={19}
-                                    />
-                                  </div>
-                                </div>
+                                {p.last_treatment
+                                  ? (
+                                    <div class="flex flex-col items-end gap-2">
+                                      <div class="flex justify-between items-center gap-2 text-[#808080]">
+                                        <Icon id="Update" size={16} />
+                                        <span>
+                                          {timeAgo(
+                                            new Date(
+                                              p.last_treatment.updated_at,
+                                            ),
+                                          )}
+                                        </span>
+                                      </div>
+                                      <div
+                                        class={`${
+                                          p.last_treatment.feedback ===
+                                              "positive"
+                                            ? "text-green-600"
+                                            : "text-red-600"
+                                        }`}
+                                      >
+                                        <Icon
+                                          id={`${
+                                            p.last_treatment.feedback ===
+                                                "positive"
+                                              ? "HappyFace"
+                                              : "SadFace"
+                                          }`}
+                                          size={19}
+                                        />
+                                      </div>
+                                    </div>
+                                  )
+                                  : (
+                                    <div class="flex items-center justify-end">
+                                      <div class="badge badge-primary badge-xs p-2">
+                                        Sem Registro
+                                      </div>
+                                    </div>
+                                  )}
                               </div>
                             </li>
                           </div>
