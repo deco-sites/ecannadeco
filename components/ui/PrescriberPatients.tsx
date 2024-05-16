@@ -24,14 +24,39 @@ export type Address = {
   addressType: string;
 };
 
+export type Entry = {
+  created_at: string;
+  desiredEffects: {
+    effect: {
+      name: string;
+    };
+    intensity: number;
+  }[];
+  undesiredEffects: {
+    effect: {
+      name: string;
+    };
+    intensity: number;
+  }[];
+};
+
 export type Treatment = {
   updated_at: string;
-  feedback: "positive" | "negative";
+  feedback?: "positive" | "negative";
   medication: {
     name: string;
     dosage: string;
   }[];
+  entries?: Entry[];
   current: boolean;
+  prescriber?: {
+    name: string;
+    registryType: string;
+    registry: string;
+  };
+  patient?: {
+    name: string;
+  };
 };
 
 export type Patient = {

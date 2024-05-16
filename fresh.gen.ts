@@ -12,6 +12,7 @@ import * as $AddToCartButton_wake from "./islands/AddToCartButton/wake.tsx";
 import * as $AdminNewDocModal from "./islands/AdminNewDocModal.tsx";
 import * as $AdminOrders from "./islands/AdminOrders.tsx";
 import * as $AssociationAdmin from "./islands/AssociationAdmin.tsx";
+import * as $Chart from "./islands/Chart.tsx";
 import * as $CheckoutForm from "./islands/CheckoutForm.tsx";
 import * as $CheckoutUpsellModal from "./islands/CheckoutUpsellModal.tsx";
 import * as $ChoosePlanSignup from "./islands/ChoosePlanSignup.tsx";
@@ -19,6 +20,7 @@ import * as $ConfirmForgotPasswordForm from "./islands/ConfirmForgotPasswordForm
 import * as $ConfirmSignup from "./islands/ConfirmSignup.tsx";
 import * as $EcannaCardPage from "./islands/EcannaCardPage.tsx";
 import * as $ForgotPasswordForm from "./islands/ForgotPasswordForm.tsx";
+import * as $FreshChart from "./islands/FreshChart.tsx";
 import * as $Header_Buttons from "./islands/Header/Buttons.tsx";
 import * as $Header_Cart_linx from "./islands/Header/Cart/linx.tsx";
 import * as $Header_Cart_nuvemshop from "./islands/Header/Cart/nuvemshop.tsx";
@@ -37,6 +39,7 @@ import * as $Newsletter from "./islands/Newsletter.tsx";
 import * as $OutOfStock from "./islands/OutOfStock.tsx";
 import * as $PreSignupUsersModal from "./islands/PreSignupUsersModal.tsx";
 import * as $PrescriberPatientTreatment from "./islands/PrescriberPatientTreatment.tsx";
+import * as $PrescriberPatientTreatmentReport from "./islands/PrescriberPatientTreatmentReport.tsx";
 import * as $PrescriberPatients from "./islands/PrescriberPatients.tsx";
 import * as $PrivatePageControl from "./islands/PrivatePageControl.tsx";
 import * as $PrivatePageControlAdmin from "./islands/PrivatePageControlAdmin.tsx";
@@ -72,6 +75,7 @@ const manifest = {
     "./islands/AdminNewDocModal.tsx": $AdminNewDocModal,
     "./islands/AdminOrders.tsx": $AdminOrders,
     "./islands/AssociationAdmin.tsx": $AssociationAdmin,
+    "./islands/Chart.tsx": $Chart,
     "./islands/CheckoutForm.tsx": $CheckoutForm,
     "./islands/CheckoutUpsellModal.tsx": $CheckoutUpsellModal,
     "./islands/ChoosePlanSignup.tsx": $ChoosePlanSignup,
@@ -79,6 +83,7 @@ const manifest = {
     "./islands/ConfirmSignup.tsx": $ConfirmSignup,
     "./islands/EcannaCardPage.tsx": $EcannaCardPage,
     "./islands/ForgotPasswordForm.tsx": $ForgotPasswordForm,
+    "./islands/FreshChart.tsx": $FreshChart,
     "./islands/Header/Buttons.tsx": $Header_Buttons,
     "./islands/Header/Cart/linx.tsx": $Header_Cart_linx,
     "./islands/Header/Cart/nuvemshop.tsx": $Header_Cart_nuvemshop,
@@ -97,6 +102,8 @@ const manifest = {
     "./islands/OutOfStock.tsx": $OutOfStock,
     "./islands/PreSignupUsersModal.tsx": $PreSignupUsersModal,
     "./islands/PrescriberPatientTreatment.tsx": $PrescriberPatientTreatment,
+    "./islands/PrescriberPatientTreatmentReport.tsx":
+      $PrescriberPatientTreatmentReport,
     "./islands/PrescriberPatients.tsx": $PrescriberPatients,
     "./islands/PrivatePageControl.tsx": $PrivatePageControl,
     "./islands/PrivatePageControlAdmin.tsx": $PrivatePageControlAdmin,
