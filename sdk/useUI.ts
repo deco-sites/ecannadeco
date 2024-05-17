@@ -23,6 +23,7 @@ const displayConfirmCancelSubscription = signal(false);
 const displayCheckoutUpsellModal = signal(false);
 const displayPreSignupUsersModal = signal(false);
 const displayAssociationAdminNewDoc = signal(false);
+const displayNewPatientModal = signal(false);
 const displayNewTreatmentModal = signal(false);
 const displayPlanLimit = signal(false);
 const updatedData = signal(true);
@@ -52,6 +53,7 @@ const state = {
   displayCheckoutUpsellModal,
   displayPreSignupUsersModal,
   displayAssociationAdminNewDoc,
+  displayNewPatientModal,
   userToAdminCreateDoc,
   associationToAdminCreateDoc,
   displayNewTreatmentModal,
