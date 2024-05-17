@@ -52,6 +52,7 @@ export type Treatment = {
   prescriber?: {
     name: string;
     registryType: string;
+    registryUF: string;
     registry: string;
   };
   patient?: {

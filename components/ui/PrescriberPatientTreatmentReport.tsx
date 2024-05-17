@@ -80,6 +80,7 @@ function PrescriberPatientTreatmentReport() {
       prescriber: {
         name: "Dra. Endy Lacet",
         registryType: "CRO",
+        registryUF: "DF",
         registry: "0000000",
       },
       patient: {
