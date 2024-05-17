@@ -51,6 +51,7 @@ function PrescriberPatientTreatmentReport() {
         name: "THC 50mg - Abrapango",
         dosage: "3 gotas 2x/ dia",
       }],
+      feedback: "positive",
       entries: [{
         created_at: "2024-05-14T14:29:09.024+00:00",
         desiredEffects: [{
@@ -85,6 +86,7 @@ function PrescriberPatientTreatmentReport() {
       },
       patient: {
         name: "Célio Marcos",
+        email: "celio@gmail.com",
       },
     },
   );
@@ -110,6 +112,25 @@ function PrescriberPatientTreatmentReport() {
                 <div class="flex gap-2 items-center">
                   <Icon id="Calendar" size={18} />
                   <span>09/05/2024</span>
+                </div>
+              </div>
+            </div>
+            <div
+              class={`p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+            >
+              <div class="flex justify-between">
+                <div class="flex gap-4 items-center">
+                  <div class="text-[#808080]">
+                    <Icon id="Profile" size={16} />
+                  </div>
+                  <div class="flex flex-col items-start">
+                    <span class="font-semibold">
+                      {treatment.patient!.name}
+                    </span>
+                    <span class="text-sm">
+                      {treatment.patient!.email!}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -279,6 +300,10 @@ function PrescriberPatientTreatmentReport() {
                 </div>
               </div>
             </div>
+            <button class="btn btn-secondary text-white w-full">
+              <Icon id="Drop" size={16} />
+              <span>Atualizar Tratamento</span>
+            </button>
           </div>
         )}
     </PageWrap>
