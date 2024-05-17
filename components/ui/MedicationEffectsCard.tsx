@@ -8,7 +8,10 @@ export type AvailableEffects =
   | "dizziness"
   | "nausea";
 
-const symbolName: Record<string, { icon: AvailableIcons; name: string }> = {
+export const symbolName: Record<
+  string,
+  { icon: AvailableIcons; name: string }
+> = {
   "hunger": {
     icon: "Hungry",
     name: "Fome",

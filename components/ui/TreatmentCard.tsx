@@ -1,6 +1,11 @@
 import type { Treatment } from "./PrescriberPatients.tsx";
 import Icon from "./Icon.tsx";
 
+export interface Props {
+  treatment: Treatment;
+  hideLastFeedback?: boolean;
+}
+
 const timeAgo = (date: Date): string => {
   const seconds = Math.floor((Number(new Date()) - +date) / 1000); // Explicitly convert to number
   let interval = Math.floor(seconds / 31536000);
@@ -17,12 +22,12 @@ const timeAgo = (date: Date): string => {
   return `${Math.floor(seconds)}seg atrás`;
 };
 
-const TreatmentCard = ({ treatment }: { treatment: Treatment }) => {
+const TreatmentCard = ({ treatment, hideLastFeedback }: Props) => {
   return (
     <div
       class={`p-0 ${
         treatment.current ? "bg-[#ffffff]" : "bg-[#d3d3d3]"
-      } rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+      } rounded-md text-[10px] shadow`}
     >
       <div class="flex justify-between p-3">
         <div class="flex flex-col gap-4 items-start">
@@ -31,7 +36,7 @@ const TreatmentCard = ({ treatment }: { treatment: Treatment }) => {
               <div class="flex gap-2 items-center text-[#444444]">
                 <Icon id="Drop" size={12} />
                 <div class="flex flex-col">
-                  <span class="font-semibold">
+                  <span class="font-semibold text-sm">
                     {m.name}
                   </span>
                   <span class="text-xs">
@@ -42,7 +47,11 @@ const TreatmentCard = ({ treatment }: { treatment: Treatment }) => {
             );
           })}
         </div>
-        <div class="flex flex-col items-end gap-2">
+        <div
+          class={`flex flex-col items-end gap-2 ${
+            hideLastFeedback && "hidden"
+          }`}
+        >
           <div class="flex justify-between items-center gap-2 text-[#808080]">
             <Icon id="Update" size={16} />
             <span>
@@ -73,9 +82,15 @@ const TreatmentCard = ({ treatment }: { treatment: Treatment }) => {
           </div>
         </div>
       </div>
-      {treatment.patient && (
+      {(treatment.patient || treatment.prescriber) && (
         <div class="bg-secondary px-3 py-1 rounded-b-md text-white">
-          <span>Paciente: {treatment.patient.name}</span>
+          {treatment.prescriber
+            ? (
+              <span>
+                {`Prescritor: ${treatment.prescriber.name} | ${treatment.prescriber.registryType} ${treatment.prescriber.registry} - ${treatment.prescriber.registryUF}`}
+              </span>
+            )
+            : <span>Paciente: {treatment.patient!.name}</span>}
         </div>
       )}
     </div>
