@@ -84,13 +84,17 @@ const TreatmentCard = ({ treatment, hideLastFeedback }: Props) => {
       </div>
       {(treatment.patient || treatment.prescriber) && (
         <div class="bg-secondary px-3 py-1 rounded-b-md text-white">
-          {treatment.prescriber
-            ? (
+          {treatment.patient
+            ? <span>Paciente: {treatment.patient!.name}</span>
+            : (
               <span>
-                {`Prescritor: ${treatment.prescriber.name} | ${treatment.prescriber.registryType} ${treatment.prescriber.registry} - ${treatment.prescriber.registryUF}`}
+                {`Prescritor: ${treatment.prescriber!.name} | ${
+                  treatment.prescriber!.registryType
+                } ${treatment.prescriber!.registry} - ${
+                  treatment.prescriber!.registryUF
+                }`}
               </span>
-            )
-            : <span>Paciente: {treatment.patient!.name}</span>}
+            )}
         </div>
       )}
     </div>

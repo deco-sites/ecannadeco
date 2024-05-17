@@ -105,10 +105,14 @@ function PatientNewTreatmentEntry() {
   );
   const [availableDesiredEffects, setAvailableDesiredEffects] = useState<
     AvailableEffects[]
-  >(["hunger", "sleep", "focus"]);
+  >(["hunger", "sleep", "focus" /*"relaxation", "disposition", "painRelief"*/]);
   const [availableUndesiredEffects, setAvailableUndesiredEffects] = useState<
     AvailableEffects[]
-  >(["dizziness", "nausea", "headache"]);
+  >([
+    "dizziness",
+    "nausea",
+    "headache", /*"anxiety", "confusion", "depression"*/
+  ]);
 
   return (
     <PageWrap>
