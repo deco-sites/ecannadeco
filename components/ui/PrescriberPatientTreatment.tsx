@@ -12,6 +12,7 @@ import type { DocListType } from "./MyDocs.tsx";
 import Modal from "./Modal.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Patient, Treatment } from "./PrescriberPatients.tsx";
+import PrescriberUpdateTreatmentModal from "deco-sites/ecannadeco/islands/PrescriberUpdateTreatmentModal.tsx";
 
 export type Address = {
   cep: string;
@@ -98,21 +99,6 @@ const TreatmentCard = ({ treatment }: { treatment: Treatment }) => {
 
 function PrescriberPatientTreatments() {
   const [isLoading, setIsLoading] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
-  const [updating, setUpdating] = useState(false);
-  const [emailSearch, setEmailSearch] = useState("");
-  const [associationName, setAssociationName] = useState("");
-  const [associationCnpj, setAssociationCnpj] = useState("");
-  const [associationLogo, setAssociationLogo] = useState("");
-  const [createType, setCreateType] = useState<"user" | "association">(
-    "association",
-  );
-  const [limit, setLimit] = useState<number>();
-  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
-  const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
-  const [page, setPage] = useState<number>();
-  const [totalPages, setTotalPages] = useState<number>();
   const [patient, setpatients] = useState<Patient>(
     {
       name: "Célio Marcos",
@@ -171,13 +157,9 @@ function PrescriberPatientTreatments() {
   const currentTreatment = patient.treatments?.find((t) => t.current === true);
   const oldTreatments = patient.treatments?.filter((t) => t.current !== true);
 
-  // const {
-  //   displayPreSignupUsersModal,
-  //   displayAssociationAdminNewDoc,
-  //   userToAdminCreateDoc,
-  //   associationToAdminCreateDoc,
-  //   displayConfirmDeleteDoc,
-  // } = useUI();
+  const {
+    displayNewTreatmentModal,
+  } = useUI();
 
   return (
     <PageWrap>
@@ -185,17 +167,24 @@ function PrescriberPatientTreatments() {
         ? <span class="loading loading-spinner text-green-600"></span>
         : (
           <div class="flex flex-col gap-3 w-full">
-            <div class="flex justify-between">
-              <h3 class="text-2xl text-[#8b8b8b] text-center mb-8">
+            <div class="flex justify-between mb-8">
+              <PrescriberUpdateTreatmentModal />
+              <h3 class="text-2xl text-[#8b8b8b] text-center">
                 Tratamento
               </h3>
               <button
                 class="btn btn-sm btn-secondary text-white"
                 onClick={() => {
-                  console.log("clickou");
+                  displayNewTreatmentModal.value = true;
                 }}
               >
-                <Icon id="Drop" size={12} />Atualizar Tratamento
+                <Icon
+                  id="Drop"
+                  size={12}
+                />
+                <span class="flex gap-[6px]">
+                  Atualizar <span class="hidden sm:block">Tratamento</span>
+                </span>
               </button>
             </div>
             <div class="flex flex-col gap-8">
