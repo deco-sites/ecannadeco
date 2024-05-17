@@ -29,7 +29,7 @@ export const symbolName: Record<
     name: "Enxaqueca",
   },
   "dizziness": {
-    icon: "Update",
+    icon: "Dizziness",
     name: "Tontura",
   },
   "nausea": {
