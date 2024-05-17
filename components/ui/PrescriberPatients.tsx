@@ -172,7 +172,7 @@ function PrescriberPatients() {
                 <ul class="flex flex-col gap-4">
                   {patients && patients.map((p) => {
                     return (
-                      <div class="">
+                      <a href="/prescritor/paciente/123" class="">
                         <div tabindex={0} role="button" class="">
                           <div target="_blank">
                             <li
@@ -240,7 +240,7 @@ function PrescriberPatients() {
                             </li>
                           </div>
                         </div>
-                      </div>
+                      </a>
                     );
                   })}
                 </ul>
