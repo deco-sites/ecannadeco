@@ -7,15 +7,12 @@ import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import PageWrap from "./PageWrap.tsx";
 import Icon from "./Icon.tsx";
-import AdminNewDocModal from "../../islands/AdminNewDocModal.tsx";
-import PreSignupUsersModal from "../../islands/PreSignupUsersModal.tsx";
 import { useUI } from "../../sdk/useUI.ts";
 import Image from "apps/website/components/Image.tsx";
-import { h } from "preact";
 import Loading from "../daisy/Loading.tsx";
 import type { DocListType } from "./MyDocs.tsx";
-import Modal from "./Modal.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import PrescriberNewPatientModal from "../../islands/PrescriberNewPatientModal.tsx";
 
 export type Address = {
   cep: string;
@@ -114,11 +111,7 @@ function PrescriberPatients() {
   const [docs, setDocs] = useState<DocListType[]>([]);
 
   const {
-    displayPreSignupUsersModal,
-    displayAssociationAdminNewDoc,
-    userToAdminCreateDoc,
-    associationToAdminCreateDoc,
-    displayConfirmDeleteDoc,
+    displayNewPatientModal,
   } = useUI();
 
   const timeAgo = (date: Date): string => {
@@ -149,6 +142,7 @@ function PrescriberPatients() {
               </h3>
             </div>
             <div class="flex flex-col sm:flex-row gap-4 justify-between mb-4">
+              <PrescriberNewPatientModal />
               <input
                 placeholder="Pesquise por email"
                 class="input rounded-full text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] sm:w-1/2 h-[35px] text-xs"
@@ -165,7 +159,7 @@ function PrescriberPatients() {
                 <button
                   class="btn btn-sm btn-secondary text-white"
                   onClick={() => {
-                    displayPreSignupUsersModal.value = true;
+                    displayNewPatientModal.value = true;
                   }}
                 >
                   <Icon id="UserData" size={19} />Novo Paciente
@@ -264,7 +258,8 @@ function PrescriberPatients() {
               </div>
               <div>
                 <span class="text-xs">
-                  {`Página ${page}/${totalPages}`}
+                  {`Página 1/1`}
+                  {/* {`Página ${page}/${totalPages}`} */}
                 </span>
               </div>
               <div>
