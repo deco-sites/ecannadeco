@@ -44,6 +44,7 @@ import * as $PreSignupUsersModal from "./islands/PreSignupUsersModal.tsx";
 import * as $PrescriberPatientTreatment from "./islands/PrescriberPatientTreatment.tsx";
 import * as $PrescriberPatientTreatmentReport from "./islands/PrescriberPatientTreatmentReport.tsx";
 import * as $PrescriberPatients from "./islands/PrescriberPatients.tsx";
+import * as $PrescriberUpdateTreatmentModal from "./islands/PrescriberUpdateTreatmentModal.tsx";
 import * as $PrivatePageControl from "./islands/PrivatePageControl.tsx";
 import * as $PrivatePageControlAdmin from "./islands/PrivatePageControlAdmin.tsx";
 import * as $ProductImageZoom from "./islands/ProductImageZoom.tsx";
@@ -111,6 +112,8 @@ const manifest = {
     "./islands/PrescriberPatientTreatmentReport.tsx":
       $PrescriberPatientTreatmentReport,
     "./islands/PrescriberPatients.tsx": $PrescriberPatients,
+    "./islands/PrescriberUpdateTreatmentModal.tsx":
+      $PrescriberUpdateTreatmentModal,
     "./islands/PrivatePageControl.tsx": $PrivatePageControl,
     "./islands/PrivatePageControlAdmin.tsx": $PrivatePageControlAdmin,
     "./islands/ProductImageZoom.tsx": $ProductImageZoom,

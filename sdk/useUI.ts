@@ -23,6 +23,7 @@ const displayConfirmCancelSubscription = signal(false);
 const displayCheckoutUpsellModal = signal(false);
 const displayPreSignupUsersModal = signal(false);
 const displayAssociationAdminNewDoc = signal(false);
+const displayNewTreatmentModal = signal(false);
 const displayPlanLimit = signal(false);
 const updatedData = signal(true);
 const uploadedFile = signal(true);
@@ -53,6 +54,7 @@ const state = {
   displayAssociationAdminNewDoc,
   userToAdminCreateDoc,
   associationToAdminCreateDoc,
+  displayNewTreatmentModal,
   user,
 };
 

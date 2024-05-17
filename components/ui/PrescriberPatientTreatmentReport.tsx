@@ -300,10 +300,12 @@ function PrescriberPatientTreatmentReport() {
                 </div>
               </div>
             </div>
-            <button class="btn btn-secondary text-white w-full">
+            {
+              /* <button class="btn btn-secondary text-white w-full">
               <Icon id="Drop" size={16} />
               <span>Atualizar Tratamento</span>
-            </button>
+            </button> */
+            }
           </div>
         )}
     </PageWrap>
