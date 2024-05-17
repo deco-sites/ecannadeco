@@ -83,7 +83,13 @@ const TreatmentCard = ({ treatment, hideLastFeedback }: Props) => {
         </div>
       </div>
       {(treatment.patient || treatment.prescriber) && (
-        <div class="bg-secondary px-3 py-1 rounded-b-md text-white">
+        <div
+          class={`${
+            treatment.current
+              ? "bg-secondary text-white"
+              : "bg-[#e5e5e5] text-[#555555]"
+          } px-3 py-1 rounded-b-md `}
+        >
           {treatment.patient
             ? <span>Paciente: {treatment.patient!.name}</span>
             : (

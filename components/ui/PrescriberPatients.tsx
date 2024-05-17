@@ -57,6 +57,7 @@ export type Treatment = {
   };
   patient?: {
     name: string;
+    email?: string;
   };
 };
 
