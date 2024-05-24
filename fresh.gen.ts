@@ -17,6 +17,7 @@ import * as $CheckoutForm from "./islands/CheckoutForm.tsx";
 import * as $CheckoutUpsellModal from "./islands/CheckoutUpsellModal.tsx";
 import * as $ChoosePlanSignup from "./islands/ChoosePlanSignup.tsx";
 import * as $ConfirmForgotPasswordForm from "./islands/ConfirmForgotPasswordForm.tsx";
+import * as $ConfirmPrescriberSignup from "./islands/ConfirmPrescriberSignup.tsx";
 import * as $ConfirmSignup from "./islands/ConfirmSignup.tsx";
 import * as $EcannaCardPage from "./islands/EcannaCardPage.tsx";
 import * as $ForgotPasswordForm from "./islands/ForgotPasswordForm.tsx";
@@ -85,6 +86,7 @@ const manifest = {
     "./islands/CheckoutUpsellModal.tsx": $CheckoutUpsellModal,
     "./islands/ChoosePlanSignup.tsx": $ChoosePlanSignup,
     "./islands/ConfirmForgotPasswordForm.tsx": $ConfirmForgotPasswordForm,
+    "./islands/ConfirmPrescriberSignup.tsx": $ConfirmPrescriberSignup,
     "./islands/ConfirmSignup.tsx": $ConfirmSignup,
     "./islands/EcannaCardPage.tsx": $EcannaCardPage,
     "./islands/ForgotPasswordForm.tsx": $ForgotPasswordForm,
