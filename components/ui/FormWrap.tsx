@@ -18,7 +18,7 @@ function FormWrap(props: Props) {
         <div
           class={` ${
             !large && "max-w-[370px]"
-          } py-10 px-14 bg-[#ededed] rounded-xl relative`}
+          } py-10 px-14 bg-[#ededed] rounded-xl relative w-full`}
         >
           <div class="absolute top-[-43px] left-1/2 transform -translate-x-1/2">
             <div class="relative bg-white rounded-full h-[73px] w-[73px] shadow-md">

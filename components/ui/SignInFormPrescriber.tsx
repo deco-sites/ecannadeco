@@ -91,6 +91,10 @@ function SignInFormPrescriber({ formTitle }: Props) {
         >
           {loading ? "Entrando..." : "ENTRAR"}
         </button>
+        <span class="pt-2 text-xs text-[#8b8b8b]">
+          Não tem conta?{" "}
+          <a class="underline" href={"/prescritor/cadastrar"}>Cadastre-se</a>
+        </span>
       </form>
     </div>
   );
