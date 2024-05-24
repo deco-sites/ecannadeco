@@ -43,12 +43,15 @@ import * as $PatientTreatment from "./islands/PatientTreatment.tsx";
 import * as $PatientTreatmentReport from "./islands/PatientTreatmentReport.tsx";
 import * as $PreSignupUsersModal from "./islands/PreSignupUsersModal.tsx";
 import * as $PrescriberNewPatientModal from "./islands/PrescriberNewPatientModal.tsx";
+import * as $PrescriberNewPatientModalLive from "./islands/PrescriberNewPatientModalLive.tsx";
 import * as $PrescriberPatientTreatment from "./islands/PrescriberPatientTreatment.tsx";
 import * as $PrescriberPatientTreatmentReport from "./islands/PrescriberPatientTreatmentReport.tsx";
 import * as $PrescriberPatients from "./islands/PrescriberPatients.tsx";
+import * as $PrescriberPatientsLive from "./islands/PrescriberPatientsLive.tsx";
 import * as $PrescriberUpdateTreatmentModal from "./islands/PrescriberUpdateTreatmentModal.tsx";
 import * as $PrivatePageControl from "./islands/PrivatePageControl.tsx";
 import * as $PrivatePageControlAdmin from "./islands/PrivatePageControlAdmin.tsx";
+import * as $PrivatePageControlPrescriber from "./islands/PrivatePageControlPrescriber.tsx";
 import * as $ProductImageZoom from "./islands/ProductImageZoom.tsx";
 import * as $PublicPageControl from "./islands/PublicPageControl.tsx";
 import * as $SearchControls from "./islands/SearchControls.tsx";
@@ -112,14 +115,18 @@ const manifest = {
     "./islands/PatientTreatmentReport.tsx": $PatientTreatmentReport,
     "./islands/PreSignupUsersModal.tsx": $PreSignupUsersModal,
     "./islands/PrescriberNewPatientModal.tsx": $PrescriberNewPatientModal,
+    "./islands/PrescriberNewPatientModalLive.tsx":
+      $PrescriberNewPatientModalLive,
     "./islands/PrescriberPatientTreatment.tsx": $PrescriberPatientTreatment,
     "./islands/PrescriberPatientTreatmentReport.tsx":
       $PrescriberPatientTreatmentReport,
     "./islands/PrescriberPatients.tsx": $PrescriberPatients,
+    "./islands/PrescriberPatientsLive.tsx": $PrescriberPatientsLive,
     "./islands/PrescriberUpdateTreatmentModal.tsx":
       $PrescriberUpdateTreatmentModal,
     "./islands/PrivatePageControl.tsx": $PrivatePageControl,
     "./islands/PrivatePageControlAdmin.tsx": $PrivatePageControlAdmin,
+    "./islands/PrivatePageControlPrescriber.tsx": $PrivatePageControlPrescriber,
     "./islands/ProductImageZoom.tsx": $ProductImageZoom,
     "./islands/PublicPageControl.tsx": $PublicPageControl,
     "./islands/SearchControls.tsx": $SearchControls,
