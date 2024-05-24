@@ -11,19 +11,22 @@ const signUpCognitoPrescriber = async (
   _req: Request,
 ): Promise<unknown | null> => {
   try {
-    const response = await fetch("http://192.168.0.7/prescribers/sign-up", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      "https://api.ecanna.com.br/prescribers/sign-up",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: props.email,
+          password: props.password,
+          registry_type: props.registryType,
+          registry_number: props.registryNumber,
+          registry_state: props.registryState,
+        }),
       },
-      body: JSON.stringify({
-        email: props.email,
-        password: props.password,
-        registry_type: props.registryType,
-        registry_number: props.registryNumber,
-        registry_state: props.registryState,
-      }),
-    });
+    );
 
     const res = await response.json();
     return res;

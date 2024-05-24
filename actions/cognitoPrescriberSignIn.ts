@@ -1,15 +1,15 @@
 export interface Props {
   email: string;
-  code: string;
+  password: string;
 }
 
-const confirmCognitoSignup = async (
+const signInCognito = async (
   props: Props,
   _req: Request,
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "https://api.ecanna.com.br/prescribers/confirm-signup",
+      "https://api.ecanna.com.br/prescribers/sign-in",
       {
         method: "POST",
         headers: {
@@ -17,12 +17,13 @@ const confirmCognitoSignup = async (
         },
         body: JSON.stringify({
           email: props.email,
-          code: props.code,
+          password: props.password,
         }),
       },
     );
 
     const res = await response.json();
+    console.log({ res });
     return res;
   } catch (e) {
     // console.log({ e });
@@ -30,4 +31,4 @@ const confirmCognitoSignup = async (
   }
 };
 
-export default confirmCognitoSignup;
+export default signInCognito;

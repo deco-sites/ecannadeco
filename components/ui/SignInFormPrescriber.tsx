@@ -22,18 +22,18 @@ function SignInFormPrescriber({ formTitle }: Props) {
     setLoading(true);
     try {
       const data = await invoke["deco-sites/ecannadeco"].actions
-        .cognitoAdminSignIn(
+        .cognitoPrescriberSignIn(
           { email, password },
-        ) as SignInResponse;
+        ) as { data: SignInResponse };
       console.log({ data });
       if (IS_BROWSER) {
         localStorage.setItem(
           "PrescriberAccessToken",
-          data.AuthenticationResult.AccessToken,
+          data.data.AuthenticationResult.AccessToken,
         );
       }
       setLoading(false);
-      window.location.href = "/sys/admin/orders";
+      window.location.href = "/prescritor/meus-pacientes";
       setEmail("");
       setPassword("");
     } catch (e) {
