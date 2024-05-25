@@ -40,22 +40,22 @@ export type Entry = {
 
 export type Treatment = {
   updated_at: string;
-  feedback?: "positive" | "negative";
-  medication: {
+  status?: "NEUTRAL" | "GOOD" | "BAD";
+  medications: {
     name: string;
     dosage: string;
   }[];
-  entries?: Entry[];
-  current: boolean;
+  isActive: boolean;
   prescriber?: {
+    _id: string;
     name: string;
     registryType: string;
     registryUF: string;
     registry: string;
   };
   patient?: {
+    _id: string;
     name: string;
-    email?: string;
   };
 };
 
@@ -194,7 +194,7 @@ function PrescriberPatients() {
                 <ul class="flex flex-col gap-4">
                   {patients && patients.map((p) => {
                     return (
-                      <a href={`/prescritor/paciente/${p._id}`} class="">
+                      <a href={`/prescritor/meus-pacientes/${p._id}`} class="">
                         <div tabindex={0} role="button" class="">
                           <div target="_blank">
                             <li

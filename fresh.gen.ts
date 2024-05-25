@@ -45,10 +45,12 @@ import * as $PreSignupUsersModal from "./islands/PreSignupUsersModal.tsx";
 import * as $PrescriberNewPatientModal from "./islands/PrescriberNewPatientModal.tsx";
 import * as $PrescriberNewPatientModalLive from "./islands/PrescriberNewPatientModalLive.tsx";
 import * as $PrescriberPatientTreatment from "./islands/PrescriberPatientTreatment.tsx";
+import * as $PrescriberPatientTreatmentLive from "./islands/PrescriberPatientTreatmentLive.tsx";
 import * as $PrescriberPatientTreatmentReport from "./islands/PrescriberPatientTreatmentReport.tsx";
 import * as $PrescriberPatients from "./islands/PrescriberPatients.tsx";
 import * as $PrescriberPatientsLive from "./islands/PrescriberPatientsLive.tsx";
 import * as $PrescriberUpdateTreatmentModal from "./islands/PrescriberUpdateTreatmentModal.tsx";
+import * as $PrescriberUpdateTreatmentModalLive from "./islands/PrescriberUpdateTreatmentModalLive.tsx";
 import * as $PrivatePageControl from "./islands/PrivatePageControl.tsx";
 import * as $PrivatePageControlAdmin from "./islands/PrivatePageControlAdmin.tsx";
 import * as $PrivatePageControlPrescriber from "./islands/PrivatePageControlPrescriber.tsx";
@@ -118,12 +120,16 @@ const manifest = {
     "./islands/PrescriberNewPatientModalLive.tsx":
       $PrescriberNewPatientModalLive,
     "./islands/PrescriberPatientTreatment.tsx": $PrescriberPatientTreatment,
+    "./islands/PrescriberPatientTreatmentLive.tsx":
+      $PrescriberPatientTreatmentLive,
     "./islands/PrescriberPatientTreatmentReport.tsx":
       $PrescriberPatientTreatmentReport,
     "./islands/PrescriberPatients.tsx": $PrescriberPatients,
     "./islands/PrescriberPatientsLive.tsx": $PrescriberPatientsLive,
     "./islands/PrescriberUpdateTreatmentModal.tsx":
       $PrescriberUpdateTreatmentModal,
+    "./islands/PrescriberUpdateTreatmentModalLive.tsx":
+      $PrescriberUpdateTreatmentModalLive,
     "./islands/PrivatePageControl.tsx": $PrivatePageControl,
     "./islands/PrivatePageControlAdmin.tsx": $PrivatePageControlAdmin,
     "./islands/PrivatePageControlPrescriber.tsx": $PrivatePageControlPrescriber,
