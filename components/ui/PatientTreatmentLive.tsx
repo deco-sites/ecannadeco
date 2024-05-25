@@ -32,8 +32,6 @@ const timeAgo = (date: Date): string => {
   return `${Math.floor(seconds)}seg atrás`;
 };
 
-
-
 function PrescriberPatientTreatments() {
   const [isLoading, setIsLoading] = useState(false);
   const [treatments, setTreatments] = useState<Treatment[]>([]);
@@ -73,7 +71,7 @@ function PrescriberPatientTreatments() {
             <div class="flex flex-col gap-8">
               <div class="flex flex-col gap-4">
                 {treatments.length > 0 && treatments?.map((t) => {
-                  return <TreatmentCard treatment={t!} isPatient={true}/>;
+                  return <TreatmentCard treatment={t!} isPatient={true} />;
                 })}
               </div>
             </div>

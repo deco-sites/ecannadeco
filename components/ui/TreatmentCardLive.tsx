@@ -27,7 +27,9 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
   return (
     <a
       href={isPatient
-        ? treatment.isActive ? `/novo-registro/${treatment._id}` : `/tratamentos/${treatment._id}`
+        ? treatment.isActive
+          ? `/novo-registro/${treatment._id}`
+          : `/tratamentos/${treatment._id}`
         : `/prescritor/tratamentos/${treatment._id}`}
     >
       <div
