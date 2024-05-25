@@ -134,7 +134,7 @@ function PrescriberPatientTreatmentReport() {
                   <TreatmentCard treatment={treatment!} isPatient={false} />
                 )}
               </div>
-              
+
               {(report && report?.goodFeelingsReports.length > 0) && (
                 <div class="flex flex-col">
                   <h3 class="text-sm text-[#8b8b8b] mb-2">
@@ -318,7 +318,6 @@ function PrescriberPatientTreatmentReport() {
                   </div>
                 </div>
               )}
-             
             </div>
           )}
       </PageWrap>

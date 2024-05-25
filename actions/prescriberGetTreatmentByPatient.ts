@@ -21,7 +21,7 @@ const prescriberGetTreatmentByPatient = async (
       },
     );
     const res = await response.json();
-    console.log({ res })
+    console.log({ res });
     return res;
   } catch (e) {
     return e;
