@@ -74,7 +74,7 @@ function ConfirmSignup() {
         if (association != "") {
           window.location.href = "/confirmar-cadastro/associacao";
         } else {
-          window.location.href = "/confirmar-cadastro/plano";
+          window.location.href = "/entrar";
         }
       }
     } catch (e) {
