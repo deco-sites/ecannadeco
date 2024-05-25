@@ -27,7 +27,6 @@ function SignInForm({ formTitle }: Props) {
         .cognitoSignIn(
           { email, password },
         ) as SignInResponse;
-      console.log({ data });
       if (IS_BROWSER) {
         localStorage.setItem(
           "AccessToken",
