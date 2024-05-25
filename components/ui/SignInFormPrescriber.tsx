@@ -22,18 +22,18 @@ function SignInFormPrescriber({ formTitle }: Props) {
     setLoading(true);
     try {
       const data = await invoke["deco-sites/ecannadeco"].actions
-        .cognitoAdminSignIn(
+        .cognitoPrescriberSignIn(
           { email, password },
-        ) as SignInResponse;
+        ) as { data: SignInResponse };
       console.log({ data });
       if (IS_BROWSER) {
         localStorage.setItem(
           "PrescriberAccessToken",
-          data.AuthenticationResult.AccessToken,
+          data.data.AuthenticationResult.AccessToken,
         );
       }
       setLoading(false);
-      window.location.href = "/sys/admin/orders";
+      window.location.href = "/prescritor/meus-pacientes";
       setEmail("");
       setPassword("");
     } catch (e) {
@@ -91,6 +91,10 @@ function SignInFormPrescriber({ formTitle }: Props) {
         >
           {loading ? "Entrando..." : "ENTRAR"}
         </button>
+        <span class="pt-2 text-xs text-[#8b8b8b]">
+          Não tem conta?{" "}
+          <a class="underline" href={"/prescritor/cadastrar"}>Cadastre-se</a>
+        </span>
       </form>
     </div>
   );
