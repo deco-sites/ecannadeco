@@ -16,7 +16,7 @@ function Placeholder() {
 function Container({ children }: Props) {
   if (!context.isDeploy && typeof children?.Component !== "function") {
     return (
-      <div class="bg-primary bg-opacity-5 p-4">
+      <div class="bg-primary bg-opacity-5 p-4 min-h-[73vh]">
         <Container children={{ Component: Placeholder, props: {} }} />
       </div>
     );
@@ -27,7 +27,7 @@ function Container({ children }: Props) {
   }
 
   return (
-    <div class="container">
+    <div class="container min-h-[73vh]">
       <children.Component {...children.props} />
     </div>
   );

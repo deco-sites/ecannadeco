@@ -3,7 +3,7 @@ import FormWrap from "../../components/ui/FormWrap.tsx";
 function RootNavigationTree() {
   return (
     <FormWrap>
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4 w-full min-w-[70%]">
         <span class="text-2xl text-[#8b8b8b] font-semibold text-center my-4">
           Você é
         </span>
