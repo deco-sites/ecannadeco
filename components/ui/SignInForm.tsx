@@ -35,7 +35,7 @@ function SignInForm({ formTitle }: Props) {
         );
       }
       setLoading(false);
-      window.location.href = "/meus-dados";
+      window.location.href = "/tratamentos";
       setEmail("");
       setPassword("");
     } catch (e) {

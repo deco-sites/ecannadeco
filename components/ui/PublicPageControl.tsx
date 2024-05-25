@@ -38,7 +38,7 @@ function PublicPageControl(props: Props) {
       const username = response.data.Username;
 
       if (username) {
-        window.location.href = props.redirectTo || "/meus-dados";
+        window.location.href = props.redirectTo || "/tratamentos";
       } else {
         if (IS_BROWSER) {
           localStorage.setItem("AccessToken", "");

@@ -27,7 +27,7 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
   return (
     <a
       href={isPatient
-        ? `/novo-registro/${treatment._id}`
+        ? treatment.isActive ? `/novo-registro/${treatment._id}` : `/tratamentos/${treatment._id}`
         : `/prescritor/tratamentos/${treatment._id}`}
     >
       <div
@@ -70,16 +70,16 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
             </div>
             <div
               class={`${
-                treatment.status ===
-                    "GOOD"
+                treatment.status !==
+                    "BAD"
                   ? "text-green-600"
                   : "text-red-600"
               }`}
             >
               <Icon
                 id={`${
-                  treatment.status ===
-                      "GOOD"
+                  treatment.status !==
+                      "BAD"
                     ? "HappyFace"
                     : "SadFace"
                 }`}
