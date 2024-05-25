@@ -10,13 +10,32 @@ import TreatmentCard from "deco-sites/ecannadeco/components/ui/TreatmentCard.tsx
 
 type Medication = Treatment["medication"];
 
-const PrescriberUpdateTreatmentModal = () => {
+export interface Props {
+  onFinished: () => void;
+}
+
+const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [accessToken, setAccessToken] = useState(
-    IS_BROWSER ? (localStorage.getItem("AccessToken") || "") : "",
+    IS_BROWSER ? (localStorage.getItem("PrescriberAccessToken") || "") : "",
   );
   const [updating, setUpdating] = useState<boolean>(false);
+
+  const handleSubmit = async () => {
+    setUpdating(true);
+    const response = await invoke["deco-sites/ecannadeco"].actions
+      .prescriberCreatePatient({
+        token: accessToken,
+        name,
+        email,
+      });
+    setUpdating(false);
+    onFinished();
+    if (response) {
+      displayNewPatientModal.value = false;
+    }
+  };
 
   const {
     displayNewPatientModal,
@@ -43,7 +62,7 @@ const PrescriberUpdateTreatmentModal = () => {
             placeholder="Nome aqui"
             value={name}
             onChange={(e) => {
-              setName(name);
+              setName(e.currentTarget.value);
             }}
           />
         </label>
@@ -58,14 +77,14 @@ const PrescriberUpdateTreatmentModal = () => {
             placeholder="Nome aqui"
             value={email}
             onChange={(e) => {
-              setEmail(email);
+              setEmail(e.currentTarget.value);
             }}
           />
         </label>
 
         <button
           class="btn btn-secondary text-white"
-          onClick={() => console.log("Clicked")}
+          onClick={handleSubmit}
         >
           Adicionar Paciente{"   "}{updating &&
             <span class="loading loading-spinner text-white"></span>}

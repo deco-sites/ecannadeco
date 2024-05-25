@@ -33,12 +33,13 @@ import * as $$$$$$$$$27 from "./actions/getUser.ts";
 import * as $$$$$$$$$28 from "./actions/getUserAdmin.ts";
 import * as $$$$$$$$$29 from "./actions/getUserOrders.ts";
 import * as $$$$$$$$$30 from "./actions/getUserPrescriber.ts";
-import * as $$$$$$$$$31 from "./actions/prescriberGetPatients.ts";
-import * as $$$$$$$$$32 from "./actions/resendConfirmationCode.ts";
-import * as $$$$$$$$$33 from "./actions/signOut.ts";
-import * as $$$$$$$$$34 from "./actions/updateProfile.ts";
-import * as $$$$$$$$$35 from "./actions/updateUserData.ts";
-import * as $$$$$$$$$36 from "./actions/uploadFile.ts";
+import * as $$$$$$$$$31 from "./actions/prescriberCreatePatient.ts";
+import * as $$$$$$$$$32 from "./actions/prescriberGetPatients.ts";
+import * as $$$$$$$$$33 from "./actions/resendConfirmationCode.ts";
+import * as $$$$$$$$$34 from "./actions/signOut.ts";
+import * as $$$$$$$$$35 from "./actions/updateProfile.ts";
+import * as $$$$$$$$$36 from "./actions/updateUserData.ts";
+import * as $$$$$$$$$37 from "./actions/uploadFile.ts";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
@@ -290,12 +291,13 @@ const manifest = {
     "deco-sites/ecannadeco/actions/getUserAdmin.ts": $$$$$$$$$28,
     "deco-sites/ecannadeco/actions/getUserOrders.ts": $$$$$$$$$29,
     "deco-sites/ecannadeco/actions/getUserPrescriber.ts": $$$$$$$$$30,
-    "deco-sites/ecannadeco/actions/prescriberGetPatients.ts": $$$$$$$$$31,
-    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$32,
-    "deco-sites/ecannadeco/actions/signOut.ts": $$$$$$$$$33,
-    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$34,
-    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$35,
-    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$36,
+    "deco-sites/ecannadeco/actions/prescriberCreatePatient.ts": $$$$$$$$$31,
+    "deco-sites/ecannadeco/actions/prescriberGetPatients.ts": $$$$$$$$$32,
+    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$33,
+    "deco-sites/ecannadeco/actions/signOut.ts": $$$$$$$$$34,
+    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$35,
+    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$36,
+    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$37,
   },
   "apps": {
     "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,

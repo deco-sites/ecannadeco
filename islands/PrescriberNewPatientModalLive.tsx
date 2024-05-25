@@ -1,9 +1,9 @@
 import Component from "deco-sites/ecannadeco/components/ui/PrescriberNewPatientModalLive.tsx";
-// import type { Props } from "../../components/ui/MyInfo.tsx";
+import type { Props } from "deco-sites/ecannadeco/components/ui/PrescriberNewPatientModalLive.tsx";
 
-function Island() {
-  return <Component />;
-  // return <Component {...props} />;
+function Island(props: Props) {
+  // return <Component />;
+  return <Component {...props} />;
 }
 
 export default Island;

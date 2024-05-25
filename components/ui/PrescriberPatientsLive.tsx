@@ -60,13 +60,11 @@ export type Treatment = {
 };
 
 export type Patient = {
+  _id: string;
   name: string;
   email: string;
-  last_treatment?: {
-    updated_at: string | Date;
-    feedback: "positive" | "negative";
-  } | undefined;
-  treatments?: Treatment[];
+  lastReport?: string | Date;
+  status?: string;
 };
 
 function PrescriberPatients() {
@@ -86,30 +84,20 @@ function PrescriberPatients() {
   const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
   const [page, setPage] = useState<number>();
   const [totalPages, setTotalPages] = useState<number>();
-  const [patients, setPatients] = useState<Patient[]>([
-    {
-      name: "Célio Marcos",
-      email: "celiomarcos@email.com",
-      last_treatment: {
-        updated_at: "2024-05-14T14:29:09.024+00:00",
-        feedback: "positive",
-      },
-    },
-    {
-      name: "Márcia Romano",
-      email: "marcia@email.com",
-      last_treatment: {
-        updated_at: "2024-05-14T14:29:09.024+00:00",
-        feedback: "negative",
-      },
-    },
-    {
-      name: "Tauane Rodrigues",
-      email: "tauame@email.com",
-      last_treatment: undefined,
-    },
-  ]);
+  const [patients, setPatients] = useState<Patient[]>([]);
   const [docs, setDocs] = useState<DocListType[]>([]);
+
+  const getPatients = async (accessToken: string) => {
+    setIsLoadingUsers(true);
+    const response = await invoke["deco-sites/ecannadeco"].actions
+      .prescriberGetPatients({
+        token: accessToken,
+      });
+    setIsLoadingUsers(false);
+    if (response) {
+      setPatients(response as Patient[]);
+    }
+  };
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -124,16 +112,7 @@ function PrescriberPatients() {
     }
 
     try {
-      console.log("AQUI")
-      setIsLoading(true);
-
-      invoke["deco-sites/ecannadeco"].actions.prescriberGetPatients({
-        token: accessToken,
-      }).then((r) => {
-        setIsLoading(false);
-        console.log({ r });
-        setPatients(r as Patient[]);
-      });
+      getPatients(accessToken);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
       if (IS_BROWSER) {
@@ -175,7 +154,17 @@ function PrescriberPatients() {
               </h3>
             </div>
             <div class="flex flex-col sm:flex-row gap-4 justify-between mb-4">
-              <PrescriberNewPatientModal />
+              <PrescriberNewPatientModal
+                onFinished={() => {
+                  displayNewPatientModal.value = false;
+                  let accessToken = "";
+                  if (IS_BROWSER) {
+                    accessToken =
+                      localStorage.getItem("PrescriberAccessToken") || "";
+                  }
+                  getPatients(accessToken);
+                }}
+              />
               <input
                 placeholder="Pesquise por email"
                 class="input rounded-full text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] sm:w-1/2 h-[35px] text-xs"
@@ -205,12 +194,12 @@ function PrescriberPatients() {
                 <ul class="flex flex-col gap-4">
                   {patients && patients.map((p) => {
                     return (
-                      <a href="/prescritor/paciente/123" class="">
+                      <a href={`/prescritor/paciente/${p._id}`} class="">
                         <div tabindex={0} role="button" class="">
                           <div target="_blank">
                             <li
                               class={`p-3 ${
-                                p.last_treatment?.feedback === "positive"
+                                p.status === "GOOD"
                                   ? "bg-[#ffffff]"
                                   : "bg-[#fff8dc]"
                               } rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
@@ -229,7 +218,7 @@ function PrescriberPatients() {
                                     </span>
                                   </div>
                                 </div>
-                                {p.last_treatment
+                                {p.lastReport
                                   ? (
                                     <div class="flex flex-col items-end gap-2">
                                       <div class="flex justify-between items-center gap-2 text-[#808080]">
@@ -237,23 +226,23 @@ function PrescriberPatients() {
                                         <span>
                                           {timeAgo(
                                             new Date(
-                                              p.last_treatment.updated_at,
+                                              p.lastReport,
                                             ),
                                           )}
                                         </span>
                                       </div>
                                       <div
                                         class={`${
-                                          p.last_treatment.feedback ===
-                                              "positive"
+                                          p.status ===
+                                              "GOOD"
                                             ? "text-green-600"
                                             : "text-red-600"
                                         }`}
                                       >
                                         <Icon
                                           id={`${
-                                            p.last_treatment.feedback ===
-                                                "positive"
+                                            p.status ===
+                                                "GOOD"
                                               ? "HappyFace"
                                               : "SadFace"
                                           }`}

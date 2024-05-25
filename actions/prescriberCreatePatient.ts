@@ -1,28 +1,34 @@
 export interface Props {
   token: string;
+  name: string;
+  email: string;
 }
 
-const prescriberGetPetients = async (
-  { token }: Props,
+const prescriberCreatePetient = async (
+  { token, name, email }: Props,
   _req: Request,
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
       `https://api.ecanna.com.br/prescribers/patients`,
       {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: token,
         },
+        body: JSON.stringify({
+          name,
+          email,
+        }),
       },
     );
     const res = await response.json();
     console.log({ res });
-    return res.patients.docs;
+    return res;
   } catch (e) {
     return e;
   }
 };
 
-export default prescriberGetPetients;
+export default prescriberCreatePetient;
