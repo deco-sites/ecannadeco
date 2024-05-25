@@ -497,8 +497,8 @@ function MyInfo() {
                     </div>
                     <input
                       class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
-                      placeholder="Bairro - cidade/uf"
-                      name="localidade"
+                      placeholder="Whatsapp"
+                      name="phone"
                       value={phone}
                       onChange={(e) => {
                         setPhone(e.currentTarget.value);
