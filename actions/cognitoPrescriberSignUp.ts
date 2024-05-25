@@ -4,6 +4,7 @@ export interface Props {
   registryType: string;
   registryNumber: string;
   registryState: string;
+  name: string;
 }
 
 const signUpCognitoPrescriber = async (
@@ -21,6 +22,7 @@ const signUpCognitoPrescriber = async (
         body: JSON.stringify({
           email: props.email,
           password: props.password,
+          name: props.name,
           registry_type: props.registryType,
           registry_number: props.registryNumber,
           registry_state: props.registryState,

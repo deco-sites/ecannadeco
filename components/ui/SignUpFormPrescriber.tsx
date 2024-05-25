@@ -29,7 +29,14 @@ function SignUpFormPrescriber({ formTitle }: Props) {
       try {
         const dataSignup = await invoke["deco-sites/ecannadeco"].actions
           .cognitoPrescriberSignUp(
-            { email, password, registryType, registryNumber, registryState },
+            {
+              email,
+              password,
+              registryType,
+              registryNumber,
+              registryState,
+              name,
+            },
           );
 
         const dataS = dataSignup as {
