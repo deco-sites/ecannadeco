@@ -172,7 +172,7 @@ function PrescriberPatientTreatmentReport() {
                             <Chart
                               type="line"
                               options={{
-                                scales: { y: { beginAtZero: true } },
+                                scales: { y: { min: 1, max: 10 } },
                               }}
                               data={{
                                 labels: report.entries.map((entry) =>
@@ -184,6 +184,7 @@ function PrescriberPatientTreatmentReport() {
                                     data: report.entries.map((entry) =>
                                       entry.grade
                                     ),
+                                    spanGaps: 1,
                                     borderColor: "#32b541",
                                     borderWidth: 1,
                                   },
@@ -226,7 +227,7 @@ function PrescriberPatientTreatmentReport() {
                             <Chart
                               type="line"
                               options={{
-                                scales: { y: { beginAtZero: true } },
+                                scales: { y: { min: 1, max: 10 } },
                               }}
                               data={{
                                 labels: report.entries.map((entry) =>
@@ -238,6 +239,7 @@ function PrescriberPatientTreatmentReport() {
                                     data: report.entries.map((entry) =>
                                       entry.grade
                                     ),
+                                    spanGaps: 1,
                                     borderColor: "#d93939",
                                     borderWidth: 1,
                                   },
