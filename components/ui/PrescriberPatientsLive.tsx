@@ -166,7 +166,8 @@ function PrescriberPatients() {
                   getPatients(accessToken);
                 }}
               />
-              <input
+              {
+                /* <input
                 placeholder="Pesquise por email"
                 class="input rounded-full text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] sm:w-1/2 h-[35px] text-xs"
                 name="emailSearch"
@@ -177,7 +178,8 @@ function PrescriberPatients() {
                     // handleGetUsers(page!, e.currentTarget.value);
                   }
                 }}
-              />
+              /> */
+              }
               <div class="flex sm:w-1/2 justify-end">
                 <button
                   class="btn btn-sm btn-secondary text-white"
@@ -193,6 +195,22 @@ function PrescriberPatients() {
               ? <span class="loading loading-spinner text-green-600"></span>
               : (
                 <ul class="flex flex-col gap-4">
+                  {patients.length === 0 && (
+                    <div class="flex justify-center">
+                      <span class="text-[#8b8b8b]">
+                        Você não tem nenhum paciente cadastre o primeiro
+                      </span>
+                      <button
+                        class="btn btn-sm btn-secondary text-white"
+                        onClick={() => {
+                          displayNewPatientModal.value = true;
+                        }}
+                      >
+                        <Icon id="UserData" size={19} />Novo Paciente
+                      </button>
+                    </div>
+                  )}
+                  <div class="flex justify-between"></div>
                   {patients && patients.map((p) => {
                     return (
                       <a href={`/prescritor/meus-pacientes/${p._id}`} class="">

@@ -14,7 +14,7 @@ function ConfirmSignup() {
 
   if (IS_BROWSER) {
     setEmail(
-      localStorage.getItem("emailConfirm") || "",
+      localStorage.getItem("prescriberEmailConfirm") || "",
     );
   }
 
