@@ -39,6 +39,7 @@ export type Entry = {
 };
 
 export type Treatment = {
+  _id: string;
   updated_at: string;
   status?: "NEUTRAL" | "GOOD" | "BAD";
   medications: {
@@ -49,9 +50,9 @@ export type Treatment = {
   prescriber?: {
     _id: string;
     name: string;
-    registryType: string;
-    registryUF: string;
-    registry: string;
+    registry_type: string;
+    registry_state: string;
+    registry_number: string;
   };
   patient?: {
     _id: string;

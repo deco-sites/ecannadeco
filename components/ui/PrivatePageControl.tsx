@@ -13,20 +13,21 @@ export interface Props {
 
 function PrivatePageControl(props: Props) {
   const { updatedData, uploadedFile, user } = useUI();
-  const { redirectTo } = props;
 
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
-      window.location.href = redirectTo ? redirectTo : "/";
+      window.location.href = "/";
     }
 
     try {
-      const r = await invoke["deco-sites/ecannadeco"].actions
+      const res = await invoke["deco-sites/ecannadeco"].actions
         .getUser({
           token: accessToken,
         });
+      
+        console.log({ res})
 
-      const response = r as {
+      const r = res as {
         data: {
           UserAttributes: { Name: string; Value: string }[];
           Username: string;
@@ -43,69 +44,19 @@ function PrivatePageControl(props: Props) {
         };
       };
 
-      const username = response.data.Username;
-
-      console.log({ response });
-
-      if (IS_BROWSER) {
-        //control to display association admin link in menu
-        if (response.dataProfile && response.dataProfile.association) {
-          if (response.dataProfile.association.user == username) {
-            localStorage.setItem(
-              "AssociationAdmin",
-              response.dataProfile.association._id,
-            );
-          }
-        }
-      }
-
-      user.value = {
-        id: username,
-        name: response.data.UserAttributes.find((
-          a: { Name: string; Value: string },
-        ) => a.Name === "name")?.Value || "",
-        email: response.dataProfile.email,
-        plan: response.dataProfile.plan,
-      };
-
-      // console.log({ userhere: user.value });
-
-      updatedData.value = response.dataProfile.updatedData;
-      uploadedFile.value = response.dataProfile.uploadedFile;
+      console.log({ accessToken });
+      const username = r.data.Username;
 
       if (!username) {
-        user.value = null;
-        if (IS_BROWSER) {
-          localStorage.setItem("AccessToken", "");
-          localStorage.setItem(
-            "AssociationAdmin",
-            "",
-          );
-        }
-        window.location.href = redirectTo ? redirectTo : "/";
+        throw new Error("Usuário não encontrado");
       }
-
-      if (!response.dataProfile.updatedData) {
-        console.log("não fez updatedData");
-        if (window.location.pathname !== "/meus-dados") {
-          window.location.href = "/meus-dados";
-        }
-      } else if (!response.dataProfile.uploadedFile) {
-        console.log("não fez uploadedFile");
-        if (window.location.pathname !== "/meus-documentos") {
-          window.location.href = "/meus-documentos";
-        }
-      }
+      
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
       if (IS_BROWSER) {
         localStorage.setItem("AccessToken", "");
-        localStorage.setItem(
-          "AssociationAdmin",
-          "",
-        );
       }
-      window.location.href = redirectTo ? redirectTo : "/";
+      window.location.href = "/";
     }
   }
 
@@ -116,8 +67,6 @@ function PrivatePageControl(props: Props) {
     if (IS_BROWSER) {
       accessToken = localStorage.getItem("AccessToken") || "";
     }
-
-    console.log({ accessToken });
 
     isLogged({ accessToken });
   }, []); // Passando um array de dependências vazio
