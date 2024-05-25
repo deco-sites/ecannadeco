@@ -50,6 +50,7 @@ import * as $PrescriberNewPatientModalLive from "./islands/PrescriberNewPatientM
 import * as $PrescriberPatientTreatment from "./islands/PrescriberPatientTreatment.tsx";
 import * as $PrescriberPatientTreatmentLive from "./islands/PrescriberPatientTreatmentLive.tsx";
 import * as $PrescriberPatientTreatmentReport from "./islands/PrescriberPatientTreatmentReport.tsx";
+import * as $PrescriberPatientTreatmentReportLive from "./islands/PrescriberPatientTreatmentReportLive.tsx";
 import * as $PrescriberPatients from "./islands/PrescriberPatients.tsx";
 import * as $PrescriberPatientsLive from "./islands/PrescriberPatientsLive.tsx";
 import * as $PrescriberUpdateTreatmentModal from "./islands/PrescriberUpdateTreatmentModal.tsx";
@@ -130,6 +131,8 @@ const manifest = {
       $PrescriberPatientTreatmentLive,
     "./islands/PrescriberPatientTreatmentReport.tsx":
       $PrescriberPatientTreatmentReport,
+    "./islands/PrescriberPatientTreatmentReportLive.tsx":
+      $PrescriberPatientTreatmentReportLive,
     "./islands/PrescriberPatients.tsx": $PrescriberPatients,
     "./islands/PrescriberPatientsLive.tsx": $PrescriberPatientsLive,
     "./islands/PrescriberUpdateTreatmentModal.tsx":
