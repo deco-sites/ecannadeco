@@ -152,88 +152,41 @@ function PrescriberPatientTreatmentReport() {
                       ))}
                     </div>
                     {
-                      /* <div class="collapse collapse-arrow border border-base-300 bg-base-200">
-                      <input type="checkbox" />
-                      <div class="collapse-title text-xl font-medium">
-                        <span class="underline text-sm">
-                          Histórico dos efeitos
-                        </span>
-                      </div>
-                      <div class="collapse-content flex flex-col gap-[48px]">
-                        <div>
-                          <Chart
-                            type="line"
-                            options={{
-                              scales: { y: { beginAtZero: true } },
-                            }}
-                            data={{
-                              labels: [
-                                "01/04",
-                                "02/04",
-                                "12/05",
-                                `${format(new Date(), "dd/MM")}`,
-                              ],
-                              datasets: [
-                                {
-                                  label: "Fome - 09/05/2024 a 09/05/2024",
-                                  data: [4, 6, 8, 7],
-                                  borderColor: "#32b541",
-                                  borderWidth: 1,
-                                },
-                              ],
-                            }}
-                          />
+                      <div class="collapse collapse-arrow border border-base-300 bg-base-200">
+                        <input type="checkbox" />
+                        <div class="collapse-title text-xl font-medium">
+                          <span class="underline text-sm">
+                            Histórico dos efeitos
+                          </span>
                         </div>
-                        <div>
-                          <Chart
-                            type="line"
-                            options={{
-                              scales: { y: { beginAtZero: true } },
-                            }}
-                            data={{
-                              labels: [
-                                "01/04",
-                                "02/04",
-                                "12/05",
-                                `${format(new Date(), "dd/MM")}`,
-                              ],
-                              datasets: [
-                                {
-                                  label: "Sono - 09/05/2024 a 09/05/2024",
-                                  data: [5, 6, 4, 8],
-                                  borderColor: "#32b541",
-                                  borderWidth: 1,
-                                },
-                              ],
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <Chart
-                            type="line"
-                            options={{
-                              scales: { y: { beginAtZero: true } },
-                            }}
-                            data={{
-                              labels: [
-                                "01/04",
-                                "02/04",
-                                "12/05",
-                                `${format(new Date(), "dd/MM")}`,
-                              ],
-                              datasets: [
-                                {
-                                  label: "Foco - 09/05/2024 a 09/05/2024",
-                                  data: [4, 4, 2, 6],
-                                  borderColor: "#32b541",
-                                  borderWidth: 1,
-                                },
-                              ],
-                            }}
-                          />
+                        <div class="collapse-content flex flex-col gap-[48px]">
+                          {report?.goodFeelingsReports.map((report) => (
+                            <div>
+                              <Chart
+                                type="line"
+                                options={{
+                                  scales: { y: { beginAtZero: true } },
+                                }}
+                                data={{
+                                  labels: report.entries.map((entry) =>
+                                    entry.date
+                                  ),
+                                  datasets: [
+                                    {
+                                      label: `${report.feeling.name}`,
+                                      data: report.entries.map((entry) =>
+                                        entry.grade
+                                      ),
+                                      borderColor: "#32b541",
+                                      borderWidth: 1,
+                                    },
+                                  ],
+                                }}
+                              />
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    </div> */
                     }
                   </div>
                 </div>
@@ -254,8 +207,8 @@ function PrescriberPatientTreatmentReport() {
                         />
                       ))}
                     </div>
-                    {
-                      /* <div class="collapse collapse-arrow border border-base-300 bg-base-200">
+
+                    <div class="collapse collapse-arrow border border-base-300 bg-base-200">
                       <input type="checkbox" />
                       <div class="collapse-title text-xl font-medium">
                         <span class="underline text-sm">
@@ -263,58 +216,33 @@ function PrescriberPatientTreatmentReport() {
                         </span>
                       </div>
                       <div class="collapse-content flex flex-col gap-[48px]">
-                        <div>
-                          <Chart
-                            type="line"
-                            options={{
-                              scales: { y: { beginAtZero: true } },
-                            }}
-                            data={{
-                              labels: [
-                                "01/04",
-                                "02/04",
-                                "12/05",
-                                `${format(new Date(), "dd/MM")}`,
-                              ],
-                              datasets: [
-                                {
-                                  label:
-                                    "Dor de Cabeça - 09/05/2024 a 09/05/2024",
-                                  data: [2, 6, 5, 4],
-                                  borderColor: "#d93939",
-                                  borderWidth: 1,
-                                },
-                              ],
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <Chart
-                            type="line"
-                            options={{
-                              scales: { y: { beginAtZero: true } },
-                            }}
-                            data={{
-                              labels: [
-                                "01/04",
-                                "02/04",
-                                "12/05",
-                                `${format(new Date(), "dd/MM")}`,
-                              ],
-                              datasets: [
-                                {
-                                  label: "Enjôo - 09/05/2024 a 09/05/2024",
-                                  data: [4, 2, 1, 3],
-                                  borderColor: "#d93939",
-                                  borderWidth: 1,
-                                },
-                              ],
-                            }}
-                          />
-                        </div>
+                        {report?.badFeelingsReports.map((report) => (
+                          <div>
+                            <Chart
+                              type="line"
+                              options={{
+                                scales: { y: { beginAtZero: true } },
+                              }}
+                              data={{
+                                labels: report.entries.map((entry) =>
+                                  entry.date
+                                ),
+                                datasets: [
+                                  {
+                                    label: `${report.feeling.name}`,
+                                    data: report.entries.map((entry) =>
+                                      entry.grade
+                                    ),
+                                    borderColor: "#d93939",
+                                    borderWidth: 1,
+                                  },
+                                ],
+                              }}
+                            />
+                          </div>
+                        ))}
                       </div>
-                    </div> */
-                    }
+                    </div>
                   </div>
                 </div>
               )}
