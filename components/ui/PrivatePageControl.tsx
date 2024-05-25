@@ -24,8 +24,6 @@ function PrivatePageControl(props: Props) {
         .getUser({
           token: accessToken,
         });
-      
-        console.log({ res})
 
       const r = res as {
         data: {
@@ -50,7 +48,6 @@ function PrivatePageControl(props: Props) {
       if (!username) {
         throw new Error("Usuário não encontrado");
       }
-      
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
       if (IS_BROWSER) {

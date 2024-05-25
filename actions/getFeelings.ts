@@ -1,4 +1,3 @@
-
 const getFeelings = async (
   _req: Request,
 ): Promise<unknown | null> => {

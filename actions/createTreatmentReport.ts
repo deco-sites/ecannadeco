@@ -21,11 +21,11 @@ const createTreatmentReport = async (
       `https://api.ecanna.com.br/treatment-reports`,
       {
         method: "POST",
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           treatment: id,
           goodFeelings,
-          badFeelings
-         }),
+          badFeelings,
+        }),
         headers: {
           "Content-Type": "application/json",
           Authorization: token,

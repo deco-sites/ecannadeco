@@ -12,7 +12,9 @@ import type { DocListType } from "./MyDocs.tsx";
 import Modal from "./Modal.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Patient, Treatment } from "./PrescriberPatientsLive.tsx";
-import MedicationEffectsCard, { symbolName } from "./MedicationEffectsCardLive.tsx";
+import MedicationEffectsCard, {
+  symbolName,
+} from "./MedicationEffectsCardLive.tsx";
 import type { AvailableEffects } from "./MedicationEffectsCardLive.tsx";
 import TreatmentCard from "./TreatmentCardLive.tsx";
 import Chart from "deco-sites/ecannadeco/islands/FreshChart.tsx";
@@ -31,8 +33,6 @@ export type Feeling = {
   isGood: boolean;
   icon: string;
 };
-
-
 
 function PatientNewTreatmentEntry() {
   const [isLoading, setIsLoading] = useState(false);
@@ -55,12 +55,12 @@ function PatientNewTreatmentEntry() {
           _id: ef.effect._id,
           grade: ef.intensity,
         })),
-      })
+      });
     setIsLoading(false);
     if (response) {
       window.location.href = `/tratamentos/${treatmentId}`;
     }
-  }
+  };
 
   const getFeelings = async () => {
     setIsLoading(true);
@@ -69,9 +69,13 @@ function PatientNewTreatmentEntry() {
     setIsLoading(false);
     if (response) {
       setFeelings(response as Feeling[]);
-      
-      setAvailableDesiredEffects((response as Feeling[]).filter((f) => f.isGood));
-      setAvailableUndesiredEffects((response as Feeling[]).filter((f) => !f.isGood));
+
+      setAvailableDesiredEffects(
+        (response as Feeling[]).filter((f) => f.isGood),
+      );
+      setAvailableUndesiredEffects(
+        (response as Feeling[]).filter((f) => !f.isGood),
+      );
     }
   };
 
@@ -128,7 +132,6 @@ function PatientNewTreatmentEntry() {
   const [availableUndesiredEffects, setAvailableUndesiredEffects] = useState<
     Feeling[]
   >([]);
-  
 
   return (
     <>
@@ -140,7 +143,10 @@ function PatientNewTreatmentEntry() {
           >
             <Icon id="GoBack" size={19} />
           </button>
-          <a href={`/tratamentos/${treatment?._id}`} class="btn btn-sm btn-secondary text-white">
+          <a
+            href={`/tratamentos/${treatment?._id}`}
+            class="btn btn-sm btn-secondary text-white"
+          >
             <Icon id="Chart" size={19} />
             <span>
               Relatório Completo
@@ -167,11 +173,12 @@ function PatientNewTreatmentEntry() {
                 </div>
               </div>
               <div>
-                {
-                  treatment && (
-                    <TreatmentCard treatment={treatment!} hideLastFeedback={true} />
-                  )
-                }
+                {treatment && (
+                  <TreatmentCard
+                    treatment={treatment!}
+                    hideLastFeedback={true}
+                  />
+                )}
               </div>
               <div class="flex flex-col">
                 <h3 class="text-sm text-[#8b8b8b] mb-2">
@@ -187,7 +194,9 @@ function PatientNewTreatmentEntry() {
                           class="cursor-pointer"
                           onClick={() => {
                             if (
-                              !desiredEffects.find((e) => e.effect.name === ef.name)
+                              !desiredEffects.find((e) =>
+                                e.effect.name === ef.name
+                              )
                             ) {
                               const newDesiredEffects = [...desiredEffects];
                               newDesiredEffects.push(
@@ -195,7 +204,7 @@ function PatientNewTreatmentEntry() {
                                   effect: {
                                     name: ef.name,
                                     _id: ef._id,
-                                    icon: ef.icon
+                                    icon: ef.icon,
                                   },
                                   intensity: 5,
                                 },
@@ -204,7 +213,10 @@ function PatientNewTreatmentEntry() {
                             }
                           }}
                         >
-                          <MedicationEffectsCard icon={ef.icon as AvailableIcons} name={ef.name} />
+                          <MedicationEffectsCard
+                            icon={ef.icon as AvailableIcons}
+                            name={ef.name}
+                          />
                         </div>
                       );
                     })}
@@ -214,7 +226,12 @@ function PatientNewTreatmentEntry() {
                   {desiredEffects.map((ef, index) => {
                     return (
                       <div class="flex gap-4 items-center" key={index}>
-                        <span><Icon id={ef.effect.icon as AvailableIcons} size={32}/></span>
+                        <span>
+                          <Icon
+                            id={ef.effect.icon as AvailableIcons}
+                            size={32}
+                          />
+                        </span>
                         <input
                           type="range"
                           min="0"
@@ -285,7 +302,7 @@ function PatientNewTreatmentEntry() {
                                   effect: {
                                     name: ef.name,
                                     _id: ef._id,
-                                    icon: ef.icon
+                                    icon: ef.icon,
                                   },
                                   intensity: 5,
                                 },
@@ -294,7 +311,10 @@ function PatientNewTreatmentEntry() {
                             }
                           }}
                         >
-                          <MedicationEffectsCard icon={ef.icon as AvailableIcons} name={ef.name} />
+                          <MedicationEffectsCard
+                            icon={ef.icon as AvailableIcons}
+                            name={ef.name}
+                          />
                         </div>
                       );
                     })}
@@ -304,7 +324,12 @@ function PatientNewTreatmentEntry() {
                   {undesiredEffects.map((ef, index) => {
                     return (
                       <div class="flex gap-4 items-center" key={index}>
-                        <span><Icon id={ef.effect.icon as AvailableIcons} size={32} /></span>
+                        <span>
+                          <Icon
+                            id={ef.effect.icon as AvailableIcons}
+                            size={32}
+                          />
+                        </span>
                         <input
                           type="range"
                           min="0"
@@ -354,7 +379,10 @@ function PatientNewTreatmentEntry() {
                 </div>
               </div>
               <div>
-                <button class="btn btn-primary text-white w-full" onClick={handleSubmit}>
+                <button
+                  class="btn btn-primary text-white w-full"
+                  onClick={handleSubmit}
+                >
                   Salvar Registro
                 </button>
               </div>

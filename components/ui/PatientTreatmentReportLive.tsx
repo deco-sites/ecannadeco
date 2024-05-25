@@ -114,7 +114,8 @@ function PrescriberPatientTreatmentReport() {
                   Relatório de Tratamento
                 </h3>
               </div>
-              {/* <div>
+              {
+                /* <div>
                 <div class="bg-white rounded-md shadow flex items-center justify-center gap-4 p-3">
                   <div class="flex gap-2 items-center">
                     <Icon id="Calendar" size={18} />
@@ -126,12 +127,19 @@ function PrescriberPatientTreatmentReport() {
                     <span>09/05/2024</span>
                   </div>
                 </div>
-              </div> */}
+              </div> */
+              }
               <div>
-                {treatment && <TreatmentCard treatment={treatment!} isPatient={true} />}
+                {treatment && (
+                  <TreatmentCard treatment={treatment!} isPatient={true} />
+                )}
               </div>
-              {(report && report?.goodFeelingsReports.length === 0 && report?.badFeelingsReports.length === 0) && (
-                <a class="flex flex-col gap-6" href={`/novo-registro/${treatment?._id}`}>
+              {(report && report?.goodFeelingsReports.length === 0 &&
+                report?.badFeelingsReports.length === 0) && (
+                <a
+                  class="flex flex-col gap-6"
+                  href={`/novo-registro/${treatment?._id}`}
+                >
                   Deixe seu primeiro feedback
                 </a>
               )}
@@ -144,13 +152,15 @@ function PrescriberPatientTreatmentReport() {
                     class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
                     <div class="flex gap-8">
-                      {
-                        report?.goodFeelingsReports.map((report) => (
-                          <MedicationEffectsCard icon={report.feeling.icon as AvailableIcons} name={report.feeling.name} />
-                        ))
-                      }
+                      {report?.goodFeelingsReports.map((report) => (
+                        <MedicationEffectsCard
+                          icon={report.feeling.icon as AvailableIcons}
+                          name={report.feeling.name}
+                        />
+                      ))}
                     </div>
-                    {/* <div class="collapse collapse-arrow border border-base-300 bg-base-200">
+                    {
+                      /* <div class="collapse collapse-arrow border border-base-300 bg-base-200">
                       <input type="checkbox" />
                       <div class="collapse-title text-xl font-medium">
                         <span class="underline text-sm">
@@ -231,7 +241,8 @@ function PrescriberPatientTreatmentReport() {
                           />
                         </div>
                       </div>
-                    </div> */}
+                    </div> */
+                    }
                   </div>
                 </div>
               )}
@@ -244,13 +255,15 @@ function PrescriberPatientTreatmentReport() {
                     class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
                     <div class="flex gap-8">
-                    {
-                        report?.badFeelingsReports.map((report) => (
-                          <MedicationEffectsCard icon={report.feeling.icon as AvailableIcons} name={report.feeling.name} />
-                        ))
-                      }
+                      {report?.badFeelingsReports.map((report) => (
+                        <MedicationEffectsCard
+                          icon={report.feeling.icon as AvailableIcons}
+                          name={report.feeling.name}
+                        />
+                      ))}
                     </div>
-                    {/* <div class="collapse collapse-arrow border border-base-300 bg-base-200">
+                    {
+                      /* <div class="collapse collapse-arrow border border-base-300 bg-base-200">
                       <input type="checkbox" />
                       <div class="collapse-title text-xl font-medium">
                         <span class="underline text-sm">
@@ -308,7 +321,8 @@ function PrescriberPatientTreatmentReport() {
                           />
                         </div>
                       </div>
-                    </div> */}
+                    </div> */
+                    }
                   </div>
                 </div>
               )}
