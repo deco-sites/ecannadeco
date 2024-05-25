@@ -69,7 +69,7 @@ function PrivatePageControl(props: Props) {
     let accessToken = "";
 
     if (IS_BROWSER) {
-      accessToken = localStorage.getItem("AccessToken") || "";
+      accessToken = localStorage.getItem("AdminAccessToken") || "";
     }
 
     isLogged({ accessToken });
