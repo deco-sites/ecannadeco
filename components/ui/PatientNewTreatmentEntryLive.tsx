@@ -176,6 +176,7 @@ function PatientNewTreatmentEntry() {
                 {treatment && (
                   <TreatmentCard
                     treatment={treatment!}
+                    isPatient={true}
                     hideLastFeedback={true}
                   />
                 )}
