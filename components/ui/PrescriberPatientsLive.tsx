@@ -63,7 +63,9 @@ export type Treatment = {
 export type Patient = {
   _id: string;
   name: string;
-  email: string;
+  profile: {
+    email: string;
+  };
   lastReport?: string | Date;
   status?: string;
 };
@@ -249,7 +251,7 @@ function PrescriberPatients() {
                                         {p.name}
                                       </span>
                                       <span class="text-sm">
-                                        {p.email}
+                                        {p.profile.email}
                                       </span>
                                     </div>
                                   </div>
