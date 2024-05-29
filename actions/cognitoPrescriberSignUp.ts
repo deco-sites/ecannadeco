@@ -1,5 +1,6 @@
 export interface Props {
   email: string;
+  cpf: string;
   password: string;
   registryType: string;
   registryNumber: string;
@@ -13,7 +14,7 @@ const signUpCognitoPrescriber = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "https://api.ecanna.com.br/prescribers/sign-up",
+      "http://localhost/prescribers/sign-up",
       {
         method: "POST",
         headers: {
@@ -21,6 +22,7 @@ const signUpCognitoPrescriber = async (
         },
         body: JSON.stringify({
           email: props.email,
+          cpf: props.cpf,
           password: props.password,
           name: props.name,
           registry_type: props.registryType,

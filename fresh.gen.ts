@@ -14,8 +14,10 @@ import * as $AdminOrders from "./islands/AdminOrders.tsx";
 import * as $AssociationAdmin from "./islands/AssociationAdmin.tsx";
 import * as $Chart from "./islands/Chart.tsx";
 import * as $CheckoutForm from "./islands/CheckoutForm.tsx";
+import * as $CheckoutFormPrescriber from "./islands/CheckoutFormPrescriber.tsx";
 import * as $CheckoutUpsellModal from "./islands/CheckoutUpsellModal.tsx";
 import * as $ChoosePlanSignup from "./islands/ChoosePlanSignup.tsx";
+import * as $ChoosePlanSignupPrescriber from "./islands/ChoosePlanSignupPrescriber.tsx";
 import * as $ConfirmForgotPasswordForm from "./islands/ConfirmForgotPasswordForm.tsx";
 import * as $ConfirmPrescriberSignup from "./islands/ConfirmPrescriberSignup.tsx";
 import * as $ConfirmSignup from "./islands/ConfirmSignup.tsx";
@@ -92,8 +94,10 @@ const manifest = {
     "./islands/AssociationAdmin.tsx": $AssociationAdmin,
     "./islands/Chart.tsx": $Chart,
     "./islands/CheckoutForm.tsx": $CheckoutForm,
+    "./islands/CheckoutFormPrescriber.tsx": $CheckoutFormPrescriber,
     "./islands/CheckoutUpsellModal.tsx": $CheckoutUpsellModal,
     "./islands/ChoosePlanSignup.tsx": $ChoosePlanSignup,
+    "./islands/ChoosePlanSignupPrescriber.tsx": $ChoosePlanSignupPrescriber,
     "./islands/ConfirmForgotPasswordForm.tsx": $ConfirmForgotPasswordForm,
     "./islands/ConfirmPrescriberSignup.tsx": $ConfirmPrescriberSignup,
     "./islands/ConfirmSignup.tsx": $ConfirmSignup,

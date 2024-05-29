@@ -67,10 +67,7 @@ function ConfirmSignup() {
         alert(`Erro: ${data.message}`);
       } else {
         setLoading(false);
-        alert(
-          "Email confirmado com sucesso. Sua conta está criada e agora você pode fazer o login",
-        );
-        window.location.href = "/prescritor/entrar";
+        window.location.href = "/prescritor/confirmar-cadastro/plano";
       }
     } catch (e) {
       alert(
