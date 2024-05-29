@@ -17,6 +17,43 @@ function SignUpFormPrescriber({ formTitle }: Props) {
   const [registryState, setRegistryState] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [termsAgree, setTermsAgree] = useState<boolean>(false);
+  const [cpfError, setCpfError] = useState("");
+
+  const validarCPF = (cpf: string) => {
+    cpf = cpf.replace(/[^\d]/g, ""); // Remove caracteres não numéricos
+
+    if (cpf.length !== 11 || /^(.)\1+$/.test(cpf)) return false; // Verifica se o CPF tem 11 dígitos e não é uma sequência repetida
+
+    // Calcula o primeiro dígito verificador
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+      soma += parseInt(cpf.charAt(i)) * (10 - i);
+    }
+    let resto = 11 - (soma % 11);
+    const dv1 = resto >= 10 ? 0 : resto;
+
+    // Verifica se o primeiro dígito verificador é válido
+    if (parseInt(cpf.charAt(9)) !== dv1) return false;
+
+    // Calcula o segundo dígito verificador
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+      soma += parseInt(cpf.charAt(i)) * (11 - i);
+    }
+    resto = 11 - (soma % 11);
+    const dv2 = resto >= 10 ? 0 : resto;
+
+    // Verifica se o segundo dígito verificador é válido
+    if (parseInt(cpf.charAt(10)) !== dv2) return false;
+
+    return true; // CPF válido
+  };
+
+  const handleCPFInputChange = (event: Event) => {
+    const inputValue = (event.target as HTMLInputElement).value;
+    setCpf(inputValue);
+    setCpfError(validarCPF(inputValue) ? "" : "CPF inválido");
+  };
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
@@ -36,6 +73,7 @@ function SignUpFormPrescriber({ formTitle }: Props) {
               registryNumber,
               registryState,
               name,
+              cpf,
             },
           );
 
@@ -51,6 +89,8 @@ function SignUpFormPrescriber({ formTitle }: Props) {
         } else {
           if (IS_BROWSER) {
             localStorage.setItem("prescriberEmailConfirm", email);
+            localStorage.setItem("prescriberNameUserAsaas", name);
+            localStorage.setItem("prescriberCpfUserAsaas", cpf);
           }
 
           setLoading(false);
@@ -111,6 +151,27 @@ function SignUpFormPrescriber({ formTitle }: Props) {
               setEmail(e.currentTarget.value);
             }}
           />
+        </label>
+        <label class="w-full">
+          <div class="label pb-1">
+            <span class="label-text text-xs text-[#585858]">
+              CPF
+            </span>
+          </div>
+          <input
+            class="input rounded-md text-[#8b8b8b] border-none w-full"
+            placeholder="Seu CPF"
+            name="cpf"
+            value={cpf}
+            onChange={(e) => {
+              handleCPFInputChange(e);
+            }}
+          />
+          {cpfError !== "" && (
+            <div class="label">
+              <span class="label-text-alt text-red-500">{cpfError}</span>
+            </div>
+          )}
         </label>
         <label className="w-full">
           <div className="label pb-1">

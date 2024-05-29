@@ -40,7 +40,7 @@ function ChoosePlanSignupPrescriber() {
       localStorage.setItem("planPeriodPrescriber", newPlan!.period);
     }
 
-    window.location.href = "/confirmar-cadastro/checkout";
+    window.location.href = "/prescritor/confirmar-cadastro/checkout";
   };
 
   return (
