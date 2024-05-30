@@ -69,7 +69,7 @@ function CheckoutFormPrescriber() {
       );
       return true;
     }
-    
+
     if (holderPhone == "") {
       alert(
         "Preencha o telefone corretamente antes de prosseguir.",
