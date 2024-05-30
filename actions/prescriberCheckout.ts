@@ -37,7 +37,7 @@ const prescriberCheckout = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "http://api.ecanna.com.br/checkout/prescribers",
+      "https://api.ecanna.com.br/checkout/prescribers",
       {
         method: "POST",
         headers: {

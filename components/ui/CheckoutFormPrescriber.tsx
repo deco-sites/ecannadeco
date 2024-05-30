@@ -67,24 +67,31 @@ function CheckoutFormPrescriber() {
       alert(
         "Preencha o endereço corretamente antes de prosseguir.",
       );
-      window.location.href = "/confirmar-cadastro/plano";
+      return true;
+    }
+    
+    if (holderPhone == "") {
+      alert(
+        "Preencha o telefone corretamente antes de prosseguir.",
+      );
+      return true;
     }
 
     if (planSku == "" || planName == "" || planPrice == "") {
       alert(
         "Não foi escolhido nenhum plano. Escolha um plano e continue para o pagamento",
       );
-      window.location.href = "/confirmar-cadastro/plano";
+      window.location.href = "/prescritor/confirmar-cadastro/plano";
     } else if (holderEmail == "") {
       alert(
         "Não foi encontrado email. Reinicie o cadastro",
       );
-      window.location.href = "/cadastrar";
+      window.location.href = "/prescritor/cadastrar";
     } else if (cpf == "" || name == "") {
       alert(
         "Não foi encontrado o usuário deste processo de pagamento. Por favor, reinicie o cadastro",
       );
-      window.location.href = "/cadastrar";
+      window.location.href = "/prescritor/cadastrar";
     } else {
       try {
         const r = await invoke["deco-sites/ecannadeco"].actions
