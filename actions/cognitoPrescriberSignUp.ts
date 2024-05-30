@@ -14,7 +14,7 @@ const signUpCognitoPrescriber = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "http://localhost/prescribers/sign-up",
+      "https://api.ecanna.com.br/prescribers/sign-up",
       {
         method: "POST",
         headers: {
