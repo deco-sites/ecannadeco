@@ -10,7 +10,7 @@ import PageWrap from "./PageWrap.tsx";
 import Icon from "./Icon.tsx";
 import ModalConfirm from "./ModalConfirm.tsx";
 import { SavedCreditCard } from "./CheckoutUpsellModal.tsx";
-import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
+import CheckoutUpsellModalPrescriber from "../../islands/CheckoutUpsellModalPrescriber.tsx";
 import Slider from "./Slider.tsx";
 import { useUI } from "../../sdk/useUI.ts";
 import SliderJS from "../../islands/SliderJS.tsx";
@@ -395,7 +395,7 @@ function MyAccount() {
                   onConfirm={handleCancelSubscription}
                   loading={isCanceling}
                 />
-                <CheckoutUpsellModal
+                <CheckoutUpsellModalPrescriber
                   creditCards={creditCards}
                   plan={newPlan!}
                   address={address!}
