@@ -71,6 +71,11 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
   //if user is not loggedin, use the public navitems in the menu
   if (IS_BROWSER) {
     if (
+      localStorage.getItem("PrescriberAccessToken") &&
+      localStorage.getItem("PrescriberAccessToken") != ""
+    ) {
+      menu.items = menu.prescriberItems || [];
+    } else if (
       !localStorage.getItem("AccessToken") ||
       localStorage.getItem("AccessToken") == ""
     ) {

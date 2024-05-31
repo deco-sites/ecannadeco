@@ -40,6 +40,12 @@ export interface Props {
    */
   publicNavItems?: SiteNavigationElement[] | null;
 
+  /**
+   * @title Prescriber Navigation items
+   * @description Navigation items used both on mobile and desktop menus
+   */
+  prescriberNavItems?: SiteNavigationElement[] | null;
+
   /** @title Logo */
   logo?: Logo;
 
@@ -97,6 +103,28 @@ function Header({
       url: "/",
     },
   ],
+  prescriberNavItems = [
+    {
+      "@type": "SiteNavigationElement",
+      name: "Feminino",
+      url: "/",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      name: "Masculino",
+      url: "/",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      name: "Sale",
+      url: "/",
+    },
+    {
+      "@type": "SiteNavigationElement",
+      name: "Linktree",
+      url: "/",
+    },
+  ],
   logo = {
     src:
       "https://ozksgdmyrqcxcwhnbepg.supabase.co/storage/v1/object/public/assets/2291/986b61d4-3847-4867-93c8-b550cb459cc7",
@@ -118,6 +146,8 @@ function Header({
           menu={{
             items: navItems || [],
             publicItems: publicNavItems ||
+              [],
+            prescriberItems: prescriberNavItems ||
               [],
             logo: logoMenu,
           }}
