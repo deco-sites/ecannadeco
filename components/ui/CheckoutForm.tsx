@@ -172,7 +172,7 @@ function CheckoutForm() {
 
   return (
     <div class="max-w-[480px]">
-      {planName == "FREE" && (
+      {planName == "CARTEIRINHA" && (
         <div
           role="alert"
           class="alert bg-primary text-white w-full"
@@ -446,13 +446,13 @@ function CheckoutForm() {
             <span>
               Valor:{" "}
               <span class="font-semibold">
-                R$ {planName == "FREE"
+                R$ {planName == "CARTEIRINHA"
                   ? `${(0).toFixed(2)}*`
                   : (Number(planPrice) / 100).toFixed(2)}{" "}
                 /{planPeriod == "MONTHLY" && "mês"}
               </span>
             </span>
-            {planName === "FREE" && (
+            {planName === "CARTEIRINHA" && (
               <span class="text-[10px]">
                 * R$ {(Number(planPrice) / 100).toFixed(
                   2,

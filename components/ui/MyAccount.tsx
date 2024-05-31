@@ -348,7 +348,7 @@ function MyAccount() {
                             30 dias grátis
                           </span>
                         )}
-                        <ul class="flex flex-col gap-3">
+                        <ul class="flex flex-col gap-3 py-3">
                           <li class="flex gap-3 items-center">
                             <Icon
                               class="text-primary"
@@ -357,16 +357,6 @@ function MyAccount() {
                             />
                             <span class="text-[10px]">
                               Carteirinha digital oficial
-                            </span>
-                          </li>
-                          <li class="flex gap-3 items-center">
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Upload até 2 documentos
                             </span>
                           </li>
                           <li
@@ -396,6 +386,21 @@ function MyAccount() {
                               size={17}
                             />
                             <span class="text-[10px]">Carteirinha física</span>
+                          </li>
+                          <li
+                            // class={`flex gap-3 items-center ${
+                            //   plan.name == "FREE" && "opacity-20"
+                            // }`}
+                            class={`flex gap-3 items-center`}
+                          >
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Acesso acompanhamento de Tratamento
+                            </span>
                           </li>
                         </ul>
                       </div>
