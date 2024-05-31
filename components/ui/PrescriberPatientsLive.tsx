@@ -91,11 +91,12 @@ function PrescriberPatients() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [docs, setDocs] = useState<DocListType[]>([]);
 
-  const getPatients = async (accessToken: string) => {
+  const getPatients = async (accessToken: string, search?: string) => {
     setIsLoadingUsers(true);
     const response = await invoke["deco-sites/ecannadeco"].actions
       .prescriberGetPatients({
         token: accessToken,
+        search,
       });
     setIsLoadingUsers(false);
     if (response) {
@@ -181,25 +182,30 @@ function PrescriberPatients() {
                     getPatients(accessToken);
                   }}
                 />
+                <input
+                  placeholder="Pesquise por email ou nome"
+                  class="input rounded-full text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] sm:w-1/2 h-[35px] text-xs"
+                  name="emailSearch"
+                  value={emailSearch}
+                  onChange={(e) => {
+                    let accessToken = "";
+                    if (IS_BROWSER) {
+                      accessToken =
+                        localStorage.getItem("PrescriberAccessToken") || "";
+                    }
+                    setEmailSearch(e.currentTarget.value);
+                    if (e.currentTarget.value.length >= 3) {
+                      getPatients(accessToken, e.currentTarget.value);
+                    }
+                    if (e.currentTarget.value.length === 0) {
+                      getPatients(accessToken);
+                    }
+                  }}
+                />
                 <ModalTextAction
                   onClose={() => displayModalTextAction.value = false}
                   buttonText="Fazer Upgrade"
                 />
-
-                {
-                  /* <input
-                placeholder="Pesquise por email"
-                class="input rounded-full text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] sm:w-1/2 h-[35px] text-xs"
-                name="emailSearch"
-                value={emailSearch}
-                onChange={(e) => {
-                  setEmailSearch(e.currentTarget.value);
-                  if (e.currentTarget.value.length >= 3) {
-                    // handleGetUsers(page!, e.currentTarget.value);
-                  }
-                }}
-              /> */
-                }
                 <div class="flex justify-end">
                   <button
                     class="btn btn-sm btn-secondary text-white"
