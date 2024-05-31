@@ -42,9 +42,11 @@ function MyAccount() {
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
     let accessToken = "";
+    let currentPlan = "";
 
     if (IS_BROWSER) {
       accessToken = localStorage.getItem("AccessToken") || "";
+      currentPlan = localStorage.getItem("currentPatientPlan") || "";
     }
 
     if (accessToken === "") {
@@ -186,6 +188,22 @@ function MyAccount() {
                 Minha Conta
               </h3>
             </div>
+            {currentPlan == "TREATMENT" && (
+              <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
+                <Icon id="Profile" size={16} />
+                <span class="text-lg">
+                  GARANTA SUA CARTEIRINHA DE PACIENTE!
+                </span>
+                <span class="text-center text-sm">
+                  Para obter sua carteirinha de paciente de cannabis medicinal,
+                  garantindo sua segurança no uso da medicina, faça upgrade do
+                  seu plano na seção abaixo!
+                </span>
+                <a class="btn bg-white text-primary btn-sm" href="#planUpgrade">
+                  Fazer Upgrade
+                </a>
+              </div>
+            )}
             <div class="flex flex-col gap-3">
               <label class="form-control w-full">
                 <div class="label pb-1">
@@ -284,7 +302,7 @@ function MyAccount() {
                 </button>
               </div>
             </div>
-            <div>
+            <div id="planUpgrade">
               <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
                 Plano
               </h2>

@@ -15,7 +15,7 @@ export interface Props {
 
 function MenuItem({ item }: { item: ExtendedSiteNavigationElement }) {
   return (
-    <a href={item.disabled ? "#" : item.url}>
+    <a href={item.disabled ? "/minha-conta" : item.url}>
       <div class="p-5 border-b border-[#d5d5d5]">
         <span class={`uppercase ${item.disabled && "opacity-40"}`}>
           {item.name}

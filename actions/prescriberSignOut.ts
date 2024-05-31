@@ -8,7 +8,7 @@ const signOut = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "http://localhost/prescribers/sign-out",
+      "https://api.ecanna.com.br/prescribers/sign-out",
       {
         method: "POST",
         headers: {
