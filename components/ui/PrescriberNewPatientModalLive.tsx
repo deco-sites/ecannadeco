@@ -21,6 +21,11 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
     IS_BROWSER ? (localStorage.getItem("PrescriberAccessToken") || "") : "",
   );
   const [updating, setUpdating] = useState<boolean>(false);
+  const {
+    displayNewPatientModal,
+    displayModalTextAction,
+    modalTextAction,
+  } = useUI();
 
   const handleSubmit = async () => {
     setUpdating(true);
@@ -30,16 +35,23 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
         name,
         email,
       });
+    const res = response as { message?: string };
+
+    // console.log({res});
     setUpdating(false);
-    onFinished();
-    if (response) {
+
+    if (res.message) {
       displayNewPatientModal.value = false;
+      modalTextAction.value = {
+        text: res.message,
+        actionUrl: "/prescritor/minha-conta",
+      };
+      displayModalTextAction.value = true;
+    } else if (response) {
+      displayNewPatientModal.value = false;
+      onFinished();
     }
   };
-
-  const {
-    displayNewPatientModal,
-  } = useUI();
 
   return (
     <Modal

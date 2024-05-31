@@ -14,6 +14,7 @@ import type { DocListType } from "./MyDocs.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import PrescriberNewPatientModal from "../../islands/PrescriberNewPatientModalLive.tsx";
 import { use } from "https://esm.sh/marked@9.1.1";
+import ModalTextAction from "./ModalTextAction.tsx";
 
 export type Address = {
   cep: string;
@@ -127,6 +128,7 @@ function PrescriberPatients() {
 
   const {
     displayNewPatientModal,
+    displayModalTextAction,
   } = useUI();
 
   const timeAgo = (date: Date): string => {
@@ -179,6 +181,11 @@ function PrescriberPatients() {
                     getPatients(accessToken);
                   }}
                 />
+                <ModalTextAction
+                  onClose={() => displayModalTextAction.value = false}
+                  buttonText="Fazer Upgrade"
+                />
+
                 {
                   /* <input
                 placeholder="Pesquise por email"
