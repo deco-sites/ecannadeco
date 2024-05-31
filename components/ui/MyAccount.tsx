@@ -88,7 +88,7 @@ function MyAccount() {
       });
 
       const params = fetch(
-        `https://service.ecanna.com.br/v1/products/subscriptions`,
+        `https://service.ecanna.com.br/v1/products/subscriptions?isPrescriber=false`,
       ).then(async (r) => {
         const c = await r.json();
         console.log({ plans: c.docs });
