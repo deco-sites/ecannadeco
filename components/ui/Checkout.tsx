@@ -4,6 +4,7 @@ import FormWrap from "./FormWrap.tsx";
 export type Plan = {
   _id: string;
   name: string;
+  plan?: string;
   price: number;
   description: string;
   skus: string[];
