@@ -25,12 +25,12 @@ function PrivatePageControl(props: Props) {
           token: accessToken,
         });
 
+      // console.log({resPrivatePageControl: res})
+
       const r = res as {
-        data: {
-          cognito_id: string;
-        };
+        cognito_id: string;
       };
-      const username = r.data.cognito_id;
+      const username = r.cognito_id;
 
       if (!username) {
         user.value = null;
