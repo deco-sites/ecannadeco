@@ -439,7 +439,7 @@ function CheckoutForm() {
         </div>
 
         {(planName && planPrice && planPeriod) && (
-          <div class="bg-[#8D8D8D] rounded-xl flex flex-col items-center mt-4 py-4">
+          <div class="bg-white border flex flex-col items-center mt-4 py-4">
             <span>
               Plano Escolhido: <span class="font-semibold">{planName}</span>
             </span>
