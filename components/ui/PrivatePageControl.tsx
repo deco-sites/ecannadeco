@@ -42,7 +42,23 @@ function PrivatePageControl(props: Props) {
         };
       };
 
-      console.log({ accessToken });
+      //control access in case patient is just treatment
+      if (IS_BROWSER) {
+        localStorage.setItem("currentPatientPlan", r.dataProfile.plan);
+      }
+
+      if (r.dataProfile.plan === "TREATMENT") {
+        const currentUrl = window.location.pathname;
+
+        if (
+          currentUrl == "/minha-carteirinha" ||
+          currentUrl == "/meus-documentos" || currentUrl == "/meus-dados" ||
+          currentUrl == "/meus-pedidos"
+        ) {
+          window.location.href = "/tratamentos";
+        }
+      }
+
       const username = r.data.Username;
 
       if (!username) {

@@ -12,7 +12,7 @@ function ConfirmSignup() {
   useEffect(() => {
     try {
       const params = fetch(
-        `https://service.ecanna.com.br/v1/products/subscriptions`,
+        `https://service.ecanna.com.br/v1/products/subscriptions?isPrescriber=false`,
       ).then(async (r) => {
         const c = await r.json();
         console.log({ plans: c.docs });
@@ -89,7 +89,7 @@ function ConfirmSignup() {
                     </div>
                   </div>
                   <div class="flex flex-col gap-2">
-                    {plan.name === "FREE" && (
+                    {plan.name === "CARTEIRINHA" && (
                       <span class="text-xs font-semibold mt-2 text-primary">
                         30 dias grátis
                       </span>
@@ -103,16 +103,6 @@ function ConfirmSignup() {
                         />
                         <span class="text-[10px]">
                           Carteirinha digital oficial
-                        </span>
-                      </li>
-                      <li class="flex gap-3 items-center">
-                        <Icon
-                          class="text-primary"
-                          id="CircleCheck"
-                          size={17}
-                        />
-                        <span class="text-[10px]">
-                          Upload até 2 documentos
                         </span>
                       </li>
                       <li
@@ -142,6 +132,21 @@ function ConfirmSignup() {
                           size={17}
                         />
                         <span class="text-[10px]">Carteirinha física</span>
+                      </li>
+                      <li
+                        // class={`flex gap-3 items-center ${
+                        //   plan.name == "FREE" && "opacity-20"
+                        // }`}
+                        class={`flex gap-3 items-center`}
+                      >
+                        <Icon
+                          class="text-primary"
+                          id="CircleCheck"
+                          size={17}
+                        />
+                        <span class="text-[10px]">
+                          Acesso acompanhamento de Tratamento
+                        </span>
                       </li>
                     </ul>
                   </div>
