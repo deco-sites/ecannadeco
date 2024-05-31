@@ -37,75 +37,12 @@ const timeAgo = (date: Date): string => {
   return `${Math.floor(seconds)}seg atrás`;
 };
 
-// const TreatmentCard = ({ treatment }: { treatment: Treatment }) => {
-//   return (
-//     <a
-//       href={treatment.prescriber
-//         ? "/tratamento/123"
-//         : "/prescritor/tratamento/123"}
-//     >
-//       <div
-//         class={`p-3 ${
-//           treatment.isActive ? "bg-[#ffffff]" : "bg-[#d3d3d3]"
-//         } rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
-//       >
-//         <div class="flex justify-between">
-//           <div class="flex flex-col gap-4 items-start">
-//             {treatment.medications.map((m) => {
-//               return (
-//                 <div class="flex gap-2 items-center text-[#444444]">
-//                   <Icon id="Drop" size={12} />
-//                   <div class="flex flex-col">
-//                     <span class="font-semibold">
-//                       {m.name}
-//                     </span>
-//                     <span class="text-xs">
-//                       {m.dosage}
-//                     </span>
-//                   </div>
-//                 </div>
-//               );
-//             })}
-//           </div>
-//           <div class="flex flex-col items-end gap-2">
-//             <div class="flex justify-between items-center gap-2 text-[#808080]">
-//               <Icon id="Update" size={16} />
-//               <span>
-//                 {timeAgo(
-//                   new Date(
-//                     treatment.updated_at,
-//                   ),
-//                 )}
-//               </span>
-//             </div>
-//             <div
-//               class={`${
-//                 treatment.status ===
-//                     "GOOD"
-//                   ? "text-green-600"
-//                   : "text-red-600"
-//               }`}
-//             >
-//               <Icon
-//                 id={`${
-//                   treatment.status ===
-//                       "GOOD"
-//                     ? "HappyFace"
-//                     : "SadFace"
-//                 }`}
-//                 size={19}
-//               />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </a>
-//   );
-// };
-
 function PrescriberPatientTreatments() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [treatments, setTreatments] = useState<Treatment[]>([]);
+  const [currentTreatment, setCurrentTreatment] = useState<Treatment | null>(
+    null,
+  );
   const [patient, setPatient] = useState<Patient | null>(
     null,
   );
@@ -122,7 +59,11 @@ function PrescriberPatientTreatments() {
       });
     setIsLoading(false);
     if (response) {
-      setTreatments(response as Treatment[]);
+      const t = response as Treatment[];
+      const currentTreatment = t.find((t: Treatment) => t.isActive) || null;
+      const treatments = t.filter((t: Treatment) => !t.isActive);
+      setCurrentTreatment(currentTreatment);
+      setTreatments(treatments);
     }
     const patient = await invoke["deco-sites/ecannadeco"].actions
       .prescriberGetPatient({ token: accessToken, patientId });
@@ -225,48 +166,65 @@ function PrescriberPatientTreatments() {
                   </div>
                 </div>
                 <div>
-                  <h3 class="text-sm text-[#8b8b8b] mb-2">
-                    Tratamentos
-                  </h3>
                   <div class="flex flex-col gap-4">
-                    {treatments?.map((t) => {
-                      return <TreatmentCard treatment={t!} />;
-                    })}
-                    {!treatments.length && (
-                      <div class="flex justify-center items-center gap-2 text-[#808080]">
-                        <span>Você não tem tratamentos cadastrados</span>
-                        <button
-                          class="btn btn-sm btn-secondary text-white"
-                          onClick={() => {
-                            displayNewTreatmentModal.value = true;
-                          }}
-                        >
-                          <Icon
-                            id="Drop"
-                            size={12}
-                          />
-                          <span class="flex gap-[6px]">
-                            {treatments.length
-                              ? (
-                                <>
-                                  Atualizar{" "}
-                                  <span class="hidden sm:block">
-                                    Tratamento
-                                  </span>
-                                </>
-                              )
-                              : (
-                                <>
-                                  Criar{" "}
-                                  <span class="hidden sm:block">
-                                    Tratamento
-                                  </span>
-                                </>
-                              )}
-                          </span>
-                        </button>
-                      </div>
-                    )}
+                    {!treatments.length
+                      ? (
+                        <div class="flex justify-center items-center gap-2 text-[#808080]">
+                          <span>Você não tem tratamentos cadastrados</span>
+                          <button
+                            class="btn btn-sm btn-secondary text-white"
+                            onClick={() => {
+                              displayNewTreatmentModal.value = true;
+                            }}
+                          >
+                            <Icon
+                              id="Drop"
+                              size={12}
+                            />
+                            <span class="flex gap-[6px]">
+                              {treatments.length
+                                ? (
+                                  <>
+                                    Atualizar{" "}
+                                    <span class="hidden sm:block">
+                                      Tratamento
+                                    </span>
+                                  </>
+                                )
+                                : (
+                                  <>
+                                    Criar{" "}
+                                    <span class="hidden sm:block">
+                                      Tratamento
+                                    </span>
+                                  </>
+                                )}
+                            </span>
+                          </button>
+                        </div>
+                      )
+                      : (
+                        <>
+                          <div>
+                            <h3 class="text-sm text-[#8b8b8b] mb-2">
+                              Tratamento Vigente
+                            </h3>
+                            <div>
+                              <TreatmentCard treatment={currentTreatment!} />
+                            </div>
+                          </div>
+                          <div>
+                            <h3 class="text-sm text-[#8b8b8b] mb-2">
+                              Tratamentos Antigos
+                            </h3>
+                            <div class="flex flex-col gap-4">
+                              {treatments?.map((t) => {
+                                return <TreatmentCard treatment={t!} />;
+                              })}
+                            </div>
+                          </div>
+                        </>
+                      )}
                   </div>
                 </div>
               </div>
