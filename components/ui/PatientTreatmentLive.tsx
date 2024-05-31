@@ -35,6 +35,9 @@ const timeAgo = (date: Date): string => {
 function PrescriberPatientTreatments() {
   const [isLoading, setIsLoading] = useState(false);
   const [treatments, setTreatments] = useState<Treatment[]>([]);
+  const [currentTreatment, setCurrentTreatment] = useState<Treatment | null>(
+    null,
+  );
 
   const getTreatments = async (
     accessToken: string,
@@ -46,7 +49,11 @@ function PrescriberPatientTreatments() {
       });
     setIsLoading(false);
     if (response) {
-      setTreatments(response as Treatment[]);
+      const treatments = response as Treatment[];
+      const currentTreatment = treatments.find((t) => t.isActive) || null;
+      const pastTreatments = treatments.filter((t) => !t.isActive);
+      setTreatments(pastTreatments);
+      setCurrentTreatment(currentTreatment);
     }
   };
 
@@ -70,9 +77,24 @@ function PrescriberPatientTreatments() {
             </div>
             <div class="flex flex-col gap-8">
               <div class="flex flex-col gap-4">
-                {treatments.length > 0 && treatments?.map((t) => {
-                  return <TreatmentCard treatment={t!} isPatient={true} />;
-                })}
+                <div>
+                  <h3 class="text-sm text-[#8b8b8b] mb-2">
+                    Tratamento Vigente
+                  </h3>
+                  <div>
+                    <TreatmentCard treatment={currentTreatment!} />
+                  </div>
+                </div>
+                <div>
+                  <h3 class="text-sm text-[#8b8b8b] mb-2">
+                    Tratamentos Antigos
+                  </h3>
+                  <div class="flex flex-col gap-4">
+                    {treatments?.map((t) => {
+                      return <TreatmentCard treatment={t!} />;
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

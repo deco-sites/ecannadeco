@@ -59,11 +59,12 @@ function PrescriberPatientTreatments() {
       });
     setIsLoading(false);
     if (response) {
-      const t = response as Treatment[];
-      const currentTreatment = t.find((t: Treatment) => t.isActive) || null;
-      const treatments = t.filter((t: Treatment) => !t.isActive);
+      const treatments = response as Treatment[];
+      const currentTreatment = treatments.find((t: Treatment) => t.isActive) ||
+        null;
+      const pastTreatments = treatments.filter((t: Treatment) => !t.isActive);
       setCurrentTreatment(currentTreatment);
-      setTreatments(treatments);
+      setTreatments(pastTreatments);
     }
     const patient = await invoke["deco-sites/ecannadeco"].actions
       .prescriberGetPatient({ token: accessToken, patientId });
