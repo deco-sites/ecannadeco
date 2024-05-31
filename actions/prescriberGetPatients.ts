@@ -17,7 +17,6 @@ const prescriberGetPetients = async (
           "Content-Type": "application/json",
           Authorization: token,
         },
-        
       },
     );
     const res = await response.json();

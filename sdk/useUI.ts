@@ -26,6 +26,7 @@ const displayAssociationAdminNewDoc = signal(false);
 const displayNewPatientModal = signal(false);
 const displayNewTreatmentModal = signal(false);
 const displayPlanLimit = signal(false);
+const displayModalTextAction = signal(false);
 const updatedData = signal(true);
 const uploadedFile = signal(true);
 const user = signal<UserSession | null>(null);
@@ -36,6 +37,10 @@ const userToAdminCreateDoc = signal({
 const associationToAdminCreateDoc = signal({
   name: "",
   _id: "",
+});
+const modalTextAction = signal<{ text: string; actionUrl: string }>({
+  text: "",
+  actionUrl: "",
 });
 
 const state = {
@@ -56,8 +61,10 @@ const state = {
   displayNewPatientModal,
   userToAdminCreateDoc,
   associationToAdminCreateDoc,
+  displayModalTextAction,
   displayNewTreatmentModal,
   user,
+  modalTextAction,
 };
 
 // Keyboard event listeners
