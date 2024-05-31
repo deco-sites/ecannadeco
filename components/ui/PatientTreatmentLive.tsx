@@ -48,6 +48,7 @@ function PrescriberPatientTreatments() {
         token: accessToken,
       });
     setIsLoading(false);
+    console.log({ responseTreatments: response });
     if (response) {
       const treatments = response as Treatment[];
       const currentTreatment = treatments.find((t) => t.isActive) || null;
@@ -82,7 +83,12 @@ function PrescriberPatientTreatments() {
                     Tratamento Vigente
                   </h3>
                   <div>
-                    <TreatmentCard treatment={currentTreatment!} />
+                    {currentTreatment && (
+                      <TreatmentCard
+                        treatment={currentTreatment!}
+                        isPatient={true}
+                      />
+                    )}
                   </div>
                 </div>
                 <div>
@@ -90,9 +96,13 @@ function PrescriberPatientTreatments() {
                     Tratamentos Antigos
                   </h3>
                   <div class="flex flex-col gap-4">
-                    {treatments?.map((t) => {
-                      return <TreatmentCard treatment={t!} />;
-                    })}
+                    {treatments && (
+                      treatments?.map((t) => {
+                        return (
+                          <TreatmentCard treatment={t!} isPatient={true} />
+                        );
+                      })
+                    )}
                   </div>
                 </div>
               </div>
