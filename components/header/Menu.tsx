@@ -2,18 +2,24 @@ import Icon from "../../components/ui/Icon.tsx";
 import type { Logo } from "./Header.tsx";
 import type { SiteNavigationElement } from "apps/commerce/types.ts";
 
+interface ExtendedSiteNavigationElement extends SiteNavigationElement {
+  disabled?: boolean;
+}
+
 export interface Props {
-  items: SiteNavigationElement[];
-  publicItems?: SiteNavigationElement[];
-  prescriberItems?: SiteNavigationElement[];
+  items: ExtendedSiteNavigationElement[];
+  publicItems?: ExtendedSiteNavigationElement[];
+  prescriberItems?: ExtendedSiteNavigationElement[];
   logo?: Logo;
 }
 
-function MenuItem({ item }: { item: SiteNavigationElement }) {
+function MenuItem({ item }: { item: ExtendedSiteNavigationElement }) {
   return (
-    <a href={item.url}>
+    <a href={item.disabled ? "#" : item.url}>
       <div class="p-5 border-b border-[#d5d5d5]">
-        <span class="uppercase">{item.name}</span>
+        <span class={`uppercase ${item.disabled && "opacity-40"}`}>
+          {item.name}
+        </span>
       </div>
     </a>
     // <div class="collapse collapse-plus">

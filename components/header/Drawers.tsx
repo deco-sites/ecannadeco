@@ -92,6 +92,24 @@ function Drawers({ menu, searchbar, children, platform }: Props) {
         };
       }
     }
+
+    //disable menu items for treatment plan
+    if (localStorage.getItem("currentPatientPlan") == "TREATMENT") {
+      const updatedElements = menu.items.map((element) => {
+        if (
+          element.url === "/meus-dados" ||
+          element.url === "/minha-carteirinha" ||
+          element.url === "/meus-documentos" || element.url === "/meus-pedidos"
+        ) {
+          return {
+            ...element,
+            disabled: true,
+          };
+        }
+        return element;
+      });
+      menu.items = updatedElements;
+    }
   }
 
   return (
