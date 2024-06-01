@@ -146,83 +146,9 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           ? <span class="loading loading-spinner loading-xs" />
           : (
             <div id="ecannaCard" class="relative text-[#1878b8]">
-              {userData && (
-                <div class="absolute z-10 top-[68px] left-[30px]">
-                  <Image
-                    class="rounded-md"
-                    src={userData.dataProfile.avatar_photo}
-                    alt={"user selfie"}
-                    width={78}
-                    height={104}
-                  />
-                </div>
-              )}
-              {userData && (
-                <div class="absolute z-10 flex flex-col top-[65px] left-[122px]">
-                  <span class="font-semibold text-lg">
-                    {userData?.data?.UserAttributes?.find((a) =>
-                      a.Name === "name"
-                    )?.Value}
-                  </span>
-                  <span class="text-sm font-semibold">
-                    CPF{"  "}{userData?.data?.UserAttributes?.find((a) =>
-                      a.Name === "custom:cpfcnpj"
-                    )?.Value.replace(
-                      /(\d{3})(\d{3})(\d{3})(\d{2})/,
-                      "$1.$2.$3-$4",
-                    )}
-                  </span>
-                  {association && association.cnpj !== "47774121000154" && (
-                    <span class="text-sm font-semibold pr-1">
-                      {association.name}
-                    </span>
-                  )}
-                  <span class="text-sm font-semibold">
-                    {userData.dataProfile.address && (
-                      <span>
-                        {userData.dataProfile.address[0].city + " / " +
-                          userData.dataProfile.address[0].state}
-                      </span>
-                    )}
-                  </span>
-                </div>
-              )}
-              {association && association.cnpj !== "47774121000154" && (
-                <div class="absolute z-10 top-[185px] left-[130px]">
-                  <Image
-                    class=""
-                    src={association.logo_url}
-                    alt={"Logo Associação"}
-                    width={117}
-                    height={32}
-                  />
-                </div>
-              )}
-              {qrcode && (
-                <div class="absolute z-10 top-[137px] left-[259px] bg-[#262626] rounded-md p-2">
-                  <Image
-                    class=""
-                    src={qrcode}
-                    alt={"Logo Associação"}
-                    width={66}
-                    height={66}
-                  />
-                </div>
-              )}
-              {created_at && (
-                <div class="absolute z-10 flex flex-col top-[187px] left-[65px] items-start">
-                  <span class="text-[10px]">
-                    Emissão
-                  </span>
-                  <span class="text-[10px]">
-                    {formatDate(created_at)}
-                  </span>
-                </div>
-              )}
-
               <Image
                 class="card"
-                src={cardSkeleton}
+                src={userData?.dataProfile?.ecannacard_url || cardSkeleton}
                 alt="Carteirinha eCanna"
                 width={352}
                 height={234}
