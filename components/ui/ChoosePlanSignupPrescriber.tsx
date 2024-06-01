@@ -10,6 +10,8 @@ import { useId } from "../../sdk/useId.ts";
 function ChoosePlanSignupPrescriber() {
   const [loading, setLoading] = useState(true);
   const [newPlan, setNewPlan] = useState<Plan>();
+  const [hiddenPlan, setHiddenPlan] = useState<Plan>();
+  const [insertedCode, setInsertedCode] = useState("");
   const [plans, setPlans] = useState<Plan[]>([]);
   const id = useId();
 
@@ -23,7 +25,15 @@ function ChoosePlanSignupPrescriber() {
         console.log({ plans: c.docs });
 
         const plansList = c.docs as Plan[];
-        setPlans(plansList);
+
+        const hidden = plansList.find((p) => p.plan === "ONBOARDING");
+
+        const updatedPlanlist = plansList.filter((p) =>
+          p.plan !== "ONBOARDING"
+        );
+
+        setHiddenPlan(hidden!);
+        setPlans(updatedPlanlist);
         setLoading(false);
       });
     } catch (e) {
@@ -32,6 +42,26 @@ function ChoosePlanSignupPrescriber() {
       );
     }
   }, []); // Passando um array de dependências vazio
+
+  const handleSubmitCode = () => {
+    const promoCode = "CANNABISFAIR2024";
+
+    console.log({ insertedCode, promoCode, hiddenPlan });
+
+    if (!insertedCode || insertedCode == "") {
+      alert("Informe o código para continuar");
+      return null;
+    } else if (insertedCode !== promoCode) {
+      console.log("aqui2");
+      alert("Código inválido");
+      return null;
+    } else {
+      const planList = [...plans];
+      planList[planList.length] = hiddenPlan!;
+      setPlans(planList);
+      alert("Código Aplicado com Sucesso!");
+    }
+  };
 
   const handleSubmit = (e: Event) => {
     e.preventDefault();
@@ -104,6 +134,11 @@ function ChoosePlanSignupPrescriber() {
                           </div>
                         </div>
                         <div class="flex flex-col gap-2">
+                          {plan.plan === "ONBOARDING" && (
+                            <span class="text-xs font-semibold mt-2 text-primary">
+                              6 meses grátis
+                            </span>
+                          )}
                           <ul class="flex flex-col gap-3 py-4">
                             <li class="flex gap-3 items-center">
                               <Icon
@@ -179,6 +214,42 @@ function ChoosePlanSignupPrescriber() {
                   </div>
                 </div>
                 <SliderJS rootId={id} />
+              </div>
+
+              <div class="collapse max-w-[330px]">
+                <input type="checkbox" />
+                <div class="collapse-title text-xl font-medium">
+                  <span class="underline text-sm">
+                    Inserir Código Promocional
+                  </span>
+                </div>
+                <div class="collapse-content flex flex-col gap-[48px]">
+                  <div class="w-full bg-[#d2d2d2] p-4 rounded-md">
+                    <label class="w-full sm:w-[48%]">
+                      <div class="label pb-1">
+                        <span class="label-text text-xs text-[#585858]">
+                          Código Promocional
+                        </span>
+                      </div>
+                      <input
+                        class="input rounded-l-md rounded-r-none text-[#8b8b8b] input-xs border-none"
+                        placeholder="insira aqui"
+                        name="insertedCode"
+                        value={insertedCode}
+                        onChange={(e) => {
+                          setInsertedCode(e.currentTarget.value);
+                        }}
+                      />
+                      <button
+                        class="btn btn-xs border-none bg-secondary text-white rounded-r-md rounded-l-none font-normal join-item"
+                        type="button"
+                        onClick={handleSubmitCode}
+                      >
+                        Validar Código
+                      </button>
+                    </label>
+                  </div>
+                </div>
               </div>
 
               <button

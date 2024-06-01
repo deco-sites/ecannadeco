@@ -63,7 +63,13 @@ function MyAccount() {
         console.log({ plans: c.docs });
 
         const plansList = c.docs as Plan[];
-        setPlans(plansList);
+
+        //remove the ONBOARDING plan from list
+        const updatedPlanlist = plansList.filter((p) =>
+          p.plan !== "ONBOARDING"
+        );
+
+        setPlans(updatedPlanlist);
 
         invoke["deco-sites/ecannadeco"].actions.getUserPrescriber({
           token: accessToken,
