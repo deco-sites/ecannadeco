@@ -47,15 +47,34 @@ function PrivatePageControl(props: Props) {
         localStorage.setItem("currentPatientPlan", r.dataProfile.plan);
       }
 
-      if (r.dataProfile.plan === "TREATMENT") {
+      const currentPlan = r.dataProfile.plan;
+
+      if (currentPlan === "TREATMENT") {
         const currentUrl = window.location.pathname;
 
         if (
-          currentUrl == "/minha-carteirinha" ||
-          currentUrl == "/meus-documentos" || currentUrl == "/meus-dados" ||
-          currentUrl == "/meus-pedidos"
+          [
+            "/minha-carteirinha",
+            "/meus-documentos",
+            "/meus-dados",
+            "/meus-pedidos",
+          ].includes(currentUrl)
         ) {
           window.location.href = "/tratamentos";
+        }
+      }
+
+      if (currentPlan === "CARD") {
+        if (!r.dataProfile.updatedData) {
+          console.log("não fez updatedData");
+          if (window.location.pathname !== "/meus-dados") {
+            window.location.href = "/meus-dados";
+          }
+        } else if (!r.dataProfile.uploadedFile) {
+          console.log("não fez uploadedFile");
+          if (window.location.pathname !== "/meus-documentos") {
+            window.location.href = "/meus-documentos";
+          }
         }
       }
 

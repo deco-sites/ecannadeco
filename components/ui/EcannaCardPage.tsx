@@ -24,6 +24,7 @@ export interface UserData {
     association: { name: string; logo_url: string; cnpj: string };
     qrcode_url: string;
     credit_cards: SavedCreditCard[];
+    ecannacard_url: string;
   };
 }
 
@@ -110,50 +111,6 @@ function EcannaCardPage({ cardSkeleton }: Props) {
 
   function generateCardImage() {
     setDownloading(true);
-    const element = document.getElementById("ecannaCard");
-
-    if (element) {
-      // const browser = await puppeteer.launch({});
-      // const page = await browser.newPage();
-      // await page.setContent(element.outerHTML);
-      // const screenshotBuffer = await page.screenshot({
-      //   clip: { x: 0, y: 0, width: 395, height: 260 },
-      // });
-      // await browser.close();
-
-      // const blob = new Blob([screenshotBuffer], { type: 'image/png' });
-      // const url = URL.createObjectURL(blob);
-      // const link = document.createElement('a');
-      // link.href = url;
-      // link.download = ;
-      // document.body.appendChild(link);
-      // link.click();
-      // document.body.removeChild(link);
-      // URL.revokeObjectURL(url);
-
-      domtoimage.toPng(element)
-        .then(function (dataUrl1) {
-          domtoimage.toPng(element)
-            .then(function (dataUrl2) {
-              domtoimage.toPng(element)
-                .then(function (dataUrl3) {
-                  console.log({ dataUrl1 });
-                  const link = document.createElement("a");
-                  link.download = "my-image-name.png";
-                  link.href = dataUrl1;
-                  setDownloading(false);
-                  link.click();
-                });
-            });
-        })
-        .catch(function (error) {
-          setDownloading(false);
-          console.error("Oops, something went wrong!", error);
-        });
-    } else {
-      setDownloading(false);
-      alert("Erro ao gerar carteirinha. Contacte o suporte!");
-    }
   }
 
   function downloadFile(fileUrl: string, filename: string) {
@@ -189,83 +146,9 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           ? <span class="loading loading-spinner loading-xs" />
           : (
             <div id="ecannaCard" class="relative text-[#1878b8]">
-              {userData && (
-                <div class="absolute z-10 top-[68px] left-[30px]">
-                  <Image
-                    class="rounded-md"
-                    src={userData.dataProfile.avatar_photo}
-                    alt={"user selfie"}
-                    width={78}
-                    height={104}
-                  />
-                </div>
-              )}
-              {userData && (
-                <div class="absolute z-10 flex flex-col top-[65px] left-[122px]">
-                  <span class="font-semibold text-lg">
-                    {userData?.data?.UserAttributes?.find((a) =>
-                      a.Name === "name"
-                    )?.Value}
-                  </span>
-                  <span class="text-sm font-semibold">
-                    CPF{"  "}{userData?.data?.UserAttributes?.find((a) =>
-                      a.Name === "custom:cpfcnpj"
-                    )?.Value.replace(
-                      /(\d{3})(\d{3})(\d{3})(\d{2})/,
-                      "$1.$2.$3-$4",
-                    )}
-                  </span>
-                  {association && association.cnpj !== "47774121000154" && (
-                    <span class="text-sm font-semibold pr-1">
-                      {association.name}
-                    </span>
-                  )}
-                  <span class="text-sm font-semibold">
-                    {userData.dataProfile.address && (
-                      <span>
-                        {userData.dataProfile.address[0].city + " / " +
-                          userData.dataProfile.address[0].state}
-                      </span>
-                    )}
-                  </span>
-                </div>
-              )}
-              {association && association.cnpj !== "47774121000154" && (
-                <div class="absolute z-10 top-[185px] left-[130px]">
-                  <Image
-                    class=""
-                    src={association.logo_url}
-                    alt={"Logo Associação"}
-                    width={117}
-                    height={32}
-                  />
-                </div>
-              )}
-              {qrcode && (
-                <div class="absolute z-10 top-[137px] left-[259px] bg-[#262626] rounded-md p-2">
-                  <Image
-                    class=""
-                    src={qrcode}
-                    alt={"Logo Associação"}
-                    width={66}
-                    height={66}
-                  />
-                </div>
-              )}
-              {created_at && (
-                <div class="absolute z-10 flex flex-col top-[187px] left-[65px] items-start">
-                  <span class="text-[10px]">
-                    Emissão
-                  </span>
-                  <span class="text-[10px]">
-                    {formatDate(created_at)}
-                  </span>
-                </div>
-              )}
-
               <Image
                 class="card"
-                src={cardSkeleton}
+                src={userData?.dataProfile?.ecannacard_url || cardSkeleton}
                 alt="Carteirinha eCanna"
                 width={352}
                 height={234}
@@ -280,30 +163,30 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           product={cardProduct}
           address={userData?.dataProfile?.address[0]!}
         />
-        <button
-          type="button"
-          disabled
-          class="flex btn btn-primary text-white w-full sm:w-[48%]"
-          onClick={() => {
-            // generateCardImage();
-            alert("Funcionalidade em Desenvolvimento! Lançaremos em Breve");
-          }}
-        >
-          <span>Baixar Carteirinha (Breve)</span>
-          {
-            /* {downloading
-            ? <span class="loading loading-spinner loading-xs" />
-            : <Icon id="Download" size={19} />} */
-          }
-        </button>
+
+        {userData?.dataProfile?.ecannacard_url
+          ? (
+            <button
+              type="button"
+              download
+              onClick={() =>
+                downloadFile(
+                  userData?.dataProfile?.ecannacard_url,
+                  `${userData?.dataProfile?.name}-ecanna-carteirinha.png`,
+                )}
+              class="flex btn btn-primary text-white w-full sm:w-[48%]"
+            >
+              <span>Baixar Carteirinha</span>
+              <Icon id="Download" size={19} />
+            </button>
+          )
+          : null}
+
         <button
           type="button"
           download="carteirinha.png"
           disabled
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
-          onClick={() => displayCheckoutUpsellModal.value = true}
-          // onClick={() =>
-          //   alert("Funcionalidade em Desenvolvimento! Lançaremos em Breve")}
         >
           <div class="flex items-center gap-2">
             <span>Nova Via Física (Breve)</span> {loadingProduct
