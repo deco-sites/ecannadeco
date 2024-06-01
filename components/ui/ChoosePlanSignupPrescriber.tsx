@@ -4,11 +4,14 @@ import Slider from "./Slider.tsx";
 import { Plan } from "./Checkout.tsx";
 import Icon from "./Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import SliderJS from "../../islands/SliderJS.tsx";
+import { useId } from "../../sdk/useId.ts";
 
 function ChoosePlanSignupPrescriber() {
   const [loading, setLoading] = useState(true);
   const [newPlan, setNewPlan] = useState<Plan>();
   const [plans, setPlans] = useState<Plan[]>([]);
+  const id = useId();
 
   useEffect(() => {
     setLoading(true);
@@ -63,7 +66,7 @@ function ChoosePlanSignupPrescriber() {
               <span class="label-text text-xs text-[#585858]">
                 Selecione seu plano
               </span>
-              <div>
+              <div id={id}>
                 <Slider class="carousel gap-3 max-w-[105%]">
                   {plans.map((plan, i) => (
                     <Slider.Item class="carousel-item" index={i}>
@@ -158,6 +161,24 @@ function ChoosePlanSignupPrescriber() {
                     </Slider.Item>
                   ))}
                 </Slider>
+                <div class="hidden md:flex justify-center ">
+                  <div class=" block z-10 col-start-1 row-start-3">
+                    <Slider.PrevButton class=" w-12 h-12 flex justify-center items-center">
+                      <Icon
+                        size={24}
+                        id="ChevronLeft"
+                        strokeWidth={3}
+                        class="w-5"
+                      />
+                    </Slider.PrevButton>
+                  </div>
+                  <div class=" block z-10 col-start-3 row-start-3">
+                    <Slider.NextButton class=" w-12 h-12 flex justify-center items-center">
+                      <Icon size={24} id="ChevronRight" strokeWidth={3} />
+                    </Slider.NextButton>
+                  </div>
+                </div>
+                <SliderJS rootId={id} />
               </div>
 
               <button
