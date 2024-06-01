@@ -11,11 +11,15 @@ function ConfirmSignup() {
   const [codeSent, setCodeSent] = useState(false);
   const [timer, setTimer] = useState(30);
   const [association, setAssociation] = useState("");
+  const [plan, setPlan] = useState("");
   const [email, setEmail] = useState("");
 
   if (IS_BROWSER) {
     setAssociation(
       localStorage.getItem("associationSignup") || "",
+    );
+    setPlan(
+      localStorage.getItem("userPlan") || "",
     );
     setEmail(
       localStorage.getItem("emailConfirm") || "",
@@ -74,7 +78,11 @@ function ConfirmSignup() {
         if (association != "") {
           window.location.href = "/confirmar-cadastro/associacao";
         } else {
-          window.location.href = "/confirmar-cadastro/plano";
+          if (plan === "TREATMENT") {
+            window.location.href = "/entrar";
+          } else {
+            window.location.href = "/confirmar-cadastro/plano";
+          }
         }
       }
     } catch (e) {

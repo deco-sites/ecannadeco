@@ -36,10 +36,11 @@ function SignUpForm({ formTitle }: Props) {
 
         const dataS = dataSignup as {
           errors?: Array<unknown>;
-          data?: { association?: { "_id": string } };
+          data?: { association?: { "_id": string }; plan: string };
         };
 
         const association = dataS.data?.association;
+        const plan = dataS.data?.plan;
 
         console.log({ dataSignup, dataS });
 
@@ -56,6 +57,9 @@ function SignUpForm({ formTitle }: Props) {
             if (association) {
               localStorage.setItem("associationSignup", association._id);
               localStorage.setItem("nameUserAssociationSignup", name);
+            }
+            if (plan) {
+              localStorage.setItem("userPlan", plan);
             }
           }
 
