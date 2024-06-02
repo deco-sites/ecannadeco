@@ -52,7 +52,8 @@ import * as $$$$$$$$$46 from "./actions/signOut.ts";
 import * as $$$$$$$$$47 from "./actions/updateProfile.ts";
 import * as $$$$$$$$$48 from "./actions/updateUserData.ts";
 import * as $$$$$$$$$49 from "./actions/uploadFile.ts";
-import * as $$$$$$$$$$$0 from "./apps/site.ts";
+import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
+import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
 import * as $$$3 from "./loaders/getPublicProfile.ts";
 import * as $$$4 from "./loaders/icons.ts";
@@ -355,7 +356,8 @@ const manifest = {
     "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$49,
   },
   "apps": {
-    "deco-sites/ecannadeco/apps/site.ts": $$$$$$$$$$$0,
+    "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,
+    "deco-sites/ecannadeco/apps/site.ts": $$$$$$$$$$$1,
   },
   "name": "deco-sites/ecannadeco",
   "baseUrl": import.meta.url,
