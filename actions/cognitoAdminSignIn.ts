@@ -9,7 +9,7 @@ const signInCognito = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "https://service.ecanna.com.br/admin/sign-in",
+      "https://api.ecanna.com.br/admin/sign-in",
       {
         method: "POST",
         headers: {

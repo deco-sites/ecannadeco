@@ -8,7 +8,7 @@ const getPlans = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "https://service.ecanna.com.br/products/user-card-product-offer",
+      "https://api.ecanna.com.br/products/user-card-product-offer",
       {
         method: "GET",
         headers: {

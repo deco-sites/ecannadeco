@@ -39,7 +39,7 @@ const updateUserData = async (
 
   try {
     const responseUpdateProfile = await fetch(
-      "https://service.ecanna.com.br/profile",
+      "https://api.ecanna.com.br/profile",
       {
         method: "PUT",
         body: JSON.stringify(updateProfileBody),
@@ -55,7 +55,7 @@ const updateUserData = async (
     console.log({ resProfile });
 
     const responseUpdateCognito = await fetch(
-      "https://service.ecanna.com.br/auth/me",
+      "https://api.ecanna.com.br/auth/me",
       {
         method: "PUT",
         body: JSON.stringify(updateCognitoUserBody),

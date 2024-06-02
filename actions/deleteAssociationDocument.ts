@@ -10,7 +10,7 @@ const deleteAssociationDocument = async (
   console.log({ docId: props.docId });
   try {
     const response = await fetch(
-      `https://service.ecanna.com.br/documents/association/${props.docId}`,
+      `https://api.ecanna.com.br/documents/association/${props.docId}`,
       {
         method: "DELETE",
         headers: {

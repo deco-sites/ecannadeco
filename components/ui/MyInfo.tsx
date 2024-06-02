@@ -124,7 +124,7 @@ function MyInfo() {
 
       try {
         const response = await fetch(
-          "https://service.ecanna.com.br/files",
+          "https://api.ecanna.com.br/files",
           {
             method: "POST",
             body: formData,

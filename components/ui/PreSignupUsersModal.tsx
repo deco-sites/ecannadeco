@@ -39,7 +39,7 @@ const PreSignupUsersModal = ({ onFinish }: Props) => {
 
       try {
         const response = await fetch(
-          "https://service.ecanna.com.br/profile/",
+          "https://api.ecanna.com.br/profile/",
           {
             method: "POST",
             body: formData,

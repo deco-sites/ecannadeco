@@ -28,7 +28,7 @@ const changeSubscription = async (
   delete params.token;
   try {
     const response = await fetch(
-      "https://service.ecanna.com.br/checkout/upgrade",
+      "https://api.ecanna.com.br/checkout/upgrade",
       {
         method: "POST",
         headers: {

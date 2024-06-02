@@ -9,7 +9,7 @@ const confirmCognitoSignup = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "https://service.ecanna.com.br/auth/confirm-signup",
+      "https://api.ecanna.com.br/auth/confirm-signup",
       {
         method: "POST",
         headers: {

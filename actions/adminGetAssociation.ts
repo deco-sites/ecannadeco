@@ -18,7 +18,7 @@ const getAssociation = async (
 ): Promise<AssociationAdmin> => {
   try {
     const response = await fetch(
-      `https://service.ecanna.com.br/associations/admin/${id}`,
+      `https://api.ecanna.com.br/associations/admin/${id}`,
       {
         method: "GET",
         headers: {

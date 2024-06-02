@@ -52,13 +52,13 @@ const adminGetOrders = async (
   { token, params }: Props,
   _req: Request,
 ): Promise<PaginationOrderResponse> => {
-  let url = `https://service.ecanna.com.br/admin/orders/`;
+  let url = `https://api.ecanna.com.br/admin/orders/`;
 
   if (params) {
     const query = `?limit=${params.limit}&page=${params.page}${
       params.status && `&status=${params.status}`
     }`;
-    url = `https://service.ecanna.com.br/admin/orders${query}`;
+    url = `https://api.ecanna.com.br/admin/orders${query}`;
   }
 
   try {

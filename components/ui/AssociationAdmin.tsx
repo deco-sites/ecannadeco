@@ -158,7 +158,7 @@ function MyAccount() {
 
       try {
         const response = await fetch(
-          "https://service.ecanna.com.br/files",
+          "https://api.ecanna.com.br/files",
           {
             method: "POST",
             body: formData,
@@ -565,7 +565,7 @@ function MyAccount() {
                               </span>
                               <li>
                                 <a
-                                  href={`https://service.ecanna.com.br/ficha/${u._id}`}
+                                  href={`https://api.ecanna.com.br/ficha/${u._id}`}
                                   target="_blank"
                                   class="flex items-center"
                                 >

@@ -43,10 +43,10 @@ const AdminNewDocModal = (
     let url = "";
 
     if (createType === "user") {
-      url = "https://service.ecanna.com.br/documents/admin/user";
+      url = "https://api.ecanna.com.br/documents/admin/user";
       formData.append("user", userToAdminCreateDoc.value._id);
     } else if (createType === "association") {
-      url = "https://service.ecanna.com.br/documents/admin/association";
+      url = "https://api.ecanna.com.br/documents/admin/association";
       formData.append("association", associationToAdminCreateDoc.value._id);
     }
 

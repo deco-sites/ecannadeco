@@ -36,7 +36,7 @@ const checkout = async (
   _req: Request,
 ): Promise<unknown | null> => {
   try {
-    const response = await fetch("https://service.ecanna.com.br/checkout", {
+    const response = await fetch("https://api.ecanna.com.br/checkout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

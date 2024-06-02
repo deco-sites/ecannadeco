@@ -9,7 +9,7 @@ const getCids = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      `https://service.ecanna.com.br/cids?name=${term}`,
+      `https://api.ecanna.com.br/cids?name=${term}`,
       {
         method: "GET",
         headers: {

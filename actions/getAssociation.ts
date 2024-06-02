@@ -8,7 +8,7 @@ const getAssociation = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      `https://service.ecanna.com.br/associations/${id}`,
+      `https://api.ecanna.com.br/associations/${id}`,
       {
         method: "GET",
         headers: {

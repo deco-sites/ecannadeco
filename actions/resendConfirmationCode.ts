@@ -8,7 +8,7 @@ const resendConfirmationCode = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "https://service.ecanna.com.br/auth/send-confirmation-code",
+      "https://api.ecanna.com.br/auth/send-confirmation-code",
       {
         method: "POST",
         headers: {
