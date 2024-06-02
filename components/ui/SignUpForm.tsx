@@ -207,9 +207,10 @@ function SignUpForm({ formTitle }: Props) {
             }}
           />
           <span class="label-text text-xs text-[#8b8b8b]">
-            Concordo com os <a class="underline" href="#">Termos de Uso</a> e
-            {" "}
-            <a class="underline" href="#">Políticas de Privacidade</a>
+            Concordo com os{" "}
+            <a target="_blank" class="underline" href="/termos-de-uso">
+              Termos de Uso e Políticas de Privacidade
+            </a>
           </span>
         </label>
         <button
