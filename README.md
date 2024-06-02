@@ -72,10 +72,10 @@ Starting live middleware: siteId=538 site=std
 The manifest has been generated for 6 routes, 5 islands, 17 sections and 16 functions.
 Githooks setup successfully: pre-commit
 Starting live middleware: siteId=239 site=fashion
-Listening on https://service.ecanna.com.br/
+Listening on https://api.ecanna.com.br/
 ```
 
-Now, open [https://service.ecanna.com.br/](https://service.ecanna.com.br/). You should see the
+Now, open [https://api.ecanna.com.br/](https://api.ecanna.com.br/). You should see the
 fashion starter running on your machine!
 
 To continue from here, you can [perform initial setup](#initial-setup),
@@ -145,11 +145,11 @@ Open `static` folder and replace `favicon.ico`, `robots.txt` and
 
 1. Run the store (with `deno task start`).
 2. Open the
-   [design system section](https://service.ecanna.com.br/_live/workbench/sections/DesignSystem.story.tsx?key=.%2Fsections%2FDesignSystem.story.tsx)
+   [design system section](https://api.ecanna.com.br/_live/workbench/sections/DesignSystem.story.tsx?key=.%2Fsections%2FDesignSystem.story.tsx)
 3. Now, on your text editor, open `tailwind.config.ts`
 4. Change the default, header, badge, etc colors, text colors and border colors
    to better fit your desired design and check how the
-   [design system section](https://service.ecanna.com.br/_live/workbench/sections/DesignSystem.story.tsx?key=.%2Fsections%2FDesignSystem.story.tsx)
+   [design system section](https://api.ecanna.com.br/_live/workbench/sections/DesignSystem.story.tsx?key=.%2Fsections%2FDesignSystem.story.tsx)
    changes.
 
 ## Customize the store

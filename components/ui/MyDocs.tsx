@@ -203,7 +203,7 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
 
     try {
       const response = await fetch(
-        "https://service.ecanna.com.br/documents",
+        "https://api.ecanna.com.br/documents",
         {
           method: "POST",
           body: formData,

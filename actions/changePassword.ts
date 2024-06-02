@@ -12,7 +12,7 @@ const changePassword = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "https://service.ecanna.com.br/auth/change-password",
+      "https://api.ecanna.com.br/auth/change-password",
       {
         method: "PUT",
         body: JSON.stringify(body),

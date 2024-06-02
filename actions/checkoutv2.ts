@@ -33,7 +33,7 @@ const checkoutv2 = async (
   console.log({ params });
 
   try {
-    const response = await fetch("https://service.ecanna.com.br/checkout/v2", {
+    const response = await fetch("https://api.ecanna.com.br/checkout/v2", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

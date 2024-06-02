@@ -7,7 +7,7 @@ const getUser = async (
   _req: Request,
 ): Promise<unknown | null> => {
   try {
-    const response = await fetch("https://service.ecanna.com.br/auth/me", {
+    const response = await fetch("https://api.ecanna.com.br/auth/me", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

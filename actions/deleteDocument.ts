@@ -10,7 +10,7 @@ const deleteDocument = async (
   console.log({ docId: props.docId });
   try {
     const response = await fetch(
-      `https://service.ecanna.com.br/documents/${props.docId}`,
+      `https://api.ecanna.com.br/documents/${props.docId}`,
       {
         method: "DELETE",
         headers: {

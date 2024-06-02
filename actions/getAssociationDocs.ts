@@ -9,7 +9,7 @@ const getDocs = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      `https://service.ecanna.com.br/documents/association/${associationId}`,
+      `https://api.ecanna.com.br/documents/association/${associationId}`,
       {
         method: "GET",
         headers: {
