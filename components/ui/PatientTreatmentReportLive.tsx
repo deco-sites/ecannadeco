@@ -7,15 +7,11 @@ import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import PageWrap from "./PageWrap.tsx";
 import Icon, { AvailableIcons } from "./Icon.tsx";
-import { useUI } from "../../sdk/useUI.ts";
-import type { DocListType } from "./MyDocs.tsx";
-import Modal from "./Modal.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import type { Patient, Treatment } from "./PrescriberPatientsLive.tsx";
+import type { Treatment } from "./PrescriberPatientsLive.tsx";
 import MedicationEffectsCard from "./MedicationEffectsCardLive.tsx";
 import TreatmentCard from "./TreatmentCardLive.tsx";
 import Chart from "deco-sites/ecannadeco/islands/FreshChart.tsx";
-import { format } from "datetime";
 
 export type Address = {
   cep: string;
@@ -48,7 +44,7 @@ export type Report = {
 
 function PrescriberPatientTreatmentReport() {
   const [isLoading, setIsLoading] = useState(false);
-  const [treatmentResponse, setTreatmentResponse] = useState<
+  const [_treatmentResponse, _setTreatmentResponse] = useState<
     TreatmentResponse | null
   >(null);
   const [treatment, setTreatment] = useState<Treatment | null>(null);

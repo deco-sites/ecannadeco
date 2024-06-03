@@ -1,22 +1,18 @@
 import { useUI } from "../../sdk/useUI.ts";
 import Modal from "./Modal.tsx";
 import { useState } from "preact/hooks";
-import { h } from "preact";
-import { invoke } from "../../runtime.ts";
-import Icon from "./Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatients.tsx";
-import TreatmentCard from "deco-sites/ecannadeco/components/ui/TreatmentCard.tsx";
 
 type Medication = Treatment["medication"];
 
 const PrescriberUpdateTreatmentModal = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [accessToken, setAccessToken] = useState(
+  const [_accessToken, _setAccessToken] = useState(
     IS_BROWSER ? (localStorage.getItem("AccessToken") || "") : "",
   );
-  const [updating, setUpdating] = useState<boolean>(false);
+  const [updating, _setUpdating] = useState<boolean>(false);
 
   const {
     displayNewPatientModal,
@@ -42,7 +38,7 @@ const PrescriberUpdateTreatmentModal = () => {
             class="input rounded-md text-[#535353] border-none w-full disabled:bg-[#e3e3e3] bg-white"
             placeholder="Nome aqui"
             value={name}
-            onChange={(e) => {
+            onChange={(_e) => {
               setName(name);
             }}
           />
@@ -57,7 +53,7 @@ const PrescriberUpdateTreatmentModal = () => {
             class="input rounded-md text-[#535353] border-none w-full disabled:bg-[#e3e3e3] bg-white"
             placeholder="Nome aqui"
             value={email}
-            onChange={(e) => {
+            onChange={(_e) => {
               setEmail(email);
             }}
           />

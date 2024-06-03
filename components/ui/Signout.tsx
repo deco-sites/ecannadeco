@@ -11,7 +11,7 @@ export interface Props {
   redirectTo?: string;
 }
 
-function Signout(props: Props) {
+function Signout(_props: Props) {
   useEffect(() => {
     let token = "";
 
@@ -20,7 +20,7 @@ function Signout(props: Props) {
     }
 
     try {
-      const r = invoke["deco-sites/ecannadeco"].actions
+      invoke["deco-sites/ecannadeco"].actions
         .signOut({
           token,
         });

@@ -1,5 +1,4 @@
 import type { Props as MenuProps } from "../../components/header/Menu.tsx";
-import Cart from "../../components/minicart/Cart.tsx";
 import type { Props as SearchbarProps } from "../../components/search/Searchbar.tsx";
 import Button from "../../components/ui/Button.tsx";
 import Drawer from "../../components/ui/Drawer.tsx";
@@ -65,8 +64,8 @@ const Aside = (
   </div>
 );
 
-function Drawers({ menu, searchbar, children, platform }: Props) {
-  const { displayCart, displayMenu, displaySearchDrawer, user } = useUI();
+function Drawers({ menu, searchbar, children }: Props) {
+  const { displayMenu, displaySearchDrawer } = useUI();
 
   //if user is not loggedin, use the public navitems in the menu
   if (IS_BROWSER) {

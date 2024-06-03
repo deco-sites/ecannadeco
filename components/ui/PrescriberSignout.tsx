@@ -11,23 +11,22 @@ export interface Props {
   redirectTo?: string;
 }
 
-function Signout(props: Props) {
+function Signout({ redirectTo = "/" }) {
   useEffect(() => {
     let token = "";
-
     if (IS_BROWSER) {
       token = localStorage.getItem("PrescriberAccessToken") || "";
     }
 
     try {
-      const r = invoke["deco-sites/ecannadeco"].actions
+      invoke["deco-sites/ecannadeco"].actions
         .prescriberSignOut({
           token,
         });
       if (IS_BROWSER) {
         localStorage.setItem("PrescriberAccessToken", "");
       }
-      window.location.href = "/";
+      window.location.href = redirectTo;
     } catch (e) {
       console.log({ e });
       return e;

@@ -41,7 +41,6 @@ function CheckoutFormPrescriber() {
     string
   >("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [termsAgree, setTermsAgree] = useState<boolean>(false);
   const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
   let planSku = "";
   let planName = "";
@@ -154,7 +153,7 @@ function CheckoutFormPrescriber() {
 
           window.location.href = "/prescritor/entrar";
         }
-      } catch (e) {
+      } catch (_e) {
         alert("Falha em criar assinatura. Fale com o suporte!");
       }
     }

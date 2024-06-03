@@ -131,7 +131,7 @@ function MyAccount() {
         setDocs((r as { docs: DocListType[] }).docs);
         setIsLoading(false);
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar os documentos. Tente novamente mais tarde ou contecte o suporte.",
       );
@@ -250,11 +250,11 @@ function MyAccount() {
         },
         token: accessToken,
         id: associationAdmin,
-      }).then((r) => {
+      }).then((_r) => {
         setUpdating(false);
         window.location.reload();
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível Atualizar dados da associação. Tente novamente mais tarde ou contecte o suporte.",
       );
@@ -262,13 +262,13 @@ function MyAccount() {
     }
   };
 
-  const handleGetUsers = (pageParam: number, email?: string) => {
+  const handleGetUsers = (pageParam: number, _email?: string) => {
     let accessToken = "";
-    let associationAdmin = "";
+    let _associationAdmin = "";
 
     if (IS_BROWSER) {
       accessToken = localStorage.getItem("AccessToken") || "";
-      associationAdmin = localStorage.getItem("AssociationAdmin") || "";
+      _associationAdmin = localStorage.getItem("AssociationAdmin") || "";
     }
     setIsLoadingUsers(true);
 
@@ -292,7 +292,7 @@ function MyAccount() {
         setAssociationUsers(r.docs);
         setIsLoadingUsers(false);
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar usuários. Tente novamente mais tarde ou contecte o suporte.",
       );

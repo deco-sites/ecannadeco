@@ -16,22 +16,6 @@ export type Address = {
   addressType: string;
 };
 
-const timeAgo = (date: Date): string => {
-  const seconds = Math.floor((Number(new Date()) - +date) / 1000); // Explicitly convert to number
-  let interval = Math.floor(seconds / 31536000);
-
-  if (interval >= 1) return `${interval}a atrás`;
-  interval = Math.floor(seconds / 2592000);
-  if (interval >= 1) return `${interval}m atrás`;
-  interval = Math.floor(seconds / 86400);
-  if (interval >= 1) return `${interval}d atrás`;
-  interval = Math.floor(seconds / 3600);
-  if (interval >= 1) return `${interval}h atrás`;
-  interval = Math.floor(seconds / 60);
-  if (interval >= 1) return `${interval}min atrás`;
-  return `${Math.floor(seconds)}seg atrás`;
-};
-
 function PrescriberPatientTreatments() {
   const [isLoading, setIsLoading] = useState(false);
   const [treatments, setTreatments] = useState<Treatment[]>([]);
@@ -85,26 +69,26 @@ function PrescriberPatientTreatments() {
                   <div>
                     {currentTreatment && (
                       <TreatmentCard
-                        treatment={currentTreatment!}
+                        treatment={currentTreatment}
                         isPatient={true}
                       />
                     )}
                   </div>
                 </div>
-                <div>
-                  <h3 class="text-sm text-[#8b8b8b] mb-2">
-                    Tratamentos Antigos
-                  </h3>
-                  <div class="flex flex-col gap-4">
-                    {treatments && (
-                      treatments?.map((t) => {
+                {treatments && (
+                  <div>
+                    <h3 class="text-sm text-[#8b8b8b] mb-2">
+                      Tratamentos Antigos
+                    </h3>
+                    <div class="flex flex-col gap-4">
+                      {treatments?.map((t) => {
                         return (
                           <TreatmentCard treatment={t!} isPatient={true} />
                         );
-                      })
-                    )}
+                      })}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>

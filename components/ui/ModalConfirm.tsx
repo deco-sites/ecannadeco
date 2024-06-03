@@ -1,4 +1,3 @@
-import { useUI } from "../../sdk/useUI.ts";
 import Modal from "./Modal.tsx";
 
 interface Props {

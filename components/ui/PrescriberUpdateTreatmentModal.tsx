@@ -1,17 +1,13 @@
 import { useUI } from "../../sdk/useUI.ts";
 import Modal from "./Modal.tsx";
 import { useState } from "preact/hooks";
-import { h } from "preact";
-import { invoke } from "../../runtime.ts";
 import Icon from "./Icon.tsx";
-import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatients.tsx";
-import TreatmentCard from "deco-sites/ecannadeco/components/ui/TreatmentCard.tsx";
 
 type Medication = Treatment["medication"];
 
 const PrescriberUpdateTreatmentModal = () => {
-  const [currentTreatment, setCurrentTreatment] = useState<Treatment>(
+  const [currentTreatment, _setCurrentTreatment] = useState<Treatment>(
     {
       updated_at: "2024-05-14T14:29:09.024+00:00",
       medication: [{
@@ -60,27 +56,15 @@ const PrescriberUpdateTreatmentModal = () => {
       },
     },
   );
-  const [currentMedication, setCurrentMedication] = useState<Medication>(
-    currentTreatment.medication,
-  );
   const [newMedication, setNewMedication] = useState<Medication>(
     currentTreatment.medication,
   );
-  const [newTreatment, setNewTreatment] = useState<Treatment>(currentTreatment);
-  const [accessToken, setAccessToken] = useState(
-    IS_BROWSER ? (localStorage.getItem("AccessToken") || "") : "",
-  );
-  const [updating, setUpdating] = useState<boolean>(false);
+
+  const [updating, _setUpdating] = useState<boolean>(false);
 
   const {
     displayNewTreatmentModal,
   } = useUI();
-
-  const handleUpdateTreatment = () => {
-    const treatment = currentTreatment;
-    treatment.medication = newMedication;
-    setNewTreatment(treatment);
-  };
 
   const handleAddMedication = () => {
     const newMedications = [...newMedication]; // Create a new array instance
@@ -120,10 +104,10 @@ const PrescriberUpdateTreatmentModal = () => {
                 <input
                   class="input rounded-md text-[#535353] border-none w-full disabled:bg-[#e3e3e3] bg-white"
                   placeholder="Nome da Medicação"
-                  value={newMedication[index].name}
+                  value={medication.name}
                   onChange={(e) => {
                     const newMedications = newMedication;
-                    newMedications[index].name = e.currentTarget.value;
+                    medication.name = e.currentTarget.value;
                     setNewMedication(newMedications);
                   }}
                 />
@@ -137,10 +121,10 @@ const PrescriberUpdateTreatmentModal = () => {
                 <input
                   class="input rounded-md text-[#535353] border-none w-full disabled:bg-[#e3e3e3] bg-white"
                   placeholder="Posologia"
-                  value={newMedication[index].dosage}
+                  value={medication.dosage}
                   onChange={(e) => {
                     const newMedications = newMedication;
-                    newMedications[index].dosage = e.currentTarget.value;
+                    medication.dosage = e.currentTarget.value;
                     setNewMedication(newMedications);
                   }}
                 />

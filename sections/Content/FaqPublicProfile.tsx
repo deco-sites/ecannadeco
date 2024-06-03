@@ -84,7 +84,6 @@ export default function FAQ(props: Props) {
     questions = [],
     title,
     description,
-    contact,
     layout,
   } = { ...DEFAULT_PROPS, ...props };
 

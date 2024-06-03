@@ -22,7 +22,7 @@ const DocList = (
 ) => {
   const { displayNewDocModal, displayConfirmDeleteDoc } = useUI();
   const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteId, setDeleteId] = useState("");
+  const [_deleteId, setDeleteId] = useState("");
 
   const handleDelete = async ({ id }: { id: string }) => {
     setIsDeleting(true);
@@ -318,7 +318,7 @@ function MyDocs() {
         setDocs((r as { docs: DocListType[] }).docs);
         setIsLoading(false);
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar os documentos. Tente novamente mais tarde ou contecte o suporte.",
       );

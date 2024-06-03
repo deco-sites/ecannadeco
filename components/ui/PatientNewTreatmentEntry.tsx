@@ -1,21 +1,13 @@
 /**
  * This component was made to control if user is logged in to access pages
  */
-// import type { SectionProps } from "deco/types.ts";
-// import { useUI } from "../../sdk/useUI.ts";
-import { useEffect, useState } from "preact/hooks";
-import { invoke } from "../../runtime.ts";
+import { useState } from "preact/hooks";
 import PageWrap from "./PageWrap.tsx";
 import Icon from "./Icon.tsx";
-import { useUI } from "../../sdk/useUI.ts";
-import type { DocListType } from "./MyDocs.tsx";
-import Modal from "./Modal.tsx";
-import { IS_BROWSER } from "$fresh/runtime.ts";
-import type { Patient, Treatment } from "./PrescriberPatients.tsx";
+import type { Treatment } from "./PrescriberPatients.tsx";
 import MedicationEffectsCard, { symbolName } from "./MedicationEffectsCard.tsx";
 import type { AvailableEffects } from "./MedicationEffectsCard.tsx";
 import TreatmentCard from "./TreatmentCard.tsx";
-import Chart from "deco-sites/ecannadeco/islands/FreshChart.tsx";
 import { format } from "datetime";
 
 export type Address = {
@@ -26,24 +18,8 @@ export type Address = {
 };
 
 function PatientNewTreatmentEntry() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
-  const [updating, setUpdating] = useState(false);
-  const [emailSearch, setEmailSearch] = useState("");
-  const [associationName, setAssociationName] = useState("");
-  const [associationCnpj, setAssociationCnpj] = useState("");
-  const [associationLogo, setAssociationLogo] = useState("");
-  const [createType, setCreateType] = useState<"user" | "association">(
-    "association",
-  );
-  const [limit, setLimit] = useState<number>();
-  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
-  const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
-  const [page, setPage] = useState<number>();
-  const [totalPages, setTotalPages] = useState<number>();
-  const [range, setRange] = useState<number>(4);
-  const [treatment, setTreatment] = useState<Treatment>(
+  const [isLoading, _setIsLoading] = useState(false);
+  const [treatment, _setTreatment] = useState<Treatment>(
     {
       updated_at: "2024-05-14T14:29:09.024+00:00",
       medication: [{
@@ -103,10 +79,10 @@ function PatientNewTreatmentEntry() {
   }[]>(
     [],
   );
-  const [availableDesiredEffects, setAvailableDesiredEffects] = useState<
+  const [availableDesiredEffects, _setAvailableDesiredEffects] = useState<
     AvailableEffects[]
   >(["hunger", "sleep", "focus" /*"relaxation", "disposition", "painRelief"*/]);
-  const [availableUndesiredEffects, setAvailableUndesiredEffects] = useState<
+  const [availableUndesiredEffects, _setAvailableUndesiredEffects] = useState<
     AvailableEffects[]
   >([
     "dizziness",

@@ -3,7 +3,7 @@
  */
 // import type { SectionProps } from "deco/types.ts";
 import { useUI } from "../../sdk/useUI.ts";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { invoke } from "../../runtime.ts";
 
@@ -11,8 +11,8 @@ export interface Props {
   redirectTo?: string;
 }
 
-function PrivatePageControl(props: Props) {
-  const { updatedData, uploadedFile, user } = useUI();
+function PrivatePageControl(_props: Props) {
+  const { user } = useUI();
 
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
@@ -41,10 +41,6 @@ function PrivatePageControl(props: Props) {
           plan: string;
         };
       };
-
-      console.log({ accessToken });
-
-      console.log({ responseGetMeAdmin: r });
 
       const username = r.data.Username;
 

@@ -4,7 +4,6 @@ import { useState } from "preact/hooks";
 import { useUI } from "../../sdk/useUI.ts";
 import { h } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import { invoke } from "../../runtime.ts";
 
 export interface Props {
   onFinish: () => void;

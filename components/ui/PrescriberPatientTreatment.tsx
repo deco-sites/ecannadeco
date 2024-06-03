@@ -1,16 +1,10 @@
 /**
  * This component was made to control if user is logged in to access pages
  */
-// import type { SectionProps } from "deco/types.ts";
-// import { useUI } from "../../sdk/useUI.ts";
-import { useEffect, useState } from "preact/hooks";
-import { invoke } from "../../runtime.ts";
+import { useState } from "preact/hooks";
 import PageWrap from "./PageWrap.tsx";
 import Icon from "./Icon.tsx";
 import { useUI } from "../../sdk/useUI.ts";
-import type { DocListType } from "./MyDocs.tsx";
-import Modal from "./Modal.tsx";
-import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Patient, Treatment } from "./PrescriberPatients.tsx";
 import PrescriberUpdateTreatmentModal from "deco-sites/ecannadeco/islands/PrescriberUpdateTreatmentModal.tsx";
 
@@ -104,8 +98,8 @@ const TreatmentCard = ({ treatment }: { treatment: Treatment }) => {
 };
 
 function PrescriberPatientTreatments() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [patient, setpatients] = useState<Patient>(
+  const [isLoading, _setIsLoading] = useState(false);
+  const [patient, _setpatients] = useState<Patient>(
     {
       name: "Célio Marcos",
       email: "celiomarcos@email.com",
@@ -158,7 +152,6 @@ function PrescriberPatientTreatments() {
       ],
     },
   );
-  const [docs, setDocs] = useState<DocListType[]>([]);
 
   const currentTreatment = patient.treatments?.find((t) => t.current === true);
   const oldTreatments = patient.treatments?.filter((t) => t.current !== true);
