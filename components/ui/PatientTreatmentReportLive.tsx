@@ -12,6 +12,7 @@ import type { Treatment } from "./PrescriberPatientsLive.tsx";
 import MedicationEffectsCard from "./MedicationEffectsCardLive.tsx";
 import TreatmentCard from "./TreatmentCardLive.tsx";
 import Chart from "deco-sites/ecannadeco/islands/FreshChart.tsx";
+import { format } from "datetime";
 
 export type Address = {
   cep: string;
@@ -172,7 +173,7 @@ function PrescriberPatientTreatmentReport() {
                               }}
                               data={{
                                 labels: report.entries.map((entry) =>
-                                  entry.date
+                                  format(new Date(entry.date), "dd/MM/yy")
                                 ),
                                 datasets: [
                                   {
@@ -227,7 +228,7 @@ function PrescriberPatientTreatmentReport() {
                               }}
                               data={{
                                 labels: report.entries.map((entry) =>
-                                  entry.date
+                                  format(new Date(entry.date), "dd/MM/yy")
                                 ),
                                 datasets: [
                                   {
