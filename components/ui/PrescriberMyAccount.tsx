@@ -26,7 +26,7 @@ export type Address = {
 
 function MyAccount() {
   const [isLoading, setIsLoading] = useState(false);
-  const [isChanging, setIsChanging] = useState(false);
+  const [_isChanging, setIsChanging] = useState(false);
   const [isCanceling, setIsCanceling] = useState(false);
   const [email, setEmail] = useState("");
   const [currentPlan, setCurrentPlan] = useState<string>("");
@@ -56,7 +56,7 @@ function MyAccount() {
     try {
       setIsLoading(true);
 
-      const params = fetch(
+      const _params = fetch(
         `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=true`,
       ).then(async (r) => {
         const c = await r.json();
@@ -97,7 +97,7 @@ function MyAccount() {
           setIsLoading(false);
         });
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar dados do usuário. Tente novamente mais tarde ou contecte o suporte.",
       );
@@ -105,7 +105,7 @@ function MyAccount() {
     }
   }, []); // Passando um array de dependências vazio
 
-  const handleChangePassword = () => {
+  const _handleChangePassword = () => {
     let accessToken = "";
 
     if (IS_BROWSER) {
@@ -139,7 +139,7 @@ function MyAccount() {
             alert("senha alterada com sucesso!");
           }
         });
-      } catch (e) {
+      } catch (_e) {
         alert(
           "Não foi possível alterar a senha. Tente mais tarde",
         );
@@ -172,7 +172,7 @@ function MyAccount() {
           "Foi aberto chamado com requisição de cancelar assinatura! Em breve, te retornaremos no email da conta.",
         );
       }
-    } catch (e) {
+    } catch (_e) {
       alert("Erro ao enviar solicitação. Tente mais tarde");
       setIsCanceling(false);
     }

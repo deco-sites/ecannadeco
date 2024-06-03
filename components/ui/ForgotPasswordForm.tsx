@@ -1,13 +1,12 @@
 import { invoke } from "../../runtime.ts";
 import { useState } from "preact/hooks";
-import StepTimeline from "./StepTimeline.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   formTitle?: string;
 }
 
-function ForgotPasswordForm({ formTitle }: Props) {
+function ForgotPasswordForm({ formTitle = "Recuperar Senha" }: Props) {
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -56,7 +55,7 @@ function ForgotPasswordForm({ formTitle }: Props) {
         onSubmit={(e) => handleSubmit(e)}
       >
         <span class="text-2xl text-[#8b8b8b] font-semibold text-center my-4">
-          Recuperar Senha
+          {formTitle}
         </span>
         <label class="w-full">
           <div class="label pb-1">

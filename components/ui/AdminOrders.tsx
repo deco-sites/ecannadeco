@@ -11,13 +11,7 @@ import Icon from "deco-sites/ecannadeco/components/ui/Icon.tsx";
 import { format } from "datetime";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
-import type {
-  Order,
-  PaginationOrderResponse,
-} from "../../actions/getUserOrders.ts";
-import Slider from "./Slider.tsx";
-import { useUI } from "../../sdk/useUI.ts";
-import SliderJS from "../../islands/SliderJS.tsx";
+import type { Order } from "../../actions/getUserOrders.ts";
 
 const OrderItem = (
   { productName, userEmail, productPrice, created_at, status }: {
@@ -90,7 +84,7 @@ function AdminOrders() {
 
         setIsLoading(false);
       });
-    } catch (e) {
+    } catch (_e) {
       setIsLoading(false);
       alert(
         "Não foi possível recuperar Pedidos..",
@@ -129,7 +123,7 @@ function AdminOrders() {
         setOrders(r.docs);
         setIsLoading(false);
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar usuários. Tente novamente mais tarde ou contecte o suporte.",
       );

@@ -7,7 +7,7 @@ export interface Props {
   formTitle?: string;
 }
 
-function SignUpForm({ formTitle }: Props) {
+function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -124,7 +124,7 @@ function SignUpForm({ formTitle }: Props) {
         onSubmit={(e) => handleSubmit(e)}
       >
         <span class="text-2xl text-[#8b8b8b] font-semibold text-center my-4">
-          Criar Conta
+          {formTitle}
         </span>
         <label class="w-full">
           <div class="label pb-1">

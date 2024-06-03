@@ -14,7 +14,6 @@ function PublicProfileComponent(
     cpf,
     name,
     cids,
-    plan,
     documents,
     associationDocuments,
     avatar_photo,

@@ -36,8 +36,6 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
   const { creditCards, plan, product } = props;
   const { displayCheckoutUpsellModal } = useUI();
   const [loading, setLoading] = useState(false);
-  const [content, setContent] = useState("");
-  const [subject, setSubject] = useState("");
   const [addNewCard, setAddNewCard] = useState(false);
 
   const [creditCardNumber, setCreditCardNumber] = useState<string>("");
@@ -45,8 +43,8 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
   const [creditCardExpYear, setCreditCardExpYear] = useState<string>("");
   const [creditCardCCV, setCreditCardCCV] = useState<string>("");
   const [holderName, setHolderName] = useState<string>("");
-  const [holderEmail, setHolderEmail] = useState<string>("");
-  const [holderPhone, setHolderPhone] = useState<string>("");
+  const [holderEmail, _setHolderEmail] = useState<string>("");
+  const [holderPhone, _setHolderPhone] = useState<string>("");
   const [holderCPF, setHolderCPF] = useState<string>("");
   const [cardSelected, setCardSelected] = useState(0);
 
@@ -167,7 +165,7 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
       alert("Operação realizada com sucesso!");
       setLoading(false);
       // window.location.reload();
-    } catch (e) {
+    } catch (_e) {
       alert("Não foi possível finalizar o checkout. Contacte o suporte.");
       setLoading(false);
     }

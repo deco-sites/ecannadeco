@@ -41,7 +41,6 @@ function CheckoutForm() {
     string
   >("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [termsAgree, setTermsAgree] = useState<boolean>(false);
   const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
   let planSku = "";
   let planName = "";
@@ -140,7 +139,7 @@ function CheckoutForm() {
 
           window.location.href = "/entrar";
         }
-      } catch (e) {
+      } catch (_e) {
         alert("Falha em criar assinatura. Fale com o suporte!");
       }
     }

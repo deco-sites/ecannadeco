@@ -2,8 +2,7 @@
  * This component was made to control if user is logged in to access pages
  */
 // import type { SectionProps } from "deco/types.ts";
-import { useUI } from "../../sdk/useUI.ts";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { invoke } from "../../runtime.ts";
 
@@ -11,9 +10,7 @@ export interface Props {
   redirectTo?: string;
 }
 
-function PrivatePageControl(props: Props) {
-  const { updatedData, uploadedFile, user } = useUI();
-
+function PrivatePageControl(_props: Props) {
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
       window.location.href = "/";

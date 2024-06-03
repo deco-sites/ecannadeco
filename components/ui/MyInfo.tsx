@@ -14,7 +14,7 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 
 function MyInfo() {
   const [isLoading, setIsLoading] = useState(true);
-  const [isLoadingCids, setIsLoadingCids] = useState(false);
+  const [_isLoadingCids, setIsLoadingCids] = useState(false);
   const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
   const [uploadingSelfie, setUploadingSelfie] = useState(false);
   const [changedSelfie, setChangedSelfie] = useState(false);
@@ -35,7 +35,6 @@ function MyInfo() {
   const [cidSearchResponse, setCidSearchResponse] = useState<unknown[]>([]);
   const [cids, setCids] = useState<unknown[]>([]);
   const [userImg, setUserImg] = useState<string | null>(null);
-  const [displayCidResults, setDisplayCidResults] = useState(false);
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -96,7 +95,7 @@ function MyInfo() {
         console.log({ r });
         setIsLoading(false);
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar dados do usuário. Tente novamente mais tarde ou contecte o suporte.",
       );
@@ -254,13 +253,13 @@ function MyInfo() {
 
     try {
       invoke["deco-sites/ecannadeco"].actions.updateUserData(body).then(
-        (r) => {
+        (_r) => {
           setIsSubmitting(false);
           invoke["deco-sites/ecannadeco"].actions.updateProfile({
             token: accessToken,
             body: { updatedData: true },
           }).then(
-            (res) => {
+            (_res) => {
               setChangedSelfie(false);
               window.location.href = window.location.pathname;
             },

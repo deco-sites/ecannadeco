@@ -13,7 +13,6 @@ import { SavedCreditCard } from "../../components/ui/CheckoutUpsellModal.tsx";
 import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
 import Slider from "../../components/ui/Slider.tsx";
 import { useUI } from "../../sdk/useUI.ts";
-import SliderJS from "../../islands/SliderJS.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export type Address = {
@@ -42,11 +41,11 @@ function MyAccount() {
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
     let accessToken = "";
-    let currentPlan = "";
+    let _currentPlan = "";
 
     if (IS_BROWSER) {
       accessToken = localStorage.getItem("AccessToken") || "";
-      currentPlan = localStorage.getItem("currentPatientPlan") || "";
+      _currentPlan = localStorage.getItem("currentPatientPlan") || "";
     }
 
     if (accessToken === "") {
@@ -87,7 +86,7 @@ function MyAccount() {
         setIsLoading(false);
       });
 
-      const params = fetch(
+      fetch(
         `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=false`,
       ).then(async (r) => {
         const c = await r.json();
@@ -96,7 +95,7 @@ function MyAccount() {
         const plansList = c.docs as Plan[];
         setPlans(plansList);
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar dados do usuário. Tente novamente mais tarde ou contecte o suporte.",
       );
@@ -138,7 +137,7 @@ function MyAccount() {
             alert("senha alterada com sucesso!");
           }
         });
-      } catch (e) {
+      } catch (_e) {
         alert(
           "Não foi possível alterar a senha. Tente mais tarde",
         );
@@ -171,7 +170,7 @@ function MyAccount() {
           "Foi aberto chamado com requisição de cancelar assinatura! Em breve, te retornaremos no email da conta.",
         );
       }
-    } catch (e) {
+    } catch (_e) {
       alert("Erro ao enviar solicitação. Tente mais tarde");
       setIsCanceling(false);
     }

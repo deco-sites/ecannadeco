@@ -7,9 +7,6 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 function ConfirmSignup() {
   const [code, setCode] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [codeSent, setCodeSent] = useState(false);
-  const [timer, setTimer] = useState(30);
   const [email, setEmail] = useState("");
 
   if (IS_BROWSER) {

@@ -1,12 +1,9 @@
 import { useUI } from "../../sdk/useUI.ts";
 import Modal from "./Modal.tsx";
 import { useState } from "preact/hooks";
-import { h } from "preact";
 import { invoke } from "../../runtime.ts";
-import Icon from "./Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatients.tsx";
-import TreatmentCard from "deco-sites/ecannadeco/components/ui/TreatmentCard.tsx";
 
 type Medication = Treatment["medication"];
 
@@ -17,7 +14,7 @@ export interface Props {
 const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [accessToken, setAccessToken] = useState(
+  const [accessToken, _setAccessToken] = useState(
     IS_BROWSER ? (localStorage.getItem("PrescriberAccessToken") || "") : "",
   );
   const [updating, setUpdating] = useState<boolean>(false);

@@ -11,7 +11,7 @@ function ConfirmSignup() {
 
   useEffect(() => {
     try {
-      const params = fetch(
+      const _params = fetch(
         `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=false`,
       ).then(async (r) => {
         const c = await r.json();
@@ -20,7 +20,7 @@ function ConfirmSignup() {
         const plansList = c.docs as Plan[];
         setPlans(plansList);
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar planos. Contacte o suporte.",
       );

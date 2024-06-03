@@ -4,17 +4,13 @@ import { Props as UpdateDataProps } from "../../actions/updateUserData.ts";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 import Image from "apps/website/components/Image.tsx";
 import Icon from "../../components/ui/Icon.tsx";
-import type { Address } from "../../components/ui/MyAccount.tsx";
 import Loading from "../../components/daisy/Loading.tsx";
 import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
 import {
   Product,
   SavedCreditCard,
 } from "../../components/ui/CheckoutUpsellModal.tsx";
-import { useUI } from "../../sdk/useUI.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import domtoimage from "dom-to-image";
-// import puppeteer from "puppeteer";
 
 export interface UserData {
   data: { UserAttributes: { Name: string; Value: string }[] };
@@ -32,26 +28,17 @@ export interface Props {
   cardSkeleton: ImageWidget;
 }
 
-function formatDate(date: Date) {
-  const day = String(date.getDate()).padStart(2, "0");
-  const month = String(date.getMonth() + 1).padStart(2, "0"); // Mês é baseado em zero
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-}
-
 function EcannaCardPage({ cardSkeleton }: Props) {
   const [isLoading, setIsLoading] = useState(true);
-  const [downloading, setDownloading] = useState(false);
   const [loadingProduct, setLoadingProduct] = useState(true);
   const [userData, setUserData] = useState<UserData>();
-  const [created_at, setCreatedAt] = useState<Date>();
-  const [association, setAssociation] = useState<
+  const [_created_at, setCreatedAt] = useState<Date>();
+  const [_association, setAssociation] = useState<
     { name: string; logo_url: string; cnpj: string }
   >();
-  const [qrcode, setQrcode] = useState<string>();
+  const [_qrcode, setQrcode] = useState<string>();
   const [creditCards, setCreditCards] = useState<SavedCreditCard[]>([]);
   const [cardProduct, setCardProduct] = useState<Product>({} as Product);
-  const { displayCheckoutUpsellModal } = useUI();
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -101,17 +88,13 @@ function EcannaCardPage({ cardSkeleton }: Props) {
 
           setIsLoading(false);
         });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar dados do usuário. Tente novamente mais tarde ou contecte o suporte.",
       );
       setIsLoading(false);
     }
   }, []); // Passando um array de dependências vazio
-
-  function generateCardImage() {
-    setDownloading(true);
-  }
 
   function downloadFile(fileUrl: string, filename: string) {
     // Fetch the file data

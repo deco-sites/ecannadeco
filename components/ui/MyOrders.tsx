@@ -1,22 +1,15 @@
 /**
  * This component was made to control if user is logged in to access pages
  */
-// import type { SectionProps } from "deco/types.ts";
-// import { useUI } from "../../sdk/useUI.ts";
 import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 import OrderStatus from "../../components/ui/OrderStatus.tsx";
-import { SavedCreditCard } from "../../components/ui/CheckoutUpsellModal.tsx";
-import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
 import { format } from "datetime";
 import type {
   Order,
   PaginationOrderResponse,
 } from "../../actions/getUserOrders.ts";
-import Slider from "../../components/ui/Slider.tsx";
-import { useUI } from "../../sdk/useUI.ts";
-import SliderJS from "../../islands/SliderJS.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
 const OrderItem = (
@@ -79,7 +72,7 @@ function MyOrders() {
 
         setIsLoading(false);
       });
-    } catch (e) {
+    } catch (_e) {
       setIsLoading(false);
       alert(
         "Não foi possível recuperar Pedidos do usuário. Contacte o suporte.",

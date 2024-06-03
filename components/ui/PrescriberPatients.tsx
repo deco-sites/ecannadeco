@@ -1,17 +1,10 @@
 /**
  * This component was made to control if user is logged in to access pages
  */
-// import type { SectionProps } from "deco/types.ts";
-// import { useUI } from "../../sdk/useUI.ts";
-import { useEffect, useState } from "preact/hooks";
-import { invoke } from "../../runtime.ts";
+import { useState } from "preact/hooks";
 import PageWrap from "./PageWrap.tsx";
 import Icon from "./Icon.tsx";
 import { useUI } from "../../sdk/useUI.ts";
-import Image from "apps/website/components/Image.tsx";
-import Loading from "../daisy/Loading.tsx";
-import type { DocListType } from "./MyDocs.tsx";
-import { IS_BROWSER } from "$fresh/runtime.ts";
 import PrescriberNewPatientModal from "../../islands/PrescriberNewPatientModal.tsx";
 
 export type Address = {
@@ -69,23 +62,12 @@ export type Patient = {
 };
 
 function PrescriberPatients() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
-  const [updating, setUpdating] = useState(false);
+  const [isLoading, _setIsLoading] = useState(false);
+  const [isLoadingUsers, _setIsLoadingUsers] = useState(false);
   const [emailSearch, setEmailSearch] = useState("");
-  const [associationName, setAssociationName] = useState("");
-  const [associationCnpj, setAssociationCnpj] = useState("");
-  const [associationLogo, setAssociationLogo] = useState("");
-  const [createType, setCreateType] = useState<"user" | "association">(
-    "association",
-  );
-  const [limit, setLimit] = useState<number>();
-  const [hasNextPage, setHasNextPage] = useState<boolean>(false);
-  const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
-  const [page, setPage] = useState<number>();
-  const [totalPages, setTotalPages] = useState<number>();
-  const [patients, setpatients] = useState<Patient[]>([
+  const [hasNextPage, _setHasNextPage] = useState<boolean>(false);
+  const [hasPrevPage, _setHasPrevPage] = useState<boolean>(false);
+  const [patients, _setpatients] = useState<Patient[]>([
     {
       name: "Célio Marcos",
       email: "celiomarcos@email.com",
@@ -108,7 +90,6 @@ function PrescriberPatients() {
       last_treatment: undefined,
     },
   ]);
-  const [docs, setDocs] = useState<DocListType[]>([]);
 
   const {
     displayNewPatientModal,

@@ -2,7 +2,6 @@ import { useUI } from "../../sdk/useUI.ts";
 import Modal from "./Modal.tsx";
 import { useState } from "preact/hooks";
 import { h } from "preact";
-import { invoke } from "../../runtime.ts";
 import Icon from "./Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
@@ -16,7 +15,7 @@ const AdminNewDocModal = (
   const [file, setFile] = useState<File>();
   const [docTitle, setDocTitle] = useState("");
   const [docCategory, setDocCategory] = useState("");
-  const [accessToken, setAccessToken] = useState(
+  const [accessToken, _setAccessToken] = useState(
     IS_BROWSER ? (localStorage.getItem("AccessToken") || "") : "",
   );
 

@@ -35,7 +35,7 @@ function UserAssociatedSignup() {
         setAssociationLogo(resp.logo_url);
         setLoading(false);
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar associação. Contacte o suporte.",
       );

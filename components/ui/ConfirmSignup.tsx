@@ -50,6 +50,7 @@ function ConfirmSignup() {
       }, 1000); // Interval of 1000 milliseconds (1 second)
     } catch (e) {
       setSending(false);
+      console.log(e);
       alert("Erro ao reenviar código. Contacte o suporte");
     }
   };

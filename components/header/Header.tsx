@@ -5,7 +5,6 @@ import { usePlatform } from "../../sdk/usePlatform.tsx";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 import type { SiteNavigationElement } from "apps/commerce/types.ts";
 import type { SectionProps } from "deco/types.ts";
-import Alert from "./Alert.tsx";
 import Navbar from "./Navbar.tsx";
 import { headerHeight } from "./constants.ts";
 
@@ -133,9 +132,6 @@ function Header({
     alt: "Logo",
   },
   logoMenu,
-  logoPosition = "center",
-  buttons,
-  device,
 }: SectionProps<typeof loader>) {
   const platform = usePlatform();
 

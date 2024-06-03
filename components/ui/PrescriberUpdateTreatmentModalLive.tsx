@@ -1,12 +1,10 @@
 import { useUI } from "../../sdk/useUI.ts";
 import Modal from "./Modal.tsx";
 import { useEffect, useState } from "preact/hooks";
-import { h } from "preact";
 import { invoke } from "../../runtime.ts";
 import Icon from "./Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatientsLive.tsx";
-import TreatmentCard from "deco-sites/ecannadeco/components/ui/TreatmentCard.tsx";
 
 type Medications = Treatment["medications"];
 
@@ -19,7 +17,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
   );
   const [newMedication, setNewMedication] = useState<Medications>([]);
   const [newTreatment, setNewTreatment] = useState<Treatment | null>(null);
-  const [accessToken, setAccessToken] = useState(
+  const [accessToken, _setAccessToken] = useState(
     IS_BROWSER ? (localStorage.getItem("PrescriberAccessToken") || "") : "",
   );
   const [updating, setUpdating] = useState<boolean>(false);
@@ -64,7 +62,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
     displayNewTreatmentModal,
   } = useUI();
 
-  const handleUpdateTreatment = () => {
+  const _handleUpdateTreatment = () => {
     const treatment = currentTreatment;
     if (treatment && treatment.medications) {
       treatment.medications = newMedication;
@@ -126,10 +124,10 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
                 <input
                   class="input rounded-md text-[#535353] border-none w-full disabled:bg-[#e3e3e3] bg-white"
                   placeholder="Nome da Medicação"
-                  value={newMedication[index].name}
+                  value={medication.name}
                   onChange={(e) => {
                     const newMedications = newMedication;
-                    newMedications[index].name = e.currentTarget.value;
+                    medication.name = e.currentTarget.value;
                     setNewMedication(newMedications);
                     setNewTreatment(
                       {
@@ -149,10 +147,10 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
                 <input
                   class="input rounded-md text-[#535353] border-none w-full disabled:bg-[#e3e3e3] bg-white"
                   placeholder="Posologia"
-                  value={newMedication[index].dosage}
+                  value={medication.dosage}
                   onChange={(e) => {
                     const newMedications = newMedication;
-                    newMedications[index].dosage = e.currentTarget.value;
+                    medication.dosage = e.currentTarget.value;
                     setNewMedication(newMedications);
                     setNewTreatment(
                       {

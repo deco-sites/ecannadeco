@@ -38,7 +38,7 @@ const ModalTicket = () => {
         );
         displayNewTicketModal.value = false;
       }
-    } catch (e) {
+    } catch (_e) {
       alert("Erro ao enviar ticket. Tente mais tarde");
       setSubmitting(false);
     }

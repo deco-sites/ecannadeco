@@ -18,7 +18,7 @@ function ChoosePlanSignupPrescriber() {
   useEffect(() => {
     setLoading(true);
     try {
-      const params = fetch(
+      const _params = fetch(
         `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=true`,
       ).then(async (r) => {
         const c = await r.json();
@@ -36,7 +36,7 @@ function ChoosePlanSignupPrescriber() {
         setPlans(updatedPlanlist);
         setLoading(false);
       });
-    } catch (e) {
+    } catch (_e) {
       alert(
         "Não foi possível carregar planos. Contacte o suporte.",
       );

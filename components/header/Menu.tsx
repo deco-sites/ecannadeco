@@ -1,4 +1,3 @@
-import Icon from "../../components/ui/Icon.tsx";
 import type { Logo } from "./Header.tsx";
 import type { SiteNavigationElement } from "apps/commerce/types.ts";
 
