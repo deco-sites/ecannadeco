@@ -41,11 +41,10 @@ function MyAccount() {
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
     let accessToken = "";
-    let _currentPlan = "";
 
     if (IS_BROWSER) {
       accessToken = localStorage.getItem("AccessToken") || "";
-      _currentPlan = localStorage.getItem("currentPatientPlan") || "";
+      setCurrentPlan(localStorage.getItem("currentPatientPlan") || "");
     }
 
     if (accessToken === "") {
@@ -90,8 +89,6 @@ function MyAccount() {
         `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=false`,
       ).then(async (r) => {
         const c = await r.json();
-        console.log({ plans: c.docs });
-
         const plansList = c.docs as Plan[];
         setPlans(plansList);
       });
@@ -421,6 +418,7 @@ function MyAccount() {
                 <CheckoutUpsellModal
                   creditCards={creditCards}
                   plan={newPlan!}
+                  email={email}
                   address={address!}
                 />
                 <button

@@ -25,6 +25,7 @@ export interface Props {
   creditCards: SavedCreditCard[];
   plan?: Plan;
   product?: Product;
+  email?: string;
   address: {
     cep: string;
     number: string;
@@ -33,7 +34,7 @@ export interface Props {
 }
 
 const CheckoutUpsellModal = (props: Props) => {
-  const { creditCards, plan, product } = props;
+  const { creditCards, plan, product, email = "" } = props;
   const { displayCheckoutUpsellModal } = useUI();
   const [loading, setLoading] = useState(false);
   const [addNewCard, setAddNewCard] = useState(false);
@@ -43,12 +44,17 @@ const CheckoutUpsellModal = (props: Props) => {
   const [creditCardExpYear, setCreditCardExpYear] = useState<string>("");
   const [creditCardCCV, setCreditCardCCV] = useState<string>("");
   const [holderName, setHolderName] = useState<string>("");
-  const [holderEmail, _setHolderEmail] = useState<string>("");
-  const [holderPhone, _setHolderPhone] = useState<string>("");
   const [holderCPF, setHolderCPF] = useState<string>("");
+  const [cep, setCep] = useState<string>(props.address?.cep || "");
+  const [phone, setPhone] = useState<string>("");
+  const [addressStreet, setAddressStreet] = useState<string>("");
+  const [addressNumber, setAddressNumber] = useState<string>(
+    props.address?.number || "",
+  );
+  const [addressComplement, setAddressComplement] = useState<string>(
+    props.address?.complement || "",
+  );
   const [cardSelected, setCardSelected] = useState(0);
-
-  console.log({ plan, product, creditCards });
 
   const handleCheckout = async () => {
     setLoading(true);
@@ -74,39 +80,41 @@ const CheckoutUpsellModal = (props: Props) => {
           ccv: creditCardCCV,
         },
         holder_info: {
+          email,
+          phone,
           full_name: holderName,
-          email: holderEmail,
           cpf_cnpj: holderCPF,
-          postal_code: props.address.cep,
-          address_number: props.address.number,
-          address_complement: props.address.complement,
-          phone: holderPhone,
+          postal_code: cep,
+          address_number: addressNumber,
+          address_complement: addressComplement,
         },
       };
 
-      paramsCheckoutV2 = {
-        token: accessToken,
-        items: [{
-          sku: product!.skus[0],
-          quantity: 1,
-        }],
-        credit_card: {
-          holder: holderName,
-          number: creditCardNumber,
-          exp_month: creditCardExpMonth,
-          exp_year: creditCardExpYear,
-          ccv: creditCardCCV,
-        },
-        holder_info: {
-          full_name: holderName,
-          email: holderEmail,
-          cpf_cnpj: holderCPF,
-          postal_code: props.address.cep,
-          address_number: props.address.number,
-          address_complement: props.address.complement,
-          phone: holderPhone,
-        },
-      };
+      if (product) {
+        paramsCheckoutV2 = {
+          token: accessToken,
+          items: [{
+            sku: product!.skus[0],
+            quantity: 1,
+          }],
+          credit_card: {
+            holder: holderName,
+            number: creditCardNumber,
+            exp_month: creditCardExpMonth,
+            exp_year: creditCardExpYear,
+            ccv: creditCardCCV,
+          },
+          holder_info: {
+            email,
+            phone,
+            full_name: holderName,
+            cpf_cnpj: holderCPF,
+            postal_code: cep,
+            address_number: addressNumber,
+            address_complement: addressComplement,
+          },
+        };
+      }
     } else {
       if (plan) {
         paramsChangeSubscription = {
@@ -228,7 +236,7 @@ const CheckoutUpsellModal = (props: Props) => {
                   >
                     <span>
                       Você ainda não possui cartões cadastrados. Cadastre o
-                      primeiro cartõa clicando em "Adicionar Novo Cartão".
+                      primeiro cartão clicando em "Adicionar Novo Cartão".
                     </span>
                   </div>
                 </li>
@@ -346,6 +354,84 @@ const CheckoutUpsellModal = (props: Props) => {
                 value={holderCPF}
                 onChange={(e) =>
                   e.target && setHolderCPF(e.currentTarget.value)}
+              />
+            </label>
+          </form>
+        </div>
+
+        <div>
+          <form class="flex flex-wrap gap-[2%]">
+            <div class="w-full flex flex-col my-2">
+              <span class="label-text>text-xs text-[#585858]">
+                Endereço de Cobrança
+              </span>
+            </div>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  CEP
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="CEP"
+                value={cep}
+                onChange={(e) => e.target && setCep(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Rua
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Número"
+                value={addressStreet}
+                onChange={(e) =>
+                  e.target && setAddressStreet(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Número
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Número"
+                value={addressNumber}
+                onChange={(e) =>
+                  e.target && setAddressNumber(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Complemeto
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Complemento"
+                value={addressComplement}
+                onChange={(e) =>
+                  e.target && setAddressComplement(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Telefone
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Telefone"
+                value={phone}
+                onChange={(e) => e.target && setPhone(e.currentTarget.value)}
               />
             </label>
           </form>
