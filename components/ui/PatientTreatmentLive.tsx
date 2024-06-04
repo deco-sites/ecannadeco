@@ -32,7 +32,6 @@ function PrescriberPatientTreatments() {
         token: accessToken,
       });
     setIsLoading(false);
-    console.log({ responseTreatments: response });
     if (response) {
       const treatments = response as Treatment[];
       const currentTreatment = treatments.find((t) => t.isActive) || null;
@@ -75,7 +74,7 @@ function PrescriberPatientTreatments() {
                     )}
                   </div>
                 </div>
-                {treatments && (
+                {Boolean(treatments.length) && (
                   <div>
                     <h3 class="text-sm text-[#8b8b8b] mb-2">
                       Tratamentos Antigos
