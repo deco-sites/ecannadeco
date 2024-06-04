@@ -54,6 +54,8 @@ export interface Props {
   logoMenu?: Logo;
 
   buttons?: Buttons;
+
+  hideHeaderHight?: boolean;
 }
 
 function Header({
@@ -132,12 +134,13 @@ function Header({
     alt: "Logo",
   },
   logoMenu,
+  hideHeaderHight,
 }: SectionProps<typeof loader>) {
   const platform = usePlatform();
 
   return (
     <>
-      <header style={{ height: headerHeight }}>
+      <header style={hideHeaderHight ? {} : { height: headerHeight }}>
         <Drawers
           menu={{
             items: navItems || [],

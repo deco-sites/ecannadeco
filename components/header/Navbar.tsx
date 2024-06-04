@@ -12,7 +12,7 @@ function Navbar(
   return (
     <div
       style={{ height: navbarHeight }}
-      class="flex justify-between items-center border-b border-base-200 w-full px-6 bg-primary"
+      class="flex justify-between items-center w-full px-6 bg-primary"
     >
       {logo && (
         <a

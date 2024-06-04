@@ -9,15 +9,21 @@ export interface Props {
     width: number;
   };
   text: string;
+  hideMarginTop?: boolean;
 }
 
 function Footer({
   logo,
   text,
+  hideMarginTop,
 }: Props) {
   return (
     <footer>
-      <div class="bg-[#eeeeee] flex justify-center items-center bottom-0 w-full p-4 gap-5 mt-20">
+      <div
+        class={`bg-[#eeeeee] flex justify-center items-center bottom-0 w-full p-4 gap-5 ${
+          !hideMarginTop && "mt-20"
+        }`}
+      >
         <Image
           loading="lazy"
           src={logo?.image || ""}
