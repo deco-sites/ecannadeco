@@ -1,12 +1,12 @@
 {
-    "theme_color": "#5f9b9a",
-    "background_color": "#a3adcc",
+    "theme_color": "#1777b8",
+    "background_color": "#ffffff",
     "display": "fullscreen",
     "scope": "/",
     "start_url": "/",
     "id": "/?source=pwa",
-    "name": "Fashion by Deco",
-    "short_name": "Fashion",
+    "name": "Ecanna",
+    "short_name": "Ecanna",
     "orientation": "portrait",
     "icons": [
         {
@@ -30,5 +30,5 @@
             "type": "image/png"
         }
     ],
-    "description": "Latest fashion trends in Rio"
+    "description": "Identidade digital para pacientes de cannabis medicinal"
 }
