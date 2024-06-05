@@ -1,47 +1,29 @@
+/**
+ * This component was made to control if user is logged in to access pages
+ */
+import PageWrap from "../../components/ui/PageWrap.tsx";
+import {
+  PartnerAssociation,
+  Service,
+} from "../landingpages/PatientServicesLP.tsx";
+import Icon from "../ui/Icon.tsx";
 import Image from "apps/website/components/Image.tsx";
-import Icon, { AvailableIcons } from "../ui/Icon.tsx";
-import type { ImageWidget } from "apps/admin/widgets.ts";
-
-/** @titleBy title */
-export type Service = {
-  title: string;
-  icon: AvailableIcons;
-  link?: string;
-};
-
-/** @titleBy title */
-export type PartnerAssociation = {
-  title: string;
-  logo: ImageWidget;
-  link?: string;
-};
 
 export interface Props {
-  bgImage: ImageWidget;
-  preHeader: string;
-  header: string;
   services: Service[];
   partnerAssociations: PartnerAssociation[];
 }
 
-// Make it sure to render it on the server only. DO NOT render it on an island
-function Navbar(
-  { preHeader, header, services, partnerAssociations, bgImage }: Props,
-) {
+function PatientDashboard({ services, partnerAssociations }: Props) {
   return (
-    <div
-      class="h-full w-full bg-cover bg-center min-h-[87vh]"
-      style={`background-image: url(${bgImage});`}
-    >
-      <div class="container text-white flex flex-col gap-10 items-center py-12">
-        <div class="flex flex-col gap-1 items-center max-w-[400px]">
-          <span class="text-md text-[#d9d9d9] uppercase">{preHeader}</span>
-          <h1 class="text-2xl font-extrabold text-center uppercase">
-            {header}
-          </h1>
+    <PageWrap>
+      <div class="flex flex-col gap-5 w-full">
+        <div class="flex justify-center">
+          <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
+            Painel do Paciente
+          </h3>
         </div>
         <div class="flex flex-col gap-4 items-center">
-          <span class="uppercase">Selecione o serviço que deseja acessar</span>
           <div class="flex flex-wrap gap-2 sm:gap-6 max-w-[580px] justify-center">
             {services.map((service) => (
               <a
@@ -54,8 +36,8 @@ function Navbar(
             ))}
           </div>
         </div>
-        <div class="divider divider-neutral">Associações Parceiras</div>
-        <div>
+        <div class="divider divider-black">Associações Parceiras</div>
+        <div class="flex justify-center">
           {partnerAssociations.map((association) => (
             <a
               href={association.link}
@@ -70,11 +52,9 @@ function Navbar(
             </a>
           ))}
         </div>
-        <div>
-        </div>
       </div>
-    </div>
+    </PageWrap>
   );
 }
 
-export default Navbar;
+export default PatientDashboard;
