@@ -61,7 +61,12 @@ function Navbar(
               href={association.link}
               class="flex flex-col gap-2 items-center justify-center text-center p-4 h-24 w-40 sm:w-44 text-primary bg-white rounded-md shadow-lg"
             >
-              <Image src={association.logo} width={128} height={32} alt="logo associação"/>
+              <Image
+                src={association.logo}
+                width={128}
+                height={32}
+                alt="logo associação"
+              />
             </a>
           ))}
         </div>
