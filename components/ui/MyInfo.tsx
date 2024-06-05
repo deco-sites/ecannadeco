@@ -601,7 +601,13 @@ function MyInfo() {
           </label>
         </div>
         <div class="flex flex-col sm:flex-row justify-between mt-4 w-full gap-4">
-          <div class="flex gap-4 items-center justify-center my-4 sm:my-0">
+          <div class="flex flex-wrap gap-4 items-center justify-center my-4 sm:my-0">
+            <a
+              href="/meus-documentos"
+              class="btn btn-secondary btn-xs text-white"
+            >
+              <Icon id="Folder" size={19} /> Meus Documentos
+            </a>
             <a
               href="/minha-carteirinha"
               class="btn btn-secondary btn-xs text-white"
