@@ -66,6 +66,7 @@ import * as $PrivatePageControlPrescriber from "./islands/PrivatePageControlPres
 import * as $ProductImageZoom from "./islands/ProductImageZoom.tsx";
 import * as $PublicPageControl from "./islands/PublicPageControl.tsx";
 import * as $SearchControls from "./islands/SearchControls.tsx";
+import * as $ServiceDescriptionPage from "./islands/ServiceDescriptionPage.tsx";
 import * as $ShippingSimulation from "./islands/ShippingSimulation.tsx";
 import * as $ShowMore from "./islands/ShowMore.tsx";
 import * as $SignInForm from "./islands/SignInForm.tsx";
@@ -156,6 +157,7 @@ const manifest = {
     "./islands/ProductImageZoom.tsx": $ProductImageZoom,
     "./islands/PublicPageControl.tsx": $PublicPageControl,
     "./islands/SearchControls.tsx": $SearchControls,
+    "./islands/ServiceDescriptionPage.tsx": $ServiceDescriptionPage,
     "./islands/ShippingSimulation.tsx": $ShippingSimulation,
     "./islands/ShowMore.tsx": $ShowMore,
     "./islands/SignInForm.tsx": $SignInForm,

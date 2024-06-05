@@ -30,7 +30,7 @@ function Navbar(
 ) {
   return (
     <div
-      class="h-full w-full bg-cover bg-center"
+      class="h-full w-full bg-cover bg-center min-h-[87vh]"
       style={`background-image: url(${bgImage});`}
     >
       <div class="container text-white flex flex-col gap-10 items-center py-12">
@@ -61,7 +61,7 @@ function Navbar(
               href={association.link}
               class="flex flex-col gap-2 items-center justify-center text-center p-4 h-24 w-40 sm:w-44 text-primary bg-white rounded-md shadow-lg"
             >
-              <Image src={association.logo} width={128} height={32} />
+              <Image src={association.logo} width={128} height={32} alt="logo associação"/>
             </a>
           ))}
         </div>
