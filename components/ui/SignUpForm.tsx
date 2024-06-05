@@ -15,6 +15,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [termsAgree, setTermsAgree] = useState<boolean>(false);
   const [cpfError, setCpfError] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
@@ -31,7 +32,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
       try {
         const dataSignup = await invoke["deco-sites/ecannadeco"].actions
           .cognitoSignUp(
-            { email, password, name, cpf },
+            { email, password, name, cpf, phone: whatsapp },
           );
 
         const dataS = dataSignup as {
@@ -54,6 +55,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
             localStorage.setItem("emailConfirm", email);
             localStorage.setItem("cpfUserAsaas", cpf);
             localStorage.setItem("nameUserAsaas", name);
+            localStorage.setItem("phoneUserAsaas", whatsapp);
             if (association) {
               localStorage.setItem("associationSignup", association._id);
               localStorage.setItem("nameUserAssociationSignup", name);
@@ -176,6 +178,22 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
             value={email}
             onChange={(e) => {
               setEmail(e.currentTarget.value);
+            }}
+          />
+        </label>
+        <label class="w-full">
+          <div class="label pb-1">
+            <span class="label-text text-xs text-[#585858]">
+              Whatsapp
+            </span>
+          </div>
+          <input
+            class="input rounded-md text-[#8b8b8b] border-none w-full"
+            placeholder="Seu whatsapp"
+            name="whatsapp"
+            value={whatsapp}
+            onChange={(e) => {
+              setWhatsapp(e.currentTarget.value);
             }}
           />
         </label>

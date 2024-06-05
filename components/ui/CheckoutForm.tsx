@@ -51,6 +51,7 @@ function CheckoutForm() {
     setHolderEmail(localStorage.getItem("emailConfirm") || "");
     setName(localStorage.getItem("nameUserAsaas") || "");
     setCPF(localStorage.getItem("cpfUserAsaas") || "");
+    setHolderPhone(localStorage.getItem("phoneUserAsaas") || "");
 
     planSku = localStorage.getItem("planSKU") || "";
     planName = localStorage.getItem("planName") || "";

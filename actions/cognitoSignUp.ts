@@ -3,6 +3,7 @@ export interface Props {
   password: string;
   name: string;
   cpf: string;
+  phone: string;
 }
 
 const signUpCognito = async (
@@ -20,6 +21,7 @@ const signUpCognito = async (
         password: props.password,
         name: props.name,
         cpf: props.cpf,
+        phone: props.phone,
       }),
     });
 
