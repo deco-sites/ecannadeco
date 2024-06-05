@@ -27,6 +27,7 @@ export type AvailableIcons =
   | "Facebook"
   | "FilterList"
   | "Focus"
+  | "Folder"
   | "Form"
   | "GoBack"
   | "Heart"
