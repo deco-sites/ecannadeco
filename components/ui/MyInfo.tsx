@@ -275,8 +275,28 @@ function MyInfo() {
     ? <span class="loading loading-spinner text-green-600"></span>
     : (
       <PageWrap>
+        <div class="flex flex-wrap gap-4 items-center justify-center my-4 mb-10">
+          <a
+            href="/meus-documentos"
+            class="btn btn-secondary btn-xs text-white"
+          >
+            <Icon id="Folder" size={19} /> Meus Documentos
+          </a>
+          <a
+            href="/minha-carteirinha"
+            class="btn btn-secondary btn-xs text-white"
+          >
+            <Icon id="CardID" size={19} /> Minha Carteirinha
+          </a>
+          <a
+            href={`/ficha/${profile}`}
+            class="btn btn-secondary btn-xs text-white"
+          >
+            <Icon id="Form" size={19} /> Ficha Pública
+          </a>
+        </div>
         <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center mb-10">
-          Meus Dados
+          Meus Dados de Paciente
         </h3>
         <div class="flex flex-col items-center">
           {/* Selfie */}
@@ -603,26 +623,6 @@ function MyInfo() {
           </label>
         </div>
         <div class="flex flex-col sm:flex-row justify-between mt-4 w-full gap-4">
-          <div class="flex flex-wrap gap-4 items-center justify-center my-4 sm:my-0">
-            <a
-              href="/meus-documentos"
-              class="btn btn-secondary btn-xs text-white"
-            >
-              <Icon id="Folder" size={19} /> Meus Documentos
-            </a>
-            <a
-              href="/minha-carteirinha"
-              class="btn btn-secondary btn-xs text-white"
-            >
-              <Icon id="CardID" size={19} /> Minha Carteirinha
-            </a>
-            <a
-              href={`/ficha/${profile}`}
-              class="btn btn-secondary btn-xs text-white"
-            >
-              <Icon id="Form" size={19} /> Ficha Pública
-            </a>
-          </div>
           <button class="btn btn-primary" onClick={handleSubmit}>
             {isSubmiting ? "Salvando..." : "Salvar Dados"}
           </button>
