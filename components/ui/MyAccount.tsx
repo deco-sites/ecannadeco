@@ -318,7 +318,7 @@ function MyAccount() {
                       <div class="flex items-center gap-4">
                         <div
                           class={`h-8 w-8 rounded-full ${
-                            plan.name == (newPlan?.name || currentPlan)
+                            plan.plan == (newPlan?.plan || currentPlan)
                               ? "bg-primary flex items-center justify-center"
                               : "bg-white"
                           }`}
@@ -326,7 +326,7 @@ function MyAccount() {
                             "box-shadow": "inset 1px 3px 7px rgb(0 0 0 / 20%)",
                           }}
                         >
-                          {plan.name == (newPlan?.name || currentPlan) && (
+                          {plan.plan == (newPlan?.plan || currentPlan) && (
                             <Icon class="text-white" id="Check" size={19} />
                           )}
                         </div>
@@ -339,7 +339,7 @@ function MyAccount() {
                         </div>
                       </div>
                       <div class="flex flex-col gap-2">
-                        {plan.name === "FREE" && (
+                        {plan.plan === "CARD" && (
                           <span class="text-xs font-semibold mt-2 text-primary">
                             30 dias grátis
                           </span>

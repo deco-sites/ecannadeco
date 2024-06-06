@@ -11,7 +11,7 @@ function ConfirmSignup() {
   const [codeSent, setCodeSent] = useState(false);
   const [timer, setTimer] = useState(30);
   const [association, setAssociation] = useState("");
-  const [plan, setPlan] = useState("");
+  // const [plan, setPlan] = useState("");
   const [serviceLabel, setServiceLabel] = useState("");
   const [email, setEmail] = useState("");
 
@@ -19,9 +19,9 @@ function ConfirmSignup() {
     setAssociation(
       localStorage.getItem("associationSignup") || "",
     );
-    setPlan(
-      localStorage.getItem("userPlan") || "",
-    );
+    // setPlan(
+    //   localStorage.getItem("userPlan") || "",
+    // );
     setEmail(
       localStorage.getItem("emailConfirm") || "",
     );
@@ -83,10 +83,11 @@ function ConfirmSignup() {
         if (association != "") {
           window.location.href = "/confirmar-cadastro/associacao";
         } else {
-          if (plan === "TREATMENT") {
-            window.location.href = "/entrar";
-          } else if (serviceLabel === "carteirinha") {
+          if (serviceLabel === "carteirinha") {
             window.location.href = "/confirmar-cadastro/plano";
+          } else {
+            //se o usuário não for de carteirinha
+            window.location.href = "/entrar";
           }
         }
       }

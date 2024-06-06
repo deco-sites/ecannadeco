@@ -5,12 +5,15 @@
 import { useEffect } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { invoke } from "../../runtime.ts";
+import { useUI } from "../../sdk/useUI.ts";
 
 export interface Props {
   redirectTo?: string;
 }
 
 function PrivatePageControl(_props: Props) {
+  const { updatedData, uploadedFile } = useUI();
+
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
       window.location.href = "/";
@@ -39,6 +42,9 @@ function PrivatePageControl(_props: Props) {
         };
       };
 
+      updatedData.value = r.dataProfile.updatedData;
+      uploadedFile.value = r.dataProfile.uploadedFile;
+
       //control access in case patient is just treatment
       if (IS_BROWSER) {
         localStorage.setItem("currentPatientPlan", r.dataProfile.plan);
@@ -52,7 +58,7 @@ function PrivatePageControl(_props: Props) {
 
       const currentPlan = r.dataProfile.plan;
 
-      if (currentPlan === "DEFAULT") {
+      if (currentPlan === "DEFAULT" || currentPlan === "TREATMENT") {
         const currentUrl = window.location.pathname;
 
         if (
@@ -64,21 +70,6 @@ function PrivatePageControl(_props: Props) {
           ].includes(currentUrl)
         ) {
           window.location.href = "/minha-conta";
-        }
-      }
-
-      if (currentPlan === "TREATMENT") {
-        const currentUrl = window.location.pathname;
-
-        if (
-          [
-            "/minha-carteirinha",
-            "/meus-documentos",
-            "/meus-dados",
-            "/meus-pedidos",
-          ].includes(currentUrl)
-        ) {
-          window.location.href = "/tratamentos";
         }
       }
 
