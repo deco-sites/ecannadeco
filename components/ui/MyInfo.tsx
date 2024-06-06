@@ -596,7 +596,9 @@ function MyInfo() {
             />
             <span class="label-text text-xs text-[#8b8b8b]">
               Declaro, sob minha responsabilidade, que todas as informações
-              inseridas neste formulário são verdadeiras
+              inseridas neste formulário são verdadeiras. E reconheço que estas
+              informações serão disponibilizadas na minha ficha pública (quando
+              lido o QR Code da carteirinha).
             </span>
           </label>
         </div>
