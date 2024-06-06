@@ -184,7 +184,7 @@ function MyAccount() {
                 Minha Conta
               </h3>
             </div>
-            {currentPlan == "TREATMENT" && (
+            {(currentPlan == "TREATMENT" || currentPlan == "DEFAULT") && (
               <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
                 <Icon id="Profile" size={16} />
                 <span class="text-lg">
