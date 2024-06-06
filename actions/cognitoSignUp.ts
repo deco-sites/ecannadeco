@@ -27,11 +27,14 @@ const signUpCognito = async (
       }),
     });
 
+    if (response.status > 400) {
+      throw new Error("Erro ao criar conta");
+    }
+
     const res = await response.json();
     return res;
   } catch (e) {
-    // console.log({ e });
-    return e;
+    throw e;
   }
 };
 

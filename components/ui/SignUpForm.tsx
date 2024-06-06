@@ -51,8 +51,6 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
         const association = dataS.data?.association;
         const plan = dataS.data?.plan;
 
-        console.log({ dataSignup, dataS });
-
         if (dataS.errors && dataS.errors.length > 0) {
           alert(
             "Não foi possível fazer signup. Verifique as informações fornecidas e tente novamente.",
