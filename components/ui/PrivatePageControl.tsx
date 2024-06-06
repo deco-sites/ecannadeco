@@ -42,6 +42,12 @@ function PrivatePageControl(_props: Props) {
       //control access in case patient is just treatment
       if (IS_BROWSER) {
         localStorage.setItem("currentPatientPlan", r.dataProfile.plan);
+        if (r.dataProfile.association?.user === r.data.Username) {
+          localStorage.setItem(
+            "AssociationAdmin",
+            r.dataProfile.association._id,
+          );
+        }
       }
 
       const currentPlan = r.dataProfile.plan;

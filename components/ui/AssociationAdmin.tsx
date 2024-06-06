@@ -429,7 +429,7 @@ function MyAccount() {
                 </button>
               </div>
               <div>
-                <ul>
+                <ul class="flex flex-col gap-2">
                   {docs.map((d) => {
                     return (
                       <li class="flex items-center gap-4">
