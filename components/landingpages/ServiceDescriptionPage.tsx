@@ -1,6 +1,7 @@
 import Icon, { AvailableIcons } from "../ui/Icon.tsx";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 import Image from "apps/website/components/Image.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export interface Props {
   bgImage: ImageWidget;
@@ -10,12 +11,39 @@ export interface Props {
   /**@format html */
   text: string;
   ctaText: string;
+  serviceLabel: string;
 }
 
 // Make it sure to render it on the server only. DO NOT render it on an island
-function Navbar(
-  { icon, image, header, text, ctaText, bgImage }: Props,
-) {
+function ServiceDescriptionPage({
+  icon,
+  image,
+  header,
+  text,
+  ctaText,
+  bgImage,
+  serviceLabel,
+}: Props) {
+  const handleClick = () => {
+    if (IS_BROWSER) {
+      localStorage.setItem("servicePipeline", serviceLabel);
+    }
+    if (serviceLabel == "carteirinha") {
+      alert(
+        `Estamos quase lá! Finalize o cadastro (menos de 1 minuto), e siga os passos para adquirir sua carteirinha`,
+      );
+    } else if (serviceLabel == "anvisa") {
+      alert(
+        `Estamos quase lá! Finalize o cadastro (menos de 1 minuto), e siga os passos para conseguir sua autorização da Anvisa`,
+      );
+    } else {
+      alert(
+        `Estamos quase lá! Finalize o cadastro (menos de 1 minuto), que nossa equipe entrará em contato para conduzir seu processo de ${header}`,
+      );
+    }
+    window.location.href = "/cadastrar";
+  };
+
   return (
     <div
       class="h-full w-full bg-cover bg-center min-h-[87vh]"
@@ -48,11 +76,16 @@ function Navbar(
             class="text-center text-white [&_ul]:list-disc [&_ul]:text-left"
             dangerouslySetInnerHTML={{ __html: text }}
           />
-          <button class="btn bg-white text-primary uppercase">{ctaText}</button>
+          <button
+            class="btn bg-white text-primary uppercase"
+            onClick={handleClick}
+          >
+            {ctaText}
+          </button>
         </div>
       </div>
     </div>
   );
 }
 
-export default Navbar;
+export default ServiceDescriptionPage;

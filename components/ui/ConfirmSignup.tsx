@@ -12,6 +12,7 @@ function ConfirmSignup() {
   const [timer, setTimer] = useState(30);
   const [association, setAssociation] = useState("");
   const [plan, setPlan] = useState("");
+  const [serviceLabel, setServiceLabel] = useState("");
   const [email, setEmail] = useState("");
 
   if (IS_BROWSER) {
@@ -23,6 +24,9 @@ function ConfirmSignup() {
     );
     setEmail(
       localStorage.getItem("emailConfirm") || "",
+    );
+    setServiceLabel(
+      localStorage.getItem("servicePipeline") || "",
     );
   }
 
@@ -81,7 +85,7 @@ function ConfirmSignup() {
         } else {
           if (plan === "TREATMENT") {
             window.location.href = "/entrar";
-          } else {
+          } else if (serviceLabel === "carteirinha") {
             window.location.href = "/confirmar-cadastro/plano";
           }
         }
