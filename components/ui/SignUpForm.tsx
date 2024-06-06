@@ -1,5 +1,5 @@
 import { invoke } from "../../runtime.ts";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 import StepTimeline from "../../components/ui/StepTimeline.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
@@ -16,6 +16,14 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   const [termsAgree, setTermsAgree] = useState<boolean>(false);
   const [cpfError, setCpfError] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+  const [interest, setInterest] = useState("");
+
+  useEffect(() => {
+    if (IS_BROWSER) {
+      const servicePipeline = localStorage.getItem("servicePipeline");
+      setInterest(servicePipeline || "");
+    }
+  }, []);
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
@@ -32,7 +40,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
       try {
         const dataSignup = await invoke["deco-sites/ecannadeco"].actions
           .cognitoSignUp(
-            { email, password, name, cpf, phone: whatsapp },
+            { email, password, name, cpf, phone: whatsapp, interest },
           );
 
         const dataS = dataSignup as {
