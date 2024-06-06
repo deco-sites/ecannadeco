@@ -7,13 +7,12 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import { invoke } from "../../runtime.ts";
 import { useUI } from "../../sdk/useUI.ts";
 
-
 export interface Props {
   redirectTo?: string;
 }
 
 function PrivatePageControl(_props: Props) {
-  const { updatedData, uploadedFile} = useUI();
+  const { updatedData, uploadedFile } = useUI();
 
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
