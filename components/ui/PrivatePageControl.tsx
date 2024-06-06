@@ -5,12 +5,16 @@
 import { useEffect } from "preact/hooks";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { invoke } from "../../runtime.ts";
+import { useUI } from "../../sdk/useUI.ts";
+
 
 export interface Props {
   redirectTo?: string;
 }
 
 function PrivatePageControl(_props: Props) {
+  const { updatedData, uploadedFile} = useUI();
+
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
       window.location.href = "/";
@@ -38,6 +42,9 @@ function PrivatePageControl(_props: Props) {
           plan: string;
         };
       };
+
+      updatedData.value = r.dataProfile.updatedData;
+      uploadedFile.value = r.dataProfile.uploadedFile;
 
       //control access in case patient is just treatment
       if (IS_BROWSER) {
