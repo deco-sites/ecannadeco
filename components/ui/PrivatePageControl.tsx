@@ -46,6 +46,21 @@ function PrivatePageControl(_props: Props) {
 
       const currentPlan = r.dataProfile.plan;
 
+      if (currentPlan === "DEFAULT") {
+        const currentUrl = window.location.pathname;
+
+        if (
+          [
+            "/minha-carteirinha",
+            "/meus-documentos",
+            "/meus-dados",
+            "/meus-pedidos",
+          ].includes(currentUrl)
+        ) {
+          window.location.href = "/minha-conta";
+        }
+      }
+
       if (currentPlan === "TREATMENT") {
         const currentUrl = window.location.pathname;
 

@@ -9,6 +9,7 @@ import PageWrap from "./PageWrap.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatientsLive.tsx";
 import TreatmentCard from "deco-sites/ecannadeco/components/ui/TreatmentCardLive.tsx";
+import Icon from "./Icon.tsx";
 export type Address = {
   cep: string;
   number: string;
@@ -62,17 +63,36 @@ function PrescriberPatientTreatments() {
             <div class="flex flex-col gap-8">
               <div class="flex flex-col gap-4">
                 <div>
-                  <h3 class="text-sm text-[#8b8b8b] mb-2">
-                    Tratamento Vigente
-                  </h3>
-                  <div>
-                    {currentTreatment && (
-                      <TreatmentCard
-                        treatment={currentTreatment}
-                        isPatient={true}
-                      />
+                  {currentTreatment
+                    ? (
+                      <>
+                        <h3 class="text-sm text-[#8b8b8b] mb-2">
+                          Tratamento Vigente
+                        </h3>
+                        <div>
+                          <TreatmentCard
+                            treatment={currentTreatment}
+                            isPatient={true}
+                          />
+                        </div>
+                      </>
+                    )
+                    : (
+                      <div class="flex flex-col items-center gap-4">
+                        <h3 class="text-sm text-[#8b8b8b] mb-2">
+                          Você ainda não possui tratamento vigente. Agende uma
+                          consulta para iniciar um tratamento com profissional
+                          especialista qualificado.
+                        </h3>
+                        <button
+                          class="btn btn-primary text-white w-full"
+                          disabled
+                        >
+                          <Icon id="Calendar" size={16} />
+                          <span>Agendar Consulta</span>
+                        </button>
+                      </div>
                     )}
-                  </div>
                 </div>
                 {Boolean(treatments.length) && (
                   <div>
