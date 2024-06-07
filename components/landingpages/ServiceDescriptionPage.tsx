@@ -2,6 +2,7 @@ import Icon, { AvailableIcons } from "../ui/Icon.tsx";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 import Image from "apps/website/components/Image.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { invoke } from "../../runtime.ts";
 
 export interface Props {
   bgImage: ImageWidget;
@@ -24,24 +25,38 @@ function ServiceDescriptionPage({
   bgImage,
   serviceLabel,
 }: Props) {
-  const handleClick = () => {
+  const handleClick = async () => {
+    let accessToken = "";
     if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
       localStorage.setItem("servicePipeline", serviceLabel);
     }
-    if (serviceLabel == "carteirinha") {
+
+    if (accessToken) {
+      await invoke["deco-sites/ecannadeco"].actions.generateLead({
+        token: accessToken,
+        interest: serviceLabel,
+      });
       alert(
-        `Estamos quase lá! Finalize o cadastro (menos de 1 minuto), e siga os passos para adquirir sua carteirinha`,
+        `Obrigado pelo interesse em breve nossa equipe irá entrar em contato com você para te explicar os próximos passos.`,
       );
-    } else if (serviceLabel == "anvisa") {
-      alert(
-        `Estamos quase lá! Finalize o cadastro (menos de 1 minuto), e siga os passos para conseguir sua autorização da Anvisa`,
-      );
+      window.location.href = "/dashboard";
     } else {
-      alert(
-        `Estamos quase lá! Finalize o cadastro (menos de 1 minuto), que nossa equipe entrará em contato para conduzir seu processo de ${header}`,
-      );
+      if (serviceLabel == "carteirinha") {
+        alert(
+          `Estamos quase lá! Finalize o cadastro (menos de 1 minuto), e siga os passos para adquirir sua carteirinha`,
+        );
+      } else if (serviceLabel == "anvisa") {
+        alert(
+          `Estamos quase lá! Finalize o cadastro (menos de 1 minuto), e siga os passos para conseguir sua autorização da Anvisa`,
+        );
+      } else {
+        alert(
+          `Estamos quase lá! Finalize o cadastro (menos de 1 minuto), que nossa equipe entrará em contato para conduzir seu processo de ${header}`,
+        );
+      }
+      window.location.href = "/cadastrar";
     }
-    window.location.href = "/cadastrar";
   };
 
   return (
