@@ -39,6 +39,7 @@ export type AvailableIcons =
   | "CircleCheck"
   | "Law"
   | "Linkedin"
+  | "LoyaltyClub"
   | "Minus"
   | "MapPin"
   | "MagnifyingGlass"
