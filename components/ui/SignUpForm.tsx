@@ -15,6 +15,9 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   const [loading, setLoading] = useState<boolean>(false);
   const [termsAgree, setTermsAgree] = useState<boolean>(false);
   const [cpfError, setCpfError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [whatsappError, setWhatsappError] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [interest, setInterest] = useState("");
 
@@ -28,13 +31,17 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
     if (name == "" || cpf == "" || email == "" || password == "") {
-      alert("Preencha todos os campos");
+      alert("Preencha todos os campos para prosseguir!");
       return null;
     }
-    if (cpfError != "") {
-      alert("Digite um cpf válido");
+    if (
+      cpfError != "" || emailError != "" || passwordError != "" ||
+      whatsappError != ""
+    ) {
+      alert("Preencha os campos corretamente para prosseguir!");
       return null;
     }
+
     if (termsAgree) {
       setLoading(true);
       try {
@@ -82,10 +89,28 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
         setLoading(false);
       }
     } else {
+      console.log({ email, password, name, cpf, phone: whatsapp, interest });
       alert(
         "Você deve concordar com os Termos de Uso e Políticas de Privacidade para continuar seu cadastro",
       );
     }
+  };
+
+  const validatePassword = (password: string) => {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  };
+
+  const validateEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const validateWhatsapp = (whatsAppNumber: string) => {
+    // Verifica se o número tem o formato correto com DDD no início e 11 dígitos
+    const regex = /^\d{11}$/;
+    return regex.test(whatsAppNumber);
   };
 
   const validarCPF = (cpf: string) => {
@@ -118,10 +143,62 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
     return true; // CPF válido
   };
 
+  const handleEmailInputChange = (event: Event) => {
+    const inputValue = (event.target as HTMLInputElement).value;
+    setEmail(inputValue);
+    if (validateEmail(inputValue)) {
+      setEmailError("");
+    } else {
+      setEmailError("Email inválido");
+    }
+  };
+
+  const handlePasswordInputChange = (event: Event) => {
+    const inputValue = (event.target as HTMLInputElement).value;
+    setPassword(inputValue);
+    if (validatePassword(inputValue)) {
+      setPasswordError("");
+    } else {
+      setPasswordError(
+        "A senha deve conter pelo menos 8 caracteres, incluindo: letras maiúsculas, minúsculas, números e caracteres especiais.",
+      );
+    }
+  };
+
   const handleCPFInputChange = (event: Event) => {
     const inputValue = (event.target as HTMLInputElement).value;
-    setCpf(inputValue);
+    setCpf(stripCPFNonNumericCharacters(inputValue));
     setCpfError(validarCPF(inputValue) ? "" : "CPF inválido");
+  };
+
+  const handleWhatsAppInputChange = (event: Event) => {
+    const inputValue = (event.target as HTMLInputElement).value;
+    setWhatsapp(stripWhatsappNonNumericCharacters(inputValue));
+    setWhatsappError(
+      validateWhatsapp(inputValue) ? "" : "Número de WhatsApp inválido",
+    );
+  };
+
+  const maskCPF = (cpf: string) => {
+    if (cpf.length < 11) return cpf;
+
+    // Recebe um CPF com 11 dígitos e insere os caracteres de formatação
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  };
+
+  const stripCPFNonNumericCharacters = (str: string) => {
+    return str.replace(/[^\d]/g, "");
+  };
+
+  const maskWhatsAppNumber = (whatsAppNumber: string) => {
+    if (whatsAppNumber.length < 11) return whatsAppNumber;
+
+    // Recebe um número de WhatsApp nacional e insere os caracteres de formatação
+    return whatsAppNumber.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+  };
+
+  const stripWhatsappNonNumericCharacters = (str: string) => {
+    return str.replace(/[^\d]/g, "");
   };
 
   return (
@@ -160,7 +237,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
             class="input rounded-md text-[#8b8b8b] border-none w-full"
             placeholder="Seu CPF"
             name="cpf"
-            value={cpf}
+            value={maskCPF(cpf)}
             onChange={(e) => {
               handleCPFInputChange(e);
             }}
@@ -183,9 +260,14 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
             name="email"
             value={email}
             onChange={(e) => {
-              setEmail(e.currentTarget.value);
+              handleEmailInputChange(e);
             }}
           />
+          {emailError !== "" && (
+            <div class="label">
+              <span class="label-text-alt text-red-500">{emailError}</span>
+            </div>
+          )}
         </label>
         <label class="w-full">
           <div class="label pb-1">
@@ -197,11 +279,16 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
             class="input rounded-md text-[#8b8b8b] border-none w-full"
             placeholder="Seu whatsapp"
             name="whatsapp"
-            value={whatsapp}
+            value={maskWhatsAppNumber(whatsapp)}
             onChange={(e) => {
-              setWhatsapp(e.currentTarget.value);
+              handleWhatsAppInputChange(e);
             }}
           />
+          {whatsappError !== "" && (
+            <div class="label">
+              <span class="label-text-alt text-red-500">{whatsappError}</span>
+            </div>
+          )}
         </label>
         <label class="w-full">
           <div class="label pb-1">
@@ -212,13 +299,18 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
           <input
             class="input rounded-md text-[#8b8b8b] border-none w-full"
             type="password"
-            placeholder="Senha de 8 caracteres"
+            placeholder="Senha (8 caracteres)"
             name="password"
             value={password}
             onChange={(e) => {
-              setPassword(e.currentTarget.value);
+              handlePasswordInputChange(e);
             }}
           />
+          {passwordError !== "" && (
+            <div class="label">
+              <span class="label-text-alt text-red-500">{passwordError}</span>
+            </div>
+          )}
         </label>
 
         <label class="cursor-pointer label flex justify-start gap-2">
