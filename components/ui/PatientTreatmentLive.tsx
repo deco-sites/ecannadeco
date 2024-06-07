@@ -24,14 +24,13 @@ function PrescriberPatientTreatments() {
     null,
   );
 
-  const getTreatments = async (
-    accessToken: string,
-  ) => {
+  const getTreatments = async (accessToken: string) => {
     setIsLoading(true);
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .getTreatments({
-        token: accessToken,
-      });
+    const response = await invoke[
+      "deco-sites/ecannadeco"
+    ].actions.getTreatments({
+      token: accessToken,
+    });
     setIsLoading(false);
     if (response) {
       const treatments = response as Treatment[];
@@ -44,7 +43,7 @@ function PrescriberPatientTreatments() {
 
   useEffect(() => {
     const accessToken = IS_BROWSER
-      ? (localStorage.getItem("AccessToken") || "")
+      ? localStorage.getItem("AccessToken") || ""
       : "";
     getTreatments(accessToken);
   }, []);
@@ -84,13 +83,12 @@ function PrescriberPatientTreatments() {
                           consulta para iniciar um tratamento com profissional
                           especialista qualificado.
                         </h3>
-                        <button
-                          class="btn btn-primary text-white w-full"
-                          disabled
-                        >
-                          <Icon id="Calendar" size={16} />
-                          <span>Agendar Consulta</span>
-                        </button>
+                        <a href="/consulta-medica">
+                          <button class="btn btn-primary text-white w-full">
+                            <Icon id="Calendar" size={16} />
+                            <span>Agendar Consulta</span>
+                          </button>
+                        </a>
                       </div>
                     )}
                 </div>
