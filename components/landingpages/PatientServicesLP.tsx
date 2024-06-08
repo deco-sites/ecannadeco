@@ -8,9 +8,9 @@ export type Service = {
   title: string;
   icon: AvailableIcons;
   link?: string;
-  description: string;
-  ctaText: string;
-  serviceLabel: string;
+  description?: string;
+  ctaText?: string;
+  serviceLabel?: string;
 };
 
 /** @titleBy title */
@@ -18,9 +18,9 @@ export type PartnerAssociation = {
   title: string;
   logo: ImageWidget;
   link?: string;
-  description: string;
-  ctaText: string;
-  serviceLabel: string;
+  description?: string;
+  ctaText?: string;
+  serviceLabel?: string;
 };
 
 export interface Props {
@@ -93,7 +93,7 @@ function Navbar({
                 <button
                   class="btn btn-sm btn-primary text-white mt-2 rounded-full w-full"
                   onClick={() =>
-                    handleClick({ serviceLabel: service.serviceLabel })}
+                    handleClick({ serviceLabel: service.serviceLabel! })}
                 >
                   {service.ctaText}
                 </button>
@@ -119,7 +119,7 @@ function Navbar({
               <button
                 class="btn btn-sm btn-primary text-white mt-2 rounded-full w-full"
                 onClick={() =>
-                  handleClick({ serviceLabel: association.serviceLabel })}
+                  handleClick({ serviceLabel: association.serviceLabel! })}
               >
                 {association.ctaText}
               </button>
