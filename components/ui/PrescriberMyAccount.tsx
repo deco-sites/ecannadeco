@@ -331,11 +331,13 @@ function MyAccount() {
                           </div>
                         </div>
                         <div class="flex flex-col gap-2">
-                          {plan.name === "FREE" && (
+                          {
+                            /* {plan.name === "FREE" && (
                             <span class="text-xs font-semibold mt-2 text-primary">
                               30 dias grátis
                             </span>
-                          )}
+                          )} */
+                          }
                           <ul class="flex flex-col gap-3 py-4">
                             <li class="flex gap-3 items-center">
                               <Icon

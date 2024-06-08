@@ -22,26 +22,20 @@ function CheckoutForm() {
   const [billingAddressPostalCode, setBillingAddressPostalCode] = useState<
     string
   >("");
-  const [billingAddressNumber, setBillingAddressNumber] = useState<
-    string
-  >("");
+  const [billingAddressNumber, setBillingAddressNumber] = useState<string>("");
   const [billingAddressComplement, setBillingAddressComplement] = useState<
     string
   >("");
   const [billingAddressNeighborhood, setBillingAddressNeighborhood] = useState<
     string
   >("");
-  const [billingAddressCity, setBillingAddressCity] = useState<
-    string
-  >("");
-  const [billingAddressState, setBillingAddressState] = useState<
-    string
-  >("");
-  const [billingAddressStreet, setBillingAddressStreet] = useState<
-    string
-  >("");
+  const [billingAddressCity, setBillingAddressCity] = useState<string>("");
+  const [billingAddressState, setBillingAddressState] = useState<string>("");
+  const [billingAddressStreet, setBillingAddressStreet] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
+  const [cpfError, setCpfError] = useState("");
+
   let planSku = "";
   let planName = "";
   let planPrice = "";
@@ -69,9 +63,7 @@ function CheckoutForm() {
       );
       window.location.href = "/confirmar-cadastro/plano";
     } else if (holderEmail == "") {
-      alert(
-        "Não foi encontrado email. Reinicie o cadastro",
-      );
+      alert("Não foi encontrado email. Reinicie o cadastro");
       window.location.href = "/cadastrar";
     } else if (cpf == "" || name == "") {
       alert(
@@ -80,41 +72,38 @@ function CheckoutForm() {
       window.location.href = "/cadastrar";
     } else {
       try {
-        const r = await invoke["deco-sites/ecannadeco"].actions
-          .checkout(
-            {
-              name,
-              cpf_cnpj: cpf,
-              email: holderEmail,
-              sku: planSku,
-              credit_card: {
-                holder: holderName,
-                number: creditCardNumber,
-                exp_month: creditCardExpMonth,
-                exp_year: creditCardExpYear,
-                ccv: creditCardCCV,
-              },
-              holder_info: {
-                full_name: holderName,
-                email: holderEmail,
-                cpf_cnpj: holderCPF,
-                postal_code: billingAddressPostalCode,
-                address_number: billingAddressNumber,
-                address_complement: billingAddressComplement,
-                phone: holderPhone,
-              },
-              address: {
-                cep: billingAddressPostalCode,
-                street: billingAddressStreet,
-                number: billingAddressNumber,
-                complement: billingAddressComplement,
-                neighborhood: billingAddressNeighborhood,
-                city: billingAddressCity,
-                state: billingAddressState,
-                addressType: "BILLING",
-              },
-            },
-          );
+        const r = await invoke["deco-sites/ecannadeco"].actions.checkout({
+          name,
+          cpf_cnpj: cpf,
+          email: holderEmail,
+          sku: planSku,
+          credit_card: {
+            holder: holderName,
+            number: creditCardNumber,
+            exp_month: creditCardExpMonth,
+            exp_year: creditCardExpYear,
+            ccv: creditCardCCV,
+          },
+          holder_info: {
+            full_name: holderName,
+            email: holderEmail,
+            cpf_cnpj: holderCPF,
+            postal_code: billingAddressPostalCode,
+            address_number: billingAddressNumber,
+            address_complement: billingAddressComplement,
+            phone: holderPhone,
+          },
+          address: {
+            cep: billingAddressPostalCode,
+            street: billingAddressStreet,
+            number: billingAddressNumber,
+            complement: billingAddressComplement,
+            neighborhood: billingAddressNeighborhood,
+            city: billingAddressCity,
+            state: billingAddressState,
+            addressType: "BILLING",
+          },
+        });
         console.log({ r });
 
         const rCheckout = r as { errors?: Array<unknown> };
@@ -170,26 +159,102 @@ function CheckoutForm() {
     }
   };
 
+  const maskCreditCardNumber = (creditCardNumber: string) => {
+    if (creditCardNumber.length < 16) return creditCardNumber;
+
+    // Recebe um número de cartão de crédito com 16 dígitos e insere os caracteres de formatação
+    return creditCardNumber.replace(
+      /(\d{4})(\d{4})(\d{4})(\d{4})/,
+      "$1 $2 $3 $4",
+    );
+  };
+
+  const stripCardNumberNonNumericCharacters = (str: string) => {
+    return str.replace(/[^\d]/g, "");
+  };
+
+  const handleCardNumberInputChange = (event: Event) => {
+    const inputValue = (event.target as HTMLInputElement).value;
+    setCreditCardNumber(stripCardNumberNonNumericCharacters(inputValue));
+  };
+
+  const maskCPF = (cpf: string) => {
+    if (cpf.length < 11) return cpf;
+
+    // Recebe um CPF com 11 dígitos e insere os caracteres de formatação
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  };
+
+  const stripCPFNonNumericCharacters = (str: string) => {
+    return str.replace(/[^\d]/g, "");
+  };
+
+  const handleCPFInputChange = (event: Event) => {
+    const inputValue = (event.target as HTMLInputElement).value;
+    setHolderCPF(stripCPFNonNumericCharacters(inputValue));
+    setCpfError(validarCPF(inputValue) ? "" : "CPF inválido");
+  };
+
+  // const handleHolderPhoneChange = (event: Event) => {
+  //   const inputValue = (event.target as HTMLInputElement).value;
+  //   console.log({inputValue, holderPhone})
+  //   setHolderPhone(stripWhatsappNonNumericCharacters(inputValue));
+  //   setHolderPhoneError(
+  //     validateWhatsapp(inputValue) ? "" : "Número de WhatsApp inválido"
+  //   );
+  // };
+
+  const maskWhatsAppNumber = (whatsAppNumber: string) => {
+    if (whatsAppNumber.length < 11) return whatsAppNumber;
+
+    // Recebe um número de WhatsApp nacional e insere os caracteres de formatação
+    return whatsAppNumber.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+  };
+
+  // const stripWhatsappNonNumericCharacters = (str: string) => {
+  //   return str.replace(/[^\d]/g, "");
+  // };
+
+  // const validateWhatsapp = (whatsAppNumber: string) => {
+  //   // Verifica se o número tem o formato correto com DDD no início e 11 dígitos
+  //   const regex = /^\d{11}$/;
+  //   return regex.test(whatsAppNumber);
+  // };
+
+  const validarCPF = (cpf: string) => {
+    cpf = cpf.replace(/[^\d]/g, ""); // Remove caracteres não numéricos
+
+    if (cpf.length !== 11 || /^(.)\1+$/.test(cpf)) return false; // Verifica se o CPF tem 11 dígitos e não é uma sequência repetida
+
+    // Calcula o primeiro dígito verificador
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+      soma += parseInt(cpf.charAt(i)) * (10 - i);
+    }
+    let resto = 11 - (soma % 11);
+    const dv1 = resto >= 10 ? 0 : resto;
+
+    // Verifica se o primeiro dígito verificador é válido
+    if (parseInt(cpf.charAt(9)) !== dv1) return false;
+
+    // Calcula o segundo dígito verificador
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+      soma += parseInt(cpf.charAt(i)) * (11 - i);
+    }
+    resto = 11 - (soma % 11);
+    const dv2 = resto >= 10 ? 0 : resto;
+
+    // Verifica se o segundo dígito verificador é válido
+    if (parseInt(cpf.charAt(10)) !== dv2) return false;
+
+    return true; // CPF válido
+  };
+
   return (
-    <div class="max-w-[480px]">
-      {planName == "CARTEIRINHA" && (
-        <div
-          role="alert"
-          class="alert bg-primary text-white w-full"
-        >
-          <Icon id="CircleCheck" size={32} />
-          <span class="text-sm">
-            Muito bem! Você ganhou <span class="font-bold">30 dias</span>{" "}
-            para usar o ecanna{" "}
-            <span class="font-bold">GRÁTIS</span>! Precisaremos dos seus dados
-            de cobrança, mas não se preocupe, pois nenhuma cobrança será
-            realizada durante este período e você poderá cancelar a qualquer
-            momento.
-          </span>
-        </div>
-      )}
+    <div class="flex w-full justify-center">
       <form
-        class="form-control justify-start gap-2"
+        class="form-control justify-start gap-2 max-w-[480px]"
         onSubmit={(event) => {
           handleSubmit(event);
         }}
@@ -219,10 +284,8 @@ function CheckoutForm() {
               class="input rounded-md text-[#8b8b8b] border-none w-full"
               placeholder="0000 0000 0000 0000"
               name="creditCardNumber"
-              value={creditCardNumber}
-              onChange={(e) => {
-                setCreditCardNumber(e.currentTarget.value);
-              }}
+              value={maskCreditCardNumber(creditCardNumber)}
+              onChange={(e) => handleCardNumberInputChange(e)}
             />
           </label>
           <fieldset class="w-full sm:w-[48%]">
@@ -231,14 +294,20 @@ function CheckoutForm() {
             </legend>
             <div class="flex gap-2">
               <input
-                placeholder="Mês"
+                type="text"
+                placeholder="mm"
+                pattern="\d{2}"
+                maxLength={2}
                 class="input rounded-md text-[#8b8b8b] border-none w-1/2"
                 value={creditCardExpMonth}
                 onChange={(e) =>
                   e.target && setCreditCardExpMonth(e.currentTarget.value)}
               />
               <input
-                placeholder="Ano"
+                type="text"
+                placeholder="aaaa"
+                pattern="\d{4}"
+                maxLength={4}
                 class="input rounded-md text-[#8b8b8b] border-none w-1/2"
                 value={creditCardExpYear}
                 onChange={(e) =>
@@ -253,6 +322,8 @@ function CheckoutForm() {
               </span>
             </div>
             <input
+              pattern="\d{3}"
+              maxLength={3}
               class="input rounded-md text-[#8b8b8b] border-none w-full"
               placeholder="Código Verificador"
               value={creditCardCCV}
@@ -282,9 +353,14 @@ function CheckoutForm() {
             <input
               class="input rounded-md text-[#8b8b8b] border-none w-full"
               placeholder="CPF"
-              value={holderCPF}
-              onChange={(e) => e.target && setHolderCPF(e.currentTarget.value)}
+              value={maskCPF(holderCPF)}
+              onChange={(e) => handleCPFInputChange(e)}
             />
+            {cpfError !== "" && (
+              <div class="label">
+                <span class="label-text-alt text-red-500">{cpfError}</span>
+              </div>
+            )}
           </label>
         </div>
 
@@ -295,9 +371,7 @@ function CheckoutForm() {
         <div class="flex flex-wrap gap-[4%]">
           <label class="w-full sm:w-[48%]">
             <div class="label pb-1">
-              <span class="label-text text-xs text-[#585858]">
-                Email
-              </span>
+              <span class="label-text text-xs text-[#585858]">Email</span>
             </div>
             <input
               class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
@@ -309,18 +383,26 @@ function CheckoutForm() {
           </label>
           <label class="w-full sm:w-[48%]">
             <div class="label pb-1">
-              <span class="label-text text-xs text-[#585858]">
-                Telefone
-              </span>
+              <span class="label-text text-xs text-[#585858]">Telefone</span>
             </div>
             <input
-              class="input rounded-md text-[#8b8b8b] border-none w-full"
+              type="text"
+              class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
               placeholder="Número com Whatsapp"
               name="holderPhone"
-              value={holderPhone}
-              onChange={(e) =>
-                e.target && setHolderPhone(e.currentTarget.value)}
+              value={maskWhatsAppNumber(holderPhone)}
+              // onChange={(e) => handleHolderPhoneChange(e)}
+              disabled
             />
+            {
+              /* {holderPhoneError !== "" && (
+              <div class="label">
+                <span class="label-text-alt text-red-500">
+                  {holderPhoneError}
+                </span>
+              </div>
+            )} */
+            }
           </label>
         </div>
 
@@ -332,16 +414,15 @@ function CheckoutForm() {
           <div class="join w-full">
             <label class="join-item w-[70%]">
               <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  CEP
-                </span>
+                <span class="label-text text-xs text-[#585858]">CEP</span>
               </div>
               <input
                 placeholder="CEP"
                 name="cep"
                 class="input rounded-md text-[#8b8b8b] border-none"
                 value={billingAddressPostalCode}
-                onChange={(e) => e.target &&
+                onChange={(e) =>
+                  e.target &&
                   setBillingAddressPostalCode(e.currentTarget.value)}
               />
               <button
@@ -352,8 +433,7 @@ function CheckoutForm() {
               >
                 Validar CEP{" "}
                 {isLoadingPostalCode && (
-                  <span class="loading loading-spinner text-green-600">
-                  </span>
+                  <span class="loading loading-spinner text-green-600"></span>
                 )}
               </button>
             </label>
@@ -379,9 +459,7 @@ function CheckoutForm() {
             </label>
             <label class="w-full sm:w-[48%]">
               <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Número*
-                </span>
+                <span class="label-text text-xs text-[#585858]">Número*</span>
               </div>
               <input
                 class="input rounded-md text-[#8b8b8b] border-none w-full"
@@ -409,9 +487,7 @@ function CheckoutForm() {
             </label>
             <label class="w-full sm:w-[48%]">
               <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Bairro
-                </span>
+                <span class="label-text text-xs text-[#585858]">Bairro</span>
               </div>
               <input
                 class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
@@ -423,9 +499,7 @@ function CheckoutForm() {
             </label>
             <label class="w-full sm:w-[48%]">
               <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Cidade
-                </span>
+                <span class="label-text text-xs text-[#585858]">Cidade</span>
               </div>
               <input
                 class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
@@ -438,7 +512,7 @@ function CheckoutForm() {
           </div>
         </div>
 
-        {(planName && planPrice && planPeriod) && (
+        {planName && planPrice && planPeriod && (
           <div class="bg-white border flex flex-col items-center mt-4 py-4">
             <span>
               Plano Escolhido: <span class="font-semibold">{planName}</span>
@@ -454,9 +528,8 @@ function CheckoutForm() {
             </span>
             {planName === "CARTEIRINHA" && (
               <span class="text-[10px]">
-                * R$ {(Number(planPrice) / 100).toFixed(
-                  2,
-                )}/{planPeriod == "MONTHLY" && "mês"} depois do primeiro mês
+                * R$ {(Number(planPrice) / 100).toFixed(2)}/
+                {planPeriod == "MONTHLY" && "mês"} depois do primeiro mês
               </span>
             )}
           </div>

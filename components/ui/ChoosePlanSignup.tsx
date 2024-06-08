@@ -48,7 +48,7 @@ function ConfirmSignup() {
           onSubmit={(e) => handleSubmit(e)}
         >
           <span class="text-2xl text-[#8b8b8b] font-semibold text-center my-4">
-            Para começar, é GRÁTIS
+            Escolha de Plano
           </span>
           <span class="label-text text-xs text-[#585858]">
             Selecione seu plano
@@ -89,11 +89,13 @@ function ConfirmSignup() {
                     </div>
                   </div>
                   <div class="flex flex-col gap-2">
-                    {plan.name === "CARTEIRINHA" && (
+                    {
+                      /* {plan.name === "CARTEIRINHA" && (
                       <span class="text-xs font-semibold mt-2 text-primary">
                         30 dias grátis
                       </span>
-                    )}
+                    )} */
+                    }
                     <ul class="flex flex-col gap-3">
                       <li class="flex gap-3 items-center">
                         <Icon
@@ -131,7 +133,10 @@ function ConfirmSignup() {
                           id="CircleCheck"
                           size={17}
                         />
-                        <span class="text-[10px]">Carteirinha física</span>
+                        <span class="text-[10px]">
+                          Direito a via física{" "}
+                          <span class="font-bold">GRÁTIS</span>
+                        </span>
                       </li>
                       <li
                         // class={`flex gap-3 items-center ${
