@@ -8,9 +8,9 @@ export type Service = {
   title: string;
   icon: AvailableIcons;
   link?: string;
-  description: string;
-  ctaText: string;
-  serviceLabel: string;
+  description?: string;
+  ctaText?: string;
+  serviceLabel?: string;
 };
 
 /** @titleBy title */
@@ -18,9 +18,9 @@ export type PartnerAssociation = {
   title: string;
   logo: ImageWidget;
   link?: string;
-  description: string;
-  ctaText: string;
-  serviceLabel: string;
+  description?: string;
+  ctaText?: string;
+  serviceLabel?: string;
 };
 
 export interface Props {
