@@ -123,7 +123,6 @@ const CheckoutUpsellModal = (props: Props) => {
           credit_card_token: creditCards[cardSelected].token,
         };
       } else if (product) {
-        console.log({ product });
         paramsCheckoutV2 = {
           token: accessToken,
           items: [{
@@ -387,7 +386,7 @@ const CheckoutUpsellModal = (props: Props) => {
               </div>
               <input
                 class="input rounded-md text-[#8b8b8b] border-none w-full"
-                placeholder="Número"
+                placeholder="Rua"
                 value={addressStreet}
                 onChange={(e) =>
                   e.target && setAddressStreet(e.currentTarget.value)}

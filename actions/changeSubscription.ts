@@ -26,25 +26,24 @@ const changeSubscription = async (
 ): Promise<unknown | null> => {
   const params = { ...props };
   delete params.token;
-  try {
-    const response = await fetch(
-      "https://api.ecanna.com.br/checkout/upgrade",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: props.token!,
-        },
-        body: JSON.stringify({ ...params }),
+  const response = await fetch(
+    "https://api.ecanna.com.br/checkout/upgrade",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: props.token!,
       },
-    );
+      body: JSON.stringify({ ...params }),
+    },
+  );
 
-    const res = await response.json();
-    return res;
-  } catch (e) {
-    // console.log({ e });
-    return e;
+  if (response.status > 401) {
+    throw new Error("Unauthorized");
   }
+
+  const res = await response.json();
+  return res;
 };
 
 export default changeSubscription;

@@ -30,24 +30,21 @@ const checkoutv2 = async (
   const params = { ...props };
   delete params.token;
 
-  console.log({ params });
+  const response = await fetch("https://api.ecanna.com.br/checkout/v2", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: props.token || "",
+    },
+    body: JSON.stringify(params),
+  });
 
-  try {
-    const response = await fetch("https://api.ecanna.com.br/checkout/v2", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: props.token || "",
-      },
-      body: JSON.stringify(params),
-    });
-
-    const res = await response.json();
-    return res;
-  } catch (e) {
-    // console.log({ e });
-    return e;
+  if (response.status > 401) {
+    throw new Error("Unauthorized");
   }
+
+  const res = await response.json();
+  return res;
 };
 
 export default checkoutv2;

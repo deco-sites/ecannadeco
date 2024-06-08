@@ -5,7 +5,7 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import { invoke } from "../../runtime.ts";
 
 export interface Props {
-  bgImage: ImageWidget;
+  bgImage?: ImageWidget;
   icon?: AvailableIcons;
   image?: ImageWidget;
   header: string;
@@ -22,7 +22,6 @@ function ServiceDescriptionPage({
   header,
   text,
   ctaText,
-  bgImage,
   serviceLabel,
 }: Props) {
   const handleClick = async () => {
@@ -62,7 +61,7 @@ function ServiceDescriptionPage({
   return (
     <div
       class="h-full w-full bg-cover bg-center min-h-[87vh]"
-      style={`background-image: url(${bgImage});`}
+      style={`background: linear-gradient(to bottom, #0098ff, #022a38);`}
     >
       <div class="container text-white flex flex-col gap-10 items-center py-12">
         <div class="flex flex-col gap-10 items-center max-w-[400px]">

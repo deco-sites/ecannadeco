@@ -24,7 +24,7 @@ export type PartnerAssociation = {
 };
 
 export interface Props {
-  bgImage: ImageWidget;
+  bgImage?: ImageWidget;
   preHeader: string;
   header: string;
   services: Service[];
@@ -37,7 +37,6 @@ function Navbar({
   header,
   services,
   partnerAssociations,
-  bgImage,
 }: Props) {
   const handleClick = ({ serviceLabel }: { serviceLabel: string }) => {
     if (IS_BROWSER) {
@@ -67,7 +66,7 @@ function Navbar({
   return (
     <div
       class="h-full w-full bg-cover bg-center min-h-[87vh]"
-      style={`background-image: url(${bgImage});`}
+      style={`background-image: linear-gradient(to bottom, #0098ff, #022a38);`}
     >
       <div class="container text-white flex flex-col gap-10 items-center py-12">
         <div class="flex flex-col gap-1 items-center max-w-[400px]">
