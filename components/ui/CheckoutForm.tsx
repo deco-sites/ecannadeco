@@ -520,18 +520,10 @@ function CheckoutForm() {
             <span>
               Valor:{" "}
               <span class="font-semibold">
-                R$ {planName == "CARTEIRINHA"
-                  ? `${(0).toFixed(2)}*`
-                  : (Number(planPrice) / 100).toFixed(2)}{" "}
-                /{planPeriod == "MONTHLY" && "mês"}
+                R$ {(Number(planPrice) / 100).toFixed(2)} /
+                {planPeriod == "MONTHLY" && "mês"}
               </span>
             </span>
-            {planName === "CARTEIRINHA" && (
-              <span class="text-[10px]">
-                * R$ {(Number(planPrice) / 100).toFixed(2)}/
-                {planPeriod == "MONTHLY" && "mês"} depois do primeiro mês
-              </span>
-            )}
           </div>
         )}
 
