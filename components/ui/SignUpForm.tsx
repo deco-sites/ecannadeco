@@ -35,7 +35,9 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
       return null;
     }
     if (
-      cpfError != "" || emailError != "" || passwordError != "" ||
+      cpfError != "" ||
+      emailError != "" ||
+      passwordError != "" ||
       whatsappError != ""
     ) {
       alert("Preencha os campos corretamente para prosseguir!");
@@ -45,14 +47,20 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
     if (termsAgree) {
       setLoading(true);
       try {
-        const dataSignup = await invoke["deco-sites/ecannadeco"].actions
-          .cognitoSignUp(
-            { email, password, name, cpf, phone: whatsapp, interest },
-          );
+        const dataSignup = await invoke[
+          "deco-sites/ecannadeco"
+        ].actions.cognitoSignUp({
+          email,
+          password,
+          name,
+          cpf,
+          phone: whatsapp,
+          interest,
+        });
 
         const dataS = dataSignup as {
           errors?: Array<unknown>;
-          data?: { association?: { "_id": string }; plan: string };
+          data?: { association?: { _id: string }; plan: string };
         };
 
         const association = dataS.data?.association;
@@ -97,8 +105,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   };
 
   const validatePassword = (password: string) => {
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
     return regex.test(password);
   };
 
@@ -213,9 +220,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
         </span>
         <label class="w-full">
           <div class="label pb-1">
-            <span class="label-text text-xs text-[#585858]">
-              Nome
-            </span>
+            <span class="label-text text-xs text-[#585858]">Nome</span>
           </div>
           <input
             class="input rounded-md text-[#8b8b8b] border-none w-full"
@@ -229,9 +234,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
         </label>
         <label class="w-full">
           <div class="label pb-1">
-            <span class="label-text text-xs text-[#585858]">
-              CPF
-            </span>
+            <span class="label-text text-xs text-[#585858]">CPF</span>
           </div>
           <input
             class="input rounded-md text-[#8b8b8b] border-none w-full"
@@ -250,9 +253,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
         </label>
         <label class="w-full">
           <div class="label pb-1">
-            <span class="label-text text-xs text-[#585858]">
-              Email
-            </span>
+            <span class="label-text text-xs text-[#585858]">Email</span>
           </div>
           <input
             class="input rounded-md text-[#8b8b8b] border-none w-full"
@@ -271,9 +272,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
         </label>
         <label class="w-full">
           <div class="label pb-1">
-            <span class="label-text text-xs text-[#585858]">
-              Whatsapp
-            </span>
+            <span class="label-text text-xs text-[#585858]">Whatsapp</span>
           </div>
           <input
             class="input rounded-md text-[#8b8b8b] border-none w-full"
@@ -292,9 +291,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
         </label>
         <label class="w-full">
           <div class="label pb-1">
-            <span class="label-text text-xs text-[#585858]">
-              Senha
-            </span>
+            <span class="label-text text-xs text-[#585858]">Senha</span>
           </div>
           <input
             class="input rounded-md text-[#8b8b8b] border-none w-full"

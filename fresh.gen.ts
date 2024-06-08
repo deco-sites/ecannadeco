@@ -43,6 +43,7 @@ import * as $Newsletter from "./islands/Newsletter.tsx";
 import * as $OutOfStock from "./islands/OutOfStock.tsx";
 import * as $PatientNewTreatmentEntry from "./islands/PatientNewTreatmentEntry.tsx";
 import * as $PatientNewTreatmentEntryLive from "./islands/PatientNewTreatmentEntryLive.tsx";
+import * as $PatientServicesLP from "./islands/PatientServicesLP.tsx";
 import * as $PatientTreatment from "./islands/PatientTreatment.tsx";
 import * as $PatientTreatmentLive from "./islands/PatientTreatmentLive.tsx";
 import * as $PatientTreatmentReport from "./islands/PatientTreatmentReport.tsx";
@@ -128,6 +129,7 @@ const manifest = {
     "./islands/OutOfStock.tsx": $OutOfStock,
     "./islands/PatientNewTreatmentEntry.tsx": $PatientNewTreatmentEntry,
     "./islands/PatientNewTreatmentEntryLive.tsx": $PatientNewTreatmentEntryLive,
+    "./islands/PatientServicesLP.tsx": $PatientServicesLP,
     "./islands/PatientTreatment.tsx": $PatientTreatment,
     "./islands/PatientTreatmentLive.tsx": $PatientTreatmentLive,
     "./islands/PatientTreatmentReport.tsx": $PatientTreatmentReport,

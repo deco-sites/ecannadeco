@@ -1,1 +1,1 @@
-export { default } from "../../components/landingpages/PatientServicesLP.tsx";
+export { default } from "../../islands/PatientServicesLP.tsx";
