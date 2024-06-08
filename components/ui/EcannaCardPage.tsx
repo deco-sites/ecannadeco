@@ -22,6 +22,7 @@ export interface UserData {
     qrcode_url: string;
     credit_cards: SavedCreditCard[];
     ecannacard_url: string;
+    _id: string;
   };
 }
 
@@ -129,7 +130,21 @@ function EcannaCardPage({ cardSkeleton }: Props) {
   }
 
   return (
-    <div class="flex flex-col justify-center items-center my-10 gap-[100px] sm:gap-[30px]">
+    <div class="flex flex-col justify-center items-center my-10 gap-[30px]">
+      <div class="flex flex-wrap gap-4 items-center justify-center my-4 mb-10">
+        <a href="/meus-dados" class="btn btn-secondary btn-xs text-white">
+          <Icon id="UserData" size={19} /> Dados de Paciente
+        </a>
+        <a href="/meus-documentos" class="btn btn-secondary btn-xs text-white">
+          <Icon id="Folder" size={19} /> Meus Documentos
+        </a>
+        <a
+          href={`/ficha/${userData?.dataProfile?._id}`}
+          class="btn btn-secondary btn-xs text-white"
+        >
+          <Icon id="Form" size={19} /> Ficha Pública
+        </a>
+      </div>
       <div class="rotate-90 sm:rotate-0 flex justify-center p-3 sm:p-12 bg-[#252525] rounded-xl max-w-[424px] sm:max-w-[90%] text-[#1878b8]">
         {isLoading
           ? <span class="loading loading-spinner loading-xs" />
@@ -145,6 +160,18 @@ function EcannaCardPage({ cardSkeleton }: Props) {
               />
             </div>
           )}
+      </div>
+      <div class="max-w-[472px] w-[90%] mt-10 sm:mt-0">
+        <div class="bg-[#ececec] p-4 rounded-md">
+          <span class="text-xs">
+            O envio de nova via física de carteirinha leva até 7 dias úteis
+            (tempo de produção). Você pode acompanhar seu pedido de nova via
+            física pela página de{" "}
+            <a class="underline" href="/meus-pedidos">
+              meus pedidos
+            </a>
+          </span>
+        </div>
       </div>
       <div class="flex flex-col sm:flex-row gap-2 sm:gap-[4%] max-w-[90%]">
         <CheckoutUpsellModal

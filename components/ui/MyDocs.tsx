@@ -17,9 +17,13 @@ export interface DocListType {
   status: string;
 }
 
-const DocList = (
-  { docs, onFinishDelete }: { docs: DocListType[]; onFinishDelete: () => void },
-) => {
+const DocList = ({
+  docs,
+  onFinishDelete,
+}: {
+  docs: DocListType[];
+  onFinishDelete: () => void;
+}) => {
   const { displayNewDocModal, displayConfirmDeleteDoc } = useUI();
   const [isDeleting, setIsDeleting] = useState(false);
   const [_deleteId, setDeleteId] = useState("");
@@ -59,7 +63,7 @@ const DocList = (
     return (
       <Modal
         open={displayConfirmDeleteDoc.value}
-        onClose={() => displayConfirmDeleteDoc.value = false}
+        onClose={() => (displayConfirmDeleteDoc.value = false)}
       >
         <div class="flex flex-col p-16 gap-3 bg-[#EDEDED] rounded-xl">
           <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
@@ -147,24 +151,28 @@ const DocList = (
   }
 };
 
-const PlanLimitAlert = (
-  { message, ctaText, ctaLink }: {
-    message: string;
-    ctaText: string;
-    ctaLink: string;
-  },
-) => {
+const PlanLimitAlert = ({
+  message,
+  ctaText,
+  ctaLink,
+}: {
+  message: string;
+  ctaText: string;
+  ctaLink: string;
+}) => {
   const { displayPlanLimit } = useUI();
 
   return (
     <Modal
       loading="lazy"
       open={displayPlanLimit.value}
-      onClose={() => displayPlanLimit.value = false}
+      onClose={() => (displayPlanLimit.value = false)}
     >
       <div class="p-10 bg-white flex flex-col justify-center items-center gap-10">
         <span class="text-center">{message}</span>
-        <a class="btn btn-primary" href={ctaLink}>{ctaText}</a>
+        <a class="btn btn-primary" href={ctaLink}>
+          {ctaText}
+        </a>
       </div>
     </Modal>
   );
@@ -202,17 +210,14 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
     formData.append("category", docCategory);
 
     try {
-      const response = await fetch(
-        "https://api.ecanna.com.br/documents",
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            Authorization: accessToken,
-            ContentType: "multipart/form-data",
-          },
+      const response = await fetch("https://api.ecanna.com.br/documents", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: accessToken,
+          ContentType: "multipart/form-data",
         },
-      );
+      });
       const r = await response.json();
 
       // console.log({ r });
@@ -241,7 +246,7 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
     <Modal
       loading="lazy"
       open={displayNewDocModal.value}
-      onClose={() => displayNewDocModal.value = false}
+      onClose={() => (displayNewDocModal.value = false)}
     >
       <div class="flex flex-col p-16 gap-3 bg-[#EDEDED] rounded-xl">
         <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
@@ -262,7 +267,9 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
           }}
           class="select select-primary w-full max-w-xs text-[#8b8b8b] border-none disabled:bg-[#e3e3e3] bg-white"
         >
-          <option disabled selected>Tipo de Documento</option>
+          <option disabled selected>
+            Tipo de Documento
+          </option>
           <option value="habeas_corpus">Jurídico / Habeas Corpus</option>
           <option value="medical_prescription">Prescrição Médica</option>
           <option value="anvisa">Autorização Anvisa</option>
@@ -312,12 +319,14 @@ function MyDocs() {
     try {
       setIsLoading(true);
 
-      invoke["deco-sites/ecannadeco"].actions.getDocs({
-        token: accessToken,
-      }).then((r) => {
-        setDocs((r as { docs: DocListType[] }).docs);
-        setIsLoading(false);
-      });
+      invoke["deco-sites/ecannadeco"].actions
+        .getDocs({
+          token: accessToken,
+        })
+        .then((r) => {
+          setDocs((r as { docs: DocListType[] }).docs);
+          setIsLoading(false);
+        });
     } catch (_e) {
       alert(
         "Não foi possível carregar os documentos. Tente novamente mais tarde ou contecte o suporte.",
@@ -337,19 +346,40 @@ function MyDocs() {
 
   return (
     <PageWrap>
-      <div class="flex justify-between gap-4 mb-10">
-        <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
-          Meus Documentos
-        </h3>
-        <button
-          class="rounded-md bg-secondary h-8 w-[85px] flex items-center p-3 justify-between text-white"
-          onClick={() => {
-            displayNewDocModal.value = true;
-          }}
+      <div class="flex flex-col justify-between">
+        <div class="flex flex-wrap gap-4 items-center justify-center my-4 mb-10">
+          <a href="/meus-dados" class="btn btn-secondary btn-xs text-white">
+            <Icon id="UserData" size={19} /> Dados de Paciente
+          </a>
+          <a
+            href="/meus-documentos"
+            class="btn btn-secondary btn-xs text-white"
+          >
+            <Icon id="CardID" size={19} /> Minha Carteirinha
+          </a>
+        </div>
+        {
+          /* <a
+          href={`/ficha/${userData?.dataProfile?._id}`}
+          class="btn btn-secondary btn-xs text-white"
         >
-          <span class="text-sm font-medium">Subir</span>
-          <Icon id="Upload" size={18} />
-        </button>
+          <Icon id="Form" size={19} /> Ficha Pública
+        </a> */
+        }
+        <div class="flex justify-between gap-4">
+          <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
+            Meus Documentos
+          </h3>
+          <button
+            class="rounded-md bg-secondary h-8 w-[85px] flex items-center p-3 justify-between text-white"
+            onClick={() => {
+              displayNewDocModal.value = true;
+            }}
+          >
+            <span class="text-sm font-medium">Subir</span>
+            <Icon id="Upload" size={18} />
+          </button>
+        </div>
         <NewDocModal onFinishCreate={() => window.location.reload()} />
         <PlanLimitAlert
           message="Seu plano permite upload de 2 documentos. Evolua seu plano para PREMIUM e suba mais documentos!"
