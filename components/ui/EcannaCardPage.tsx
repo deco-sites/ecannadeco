@@ -11,6 +11,7 @@ import {
   SavedCreditCard,
 } from "../../components/ui/CheckoutUpsellModal.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { useUI } from "../../sdk/useUI.ts";
 
 export interface UserData {
   data: { UserAttributes: { Name: string; Value: string }[] };
@@ -33,12 +34,16 @@ function EcannaCardPage({ cardSkeleton }: Props) {
   const [loadingProduct, setLoadingProduct] = useState(true);
   const [userData, setUserData] = useState<UserData>();
   const [_created_at, setCreatedAt] = useState<Date>();
-  const [_association, setAssociation] = useState<
-    { name: string; logo_url: string; cnpj: string }
-  >();
+  const [_association, setAssociation] = useState<{
+    name: string;
+    logo_url: string;
+    cnpj: string;
+  }>();
   const [_qrcode, setQrcode] = useState<string>();
   const [creditCards, setCreditCards] = useState<SavedCreditCard[]>([]);
   const [cardProduct, setCardProduct] = useState<Product>({} as Product);
+
+  const { displayCheckoutUpsellModal } = useUI();
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -73,10 +78,11 @@ function EcannaCardPage({ cardSkeleton }: Props) {
 
           setLoadingProduct(true);
 
-          const cardsResponse = await invoke["deco-sites/ecannadeco"].actions
-            .getCardProduct({
-              token: accessToken,
-            });
+          const cardsResponse = await invoke[
+            "deco-sites/ecannadeco"
+          ].actions.getCardProduct({
+            token: accessToken,
+          });
 
           setLoadingProduct(false);
 
@@ -168,17 +174,22 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         <button
           type="button"
           download="carteirinha.png"
-          disabled
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
+          onClick={() => {
+            displayCheckoutUpsellModal.value = true;
+            console.log({
+              displayCheckoutUpsellModal: displayCheckoutUpsellModal.value,
+            });
+          }}
         >
           <div class="flex items-center gap-2">
-            <span>Nova Via Física (Breve)</span> {loadingProduct
+            <span class="w-32">Pedir Via Física</span> {loadingProduct
               ? <Loading style="loading-spinner" size="loading-xs" />
               : (
                 <div class="p-2 bg-white text-primary text-xs rounded-md">
                   {cardProduct.price == 0
                     ? "Grátis"
-                    : ("R$" + (cardProduct.price / 100).toFixed(2))}
+                    : "R$" + (cardProduct.price / 100).toFixed(2)}
                 </div>
               )}
           </div>

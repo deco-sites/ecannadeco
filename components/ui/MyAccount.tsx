@@ -339,11 +339,6 @@ function MyAccount() {
                         </div>
                       </div>
                       <div class="flex flex-col gap-2">
-                        {plan.plan === "CARD" && (
-                          <span class="text-xs font-semibold mt-2 text-primary">
-                            30 dias grátis
-                          </span>
-                        )}
                         <ul class="flex flex-col gap-3 py-3">
                           <li class="flex gap-3 items-center">
                             <Icon
@@ -381,7 +376,10 @@ function MyAccount() {
                               id="CircleCheck"
                               size={17}
                             />
-                            <span class="text-[10px]">Carteirinha física</span>
+                            <span class="text-[10px]">
+                              Direito a via física{" "}
+                              <span class="font-bold">GRÁTIS</span>
+                            </span>
                           </li>
                           <li
                             // class={`flex gap-3 items-center ${
