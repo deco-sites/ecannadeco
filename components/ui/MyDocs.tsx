@@ -352,7 +352,7 @@ function MyDocs() {
             <Icon id="UserData" size={19} /> Dados de Paciente
           </a>
           <a
-            href="/meus-documentos"
+            href="/minha-carteirinha"
             class="btn btn-secondary btn-xs text-white"
           >
             <Icon id="CardID" size={19} /> Minha Carteirinha
