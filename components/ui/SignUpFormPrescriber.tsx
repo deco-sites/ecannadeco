@@ -7,9 +7,9 @@ export interface Props {
   formTitle?: string;
 }
 
-function SignUpFormPrescriber(
-  { formTitle = "Prescritor - Criar Conta" }: Props,
-) {
+function SignUpFormPrescriber({
+  formTitle = "Prescritor - Criar Conta",
+}: Props) {
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -20,6 +20,8 @@ function SignUpFormPrescriber(
   const [loading, setLoading] = useState<boolean>(false);
   const [termsAgree, setTermsAgree] = useState<boolean>(false);
   const [cpfError, setCpfError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   const validarCPF = (cpf: string) => {
     cpf = cpf.replace(/[^\d]/g, ""); // Remove caracteres não numéricos
@@ -51,10 +53,36 @@ function SignUpFormPrescriber(
     return true; // CPF válido
   };
 
+  const maskCPF = (cpf: string) => {
+    if (cpf.length < 11) return cpf;
+
+    // Recebe um CPF com 11 dígitos e insere os caracteres de formatação
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  };
+
   const handleCPFInputChange = (event: Event) => {
     const inputValue = (event.target as HTMLInputElement).value;
-    setCpf(inputValue);
+    setCpf(stripCPFNonNumericCharacters(inputValue));
     setCpfError(validarCPF(inputValue) ? "" : "CPF inválido");
+  };
+
+  const validateEmail = (email: string) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const handleEmailInputChange = (event: Event) => {
+    const inputValue = (event.target as HTMLInputElement).value;
+    setEmail(inputValue);
+    if (validateEmail(inputValue)) {
+      setEmailError("");
+    } else {
+      setEmailError("Email inválido");
+    }
+  };
+
+  const stripCPFNonNumericCharacters = (str: string) => {
+    return str.replace(/[^\d]/g, "");
   };
 
   const handleSubmit = async (e: Event) => {
@@ -66,18 +94,17 @@ function SignUpFormPrescriber(
     if (termsAgree) {
       setLoading(true);
       try {
-        const dataSignup = await invoke["deco-sites/ecannadeco"].actions
-          .cognitoPrescriberSignUp(
-            {
-              email,
-              password,
-              registryType,
-              registryNumber,
-              registryState,
-              name,
-              cpf,
-            },
-          );
+        const dataSignup = await invoke[
+          "deco-sites/ecannadeco"
+        ].actions.cognitoPrescriberSignUp({
+          email,
+          password,
+          registryType,
+          registryNumber,
+          registryState,
+          name,
+          cpf,
+        });
 
         const dataS = dataSignup as {
           errors?: Array<unknown>;
@@ -112,6 +139,23 @@ function SignUpFormPrescriber(
     }
   };
 
+  const validatePassword = (password: string) => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+    return regex.test(password);
+  };
+
+  const handlePasswordInputChange = (event: Event) => {
+    const inputValue = (event.target as HTMLInputElement).value;
+    setPassword(inputValue);
+    if (validatePassword(inputValue)) {
+      setPasswordError("");
+    } else {
+      setPasswordError(
+        "A senha deve conter pelo menos 8 caracteres, incluindo: letras maiúsculas, minúsculas, números e caracteres especiais.",
+      );
+    }
+  };
+
   return (
     <div class="max-w-[480px] flex flex-col">
       <StepTimeline step={1} />
@@ -140,9 +184,7 @@ function SignUpFormPrescriber(
         </label>
         <label class="w-full">
           <div class="label pb-1">
-            <span class="label-text text-xs text-[#585858]">
-              Email
-            </span>
+            <span class="label-text text-xs text-[#585858]">Email</span>
           </div>
           <input
             class="input rounded-md text-[#8b8b8b] border-none w-full"
@@ -150,21 +192,26 @@ function SignUpFormPrescriber(
             name="email"
             value={email}
             onChange={(e) => {
-              setEmail(e.currentTarget.value);
+              handleEmailInputChange(e);
             }}
           />
+          {emailError !== "" && (
+            <div class="label">
+              <span class="label-text-alt text-red-500">{emailError}</span>
+            </div>
+          )}
         </label>
         <label class="w-full">
           <div class="label pb-1">
             <span class="label-text text-xs text-[#585858]">
-              CPF
+              CPF (somente números)
             </span>
           </div>
           <input
             class="input rounded-md text-[#8b8b8b] border-none w-full"
             placeholder="Seu CPF"
             name="cpf"
-            value={cpf}
+            value={maskCPF(cpf)}
             onChange={(e) => {
               handleCPFInputChange(e);
             }}
@@ -269,9 +316,14 @@ function SignUpFormPrescriber(
             name="password"
             value={password}
             onChange={(e) => {
-              setPassword(e.currentTarget.value);
+              handlePasswordInputChange(e);
             }}
           />
+          {passwordError !== "" && (
+            <div class="label">
+              <span class="label-text-alt text-red-500">{passwordError}</span>
+            </div>
+          )}
         </label>
 
         <label class="cursor-pointer label flex justify-start gap-2">
