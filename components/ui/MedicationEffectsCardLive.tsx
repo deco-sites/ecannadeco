@@ -49,7 +49,7 @@ const MedicationEffectsCard = ({ icon, name }: Props) => {
       <div class="h-16 w-16 bg-[#eeeeee] flex items-center justify-center rounded-md">
         <Icon id={icon} size={48} />
       </div>
-      <span>{name}</span>
+      <span class="text-xs">{name}</span>
     </div>
   );
 };
