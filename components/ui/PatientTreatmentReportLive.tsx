@@ -45,8 +45,9 @@ export type Report = {
 
 function PrescriberPatientTreatmentReport() {
   const [isLoading, setIsLoading] = useState(false);
-  const [_treatmentResponse, _setTreatmentResponse] =
-    useState<TreatmentResponse | null>(null);
+  const [_treatmentResponse, _setTreatmentResponse] = useState<
+    TreatmentResponse | null
+  >(null);
   const [treatment, setTreatment] = useState<Treatment | null>(null);
   const [report, setReport] = useState<Report | null>(null);
 
@@ -57,7 +58,7 @@ function PrescriberPatientTreatmentReport() {
       {
         token: accessToken,
         id: reportId,
-      }
+      },
     );
     setIsLoading(false);
     if (response) {
@@ -102,16 +103,17 @@ function PrescriberPatientTreatmentReport() {
         </div>
       </div>
       <PageWrap>
-        {isLoading ? (
-          <span class="loading loading-spinner text-green-600"></span>
-        ) : (
-          <div class="flex flex-col gap-8 w-full">
-            <div class="flex justify-center">
-              <h3 class="text-2xl text-[#8b8b8b] text-center">
-                Relatório de Tratamento
-              </h3>
-            </div>
-            {/* <div>
+        {isLoading
+          ? <span class="loading loading-spinner text-green-600"></span>
+          : (
+            <div class="flex flex-col gap-8 w-full">
+              <div class="flex justify-center">
+                <h3 class="text-2xl text-[#8b8b8b] text-center">
+                  Relatório de Tratamento
+                </h3>
+              </div>
+              {
+                /* <div>
                 <div class="bg-white rounded-md shadow flex items-center justify-center gap-4 p-3">
                   <div class="flex gap-2 items-center">
                     <Icon id="Calendar" size={18} />
@@ -123,15 +125,16 @@ function PrescriberPatientTreatmentReport() {
                     <span>09/05/2024</span>
                   </div>
                 </div>
-              </div> */}
-            <div>
-              {treatment && (
-                <TreatmentCard treatment={treatment!} isPatient={true} />
-              )}
-            </div>
-            {report &&
-              report?.goodFeelingsReports.length === 0 &&
-              report?.badFeelingsReports.length === 0 && (
+              </div> */
+              }
+              <div>
+                {treatment && (
+                  <TreatmentCard treatment={treatment!} isPatient={true} />
+                )}
+              </div>
+              {report &&
+                report?.goodFeelingsReports.length === 0 &&
+                report?.badFeelingsReports.length === 0 && (
                 <a
                   class="flex flex-col gap-6"
                   href={`/novo-registro/${treatment?._id}`}
@@ -139,130 +142,130 @@ function PrescriberPatientTreatmentReport() {
                   Deixe seu primeiro feedback
                 </a>
               )}
-            {report && report?.goodFeelingsReports.length > 0 && (
-              <div class="flex flex-col">
-                <h3 class="text-sm text-[#8b8b8b] mb-2">
-                  Efeitos Desejados Relatados
-                </h3>
-                <div
-                  class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
-                >
-                  <div class="flex gap-6 overflow-x-scroll pb-3">
-                    {report?.goodFeelingsReports.map((report) => (
-                      <MedicationEffectsCard
-                        icon={report.feeling.icon as AvailableIcons}
-                        name={report.feeling.name}
-                      />
-                    ))}
-                  </div>
-                  <div class="collapse collapse-arrow border border-base-300 bg-base-200">
-                    <input type="checkbox" />
-                    <div class="collapse-title text-xl font-medium">
-                      <span class="underline text-sm">
-                        Histórico dos efeitos
-                      </span>
-                    </div>
-                    <div class="collapse-content flex flex-col gap-[48px]">
+              {report && report?.goodFeelingsReports.length > 0 && (
+                <div class="flex flex-col">
+                  <h3 class="text-sm text-[#8b8b8b] mb-2">
+                    Efeitos Desejados Relatados
+                  </h3>
+                  <div
+                    class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+                  >
+                    <div class="flex gap-6 overflow-x-scroll pb-3">
                       {report?.goodFeelingsReports.map((report) => (
-                        <div>
-                          <MedicationEffectsCard
-                            icon={report.feeling.icon as AvailableIcons}
-                            name={""}
-                          />
-                          <Chart
-                            type="line"
-                            options={{
-                              scales: { y: { min: 1, max: 10 } },
-                            }}
-                            data={{
-                              labels: report.entries.map((entry) =>
-                                format(new Date(entry.date), "dd/MM/yy")
-                              ),
-                              datasets: [
-                                {
-                                  label: `${report.feeling.name}`,
-                                  data: report.entries.map(
-                                    (entry) => entry.grade
-                                  ),
-                                  spanGaps: 1,
-                                  borderColor: "#32b541",
-                                  borderWidth: 1,
-                                },
-                              ],
-                            }}
-                          />
-                        </div>
+                        <MedicationEffectsCard
+                          icon={report.feeling.icon as AvailableIcons}
+                          name={report.feeling.name}
+                        />
                       ))}
+                    </div>
+                    <div class="collapse collapse-arrow border border-base-300 bg-base-200">
+                      <input type="checkbox" />
+                      <div class="collapse-title text-xl font-medium">
+                        <span class="underline text-sm">
+                          Histórico dos efeitos
+                        </span>
+                      </div>
+                      <div class="collapse-content flex flex-col gap-[48px]">
+                        {report?.goodFeelingsReports.map((report) => (
+                          <div>
+                            <MedicationEffectsCard
+                              icon={report.feeling.icon as AvailableIcons}
+                              name={""}
+                            />
+                            <Chart
+                              type="line"
+                              options={{
+                                scales: { y: { min: 1, max: 10 } },
+                              }}
+                              data={{
+                                labels: report.entries.map((entry) =>
+                                  format(new Date(entry.date), "dd/MM/yy")
+                                ),
+                                datasets: [
+                                  {
+                                    label: `${report.feeling.name}`,
+                                    data: report.entries.map(
+                                      (entry) => entry.grade,
+                                    ),
+                                    spanGaps: 1,
+                                    borderColor: "#32b541",
+                                    borderWidth: 1,
+                                  },
+                                ],
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            {report && report?.badFeelingsReports.length > 0 && (
-              <div class="flex flex-col">
-                <h3 class="text-sm text-[#8b8b8b] mb-2">
-                  Efeitos Indesejados Relatados
-                </h3>
-                <div
-                  class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
-                >
-                  <div class="flex gap-6 overflow-x-scroll pb-3">
-                    {report?.badFeelingsReports.map((report) => (
-                      <MedicationEffectsCard
-                        icon={report.feeling.icon as AvailableIcons}
-                        name={report.feeling.name}
-                      />
-                    ))}
-                  </div>
-                  <div class="collapse collapse-arrow border border-base-300 bg-base-200">
-                    <input type="checkbox" />
-                    <div class="collapse-title text-xl font-medium">
-                      <span class="underline text-sm">
-                        Histórico dos efeitos
-                      </span>
-                    </div>
-                    <div class="collapse-content flex flex-col gap-[48px]">
+              )}
+              {report && report?.badFeelingsReports.length > 0 && (
+                <div class="flex flex-col">
+                  <h3 class="text-sm text-[#8b8b8b] mb-2">
+                    Efeitos Indesejados Relatados
+                  </h3>
+                  <div
+                    class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+                  >
+                    <div class="flex gap-6 overflow-x-scroll pb-3">
                       {report?.badFeelingsReports.map((report) => (
-                        <div>
-                          <MedicationEffectsCard
-                            icon={report.feeling.icon as AvailableIcons}
-                            name={""}
-                          />
-                          <Chart
-                            type="line"
-                            options={{
-                              scales: { y: { min: 1, max: 10 } },
-                            }}
-                            data={{
-                              labels: report.entries.map((entry) =>
-                                format(new Date(entry.date), "dd/MM/yy")
-                              ),
-                              datasets: [
-                                {
-                                  label: `${report.feeling.name}`,
-                                  data: report.entries.map(
-                                    (entry) => entry.grade
-                                  ),
-                                  spanGaps: 1,
-                                  borderColor: "#d93939",
-                                  borderWidth: 1,
-                                },
-                              ],
-                            }}
-                          />
-                        </div>
+                        <MedicationEffectsCard
+                          icon={report.feeling.icon as AvailableIcons}
+                          name={report.feeling.name}
+                        />
                       ))}
+                    </div>
+                    <div class="collapse collapse-arrow border border-base-300 bg-base-200">
+                      <input type="checkbox" />
+                      <div class="collapse-title text-xl font-medium">
+                        <span class="underline text-sm">
+                          Histórico dos efeitos
+                        </span>
+                      </div>
+                      <div class="collapse-content flex flex-col gap-[48px]">
+                        {report?.badFeelingsReports.map((report) => (
+                          <div>
+                            <MedicationEffectsCard
+                              icon={report.feeling.icon as AvailableIcons}
+                              name={""}
+                            />
+                            <Chart
+                              type="line"
+                              options={{
+                                scales: { y: { min: 1, max: 10 } },
+                              }}
+                              data={{
+                                labels: report.entries.map((entry) =>
+                                  format(new Date(entry.date), "dd/MM/yy")
+                                ),
+                                datasets: [
+                                  {
+                                    label: `${report.feeling.name}`,
+                                    data: report.entries.map(
+                                      (entry) => entry.grade,
+                                    ),
+                                    spanGaps: 1,
+                                    borderColor: "#d93939",
+                                    borderWidth: 1,
+                                  },
+                                ],
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-            <button class="btn btn-primary text-white w-full" disabled>
-              <Icon id="Calendar" size={16} />
-              <span>Agendar Consulta (Breve)</span>
-            </button>
-          </div>
-        )}
+              )}
+              <button class="btn btn-primary text-white w-full" disabled>
+                <Icon id="Calendar" size={16} />
+                <span>Agendar Consulta (Breve)</span>
+              </button>
+            </div>
+          )}
       </PageWrap>
     </>
   );
