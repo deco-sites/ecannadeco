@@ -54,11 +54,12 @@ function PrescriberPatientTreatmentReport() {
   const getTreatment = async (accessToken: string) => {
     setIsLoading(true);
     const reportId = window.location.pathname.split("/").pop();
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .getTreatment({
+    const response = await invoke["deco-sites/ecannadeco"].actions.getTreatment(
+      {
         token: accessToken,
         id: reportId,
-      });
+      },
+    );
     setIsLoading(false);
     if (response) {
       setTreatment(response?.treatment as Treatment);
@@ -131,8 +132,9 @@ function PrescriberPatientTreatmentReport() {
                   <TreatmentCard treatment={treatment!} isPatient={true} />
                 )}
               </div>
-              {(report && report?.goodFeelingsReports.length === 0 &&
-                report?.badFeelingsReports.length === 0) && (
+              {report &&
+                report?.goodFeelingsReports.length === 0 &&
+                report?.badFeelingsReports.length === 0 && (
                 <a
                   class="flex flex-col gap-6"
                   href={`/novo-registro/${treatment?._id}`}
@@ -140,7 +142,7 @@ function PrescriberPatientTreatmentReport() {
                   Deixe seu primeiro feedback
                 </a>
               )}
-              {(report && report?.goodFeelingsReports.length > 0) && (
+              {report && report?.goodFeelingsReports.length > 0 && (
                 <div class="flex flex-col">
                   <h3 class="text-sm text-[#8b8b8b] mb-2">
                     Efeitos Desejados Relatados
@@ -148,7 +150,7 @@ function PrescriberPatientTreatmentReport() {
                   <div
                     class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
-                    <div class="flex gap-8">
+                    <div class="flex gap-6 overflow-x-scroll pb-3">
                       {report?.goodFeelingsReports.map((report) => (
                         <MedicationEffectsCard
                           icon={report.feeling.icon as AvailableIcons}
@@ -166,6 +168,10 @@ function PrescriberPatientTreatmentReport() {
                       <div class="collapse-content flex flex-col gap-[48px]">
                         {report?.goodFeelingsReports.map((report) => (
                           <div>
+                            <MedicationEffectsCard
+                              icon={report.feeling.icon as AvailableIcons}
+                              name={""}
+                            />
                             <Chart
                               type="line"
                               options={{
@@ -178,8 +184,8 @@ function PrescriberPatientTreatmentReport() {
                                 datasets: [
                                   {
                                     label: `${report.feeling.name}`,
-                                    data: report.entries.map((entry) =>
-                                      entry.grade
+                                    data: report.entries.map(
+                                      (entry) => entry.grade,
                                     ),
                                     spanGaps: 1,
                                     borderColor: "#32b541",
@@ -195,7 +201,7 @@ function PrescriberPatientTreatmentReport() {
                   </div>
                 </div>
               )}
-              {(report && report?.badFeelingsReports.length > 0) && (
+              {report && report?.badFeelingsReports.length > 0 && (
                 <div class="flex flex-col">
                   <h3 class="text-sm text-[#8b8b8b] mb-2">
                     Efeitos Indesejados Relatados
@@ -203,7 +209,7 @@ function PrescriberPatientTreatmentReport() {
                   <div
                     class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
-                    <div class="flex gap-8">
+                    <div class="flex gap-6 overflow-x-scroll pb-3">
                       {report?.badFeelingsReports.map((report) => (
                         <MedicationEffectsCard
                           icon={report.feeling.icon as AvailableIcons}
@@ -221,6 +227,10 @@ function PrescriberPatientTreatmentReport() {
                       <div class="collapse-content flex flex-col gap-[48px]">
                         {report?.badFeelingsReports.map((report) => (
                           <div>
+                            <MedicationEffectsCard
+                              icon={report.feeling.icon as AvailableIcons}
+                              name={""}
+                            />
                             <Chart
                               type="line"
                               options={{
@@ -233,8 +243,8 @@ function PrescriberPatientTreatmentReport() {
                                 datasets: [
                                   {
                                     label: `${report.feeling.name}`,
-                                    data: report.entries.map((entry) =>
-                                      entry.grade
+                                    data: report.entries.map(
+                                      (entry) => entry.grade,
                                     ),
                                     spanGaps: 1,
                                     borderColor: "#d93939",
