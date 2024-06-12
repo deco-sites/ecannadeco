@@ -65,37 +65,39 @@ function MyAccount() {
         const plansList = c.docs as Plan[];
 
         //remove the ONBOARDING plan from list
-        const updatedPlanlist = plansList.filter((p) =>
-          p.plan !== "ONBOARDING"
+        const updatedPlanlist = plansList.filter(
+          (p) => p.plan !== "ONBOARDING",
         );
 
         setPlans(updatedPlanlist);
 
-        invoke["deco-sites/ecannadeco"].actions.getUserPrescriber({
-          token: accessToken,
-        }).then((r) => {
-          const res = r as {
-            plan: string;
-            credit_cards: SavedCreditCard[];
-            address: Address[];
-            name: string;
-            email: string;
-          };
+        invoke["deco-sites/ecannadeco"].actions
+          .getUserPrescriber({
+            token: accessToken,
+          })
+          .then((r) => {
+            const res = r as {
+              plan: string;
+              credit_cards: SavedCreditCard[];
+              address: Address[];
+              name: string;
+              email: string;
+            };
 
-          console.log({ res });
+            console.log({ res });
 
-          const billingAddress = res.address.find((a) =>
-            a.addressType === "BILLING"
-          );
+            const billingAddress = res.address.find(
+              (a) => a.addressType === "BILLING",
+            );
 
-          setAddress(billingAddress);
-          setEmail(res.email || "");
-          setCurrentPlan(res.plan);
-          setNewPlan(plansList.find((p) => p.plan === res.plan));
-          setCreditCards(res.credit_cards);
+            setAddress(billingAddress);
+            setEmail(res.email || "");
+            setCurrentPlan(res.plan);
+            setNewPlan(plansList.find((p) => p.plan === res.plan));
+            setCreditCards(res.credit_cards);
 
-          setIsLoading(false);
-        });
+            setIsLoading(false);
+          });
       });
     } catch (_e) {
       alert(
@@ -112,7 +114,7 @@ function MyAccount() {
       accessToken = localStorage.getItem("PrescriberAccessToken") || "";
     }
 
-    if ((confirmNewPassword !== newPassword) || (!currentPassword)) {
+    if (confirmNewPassword !== newPassword || !currentPassword) {
       alert(
         "Verifique os campos necessários para alterar a senha e tente novamente.",
       );
@@ -120,29 +122,29 @@ function MyAccount() {
       try {
         setIsChanging(true);
 
-        invoke["deco-sites/ecannadeco"].actions.changePassword({
-          token: accessToken,
-          body: {
-            newPassword: confirmNewPassword,
-            oldPassword: currentPassword,
-          },
-        }).then((r) => {
-          const res = r as { message?: string };
-          if (res.message) {
-            alert(res.message);
-          } else {
-            console.log({ r });
-            setCurrentPassword("");
-            setNewPassword("");
-            setConfirmNewPassword("");
-            setIsChanging(false);
-            alert("senha alterada com sucesso!");
-          }
-        });
+        invoke["deco-sites/ecannadeco"].actions
+          .changePassword({
+            token: accessToken,
+            body: {
+              newPassword: confirmNewPassword,
+              oldPassword: currentPassword,
+            },
+          })
+          .then((r) => {
+            const res = r as { message?: string };
+            if (res.message) {
+              alert(res.message);
+            } else {
+              console.log({ r });
+              setCurrentPassword("");
+              setNewPassword("");
+              setConfirmNewPassword("");
+              setIsChanging(false);
+              alert("senha alterada com sucesso!");
+            }
+          });
       } catch (_e) {
-        alert(
-          "Não foi possível alterar a senha. Tente mais tarde",
-        );
+        alert("Não foi possível alterar a senha. Tente mais tarde");
         setIsChanging(false);
       }
     }
@@ -192,9 +194,7 @@ function MyAccount() {
             <div class="flex flex-col gap-3">
               <label class="form-control w-full">
                 <div class="label pb-1">
-                  <span class="label-text text-xs text-[#585858]">
-                    Email
-                  </span>
+                  <span class="label-text text-xs text-[#585858]">Email</span>
                 </div>
                 <input
                   placeholder="Email"
@@ -300,11 +300,9 @@ function MyAccount() {
                       <div
                         class="bg-white rounded-md p-3 flex flex-col justify-between"
                         onClick={() =>
-                          setNewPlan(
-                            plans.find((p) =>
-                              p.name === plan.name
-                            ),
-                          )}
+                          setNewPlan(plans.find((p) =>
+                            p.name === plan.name
+                          ))}
                       >
                         <div class="flex items-center gap-4">
                           <div
@@ -325,7 +323,9 @@ function MyAccount() {
                           <div class="flex flex-col text-[#898989]">
                             <span class=" uppercase text-sm">{plan.name}</span>
                             <span class="text-xs">
-                              {"R$ " + (plan.price / 100).toFixed(2) + "/" +
+                              {"R$ " +
+                                (plan.price / 100).toFixed(2) +
+                                "/" +
                                 (plan.period === "MONTHLY" && "mês")}
                             </span>
                           </div>
@@ -346,7 +346,7 @@ function MyAccount() {
                                 size={17}
                               />
                               <span class="text-[10px]">
-                                Cadastro simplificado de pacientes
+                                Gestão visual de paciente/tratamento
                               </span>
                             </li>
                             <li class="flex gap-3 items-center">
@@ -356,7 +356,7 @@ function MyAccount() {
                                 size={17}
                               />
                               <span class="text-[10px]">
-                                Painel gerencial de tratamentos
+                                Gestão de assiduidade de tratamento
                               </span>
                             </li>
                             <li
@@ -386,10 +386,24 @@ function MyAccount() {
                                 size={17}
                               />
                               <span class="text-[10px]">
-                                Atualização facilitada de tratamento
+                                Atualização de posologia/medicação
                               </span>
                             </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">Login do paciente</span>
+                            </li>
                           </ul>
+                          {" "}
                         </div>
                       </div>
                     </Slider.Item>

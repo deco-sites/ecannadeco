@@ -151,7 +151,8 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   };
 
   const handleEmailInputChange = (event: Event) => {
-    const inputValue = (event.target as HTMLInputElement).value;
+    let inputValue = (event.target as HTMLInputElement).value;
+    inputValue = inputValue.toLowerCase(); // Força todas as letras a estarem em minúsculas
     setEmail(inputValue);
     if (validateEmail(inputValue)) {
       setEmailError("");

@@ -12,6 +12,7 @@ export type Plan = {
   status: string;
   created_at: string;
   updated_at: string;
+  startBilling?: number;
 };
 
 function Checkout() {
