@@ -21,11 +21,12 @@ function SignInFormPrescriber({ formTitle }: Props) {
     e.preventDefault();
     setLoading(true);
     try {
-      const data = await invoke["deco-sites/ecannadeco"].actions
-        .cognitoPrescriberSignIn(
-          { email, password },
-        ) as { data: SignInResponse };
-      console.log({ data });
+      const data = (await invoke[
+        "deco-sites/ecannadeco"
+      ].actions.cognitoPrescriberSignIn({ email, password })) as {
+        data: SignInResponse;
+      };
+
       if (IS_BROWSER) {
         localStorage.setItem(
           "PrescriberAccessToken",
@@ -37,9 +38,7 @@ function SignInFormPrescriber({ formTitle }: Props) {
       setEmail("");
       setPassword("");
     } catch (e) {
-      alert(
-        "Usuário ou senha incorretos",
-      );
+      alert("Usuário ou senha incorretos");
       console.log({ e });
       setLoading(false);
     }
@@ -57,9 +56,7 @@ function SignInFormPrescriber({ formTitle }: Props) {
         <div class="flex flex-col gap-4">
           <label class="w-full">
             <div class="label pb-1">
-              <span class="label-text text-xs text-[#585858]">
-                Email
-              </span>
+              <span class="label-text text-xs text-[#585858]">Email</span>
             </div>
             <input
               class="input rounded-md text-[#8b8b8b] border-none w-full"
@@ -71,9 +68,7 @@ function SignInFormPrescriber({ formTitle }: Props) {
           </label>
           <label class="w-full">
             <div class="label pb-1">
-              <span class="label-text text-xs text-[#585858]">
-                Senha
-              </span>
+              <span class="label-text text-xs text-[#585858]">Senha</span>
             </div>
             <input
               type="password"
@@ -93,7 +88,9 @@ function SignInFormPrescriber({ formTitle }: Props) {
         </button>
         <span class="pt-2 text-xs text-[#8b8b8b]">
           Não tem conta?{" "}
-          <a class="underline" href={"/prescritor/cadastrar"}>Cadastre-se</a>
+          <a class="underline" href={"/prescritor/cadastrar"}>
+            Cadastre-se
+          </a>
         </span>
       </form>
     </div>

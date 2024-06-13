@@ -73,15 +73,34 @@ function PrescriberPatients() {
 
   const getPatients = async (accessToken: string, search?: string) => {
     setIsLoadingUsers(true);
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .prescriberGetPatients({
-        token: accessToken,
-        search,
-      });
+    const response = await invoke[
+      "deco-sites/ecannadeco"
+    ].actions.prescriberGetPatients({
+      token: accessToken,
+      search,
+    });
     setIsLoadingUsers(false);
     if (response) {
       setPatients(response as Patient[]);
     }
+  };
+
+  const getPrescriber = async (accessToken: string) => {
+    const response = await invoke["deco-sites/ecannadeco"].actions
+      .getUserPrescriber({
+        token: accessToken,
+      })
+      .then((r) => {
+        const res = r as {
+          plan: string;
+        };
+
+        if (res.plan === "DEFAULT") {
+          alert("Escolha seu plano para começar a cadastrar seus pacientes");
+          window.location.href = "/prescritor/minha-conta";
+        }
+      });
+    return response;
   };
 
   useEffect(() => {
@@ -98,6 +117,7 @@ function PrescriberPatients() {
 
     try {
       getPatients(accessToken);
+      getPrescriber(accessToken);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
       if (IS_BROWSER) {
@@ -107,10 +127,7 @@ function PrescriberPatients() {
     }
   }, []);
 
-  const {
-    displayNewPatientModal,
-    displayModalTextAction,
-  } = useUI();
+  const { displayNewPatientModal, displayModalTextAction } = useUI();
 
   const timeAgo = (date: Date): string => {
     const seconds = Math.floor((Number(new Date()) - +date) / 1000); // Explicitly convert to number
@@ -183,7 +200,7 @@ function PrescriberPatients() {
                   }}
                 />
                 <ModalTextAction
-                  onClose={() => displayModalTextAction.value = false}
+                  onClose={() => (displayModalTextAction.value = false)}
                   buttonText="Fazer Upgrade"
                 />
                 <div class="flex justify-end">
@@ -193,7 +210,8 @@ function PrescriberPatients() {
                       displayNewPatientModal.value = true;
                     }}
                   >
-                    <Icon id="UserData" size={19} />Novo Paciente
+                    <Icon id="UserData" size={19} />
+                    Novo Paciente
                   </button>
                 </div>
               </div>
@@ -214,87 +232,83 @@ function PrescriberPatients() {
                             displayNewPatientModal.value = true;
                           }}
                         >
-                          <Icon id="UserData" size={19} />Novo Paciente
+                          <Icon id="UserData" size={19} />
+                          Novo Paciente
                         </button>
                       </>
                     )}
                     <div class="flex justify-between"></div>
-                    {patients && patients.map((p) => {
-                      return (
-                        <a
-                          href={`/prescritor/meus-pacientes/${p._id}`}
-                          class=""
-                        >
-                          <div tabindex={0} role="button" class="">
-                            <div target="_blank">
-                              <li
-                                class={`p-3 ${
-                                  p.status === "GOOD"
-                                    ? "bg-[#ffffff]"
-                                    : "bg-[#fff8dc]"
-                                } rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
-                              >
-                                <div class="flex justify-between">
-                                  <div class="flex gap-4 items-center">
-                                    <div class="text-[#808080]">
-                                      <Icon id="Profile" size={16} />
+                    {patients &&
+                      patients.map((p) => {
+                        return (
+                          <a
+                            href={`/prescritor/meus-pacientes/${p._id}`}
+                            class=""
+                          >
+                            <div tabindex={0} role="button" class="">
+                              <div target="_blank">
+                                <li
+                                  class={`p-3 ${
+                                    p.status === "GOOD"
+                                      ? "bg-[#ffffff]"
+                                      : "bg-[#fff8dc]"
+                                  } rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+                                >
+                                  <div class="flex justify-between">
+                                    <div class="flex gap-4 items-center">
+                                      <div class="text-[#808080]">
+                                        <Icon id="Profile" size={16} />
+                                      </div>
+                                      <div class="flex flex-col items-start">
+                                        <span class="font-semibold">
+                                          {p.name}
+                                        </span>
+                                        <span class="text-sm">
+                                          {p.profile.email}
+                                        </span>
+                                      </div>
                                     </div>
-                                    <div class="flex flex-col items-start">
-                                      <span class="font-semibold">
-                                        {p.name}
-                                      </span>
-                                      <span class="text-sm">
-                                        {p.profile.email}
-                                      </span>
-                                    </div>
-                                  </div>
-                                  {p.lastReport
-                                    ? (
-                                      <div class="flex flex-col items-end gap-2">
-                                        <div class="flex justify-between items-center gap-2 text-[#808080]">
-                                          <Icon id="Update" size={16} />
-                                          <span>
-                                            {timeAgo(
-                                              new Date(
-                                                p.lastReport,
-                                              ),
-                                            )}
-                                          </span>
-                                        </div>
-                                        <div
-                                          class={`${
-                                            p.status ===
-                                                "GOOD"
-                                              ? "text-green-600"
-                                              : "text-red-600"
-                                          }`}
-                                        >
-                                          <Icon
-                                            id={`${
-                                              p.status ===
-                                                  "GOOD"
-                                                ? "HappyFace"
-                                                : "SadFace"
+                                    {p.lastReport
+                                      ? (
+                                        <div class="flex flex-col items-end gap-2">
+                                          <div class="flex justify-between items-center gap-2 text-[#808080]">
+                                            <Icon id="Update" size={16} />
+                                            <span>
+                                              {timeAgo(new Date(p.lastReport))}
+                                            </span>
+                                          </div>
+                                          <div
+                                            class={`${
+                                              p.status === "GOOD"
+                                                ? "text-green-600"
+                                                : "text-red-600"
                                             }`}
-                                            size={19}
-                                          />
+                                          >
+                                            <Icon
+                                              id={`${
+                                                p.status === "GOOD"
+                                                  ? "HappyFace"
+                                                  : "SadFace"
+                                              }`}
+                                              size={19}
+                                            />
+                                          </div>
                                         </div>
-                                      </div>
-                                    )
-                                    : (
-                                      <div class="flex items-center justify-end">
-                                        <div class="badge badge-primary badge-xs p-2">
-                                          Sem Registro
+                                      )
+                                      : (
+                                        <div class="flex items-center justify-end">
+                                          <div class="badge badge-primary badge-xs p-2">
+                                            Sem Registro
+                                          </div>
                                         </div>
-                                      </div>
-                                    )}
-                                </div>
-                              </li>
+                                      )}
+                                  </div>
+                                </li>
+                              </div>
                             </div>
-                          </div>
-                        </a>
-                      );
-                    })}
+                          </a>
+                        );
+                      })}
                   </ul>
                 )}
             </div>
