@@ -70,18 +70,33 @@ function PrescriberPatients() {
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [emailSearch, setEmailSearch] = useState("");
   const [patients, setPatients] = useState<Patient[]>([]);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [hasPrevPage, setHasPrevPage] = useState(false);
+  const [page, setPage] = useState<number | null>(1);
+  const [totalPages, setTotalPages] = useState<number | null>(1);
+  const [totalDocs, setTotalDocs] = useState<number | null>(1);
 
-  const getPatients = async (accessToken: string, search?: string) => {
+  const getPatients = async (
+    accessToken: string,
+    search?: string,
+    page?: number,
+  ) => {
     setIsLoadingUsers(true);
     const response = await invoke[
       "deco-sites/ecannadeco"
     ].actions.prescriberGetPatients({
       token: accessToken,
       search,
+      page: page || 1,
     });
     setIsLoadingUsers(false);
     if (response) {
-      setPatients(response as Patient[]);
+      setPatients(response.docs as Patient[]);
+      setPage(response.page);
+      setTotalPages(response.totalPages);
+      setHasNextPage(response.hasNextPage);
+      setHasPrevPage(response.hasPrevPage);
+      setTotalDocs(response.totalDocs);
     }
   };
 
@@ -219,6 +234,10 @@ function PrescriberPatients() {
                 ? <span class="loading loading-spinner text-green-600"></span>
                 : (
                   <ul class="flex flex-col gap-4">
+                    <li class="text-xs">
+                      {totalDocs} paciente{totalDocs === 1 ? "" : "s"}{" "}
+                      encontrado{totalDocs === 1 ? "" : "s"}
+                    </li>
                     {patients.length === 0 && (
                       <>
                         <div class="flex justify-center">
@@ -264,7 +283,8 @@ function PrescriberPatients() {
                                           {p.name}
                                         </span>
                                         <span class="text-sm">
-                                          {p.profile.email}
+                                          {p.profile?.email ||
+                                            "E-mail não informado"}
                                         </span>
                                       </div>
                                     </div>
@@ -311,6 +331,47 @@ function PrescriberPatients() {
                       })}
                   </ul>
                 )}
+              <div class="flex justify-center mt-4">
+                <div>
+                  {hasPrevPage && (
+                    <span
+                      class="p-4 cursor-pointer"
+                      onClick={() => {
+                        let accessToken = "";
+
+                        if (IS_BROWSER) {
+                          accessToken =
+                            localStorage.getItem("PrescriberAccessToken") || "";
+                        }
+                        getPatients(accessToken, undefined, page! - 1);
+                      }}
+                    >
+                      {`<`}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <span class="text-xs">{`Página ${page}/${totalPages}`}</span>
+                </div>
+                <div>
+                  {hasNextPage && (
+                    <span
+                      class="p-4 cursor-pointer"
+                      onClick={() => {
+                        let accessToken = "";
+
+                        if (IS_BROWSER) {
+                          accessToken =
+                            localStorage.getItem("PrescriberAccessToken") || "";
+                        }
+                        getPatients(accessToken, undefined, page! + 1);
+                      }}
+                    >
+                      {`>`}
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
           )}
       </PageWrap>
