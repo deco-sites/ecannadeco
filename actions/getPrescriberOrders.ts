@@ -47,13 +47,16 @@ const getUserOrders = async (
   _req: Request,
 ): Promise<PaginationOrderResponse> => {
   try {
-    const response = await fetch("https://api.ecanna.com.br/prescribers/orders/", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
+    const response = await fetch(
+      "https://api.ecanna.com.br/prescribers/orders/",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
       },
-    });
+    );
 
     const res = await response.json();
     return res;
