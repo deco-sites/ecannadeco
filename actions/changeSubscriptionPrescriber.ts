@@ -42,8 +42,8 @@ const changeSubscriptionPrescriber = async (
     const res = await response.json();
     return res;
   } catch (e) {
-    // console.log({ e });
-    return e;
+    console.log({ e });
+    throw new Error("Erro ao atualizar prescritor");
   }
 };
 

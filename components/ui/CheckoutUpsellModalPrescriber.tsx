@@ -4,8 +4,9 @@ import Modal from "./Modal.tsx";
 import { Plan } from "./Checkout.tsx";
 import { invoke } from "../../runtime.ts";
 import { Props as ChangeSubscriptionProps } from "../../actions/changeSubscription.ts";
-import { Props as Checkoutv2Props } from "../../actions/checkoutv2.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import CreditCardInput from "deco-sites/ecannadeco/components/ui/CreditCardInput.tsx";
+import CVVInput from "deco-sites/ecannadeco/components/ui/CVVInput.tsx";
 
 export interface Product {
   description: string;
@@ -25,6 +26,7 @@ export interface Props {
   creditCards: SavedCreditCard[];
   plan?: Plan;
   product?: Product;
+  email: string;
   address: {
     cep: string;
     number: string;
@@ -43,12 +45,18 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
   const [creditCardExpYear, setCreditCardExpYear] = useState<string>("");
   const [creditCardCCV, setCreditCardCCV] = useState<string>("");
   const [holderName, setHolderName] = useState<string>("");
-  const [holderEmail, _setHolderEmail] = useState<string>("");
-  const [holderPhone, _setHolderPhone] = useState<string>("");
+  const [holderEmail, _setHolderEmail] = useState<string>(props.email || "");
   const [holderCPF, setHolderCPF] = useState<string>("");
+  const [cep, setCep] = useState<string>(props.address?.cep || "");
+  const [phone, setPhone] = useState<string>("");
+  const [addressStreet, setAddressStreet] = useState<string>("");
+  const [addressNumber, setAddressNumber] = useState<string>(
+    props.address?.number || "",
+  );
+  const [addressComplement, setAddressComplement] = useState<string>(
+    props.address?.complement || "",
+  );
   const [cardSelected, setCardSelected] = useState(0);
-
-  console.log({ plan, product, creditCards });
 
   const handleCheckout = async () => {
     setLoading(true);
@@ -60,7 +68,6 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
     }
 
     let paramsChangeSubscription = {} as ChangeSubscriptionProps;
-    let paramsCheckoutV2 = {} as Checkoutv2Props;
 
     if (addNewCard) {
       paramsChangeSubscription = {
@@ -77,34 +84,10 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
           full_name: holderName,
           email: holderEmail,
           cpf_cnpj: holderCPF,
-          postal_code: props.address.cep,
-          address_number: props.address.number,
-          address_complement: props.address.complement,
-          phone: holderPhone,
-        },
-      };
-
-      paramsCheckoutV2 = {
-        token: accessToken,
-        items: [{
-          sku: product!.skus[0],
-          quantity: 1,
-        }],
-        credit_card: {
-          holder: holderName,
-          number: creditCardNumber,
-          exp_month: creditCardExpMonth,
-          exp_year: creditCardExpYear,
-          ccv: creditCardCCV,
-        },
-        holder_info: {
-          full_name: holderName,
-          email: holderEmail,
-          cpf_cnpj: holderCPF,
-          postal_code: props.address.cep,
-          address_number: props.address.number,
-          address_complement: props.address.complement,
-          phone: holderPhone,
+          postal_code: cep,
+          address_number: addressNumber,
+          address_complement: addressComplement,
+          phone,
         },
       };
     } else {
@@ -114,49 +97,22 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
           sku: plan!.skus[0],
           credit_card_token: creditCards[cardSelected].token,
         };
-      } else if (product) {
-        console.log({ product });
-        paramsCheckoutV2 = {
-          token: accessToken,
-          items: [{
-            sku: product!.skus[0],
-            quantity: 1,
-          }],
-          credit_card_token: creditCards[cardSelected].token,
-        };
       }
     }
-
-    console.log({ paramsChangeSubscription, paramsCheckoutV2 });
 
     try {
       //choose which checkout to call based on wheter its selling plan or product
       if (plan) {
-        const rchangeSubs = await invoke["deco-sites/ecannadeco"].actions
-          .changeSubscriptionPrescriber(paramsChangeSubscription);
+        const rchangeSubs = await invoke[
+          "deco-sites/ecannadeco"
+        ].actions.changeSubscriptionPrescriber(paramsChangeSubscription);
 
         const respChangesubs = rchangeSubs as {
           errors?: unknown[];
           message?: string;
         };
 
-        console.log({ respChangesubs });
-
         if (respChangesubs.errors) {
-          throw new Error();
-        }
-      } else if (product) {
-        const rcheckoutv2 = await invoke["deco-sites/ecannadeco"].actions
-          .checkoutv2(paramsCheckoutV2);
-
-        const respCheckoutV2 = rcheckoutv2 as {
-          errors?: unknown[];
-          message?: string;
-        };
-
-        console.log({ respCheckoutV2 });
-
-        if (respCheckoutV2.errors) {
           throw new Error();
         }
       }
@@ -175,7 +131,7 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
     <Modal
       loading="lazy"
       open={displayCheckoutUpsellModal.value}
-      onClose={() => displayCheckoutUpsellModal.value = false}
+      onClose={() => (displayCheckoutUpsellModal.value = false)}
     >
       <div class="flex flex-col p-16 gap-3 bg-[#EDEDED] rounded-xl max-w-[90%] max-h-[90vh] overflow-scroll">
         <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
@@ -187,7 +143,7 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
               ? "Você está fazendo a mudança do seu plano atual para o plano: "
               : "Você está comprando: "}
             <span class="font-bold">
-              {plan ? plan.name : (product && product.name)}
+              {plan ? plan.name : product && product.name}
             </span>
           </span>
           <span>
@@ -197,8 +153,9 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
                   Valor da assinatura:{" "}
                   <span class="font-bold">
                     {plan &&
-                      ("R$ " + (plan.price / 100).toFixed(2) +
-                        (plan?.period == "MONTHLY" && "/mês"))}
+                      "R$ " +
+                        (plan.price / 100).toFixed(2) +
+                        (plan?.period == "MONTHLY" && "/mês")}
                   </span>
                 </>
               )
@@ -206,8 +163,7 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
                 <>
                   Valor do produto:{" "}
                   <span class="font-bold">
-                    {product &&
-                      ("R$ " + (product.price / 100).toFixed(2))}
+                    {product && "R$ " + (product.price / 100).toFixed(2)}
                   </span>
                 </>
               )}
@@ -221,7 +177,7 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
                 addNewCard && "hidden"
               } bg-[#e1e1e1] p-3 text-xs flex flex-col gap-2`}
             >
-              {(creditCards && creditCards.length == 0) && (
+              {creditCards && creditCards.length == 0 && (
                 <li>
                   <div
                     class={`flex justify-center gap-2  rounded-md p-3 text-[#696969] bg-[#d4d4d4]`}
@@ -269,57 +225,37 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
         </div>
         <div class={`${!addNewCard && "hidden"}`}>
           <form class="flex flex-wrap gap-[2%]">
-            <label class="w-full sm:w-[48%] flex flex-col">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Número do Cartão
-                </span>
-              </div>
-              <input
-                class="input rounded-md text-[#8b8b8b] border-none w-full"
-                placeholder="0000 0000 0000 0000"
-                name="creditCardNumber"
-                value={creditCardNumber}
-                onChange={(e) => {
-                  setCreditCardNumber(e.currentTarget.value);
-                }}
-              />
-            </label>
+            <CreditCardInput
+              onChange={(value) => setCreditCardNumber(value)}
+              value={creditCardNumber}
+            />
             <fieldset class="w-full sm:w-[48%] flex flex-col">
               <legend class="label-text text-xs text-[#585858] p-1 pt-2">
                 Validade do Cartão
               </legend>
               <div class="flex gap-2">
                 <input
-                  placeholder="Mês"
+                  placeholder="Mês (Ex: 05)"
                   class="input rounded-md text-[#8b8b8b] border-none w-1/2"
                   value={creditCardExpMonth}
+                  maxLength={2}
                   onChange={(e) =>
                     e.target && setCreditCardExpMonth(e.currentTarget.value)}
                 />
                 <input
-                  placeholder="Ano"
+                  placeholder="Ano (Ex: 2030)"
                   class="input rounded-md text-[#8b8b8b] border-none w-1/2"
                   value={creditCardExpYear}
+                  maxlength={4}
                   onChange={(e) =>
                     e.target && setCreditCardExpYear(e.currentTarget.value)}
                 />
               </div>
             </fieldset>
-            <label class="w-full sm:w-[48%]  flex flex-col">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Código Verificador
-                </span>
-              </div>
-              <input
-                class="input rounded-md text-[#8b8b8b] border-none w-full"
-                placeholder="Código Verificador"
-                value={creditCardCCV}
-                onChange={(e) =>
-                  e.target && setCreditCardCCV(e.currentTarget.value)}
-              />
-            </label>
+            <CVVInput
+              value={creditCardCCV}
+              onChange={(value) => setCreditCardCCV(value)}
+            />
             <label class="w-full sm:w-[48%]  flex flex-col">
               <div class="label pb-1">
                 <span class="label-text text-xs text-[#585858]">
@@ -343,9 +279,87 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
               <input
                 class="input rounded-md text-[#8b8b8b] border-none w-full"
                 placeholder="CPF"
+                maxLength={11}
                 value={holderCPF}
                 onChange={(e) =>
                   e.target && setHolderCPF(e.currentTarget.value)}
+              />
+            </label>
+          </form>
+        </div>
+        <div>
+          <form class="flex flex-wrap gap-[2%]">
+            <div class="w-full flex flex-col my-2">
+              <span class="label-text>text-xs text-[#585858]">
+                Endereço de Cobrança
+              </span>
+            </div>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  CEP
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="CEP"
+                value={cep}
+                onChange={(e) => e.target && setCep(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Rua
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Rua"
+                value={addressStreet}
+                onChange={(e) =>
+                  e.target && setAddressStreet(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Número
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Número"
+                value={addressNumber}
+                onChange={(e) =>
+                  e.target && setAddressNumber(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Complemeto
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Complemento"
+                value={addressComplement}
+                onChange={(e) =>
+                  e.target && setAddressComplement(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Telefone
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Telefone"
+                value={phone}
+                onChange={(e) => e.target && setPhone(e.currentTarget.value)}
               />
             </label>
           </form>
@@ -359,7 +373,7 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
           {loading ? "Processando..." : "Confirmar Pedido"}
         </button>
         <button
-          onClick={() => displayCheckoutUpsellModal.value = false}
+          onClick={() => (displayCheckoutUpsellModal.value = false)}
           class="btn btn-ghost uppercase font-medium"
           disabled={loading}
         >

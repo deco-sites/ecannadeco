@@ -60,7 +60,6 @@ function MyAccount() {
         `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=true`,
       ).then(async (r) => {
         const c = await r.json();
-        console.log({ plans: c.docs });
 
         const plansList = c.docs as Plan[];
 
@@ -84,19 +83,21 @@ function MyAccount() {
               email: string;
             };
 
-            console.log({ res });
+            if (res.address.length > 0) {
+              const billingAddress = res.address.find(
+                (a) => a.addressType === "BILLING",
+              );
+              setAddress(billingAddress);
+            }
 
-            const billingAddress = res.address.find(
-              (a) => a.addressType === "BILLING",
-            );
-
-            setAddress(billingAddress);
             setEmail(res.email || "");
             setCurrentPlan(res.plan);
             setNewPlan(plansList.find((p) => p.plan === res.plan));
             setCreditCards(res.credit_cards);
 
             setIsLoading(false);
+          }).catch((e) => {
+            throw new Error(e);
           });
       });
     } catch (_e) {
@@ -459,12 +460,12 @@ function MyAccount() {
                   creditCards={creditCards}
                   plan={newPlan!}
                   address={address!}
+                  email={email}
                 />
                 <button
                   class="btn btn-primary text-white"
-                  disabled={(newPlan?.name || currentPlan) == currentPlan}
+                  disabled={(newPlan?.plan || currentPlan) == currentPlan}
                   onClick={() => {
-                    console.log({ creditCards });
                     displayCheckoutUpsellModal.value = true;
                   }}
                 >
