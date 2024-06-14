@@ -120,7 +120,7 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
       displayCheckoutUpsellModal.value = false;
       alert("Operação realizada com sucesso!");
       setLoading(false);
-      // window.location.reload();
+      window.location.reload();
     } catch (_e) {
       alert("Não foi possível finalizar o checkout. Contacte o suporte.");
       setLoading(false);
