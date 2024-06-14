@@ -47,7 +47,7 @@ const getUserOrders = async (
   _req: Request,
 ): Promise<PaginationOrderResponse> => {
   try {
-    const response = await fetch("http://localhost/prescribers/orders/", {
+    const response = await fetch("https://api.ecanna.com.br/prescribers/orders/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
