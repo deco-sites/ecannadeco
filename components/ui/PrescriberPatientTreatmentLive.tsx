@@ -20,52 +20,67 @@ export type Address = {
 function PrescriberPatientTreatments() {
   const [isLoading, setIsLoading] = useState(true);
   const [treatments, setTreatments] = useState<Treatment[]>([]);
+  const [hasNextPage, setHasNextPage] = useState(false);
+  const [hasPrevPage, setHasPrevPage] = useState(false);
+  const [page, setPage] = useState<number | null>(1);
+  const [totalPages, setTotalPages] = useState<number | null>(1);
+
   const [currentTreatment, setCurrentTreatment] = useState<Treatment | null>(
     null,
   );
-  const [patient, setPatient] = useState<Patient | null>(
-    null,
-  );
+  const [patient, setPatient] = useState<Patient | null>(null);
 
-  const getTreatmentsByPatient = async (
-    accessToken: string,
-    patientId: string,
-  ) => {
-    setIsLoading(true);
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .prescriberGetTreatmentsByPatient({
-        token: accessToken,
-        patientId,
-      });
-    setIsLoading(false);
-    if (response) {
-      const treatments = response as Treatment[];
-      const currentTreatment = treatments.find((t: Treatment) => t.isActive) ||
-        null;
-      const pastTreatments = treatments.filter((t: Treatment) => !t.isActive);
-      setCurrentTreatment(currentTreatment);
-      setTreatments(pastTreatments);
-    }
-    const patient = await invoke["deco-sites/ecannadeco"].actions
-      .prescriberGetPatient({ token: accessToken, patientId });
+  const getPatient = async (accessToken: string, patientId: string) => {
+    const patient = await invoke[
+      "deco-sites/ecannadeco"
+    ].actions.prescriberGetPatient({ token: accessToken, patientId });
     if (patient) {
       setPatient(patient as Patient);
     }
   };
 
+  const getTreatmentsByPatient = async (
+    accessToken: string,
+    patientId: string,
+    page: number = 1,
+    isActive: boolean = false,
+  ) => {
+    setIsLoading(true);
+    const response = await invoke[
+      "deco-sites/ecannadeco"
+    ].actions.prescriberGetTreatmentsByPatient({
+      token: accessToken,
+      patientId,
+      page,
+      isActive,
+    });
+    setIsLoading(false);
+    if (response) {
+      if (isActive) {
+        setCurrentTreatment(response.docs[0] as Treatment);
+      } else {
+        setHasNextPage(response.hasNextPage);
+        setHasPrevPage(response.hasPrevPage);
+        setPage(response.page);
+        setTotalPages(response.totalPages);
+        setTreatments(response.docs as Treatment[]);
+      }
+    }
+  };
+
   useEffect(() => {
     const accessToken = IS_BROWSER
-      ? (localStorage.getItem("PrescriberAccessToken") || "")
+      ? localStorage.getItem("PrescriberAccessToken") || ""
       : "";
     const patientId = IS_BROWSER
-      ? (window.location.pathname.split("/")[3] || "")
+      ? window.location.pathname.split("/")[3] || ""
       : "";
-    getTreatmentsByPatient(accessToken, patientId);
+    getTreatmentsByPatient(accessToken, patientId, 1, true);
+    getTreatmentsByPatient(accessToken, patientId, 1, false);
+    getPatient(accessToken, patientId);
   }, []);
 
-  const {
-    displayNewTreatmentModal,
-  } = useUI();
+  const { displayNewTreatmentModal } = useUI();
 
   return (
     <>
@@ -90,7 +105,7 @@ function PrescriberPatientTreatments() {
                     displayNewTreatmentModal.value = false;
                     let accessToken = "";
                     const patientId = IS_BROWSER
-                      ? (window.location.pathname.split("/")[3] || "")
+                      ? window.location.pathname.split("/")[3] || ""
                       : "";
 
                     if (IS_BROWSER) {
@@ -100,19 +115,14 @@ function PrescriberPatientTreatments() {
                     getTreatmentsByPatient(accessToken, patientId);
                   }}
                 />
-                <h3 class="text-2xl text-[#8b8b8b] text-center">
-                  Tratamento
-                </h3>
+                <h3 class="text-2xl text-[#8b8b8b] text-center">Tratamento</h3>
                 <button
                   class="btn btn-sm btn-secondary text-white"
                   onClick={() => {
                     displayNewTreatmentModal.value = true;
                   }}
                 >
-                  <Icon
-                    id="Drop"
-                    size={12}
-                  />
+                  <Icon id="Drop" size={12} />
                   <span class="flex gap-[6px]">
                     {currentTreatment
                       ? (
@@ -139,9 +149,7 @@ function PrescriberPatientTreatments() {
                         <Icon id="Profile" size={16} />
                       </div>
                       <div class="flex flex-col items-start">
-                        <span class="font-semibold">
-                          {patient?.name}
-                        </span>
+                        <span class="font-semibold">{patient?.name}</span>
                       </div>
                     </div>
                   </div>
@@ -158,10 +166,7 @@ function PrescriberPatientTreatments() {
                               displayNewTreatmentModal.value = true;
                             }}
                           >
-                            <Icon
-                              id="Drop"
-                              size={12}
-                            />
+                            <Icon id="Drop" size={12} />
                             <span class="flex gap-[6px]">
                               {treatments.length
                                 ? (
@@ -211,6 +216,63 @@ function PrescriberPatientTreatments() {
                         </>
                       )}
                   </div>
+                </div>
+              </div>
+              <div class="flex justify-center mt-4">
+                <div>
+                  {hasPrevPage && (
+                    <span
+                      class="p-4 cursor-pointer"
+                      onClick={() => {
+                        let accessToken = "";
+
+                        if (IS_BROWSER) {
+                          accessToken =
+                            localStorage.getItem("PrescriberAccessToken") || "";
+                        }
+                        const patientId = IS_BROWSER
+                          ? window.location.pathname.split("/")[3] || ""
+                          : "";
+                        getTreatmentsByPatient(
+                          accessToken,
+                          patientId,
+                          page! - 1,
+                          false,
+                        );
+                      }}
+                    >
+                      {`<`}
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <span class="text-xs">{`Página ${page}/${totalPages}`}</span>
+                </div>
+                <div>
+                  {hasNextPage && (
+                    <span
+                      class="p-4 cursor-pointer"
+                      onClick={() => {
+                        let accessToken = "";
+                        const patientId = IS_BROWSER
+                          ? window.location.pathname.split("/")[3] || ""
+                          : "";
+
+                        if (IS_BROWSER) {
+                          accessToken =
+                            localStorage.getItem("PrescriberAccessToken") || "";
+                        }
+                        getTreatmentsByPatient(
+                          accessToken,
+                          patientId,
+                          page! + 1,
+                          false,
+                        );
+                      }}
+                    >
+                      {`>`}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

@@ -1,15 +1,29 @@
+import { Treatment } from "deco-sites/ecannadeco/components/ui/PrescriberPatientsLive.tsx";
+
 export interface Props {
   token: string;
   patientId: string;
+  isActive: boolean;
+  page?: number;
+}
+
+export interface Response {
+  docs: Treatment[];
+  totalDocs: number;
+  totalPages: number;
+  page: number;
+  hasPrevPage: boolean;
+  hasNextPage: boolean;
+  limit: number;
 }
 
 const prescriberGetTreatmentsByPatient = async (
-  { token, patientId }: Props,
+  { token, patientId, page = 1, isActive = true }: Props,
   _req: Request,
-): Promise<unknown | null> => {
+): Promise<Response | null> => {
   try {
     const response = await fetch(
-      `https://api.ecanna.com.br/prescribers/treatments?patient=${patientId}`,
+      `https://api.ecanna.com.br/prescribers/treatments?patient=${patientId}&page=${page}&isActive=${isActive}`,
       {
         method: "GET",
         headers: {
@@ -19,7 +33,7 @@ const prescriberGetTreatmentsByPatient = async (
       },
     );
     const res = await response.json();
-    return res.docs;
+    return res;
   } catch (e) {
     return e;
   }
