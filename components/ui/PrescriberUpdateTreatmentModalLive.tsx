@@ -18,7 +18,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
   const [newMedication, setNewMedication] = useState<Medications>([]);
   const [newTreatment, setNewTreatment] = useState<Treatment | null>(null);
   const [accessToken, _setAccessToken] = useState(
-    IS_BROWSER ? (localStorage.getItem("PrescriberAccessToken") || "") : "",
+    IS_BROWSER ? localStorage.getItem("PrescriberAccessToken") || "" : "",
   );
   const [updating, setUpdating] = useState<boolean>(false);
 
@@ -27,11 +27,12 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
     patientId: string,
   ) => {
     setUpdating(true);
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .prescriberGetActiveTreatmentByPatient({
-        token: accessToken,
-        patientId,
-      });
+    const response = await invoke[
+      "deco-sites/ecannadeco"
+    ].actions.prescriberGetActiveTreatmentByPatient({
+      token: accessToken,
+      patientId,
+    });
     setUpdating(false);
     if (response) {
       setCurrentTreatment(response as Treatment);
@@ -45,22 +46,21 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
         },
         medications: [],
       } as unknown as Treatment);
+      setNewMedication([{ name: "", dosage: "" }] as Medications);
     }
   };
 
   useEffect(() => {
     const accessToken = IS_BROWSER
-      ? (localStorage.getItem("PrescriberAccessToken") || "")
+      ? localStorage.getItem("PrescriberAccessToken") || ""
       : "";
     const patientId = IS_BROWSER
-      ? (window.location.pathname.split("/")[3] || "")
+      ? window.location.pathname.split("/")[3] || ""
       : "";
     console.log({ patientId });
     getActiveTreatmentByPatient(accessToken, patientId);
   }, []);
-  const {
-    displayNewTreatmentModal,
-  } = useUI();
+  const { displayNewTreatmentModal } = useUI();
 
   const _handleUpdateTreatment = () => {
     const treatment = currentTreatment;
@@ -87,11 +87,12 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
 
   const handleSubmit = async () => {
     setUpdating(true);
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .prescriberCreateTreatment({
-        token: accessToken,
-        treatment: newTreatment,
-      });
+    const response = await invoke[
+      "deco-sites/ecannadeco"
+    ].actions.prescriberCreateTreatment({
+      token: accessToken,
+      treatment: newTreatment,
+    });
     setUpdating(false);
     onFinished();
     if (response) {
@@ -103,7 +104,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
     <Modal
       loading="lazy"
       open={displayNewTreatmentModal.value}
-      onClose={() => displayNewTreatmentModal.value = false}
+      onClose={() => (displayNewTreatmentModal.value = false)}
     >
       <div class="flex flex-col p-10 gap-3 max-h-[90%] max-w-[90%] overflow-scroll bg-[#EDEDED] rounded-xl">
         <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
@@ -129,12 +130,10 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
                     const newMedications = newMedication;
                     medication.name = e.currentTarget.value;
                     setNewMedication(newMedications);
-                    setNewTreatment(
-                      {
-                        ...newTreatment,
-                        medications: newMedications,
-                      } as Treatment,
-                    );
+                    setNewTreatment({
+                      ...newTreatment,
+                      medications: newMedications,
+                    } as Treatment);
                   }}
                 />
               </label>
@@ -152,12 +151,10 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
                     const newMedications = newMedication;
                     medication.dosage = e.currentTarget.value;
                     setNewMedication(newMedications);
-                    setNewTreatment(
-                      {
-                        ...newTreatment,
-                        medications: newMedications,
-                      } as Treatment,
-                    );
+                    setNewTreatment({
+                      ...newTreatment,
+                      medications: newMedications,
+                    } as Treatment);
                   }}
                 />
               </label>
@@ -177,10 +174,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
         >
           + Adicionar Medicação
         </span>
-        <button
-          class="btn btn-secondary text-white"
-          onClick={handleSubmit}
-        >
+        <button class="btn btn-secondary text-white" onClick={handleSubmit}>
           {currentTreatment ? "Atualizar Tratamento" : "Criar Tratamento"}
           {"    "}{updating
             ? <span class="loading loading-spinner text-white"></span>
