@@ -69,10 +69,10 @@ function PatientNewTreatmentEntry() {
       setFeelings(response as Feeling[]);
 
       setAvailableDesiredEffects(
-        (response as Feeling[]).filter((f) => f.isGood),
+        (response as Feeling[]).filter((f) => f.isGood)
       );
       setAvailableUndesiredEffects(
-        (response as Feeling[]).filter((f) => !f.isGood),
+        (response as Feeling[]).filter((f) => !f.isGood)
       );
     }
   };
@@ -84,7 +84,7 @@ function PatientNewTreatmentEntry() {
       {
         token: accessToken,
         id: reportId,
-      },
+      }
     );
     console.log({ response });
     setIsLoading(false);
@@ -93,33 +93,33 @@ function PatientNewTreatmentEntry() {
     }
   };
 
-  function downloadFile(fileUrl: string, filename: string) {
-    // console.log({ fileUrl, filename });
-    // Fetch the file data
-    fetch(fileUrl)
-      .then((response) => response.blob())
-      .then((blob) => {
-        console.log({ blob });
-        // Create a temporary anchor element
-        const a = document.createElement("a");
-        a.style.display = "none";
+  // function downloadFile(fileUrl: string, filename: string) {
+  //   // console.log({ fileUrl, filename });
+  //   // Fetch the file data
+  //   fetch(fileUrl)
+  //     .then((response) => response.blob())
+  //     .then((blob) => {
+  //       console.log({ blob });
+  //       // Create a temporary anchor element
+  //       const a = document.createElement("a");
+  //       a.style.display = "none";
 
-        // Set the download attribute and file URL
-        a.download = filename;
-        a.href = window.URL.createObjectURL(blob);
+  //       // Set the download attribute and file URL
+  //       a.download = filename;
+  //       a.href = window.URL.createObjectURL(blob);
 
-        // Append the anchor to the body and trigger the download
-        document.body.appendChild(a);
-        a.click();
+  //       // Append the anchor to the body and trigger the download
+  //       document.body.appendChild(a);
+  //       a.click();
 
-        // Clean up
-        window.URL.revokeObjectURL(a.href);
-        document.body.removeChild(a);
-      })
-      .catch((error) => {
-        console.error("Error downloading file:", error);
-      });
-  }
+  //       // Clean up
+  //       window.URL.revokeObjectURL(a.href);
+  //       document.body.removeChild(a);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error downloading file:", error);
+  //     });
+  // }
 
   useEffect(() => {
     let accessToken = "";
@@ -181,19 +181,19 @@ function PatientNewTreatmentEntry() {
             </a>
             {treatment?.prescription && (
               <a
-                // href={
-                //   (treatment.prescription as unknown as Prescription)!.file_url
-                // }
+                href={
+                  (treatment.prescription as unknown as Prescription)!.file_url
+                }
                 // download={
                 //   (treatment.prescription as unknown as Prescription)!.title
                 // }
                 class="btn btn-xs sm:btn-sm btn-secondary text-white"
-                onClick={() =>
-                  downloadFile(
-                    (treatment.prescription as unknown as Prescription)!
-                      .file_url,
-                    (treatment.prescription as unknown as Prescription)!.title,
-                  )}
+                // onClick={() =>
+                //   downloadFile(
+                //     (treatment.prescription as unknown as Prescription)!
+                //       .file_url,
+                //     (treatment.prescription as unknown as Prescription)!.title,
+                //   )}
               >
                 <Icon id="Download" size={19} />
                 <span>Baixar Prescrição</span>
@@ -203,232 +203,224 @@ function PatientNewTreatmentEntry() {
         </div>
       </div>
       <PageWrap>
-        {isLoading
-          ? <span class="loading loading-spinner text-green-600"></span>
-          : (
-            <div class="flex flex-col gap-8 w-full">
-              <div class="flex justify-between">
-                <h3 class="text-2xl text-[#8b8b8b] text-center">
-                  Novo Registro
-                </h3>
-              </div>
-              <div class="flex justify-center">
-                <div class="bg-white rounded-md shadow flex items-center justify-center gap-10 p-3 w-fit">
-                  <div class="flex gap-2 items-center">
-                    <Icon id="Calendar" size={18} />
-                    <span>{format(new Date(), "dd/MM/yyyy")}</span>
-                  </div>
+        {isLoading ? (
+          <span class="loading loading-spinner text-green-600"></span>
+        ) : (
+          <div class="flex flex-col gap-8 w-full">
+            <div class="flex justify-between">
+              <h3 class="text-2xl text-[#8b8b8b] text-center">Novo Registro</h3>
+            </div>
+            <div class="flex justify-center">
+              <div class="bg-white rounded-md shadow flex items-center justify-center gap-10 p-3 w-fit">
+                <div class="flex gap-2 items-center">
+                  <Icon id="Calendar" size={18} />
+                  <span>{format(new Date(), "dd/MM/yyyy")}</span>
                 </div>
-              </div>
-              <div>
-                {treatment && (
-                  <TreatmentCard
-                    treatment={treatment!}
-                    isPatient={true}
-                    hideLastFeedback={true}
-                  />
-                )}
-              </div>
-              <div class="flex flex-col">
-                <h3 class="text-sm text-[#8b8b8b] mb-2">
-                  Selecione Efeitos Desejados
-                </h3>
-                <div
-                  class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
-                >
-                  <div class="flex gap-8 overflow-scroll">
-                    {availableDesiredEffects.map((ef) => {
-                      return (
-                        <div
-                          class="cursor-pointer"
-                          onClick={() => {
-                            if (
-                              !desiredEffects.find(
-                                (e) => e.effect.name === ef.name,
-                              )
-                            ) {
-                              const newDesiredEffects = [...desiredEffects];
-                              newDesiredEffects.push({
-                                effect: {
-                                  name: ef.name,
-                                  _id: ef._id,
-                                  icon: ef.icon,
-                                },
-                                intensity: 5,
-                              });
-                              setDesiredEffects(newDesiredEffects);
-                            }
-                          }}
-                        >
-                          <MedicationEffectsCard
-                            icon={ef.icon as AvailableIcons}
-                            name={ef.name}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                <div class="flex flex-col gap-4 mt-4">
-                  {desiredEffects.map((ef, index) => {
-                    return (
-                      <div class="flex gap-4 items-center" key={index}>
-                        <span>
-                          <Icon
-                            id={ef.effect.icon as AvailableIcons}
-                            size={32}
-                          />
-                        </span>
-                        <input
-                          type="range"
-                          min="0"
-                          max="10"
-                          value={ef.intensity}
-                          onChange={(e) => {
-                            // console.log({ value: e.currentTarget.value });
-                            const newIntensity = Number(e.currentTarget.value);
-
-                            // Create a new array with the updated effect
-                            const newEffectArray = desiredEffects.map(
-                              (effect, idx) => {
-                                if (idx === index) {
-                                  return {
-                                    ...effect,
-                                    intensity: newIntensity,
-                                  };
-                                }
-                                return effect;
-                              },
-                            );
-
-                            setDesiredEffects(newEffectArray);
-                          }}
-                          class="range range-sm [--range-shdw:#32b541]"
-                        />
-                        <div class="bordered border-[#acacac] bg-white p-2 rounded-md">
-                          {ef.intensity}
-                        </div>
-                        <div
-                          class="cursor-pointer text-[#808080]"
-                          onClick={() => {
-                            const newDesiredEffects = desiredEffects.filter(
-                              (_, idx) => idx !== index,
-                            );
-                            setDesiredEffects(newDesiredEffects);
-                          }}
-                        >
-                          <Icon id="Close" size={16} />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              <div class="flex flex-col">
-                <h3 class="text-sm text-[#8b8b8b] mb-2">
-                  Selecione Efeitos Indesejados
-                </h3>
-                <div
-                  class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
-                >
-                  <div class="flex gap-8  overflow-scroll">
-                    {availableUndesiredEffects.map((ef) => {
-                      return (
-                        <div
-                          class="cursor-pointer"
-                          onClick={() => {
-                            if (
-                              !undesiredEffects.find(
-                                (e) => e.effect.name === ef.name,
-                              )
-                            ) {
-                              const newUndesiredEffects = [...undesiredEffects];
-                              newUndesiredEffects.push({
-                                effect: {
-                                  name: ef.name,
-                                  _id: ef._id,
-                                  icon: ef.icon,
-                                },
-                                intensity: 5,
-                              });
-                              setUndesiredEffects(newUndesiredEffects);
-                            }
-                          }}
-                        >
-                          <MedicationEffectsCard
-                            icon={ef.icon as AvailableIcons}
-                            name={ef.name}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-                <div class="flex flex-col gap-4 mt-4">
-                  {undesiredEffects.map((ef, index) => {
-                    return (
-                      <div class="flex gap-4 items-center" key={index}>
-                        <span>
-                          <Icon
-                            id={ef.effect.icon as AvailableIcons}
-                            size={32}
-                          />
-                        </span>
-                        <input
-                          type="range"
-                          min="0"
-                          max="10"
-                          value={ef.intensity}
-                          onChange={(e) => {
-                            // console.log({ value: e.currentTarget.value });
-                            const newIntensity = Number(e.currentTarget.value);
-
-                            // Create a new array with the updated effect
-                            const newEffectArray = undesiredEffects.map(
-                              (effect, idx) => {
-                                if (idx === index) {
-                                  return {
-                                    ...effect,
-                                    intensity: newIntensity,
-                                  };
-                                }
-                                return effect;
-                              },
-                            );
-
-                            setUndesiredEffects(newEffectArray);
-                          }}
-                          class="range range-sm [--range-shdw:#d93939]"
-                        />
-                        <div class="bordered border-[#acacac] bg-white p-2 rounded-md">
-                          {ef.intensity}
-                        </div>
-                        <div
-                          class="cursor-pointer text-[#808080]"
-                          onClick={() => {
-                            const newUndesiredEffects = undesiredEffects.filter(
-                              (_, idx) => idx !== index,
-                            );
-                            setUndesiredEffects(newUndesiredEffects);
-                          }}
-                        >
-                          <Icon id="Close" size={16} />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-              <div>
-                <button
-                  class="btn btn-primary text-white w-full"
-                  onClick={handleSubmit}
-                >
-                  Salvar Registro
-                </button>
               </div>
             </div>
-          )}
+            <div>
+              {treatment && (
+                <TreatmentCard
+                  treatment={treatment!}
+                  isPatient={true}
+                  hideLastFeedback={true}
+                />
+              )}
+            </div>
+            <div class="flex flex-col">
+              <h3 class="text-sm text-[#8b8b8b] mb-2">
+                Selecione Efeitos Desejados
+              </h3>
+              <div
+                class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+              >
+                <div class="flex gap-8 overflow-scroll">
+                  {availableDesiredEffects.map((ef) => {
+                    return (
+                      <div
+                        class="cursor-pointer"
+                        onClick={() => {
+                          if (
+                            !desiredEffects.find(
+                              (e) => e.effect.name === ef.name
+                            )
+                          ) {
+                            const newDesiredEffects = [...desiredEffects];
+                            newDesiredEffects.push({
+                              effect: {
+                                name: ef.name,
+                                _id: ef._id,
+                                icon: ef.icon,
+                              },
+                              intensity: 5,
+                            });
+                            setDesiredEffects(newDesiredEffects);
+                          }
+                        }}
+                      >
+                        <MedicationEffectsCard
+                          icon={ef.icon as AvailableIcons}
+                          name={ef.name}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div class="flex flex-col gap-4 mt-4">
+                {desiredEffects.map((ef, index) => {
+                  return (
+                    <div class="flex gap-4 items-center" key={index}>
+                      <span>
+                        <Icon id={ef.effect.icon as AvailableIcons} size={32} />
+                      </span>
+                      <input
+                        type="range"
+                        min="0"
+                        max="10"
+                        value={ef.intensity}
+                        onChange={(e) => {
+                          // console.log({ value: e.currentTarget.value });
+                          const newIntensity = Number(e.currentTarget.value);
+
+                          // Create a new array with the updated effect
+                          const newEffectArray = desiredEffects.map(
+                            (effect, idx) => {
+                              if (idx === index) {
+                                return {
+                                  ...effect,
+                                  intensity: newIntensity,
+                                };
+                              }
+                              return effect;
+                            }
+                          );
+
+                          setDesiredEffects(newEffectArray);
+                        }}
+                        class="range range-sm [--range-shdw:#32b541]"
+                      />
+                      <div class="bordered border-[#acacac] bg-white p-2 rounded-md">
+                        {ef.intensity}
+                      </div>
+                      <div
+                        class="cursor-pointer text-[#808080]"
+                        onClick={() => {
+                          const newDesiredEffects = desiredEffects.filter(
+                            (_, idx) => idx !== index
+                          );
+                          setDesiredEffects(newDesiredEffects);
+                        }}
+                      >
+                        <Icon id="Close" size={16} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <h3 class="text-sm text-[#8b8b8b] mb-2">
+                Selecione Efeitos Indesejados
+              </h3>
+              <div
+                class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+              >
+                <div class="flex gap-8  overflow-scroll">
+                  {availableUndesiredEffects.map((ef) => {
+                    return (
+                      <div
+                        class="cursor-pointer"
+                        onClick={() => {
+                          if (
+                            !undesiredEffects.find(
+                              (e) => e.effect.name === ef.name
+                            )
+                          ) {
+                            const newUndesiredEffects = [...undesiredEffects];
+                            newUndesiredEffects.push({
+                              effect: {
+                                name: ef.name,
+                                _id: ef._id,
+                                icon: ef.icon,
+                              },
+                              intensity: 5,
+                            });
+                            setUndesiredEffects(newUndesiredEffects);
+                          }
+                        }}
+                      >
+                        <MedicationEffectsCard
+                          icon={ef.icon as AvailableIcons}
+                          name={ef.name}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div class="flex flex-col gap-4 mt-4">
+                {undesiredEffects.map((ef, index) => {
+                  return (
+                    <div class="flex gap-4 items-center" key={index}>
+                      <span>
+                        <Icon id={ef.effect.icon as AvailableIcons} size={32} />
+                      </span>
+                      <input
+                        type="range"
+                        min="0"
+                        max="10"
+                        value={ef.intensity}
+                        onChange={(e) => {
+                          // console.log({ value: e.currentTarget.value });
+                          const newIntensity = Number(e.currentTarget.value);
+
+                          // Create a new array with the updated effect
+                          const newEffectArray = undesiredEffects.map(
+                            (effect, idx) => {
+                              if (idx === index) {
+                                return {
+                                  ...effect,
+                                  intensity: newIntensity,
+                                };
+                              }
+                              return effect;
+                            }
+                          );
+
+                          setUndesiredEffects(newEffectArray);
+                        }}
+                        class="range range-sm [--range-shdw:#d93939]"
+                      />
+                      <div class="bordered border-[#acacac] bg-white p-2 rounded-md">
+                        {ef.intensity}
+                      </div>
+                      <div
+                        class="cursor-pointer text-[#808080]"
+                        onClick={() => {
+                          const newUndesiredEffects = undesiredEffects.filter(
+                            (_, idx) => idx !== index
+                          );
+                          setUndesiredEffects(newUndesiredEffects);
+                        }}
+                      >
+                        <Icon id="Close" size={16} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div>
+              <button
+                class="btn btn-primary text-white w-full"
+                onClick={handleSubmit}
+              >
+                Salvar Registro
+              </button>
+            </div>
+          </div>
+        )}
       </PageWrap>
     </>
   );
