@@ -5,6 +5,7 @@ import { invoke } from "../../runtime.ts";
 import Icon from "./Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatientsLive.tsx";
+import { h } from "preact";
 
 type Medications = Treatment["medications"];
 
@@ -21,6 +22,16 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
     IS_BROWSER ? localStorage.getItem("PrescriberAccessToken") || "" : "",
   );
   const [updating, setUpdating] = useState<boolean>(false);
+  const [file, setFile] = useState<File>();
+
+  const handleStoreDocument = (
+    event: h.JSX.TargetedEvent<HTMLInputElement, Event>,
+  ) => {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files) {
+      setFile(fileInput.files[0]);
+    }
+  };
 
   const getActiveTreatmentByPatient = async (
     accessToken: string,
@@ -87,16 +98,46 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
 
   const handleSubmit = async () => {
     setUpdating(true);
-    const response = await invoke[
-      "deco-sites/ecannadeco"
-    ].actions.prescriberCreateTreatment({
-      token: accessToken,
-      treatment: newTreatment,
-    });
-    setUpdating(false);
-    onFinished();
-    if (response) {
+
+    const formData = new FormData();
+
+    if (!newTreatment?.medications || newTreatment!.medications!.length === 0) {
+      alert(
+        "Você deve informar as medicações do tratamento antes de continuar",
+      );
+      return false;
+    }
+    console.log({ file });
+    formData.append("prescription", file! || "");
+    formData.append("patient", newTreatment!.patient!._id);
+    const medicationsJson = JSON.stringify(newTreatment!.medications!);
+    formData.append("medications", medicationsJson);
+
+    try {
+      const response = await fetch(
+        "https://api.ecanna.com.br/prescribers/treatments",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: accessToken,
+            ContentType: "multipart/form-data",
+          },
+        },
+      );
+
+      setUpdating(false);
+      onFinished();
+      if (response) {
+        displayNewTreatmentModal.value = false;
+      }
+    } catch (e) {
+      setUpdating(false);
+      onFinished();
       displayNewTreatmentModal.value = false;
+      alert(
+        `Houve um erro nesta operação. Entre em contato com o suporte: ${e}`,
+      );
     }
   };
 
@@ -174,6 +215,18 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
         >
           + Adicionar Medicação
         </span>
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">
+              Prescrição deste novo tratamento (opcional)
+            </span>
+          </div>
+          <input
+            type="file"
+            class="file-input file-input-primary w-full"
+            onChange={(e) => handleStoreDocument(e)}
+          />
+        </label>
         <button class="btn btn-secondary text-white" onClick={handleSubmit}>
           {currentTreatment ? "Atualizar Tratamento" : "Criar Tratamento"}
           {"    "}{updating

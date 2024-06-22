@@ -25,6 +25,11 @@ export type Feeling = {
   icon: string;
 };
 
+type Prescription = {
+  title: string;
+  file_url: string;
+};
+
 function PatientNewTreatmentEntry() {
   const [isLoading, setIsLoading] = useState(false);
   const [_feelings, setFeelings] = useState<Feeling[]>([]);
@@ -34,19 +39,20 @@ function PatientNewTreatmentEntry() {
     setIsLoading(true);
     const treatmentId = window.location.pathname.split("/").pop();
     const accessToken = localStorage.getItem("AccessToken") || "";
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .createTreatmentReport({
-        token: accessToken,
-        id: treatmentId,
-        goodFeelings: desiredEffects.map((ef) => ({
-          _id: ef.effect._id,
-          grade: ef.intensity,
-        })),
-        badFeelings: undesiredEffects.map((ef) => ({
-          _id: ef.effect._id,
-          grade: ef.intensity,
-        })),
-      });
+    const response = await invoke[
+      "deco-sites/ecannadeco"
+    ].actions.createTreatmentReport({
+      token: accessToken,
+      id: treatmentId,
+      goodFeelings: desiredEffects.map((ef) => ({
+        _id: ef.effect._id,
+        grade: ef.intensity,
+      })),
+      badFeelings: undesiredEffects.map((ef) => ({
+        _id: ef.effect._id,
+        grade: ef.intensity,
+      })),
+    });
     setIsLoading(false);
     if (response) {
       window.location.href = `/tratamentos/${treatmentId}`;
@@ -55,8 +61,9 @@ function PatientNewTreatmentEntry() {
 
   const getFeelings = async () => {
     setIsLoading(true);
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .getFeelings();
+    const response = await invoke[
+      "deco-sites/ecannadeco"
+    ].actions.getFeelings();
     setIsLoading(false);
     if (response) {
       setFeelings(response as Feeling[]);
@@ -73,16 +80,46 @@ function PatientNewTreatmentEntry() {
   const getTreatment = async (accessToken: string) => {
     setIsLoading(true);
     const reportId = window.location.pathname.split("/").pop();
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .getTreatment({
+    const response = await invoke["deco-sites/ecannadeco"].actions.getTreatment(
+      {
         token: accessToken,
         id: reportId,
-      });
+      },
+    );
+    console.log({ response });
     setIsLoading(false);
     if (response) {
       setTreatment(response?.treatment as Treatment);
     }
   };
+
+  function downloadFile(fileUrl: string, filename: string) {
+    // console.log({ fileUrl, filename });
+    // Fetch the file data
+    fetch(fileUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        console.log({ blob });
+        // Create a temporary anchor element
+        const a = document.createElement("a");
+        a.style.display = "none";
+
+        // Set the download attribute and file URL
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+
+        // Append the anchor to the body and trigger the download
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up
+        window.URL.revokeObjectURL(a.href);
+        document.body.removeChild(a);
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
+  }
 
   useEffect(() => {
     let accessToken = "";
@@ -97,26 +134,26 @@ function PatientNewTreatmentEntry() {
     getFeelings();
     getTreatment(accessToken);
   }, []);
-  const [desiredEffects, setDesiredEffects] = useState<{
-    effect: {
-      name: string;
-      _id: string;
-      icon: string;
-    };
-    intensity: number;
-  }[]>(
-    [],
-  );
-  const [undesiredEffects, setUndesiredEffects] = useState<{
-    effect: {
-      name: string;
-      _id: string;
-      icon: string;
-    };
-    intensity: number;
-  }[]>(
-    [],
-  );
+  const [desiredEffects, setDesiredEffects] = useState<
+    {
+      effect: {
+        name: string;
+        _id: string;
+        icon: string;
+      };
+      intensity: number;
+    }[]
+  >([]);
+  const [undesiredEffects, setUndesiredEffects] = useState<
+    {
+      effect: {
+        name: string;
+        _id: string;
+        icon: string;
+      };
+      intensity: number;
+    }[]
+  >([]);
   const [availableDesiredEffects, setAvailableDesiredEffects] = useState<
     Feeling[]
   >([]);
@@ -127,22 +164,42 @@ function PatientNewTreatmentEntry() {
   return (
     <>
       <div class="w-full flex justify-center mb-4">
-        <div class="flex justify-between w-[90%] max-w-[800px]">
+        <div class="flex justify-between items-center w-[90%] max-w-[800px]">
           <button
             class="btn btn-sm btn-ghost text-[#b0b0b0]"
             onClick={() => window.history.back()}
           >
             <Icon id="GoBack" size={19} />
           </button>
-          <a
-            href={`/tratamentos/${treatment?._id}`}
-            class="btn btn-sm btn-secondary text-white"
-          >
-            <Icon id="Chart" size={19} />
-            <span>
-              Relatório Completo
-            </span>
-          </a>
+          <div class="flex flex-col sm:flex-row justify-between gap-4">
+            <a
+              href={`/tratamentos/${treatment?._id}`}
+              class="btn btn-xs sm:btn-sm btn-secondary text-white"
+            >
+              <Icon id="Chart" size={19} />
+              <span>Relatório Completo</span>
+            </a>
+            {treatment?.prescription && (
+              <a
+                // href={
+                //   (treatment.prescription as unknown as Prescription)!.file_url
+                // }
+                // download={
+                //   (treatment.prescription as unknown as Prescription)!.title
+                // }
+                class="btn btn-xs sm:btn-sm btn-secondary text-white"
+                onClick={() =>
+                  downloadFile(
+                    (treatment.prescription as unknown as Prescription)!
+                      .file_url,
+                    (treatment.prescription as unknown as Prescription)!.title,
+                  )}
+              >
+                <Icon id="Download" size={19} />
+                <span>Baixar Prescrição</span>
+              </a>
+            )}
+          </div>
         </div>
       </div>
       <PageWrap>
@@ -186,21 +243,19 @@ function PatientNewTreatmentEntry() {
                           class="cursor-pointer"
                           onClick={() => {
                             if (
-                              !desiredEffects.find((e) =>
-                                e.effect.name === ef.name
+                              !desiredEffects.find(
+                                (e) => e.effect.name === ef.name,
                               )
                             ) {
                               const newDesiredEffects = [...desiredEffects];
-                              newDesiredEffects.push(
-                                {
-                                  effect: {
-                                    name: ef.name,
-                                    _id: ef._id,
-                                    icon: ef.icon,
-                                  },
-                                  intensity: 5,
+                              newDesiredEffects.push({
+                                effect: {
+                                  name: ef.name,
+                                  _id: ef._id,
+                                  icon: ef.icon,
                                 },
-                              );
+                                intensity: 5,
+                              });
                               setDesiredEffects(newDesiredEffects);
                             }
                           }}
@@ -230,7 +285,7 @@ function PatientNewTreatmentEntry() {
                           max="10"
                           value={ef.intensity}
                           onChange={(e) => {
-                            console.log({ value: e.currentTarget.value });
+                            // console.log({ value: e.currentTarget.value });
                             const newIntensity = Number(e.currentTarget.value);
 
                             // Create a new array with the updated effect
@@ -256,10 +311,9 @@ function PatientNewTreatmentEntry() {
                         <div
                           class="cursor-pointer text-[#808080]"
                           onClick={() => {
-                            const newDesiredEffects = desiredEffects.filter((
-                              _,
-                              idx,
-                            ) => idx !== index);
+                            const newDesiredEffects = desiredEffects.filter(
+                              (_, idx) => idx !== index,
+                            );
                             setDesiredEffects(newDesiredEffects);
                           }}
                         >
@@ -284,21 +338,19 @@ function PatientNewTreatmentEntry() {
                           class="cursor-pointer"
                           onClick={() => {
                             if (
-                              !undesiredEffects.find((e) =>
-                                e.effect.name === ef.name
+                              !undesiredEffects.find(
+                                (e) => e.effect.name === ef.name,
                               )
                             ) {
                               const newUndesiredEffects = [...undesiredEffects];
-                              newUndesiredEffects.push(
-                                {
-                                  effect: {
-                                    name: ef.name,
-                                    _id: ef._id,
-                                    icon: ef.icon,
-                                  },
-                                  intensity: 5,
+                              newUndesiredEffects.push({
+                                effect: {
+                                  name: ef.name,
+                                  _id: ef._id,
+                                  icon: ef.icon,
                                 },
-                              );
+                                intensity: 5,
+                              });
                               setUndesiredEffects(newUndesiredEffects);
                             }
                           }}
@@ -328,7 +380,7 @@ function PatientNewTreatmentEntry() {
                           max="10"
                           value={ef.intensity}
                           onChange={(e) => {
-                            console.log({ value: e.currentTarget.value });
+                            // console.log({ value: e.currentTarget.value });
                             const newIntensity = Number(e.currentTarget.value);
 
                             // Create a new array with the updated effect
@@ -355,10 +407,7 @@ function PatientNewTreatmentEntry() {
                           class="cursor-pointer text-[#808080]"
                           onClick={() => {
                             const newUndesiredEffects = undesiredEffects.filter(
-                              (
-                                _,
-                                idx,
-                              ) => idx !== index,
+                              (_, idx) => idx !== index,
                             );
                             setUndesiredEffects(newUndesiredEffects);
                           }}

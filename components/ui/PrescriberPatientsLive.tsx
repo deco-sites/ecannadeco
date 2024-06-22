@@ -53,6 +53,7 @@ export type Treatment = {
     _id: string;
     name: string;
   };
+  prescription?: File;
 };
 
 export type Patient = {
@@ -236,7 +237,8 @@ function PrescriberPatients() {
                   <ul class="flex flex-col gap-4">
                     <li class="text-xs">
                       {totalDocs} paciente{totalDocs === 1 ? "" : "s"}{" "}
-                      encontrado{totalDocs === 1 ? "" : "s"}
+                      encontrado
+                      {totalDocs === 1 ? "" : "s"}
                     </li>
                     {patients.length === 0 && (
                       <>
