@@ -39,21 +39,18 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
       >
         <div class="flex justify-between p-3">
           <div class="flex flex-col gap-4 items-start">
-            {treatment.medications && treatment.medications.map((m) => {
-              return (
-                <div class="flex gap-2 items-center text-[#444444]">
-                  <Icon id="Drop" size={12} />
-                  <div class="flex flex-col">
-                    <span class="font-semibold text-sm">
-                      {m.name}
-                    </span>
-                    <span class="text-xs">
-                      {m.dosage}
-                    </span>
+            {treatment.medications &&
+              treatment.medications.map((m) => {
+                return (
+                  <div class="flex gap-2 items-center text-[#444444]">
+                    <Icon id="Drop" size={12} />
+                    <div class="flex flex-col">
+                      <span class="font-semibold text-sm">{m.name}</span>
+                      <span class="text-xs">{m.dosage}</span>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
           </div>
           <div
             class={`flex flex-col items-end gap-2 ${
@@ -62,32 +59,23 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
           >
             <div class="flex justify-between items-center gap-2 text-[#808080]">
               <Icon id="Update" size={16} />
-              <span>
-                {timeAgo(
-                  new Date(
-                    treatment.updated_at,
-                  ),
-                )}
-              </span>
+              <span>{timeAgo(new Date(treatment.updated_at))}</span>
             </div>
             <div
               class={`${
-                treatment.status !==
-                    "BAD"
-                  ? "text-green-600"
-                  : "text-red-600"
+                treatment.status !== "BAD" ? "text-green-600" : "text-red-600"
               }`}
             >
               <Icon
-                id={`${
-                  treatment.status !==
-                      "BAD"
-                    ? "HappyFace"
-                    : "SadFace"
-                }`}
+                id={`${treatment.status !== "BAD" ? "HappyFace" : "SadFace"}`}
                 size={19}
               />
             </div>
+            {treatment.prescription && (
+              <div class="text-[#808080]">
+                <Icon id="Form" size={19} />
+              </div>
+            )}
           </div>
         </div>
         {(treatment.patient || treatment.prescriber) && (

@@ -5,6 +5,7 @@ import { invoke } from "../../runtime.ts";
 import Icon from "./Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatientsLive.tsx";
+import { h } from "preact";
 
 type Medications = Treatment["medications"];
 
@@ -18,20 +19,31 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
   const [newMedication, setNewMedication] = useState<Medications>([]);
   const [newTreatment, setNewTreatment] = useState<Treatment | null>(null);
   const [accessToken, _setAccessToken] = useState(
-    IS_BROWSER ? (localStorage.getItem("PrescriberAccessToken") || "") : "",
+    IS_BROWSER ? localStorage.getItem("PrescriberAccessToken") || "" : "",
   );
   const [updating, setUpdating] = useState<boolean>(false);
+  const [file, setFile] = useState<File>();
+
+  const handleStoreDocument = (
+    event: h.JSX.TargetedEvent<HTMLInputElement, Event>,
+  ) => {
+    const fileInput = event.target as HTMLInputElement;
+    if (fileInput.files) {
+      setFile(fileInput.files[0]);
+    }
+  };
 
   const getActiveTreatmentByPatient = async (
     accessToken: string,
     patientId: string,
   ) => {
     setUpdating(true);
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .prescriberGetActiveTreatmentByPatient({
-        token: accessToken,
-        patientId,
-      });
+    const response = await invoke[
+      "deco-sites/ecannadeco"
+    ].actions.prescriberGetActiveTreatmentByPatient({
+      token: accessToken,
+      patientId,
+    });
     setUpdating(false);
     if (response) {
       setCurrentTreatment(response as Treatment);
@@ -45,22 +57,21 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
         },
         medications: [],
       } as unknown as Treatment);
+      setNewMedication([{ name: "", dosage: "" }] as Medications);
     }
   };
 
   useEffect(() => {
     const accessToken = IS_BROWSER
-      ? (localStorage.getItem("PrescriberAccessToken") || "")
+      ? localStorage.getItem("PrescriberAccessToken") || ""
       : "";
     const patientId = IS_BROWSER
-      ? (window.location.pathname.split("/")[3] || "")
+      ? window.location.pathname.split("/")[3] || ""
       : "";
     console.log({ patientId });
     getActiveTreatmentByPatient(accessToken, patientId);
   }, []);
-  const {
-    displayNewTreatmentModal,
-  } = useUI();
+  const { displayNewTreatmentModal } = useUI();
 
   const _handleUpdateTreatment = () => {
     const treatment = currentTreatment;
@@ -87,15 +98,46 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
 
   const handleSubmit = async () => {
     setUpdating(true);
-    const response = await invoke["deco-sites/ecannadeco"].actions
-      .prescriberCreateTreatment({
-        token: accessToken,
-        treatment: newTreatment,
-      });
-    setUpdating(false);
-    onFinished();
-    if (response) {
+
+    const formData = new FormData();
+
+    if (!newTreatment?.medications || newTreatment!.medications!.length === 0) {
+      alert(
+        "Você deve informar as medicações do tratamento antes de continuar",
+      );
+      return false;
+    }
+    console.log({ file });
+    formData.append("prescription", file! || "");
+    formData.append("patient", newTreatment!.patient!._id);
+    const medicationsJson = JSON.stringify(newTreatment!.medications!);
+    formData.append("medications", medicationsJson);
+
+    try {
+      const response = await fetch(
+        "https://api.ecanna.com.br/prescribers/treatments",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: accessToken,
+            ContentType: "multipart/form-data",
+          },
+        },
+      );
+
+      setUpdating(false);
+      onFinished();
+      if (response) {
+        displayNewTreatmentModal.value = false;
+      }
+    } catch (e) {
+      setUpdating(false);
+      onFinished();
       displayNewTreatmentModal.value = false;
+      alert(
+        `Houve um erro nesta operação. Entre em contato com o suporte: ${e}`,
+      );
     }
   };
 
@@ -103,7 +145,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
     <Modal
       loading="lazy"
       open={displayNewTreatmentModal.value}
-      onClose={() => displayNewTreatmentModal.value = false}
+      onClose={() => (displayNewTreatmentModal.value = false)}
     >
       <div class="flex flex-col p-10 gap-3 max-h-[90%] max-w-[90%] overflow-scroll bg-[#EDEDED] rounded-xl">
         <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
@@ -129,12 +171,10 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
                     const newMedications = newMedication;
                     medication.name = e.currentTarget.value;
                     setNewMedication(newMedications);
-                    setNewTreatment(
-                      {
-                        ...newTreatment,
-                        medications: newMedications,
-                      } as Treatment,
-                    );
+                    setNewTreatment({
+                      ...newTreatment,
+                      medications: newMedications,
+                    } as Treatment);
                   }}
                 />
               </label>
@@ -152,12 +192,10 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
                     const newMedications = newMedication;
                     medication.dosage = e.currentTarget.value;
                     setNewMedication(newMedications);
-                    setNewTreatment(
-                      {
-                        ...newTreatment,
-                        medications: newMedications,
-                      } as Treatment,
-                    );
+                    setNewTreatment({
+                      ...newTreatment,
+                      medications: newMedications,
+                    } as Treatment);
                   }}
                 />
               </label>
@@ -177,10 +215,19 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
         >
           + Adicionar Medicação
         </span>
-        <button
-          class="btn btn-secondary text-white"
-          onClick={handleSubmit}
-        >
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">
+              Prescrição deste novo tratamento (opcional)
+            </span>
+          </div>
+          <input
+            type="file"
+            class="file-input file-input-primary w-full"
+            onChange={(e) => handleStoreDocument(e)}
+          />
+        </label>
+        <button class="btn btn-secondary text-white" onClick={handleSubmit}>
           {currentTreatment ? "Atualizar Tratamento" : "Criar Tratamento"}
           {"    "}{updating
             ? <span class="loading loading-spinner text-white"></span>
