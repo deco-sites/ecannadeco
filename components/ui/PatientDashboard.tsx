@@ -7,14 +7,14 @@ import {
   Service,
 } from "../landingpages/PatientServicesLP.tsx";
 import Icon from "../ui/Icon.tsx";
-import Image from "apps/website/components/Image.tsx";
+// import Image from "apps/website/components/Image.tsx";
 
 export interface Props {
   services: Service[];
   partnerAssociations: PartnerAssociation[];
 }
 
-function PatientDashboard({ services, partnerAssociations }: Props) {
+function PatientDashboard({ services }: Props) {
   return (
     <PageWrap>
       <div class="flex flex-col gap-5 w-full">
@@ -36,7 +36,8 @@ function PatientDashboard({ services, partnerAssociations }: Props) {
             ))}
           </div>
         </div>
-        <div class="divider divider-black">Associações Parceiras</div>
+        {
+          /* <div class="divider divider-black">Associações Parceiras</div>
         <div class="flex justify-center">
           {partnerAssociations.map((association) => (
             <a
@@ -51,7 +52,8 @@ function PatientDashboard({ services, partnerAssociations }: Props) {
               />
             </a>
           ))}
-        </div>
+        </div> */
+        }
       </div>
     </PageWrap>
   );

@@ -1,4 +1,4 @@
-import Image from "apps/website/components/Image.tsx";
+// import Image from "apps/website/components/Image.tsx";
 import Icon, { AvailableIcons } from "../ui/Icon.tsx";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
@@ -36,8 +36,8 @@ function Navbar({
   preHeader,
   header,
   services,
-  partnerAssociations,
-}: Props) {
+}: // partnerAssociations,
+  Props) {
   const handleClick = ({ serviceLabel }: { serviceLabel: string }) => {
     if (IS_BROWSER) {
       localStorage.setItem("servicePipeline", serviceLabel);
@@ -100,7 +100,8 @@ function Navbar({
             ))}
           </div>
         </div>
-        <div class="divider divider-neutral">Associações Parceiras</div>
+        {
+          /* <div class="divider divider-neutral">Associações Parceiras</div>
         <div>
           {partnerAssociations.map((association) => (
             <div class="flex flex-col cursor-pointer gap-2 items-center justify-center text-center p-4 h-76 sm:h-72 w-40 sm:w-44 text-primary bg-white rounded-md shadow-lg">
@@ -124,7 +125,8 @@ function Navbar({
               </button>
             </div>
           ))}
-        </div>
+        </div> */
+        }
         <div></div>
       </div>
     </div>
