@@ -9,9 +9,7 @@ import PageWrap from "../../components/ui/PageWrap.tsx";
 import Icon from "../../components/ui/Icon.tsx";
 import AdminNewDocModal from "../../islands/AdminNewDocModal.tsx";
 import PreSignupUsersModal from "../../islands/PreSignupUsersModal.tsx";
-import type {
-  AssociationUsers,
-} from "../../actions/adminGetAssociationUsers.ts";
+import type { AssociationUsers } from "../../actions/adminGetAssociationUsers.ts";
 import { useUI } from "../../sdk/useUI.ts";
 import Image from "apps/website/components/Image.tsx";
 import { h } from "preact";
@@ -85,7 +83,7 @@ function MyAccount() {
     return (
       <Modal
         open={displayConfirmDeleteDoc.value}
-        onClose={() => displayConfirmDeleteDoc.value = false}
+        onClose={() => (displayConfirmDeleteDoc.value = false)}
       >
         <div class="flex flex-col p-16 gap-3 bg-[#EDEDED] rounded-xl">
           <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
@@ -125,12 +123,14 @@ function MyAccount() {
     try {
       setIsLoading(true);
 
-      invoke["deco-sites/ecannadeco"].actions.getAssociationDocs({
-        token: accessToken,
-      }).then((r) => {
-        setDocs((r as { docs: DocListType[] }).docs);
-        setIsLoading(false);
-      });
+      invoke["deco-sites/ecannadeco"].actions
+        .getAssociationDocs({
+          token: accessToken,
+        })
+        .then((r) => {
+          setDocs((r as { docs: DocListType[] }).docs);
+          setIsLoading(false);
+        });
     } catch (_e) {
       alert(
         "Não foi possível carregar os documentos. Tente novamente mais tarde ou contecte o suporte.",
@@ -154,20 +154,17 @@ function MyAccount() {
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("category", "selfie_photo");
+      formData.append("category", "association_logo");
 
       try {
-        const response = await fetch(
-          "https://api.ecanna.com.br/files",
-          {
-            method: "POST",
-            body: formData,
-            headers: {
-              Authorization: accessToken,
-              ContentType: "multipart/form-data",
-            },
+        const response = await fetch("https://api.ecanna.com.br/files", {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: accessToken,
+            ContentType: "multipart/form-data",
           },
-        );
+        });
         const r = await response.json();
 
         setAssociationLogo(r.url);
@@ -196,32 +193,36 @@ function MyAccount() {
 
       getDocuments();
 
-      invoke["deco-sites/ecannadeco"].actions.adminGetAssociation({
-        token: accessToken,
-        id: associationAdmin,
-      }).then((r) => {
-        associationToAdminCreateDoc.value = {
-          _id: r._id,
-          name: r.name,
-        };
-        setAssociationName(r.name);
-        setAssociationCnpj(r.cnpj);
-        setAssociationLogo(r.logo_url);
-        invoke["deco-sites/ecannadeco"].actions.adminGetAssociationUsers({
+      invoke["deco-sites/ecannadeco"].actions
+        .adminGetAssociation({
           token: accessToken,
-        }).then((r) => {
-          if (r.message) {
-            throw new Error(r.message);
-          }
-          setPage(r.page);
-          setTotalPages(r.totalPages);
-          setLimit(r.limit);
-          setHasNextPage(r.hasNextPage);
-          setHasPrevPage(r.hasPrevPage);
-          setAssociationUsers(r.docs);
-          setIsLoading(false);
+          id: associationAdmin,
+        })
+        .then((r) => {
+          associationToAdminCreateDoc.value = {
+            _id: r._id,
+            name: r.name,
+          };
+          setAssociationName(r.name);
+          setAssociationCnpj(r.cnpj);
+          setAssociationLogo(r.logo_url);
+          invoke["deco-sites/ecannadeco"].actions
+            .adminGetAssociationUsers({
+              token: accessToken,
+            })
+            .then((r) => {
+              if (r.message) {
+                throw new Error(r.message);
+              }
+              setPage(r.page);
+              setTotalPages(r.totalPages);
+              setLimit(r.limit);
+              setHasNextPage(r.hasNextPage);
+              setHasPrevPage(r.hasPrevPage);
+              setAssociationUsers(r.docs);
+              setIsLoading(false);
+            });
         });
-      });
     } catch (e) {
       console.log({ e });
       alert(
@@ -243,17 +244,19 @@ function MyAccount() {
     setUpdating(true);
 
     try {
-      invoke["deco-sites/ecannadeco"].actions.adminUpdateAssociation({
-        body: {
-          name: associationName,
-          logo_url: associationLogo,
-        },
-        token: accessToken,
-        id: associationAdmin,
-      }).then((_r) => {
-        setUpdating(false);
-        window.location.reload();
-      });
+      invoke["deco-sites/ecannadeco"].actions
+        .adminUpdateAssociation({
+          body: {
+            name: associationName,
+            logo_url: associationLogo,
+          },
+          token: accessToken,
+          id: associationAdmin,
+        })
+        .then((_r) => {
+          setUpdating(false);
+          window.location.reload();
+        });
     } catch (_e) {
       alert(
         "Não foi possível Atualizar dados da associação. Tente novamente mais tarde ou contecte o suporte.",
@@ -273,25 +276,27 @@ function MyAccount() {
     setIsLoadingUsers(true);
 
     try {
-      invoke["deco-sites/ecannadeco"].actions.adminGetAssociationUsers({
-        token: accessToken,
-        params: {
-          email: emailSearch,
-          page: pageParam,
-          limit: limit || 25,
-        },
-      }).then((r) => {
-        if (r.message) {
-          throw new Error(r.message);
-        }
-        setPage(r.page);
-        setTotalPages(r.totalPages);
-        setLimit(r.limit);
-        setHasNextPage(r.hasNextPage);
-        setHasPrevPage(r.hasPrevPage);
-        setAssociationUsers(r.docs);
-        setIsLoadingUsers(false);
-      });
+      invoke["deco-sites/ecannadeco"].actions
+        .adminGetAssociationUsers({
+          token: accessToken,
+          params: {
+            email: emailSearch,
+            page: pageParam,
+            limit: limit || 25,
+          },
+        })
+        .then((r) => {
+          if (r.message) {
+            throw new Error(r.message);
+          }
+          setPage(r.page);
+          setTotalPages(r.totalPages);
+          setLimit(r.limit);
+          setHasNextPage(r.hasNextPage);
+          setHasPrevPage(r.hasPrevPage);
+          setAssociationUsers(r.docs);
+          setIsLoadingUsers(false);
+        });
     } catch (_e) {
       alert(
         "Não foi possível carregar usuários. Tente novamente mais tarde ou contecte o suporte.",
@@ -310,11 +315,12 @@ function MyAccount() {
     }
 
     try {
-      const r = await invoke["deco-sites/ecannadeco"].actions
-        .deleteAssociationDocument({
-          docId: id,
-          token: accessToken,
-        });
+      const r = await invoke[
+        "deco-sites/ecannadeco"
+      ].actions.deleteAssociationDocument({
+        docId: id,
+        token: accessToken,
+      });
 
       const resp = r as { message?: string };
 
@@ -390,9 +396,7 @@ function MyAccount() {
                 </label>
                 <label class="form-control w-full">
                   <div class="label pb-1">
-                    <span class="label-text text-xs text-[#585858]">
-                      CNPJ
-                    </span>
+                    <span class="label-text text-xs text-[#585858]">CNPJ</span>
                   </div>
                   <input
                     placeholder="CNPJ da Associação"
@@ -495,7 +499,8 @@ function MyAccount() {
                       displayPreSignupUsersModal.value = true;
                     }}
                   >
-                    <Icon id="UserData" size={19} />Pré-cadastrar Pacientes
+                    <Icon id="UserData" size={19} />
+                    Pré-cadastrar Pacientes
                   </button>
                 </div>
               </div>
@@ -522,84 +527,90 @@ function MyAccount() {
                   ? <span class="loading loading-spinner text-green-600"></span>
                   : (
                     <ul class="flex flex-col gap-2">
-                      {associationUsers && associationUsers.map((u) => {
-                        return (
-                          <div class="dropdown dropdown-top dropdown-end">
-                            <div tabindex={0} role="button" class="">
-                              <div target="_blank">
-                                <li class="p-3 bg-[#cacaca] flex gap-[2%] justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
-                                  <div class="w-[32%] flex justify-start">
-                                    <span>
-                                      {u.cognito_data
-                                        ? u.cognito_data.name
-                                        : (
-                                          <span class="badge text-xs font-bold">
-                                            Cadastro Pendente
-                                          </span>
-                                        )}
-                                    </span>
-                                  </div>
-                                  <div class="w-[32%] flex justify-start">
-                                    <span>{u.email}</span>
-                                  </div>
-                                  <div class="w-[32%] flex justify-end">
-                                    <span>
-                                      {u.cognito_data
-                                        ? u.cognito_data.cpf
-                                        : (
-                                          <span class="badge text-xs font-bold">
-                                            Cadastro Pendente
-                                          </span>
-                                        )}
-                                    </span>
-                                  </div>
-                                </li>
+                      {associationUsers &&
+                        associationUsers.map((u) => {
+                          return (
+                            <div class="dropdown dropdown-top dropdown-end">
+                              <div tabindex={0} role="button" class="">
+                                <div target="_blank">
+                                  <li class="p-3 bg-[#cacaca] flex gap-[2%] justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
+                                    <div class="w-[32%] flex justify-start">
+                                      <span>
+                                        {u.cognito_data
+                                          ? (
+                                            u.cognito_data.name
+                                          )
+                                          : (
+                                            <span class="badge text-xs font-bold">
+                                              Cadastro Pendente
+                                            </span>
+                                          )}
+                                      </span>
+                                    </div>
+                                    <div class="w-[32%] flex justify-start">
+                                      <span>{u.email}</span>
+                                    </div>
+                                    <div class="w-[32%] flex justify-end">
+                                      <span>
+                                        {u.cognito_data
+                                          ? (
+                                            u.cognito_data.cpf
+                                          )
+                                          : (
+                                            <span class="badge text-xs font-bold">
+                                              Cadastro Pendente
+                                            </span>
+                                          )}
+                                      </span>
+                                    </div>
+                                  </li>
+                                </div>
                               </div>
-                            </div>
-                            <ul
-                              tabindex={0}
-                              class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-                            >
-                              <span class="text-[10px] font-bold text-center">
-                                {u.email}
-                              </span>
-                              <li>
-                                <a
-                                  href={`https://api.ecanna.com.br/ficha/${u._id}`}
-                                  target="_blank"
-                                  class="flex items-center"
-                                >
-                                  Ficha do Paciente
-                                </a>
-                              </li>
-                              <li
-                                onClick={() => {
-                                  downloadFile(
-                                    u.qrcode_url,
-                                    `qrcode-${u.email}.png`,
-                                  );
-                                }}
+                              <ul
+                                tabindex={0}
+                                class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
                               >
-                                <a>Baixar QR Code</a>
-                              </li>
-                              <li>
-                                <a
+                                <span class="text-[10px] font-bold text-center">
+                                  {u.email}
+                                </span>
+                                <li>
+                                  <a
+                                    href={`https://api.ecanna.com.br/ficha/${u._id}`}
+                                    target="_blank"
+                                    class="flex items-center"
+                                  >
+                                    Ficha do Paciente
+                                  </a>
+                                </li>
+                                <li
                                   onClick={() => {
-                                    setCreateType("user");
-                                    displayAssociationAdminNewDoc.value = true;
-                                    userToAdminCreateDoc.value = {
-                                      _id: u._id,
-                                      email: u.email,
-                                    };
+                                    downloadFile(
+                                      u.qrcode_url,
+                                      `qrcode-${u.email}.png`,
+                                    );
                                   }}
                                 >
-                                  Subir Documento
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-                        );
-                      })}
+                                  <a>Baixar QR Code</a>
+                                </li>
+                                <li>
+                                  <a
+                                    onClick={() => {
+                                      setCreateType("user");
+                                      displayAssociationAdminNewDoc.value =
+                                        true;
+                                      userToAdminCreateDoc.value = {
+                                        _id: u._id,
+                                        email: u.email,
+                                      };
+                                    }}
+                                  >
+                                    Subir Documento
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
+                          );
+                        })}
                     </ul>
                   )}
               </div>
@@ -615,9 +626,7 @@ function MyAccount() {
                   )}
                 </div>
                 <div>
-                  <span class="text-xs">
-                    {`Página ${page}/${totalPages}`}
-                  </span>
+                  <span class="text-xs">{`Página ${page}/${totalPages}`}</span>
                 </div>
                 <div>
                   {hasNextPage && (
