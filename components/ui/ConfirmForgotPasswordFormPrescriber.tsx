@@ -52,7 +52,7 @@ function ConfirmForgotPasswordFormPrescriber({
           localStorage.setItem("emailConfirm", "");
         }
         setLoading(false);
-        window.location.href = "/entrar";
+        window.location.href = "/prescritor/entrar";
       }
     } catch (e) {
       alert("Não foi possível realizar esta operação. Contacte o suporte.");
