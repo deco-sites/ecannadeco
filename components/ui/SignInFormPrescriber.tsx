@@ -80,6 +80,15 @@ function SignInFormPrescriber({ formTitle }: Props) {
             />
           </label>
         </div>
+        <div class="label">
+          <span class="label-text-alt"></span>
+          <a
+            href="/prescritor/recuperar-senha"
+            class="label-text-alt text-xs text-[#585858] underline"
+          >
+            Esqueci minha senha
+          </a>
+        </div>
         <button
           type={"submit"}
           class="btn btn-primary text-white mt-5 disabled:loading border-none uppercase text-sm font-semibold"

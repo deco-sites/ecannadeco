@@ -6,7 +6,9 @@ export interface Props {
   formTitle?: string;
 }
 
-function ConfirmForgotPasswordForm({ formTitle = "Recuperar Senha" }: Props) {
+function ConfirmForgotPasswordFormPrescriber({
+  formTitle = "Recuperar Senha",
+}: Props) {
   let emailForgotPassword = "";
 
   if (IS_BROWSER) {
@@ -29,7 +31,7 @@ function ConfirmForgotPasswordForm({ formTitle = "Recuperar Senha" }: Props) {
     try {
       const data = await invoke[
         "deco-sites/ecannadeco"
-      ].actions.confirmForgotPassword({
+      ].actions.confirmForgotPasswordPrescriber({
         email,
         newPassword: confirmPassword,
         code,
@@ -139,4 +141,4 @@ function ConfirmForgotPasswordForm({ formTitle = "Recuperar Senha" }: Props) {
   );
 }
 
-export default ConfirmForgotPasswordForm;
+export default ConfirmForgotPasswordFormPrescriber;
