@@ -1,1 +1,1 @@
-export { default } from "../../components/ui/ForgotPassword.tsx";
+export { default } from "../../components/ui/ForgotPasswordPrescriber.tsx";

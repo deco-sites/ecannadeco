@@ -4,13 +4,14 @@ export interface Props {
   newPassword: string;
 }
 
-const confirmForgotPassword = async (
+const confirmForgotPasswordPrescriber = async (
   props: Props,
   _req: Request,
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
       "https://api.ecanna.com.br/prescribers/forgot-password/confirm",
+      // "http://localhost/prescribers/forgot-password/confirm",
       {
         method: "POST",
         headers: {
@@ -32,4 +33,4 @@ const confirmForgotPassword = async (
   }
 };
 
-export default confirmForgotPassword;
+export default confirmForgotPasswordPrescriber;
