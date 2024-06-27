@@ -20,10 +20,12 @@ import * as $CheckoutUpsellModalPrescriber from "./islands/CheckoutUpsellModalPr
 import * as $ChoosePlanSignup from "./islands/ChoosePlanSignup.tsx";
 import * as $ChoosePlanSignupPrescriber from "./islands/ChoosePlanSignupPrescriber.tsx";
 import * as $ConfirmForgotPasswordForm from "./islands/ConfirmForgotPasswordForm.tsx";
+import * as $ConfirmForgotPasswordFormPrescriber from "./islands/ConfirmForgotPasswordFormPrescriber.tsx";
 import * as $ConfirmPrescriberSignup from "./islands/ConfirmPrescriberSignup.tsx";
 import * as $ConfirmSignup from "./islands/ConfirmSignup.tsx";
 import * as $EcannaCardPage from "./islands/EcannaCardPage.tsx";
 import * as $ForgotPasswordForm from "./islands/ForgotPasswordForm.tsx";
+import * as $ForgotPasswordFormPrescriber from "./islands/ForgotPasswordFormPrescriber.tsx";
 import * as $FreshChart from "./islands/FreshChart.tsx";
 import * as $Header_Buttons from "./islands/Header/Buttons.tsx";
 import * as $Header_Cart_linx from "./islands/Header/Cart/linx.tsx";
@@ -107,10 +109,13 @@ const manifest = {
     "./islands/ChoosePlanSignup.tsx": $ChoosePlanSignup,
     "./islands/ChoosePlanSignupPrescriber.tsx": $ChoosePlanSignupPrescriber,
     "./islands/ConfirmForgotPasswordForm.tsx": $ConfirmForgotPasswordForm,
+    "./islands/ConfirmForgotPasswordFormPrescriber.tsx":
+      $ConfirmForgotPasswordFormPrescriber,
     "./islands/ConfirmPrescriberSignup.tsx": $ConfirmPrescriberSignup,
     "./islands/ConfirmSignup.tsx": $ConfirmSignup,
     "./islands/EcannaCardPage.tsx": $EcannaCardPage,
     "./islands/ForgotPasswordForm.tsx": $ForgotPasswordForm,
+    "./islands/ForgotPasswordFormPrescriber.tsx": $ForgotPasswordFormPrescriber,
     "./islands/FreshChart.tsx": $FreshChart,
     "./islands/Header/Buttons.tsx": $Header_Buttons,
     "./islands/Header/Cart/linx.tsx": $Header_Cart_linx,
