@@ -56,6 +56,7 @@ export interface Props {
   buttons?: Buttons;
 
   hideHeaderHight?: boolean;
+  prescriberAreaDisplay?: boolean;
 }
 
 function Header({
@@ -135,6 +136,7 @@ function Header({
   },
   logoMenu,
   hideHeaderHight,
+  prescriberAreaDisplay,
 }: SectionProps<typeof loader>) {
   const platform = usePlatform();
 
@@ -144,19 +146,15 @@ function Header({
         <Drawers
           menu={{
             items: navItems || [],
-            publicItems: publicNavItems ||
-              [],
-            prescriberItems: prescriberNavItems ||
-              [],
+            publicItems: publicNavItems || [],
+            prescriberItems: prescriberNavItems || [],
             logo: logoMenu,
           }}
           searchbar={searchbar}
           platform={platform}
         >
           <div class="bg-base-100 w-full z-50">
-            <Navbar
-              logo={logo}
-            />
+            <Navbar logo={logo} prescriberAreaDisplay={prescriberAreaDisplay} />
           </div>
         </Drawers>
       </header>
