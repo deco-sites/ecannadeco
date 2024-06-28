@@ -27,6 +27,7 @@ const displayNewPatientModal = signal(false);
 const displayNewTreatmentModal = signal(false);
 const displayPlanLimit = signal(false);
 const displayModalTextAction = signal(false);
+const displayVideoModal = signal(false);
 const updatedData = signal(true);
 const uploadedFile = signal(true);
 const user = signal<UserSession | null>(null);
@@ -63,6 +64,7 @@ const state = {
   associationToAdminCreateDoc,
   displayModalTextAction,
   displayNewTreatmentModal,
+  displayVideoModal,
   user,
   modalTextAction,
 };
