@@ -10,6 +10,8 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatientsLive.tsx";
 import TreatmentCard from "deco-sites/ecannadeco/components/ui/TreatmentCardLive.tsx";
 import Icon from "./Icon.tsx";
+import { useUI } from "../../sdk/useUI.ts";
+import ModalVideo from "deco-sites/ecannadeco/components/ui/ModalVideo.tsx";
 export type Address = {
   cep: string;
   number: string;
@@ -23,6 +25,7 @@ function PrescriberPatientTreatments() {
   const [currentTreatment, setCurrentTreatment] = useState<Treatment | null>(
     null,
   );
+  const { displayVideoModal } = useUI();
 
   const getTreatments = async (accessToken: string) => {
     setIsLoading(true);
@@ -58,6 +61,20 @@ function PrescriberPatientTreatments() {
               <h3 class="text-2xl text-[#8b8b8b] text-center">
                 Meu Tratamento
               </h3>
+              <button
+                class="btn btn-xs bg-[#d8d8d8] text-[#8c8c8c] border-none"
+                onClick={() => (displayVideoModal.value = true)}
+              >
+                <Icon id="Help" size={19} />
+                Como Funciona?
+              </button>
+
+              <ModalVideo
+                open={displayVideoModal.value}
+                onClose={() => (displayVideoModal.value = false)}
+                title="Paciente - Como usar?"
+                videoURL="https://www.youtube.com/embed/aofqjYZdl3w?si=eI5DxMZ2k9ZCogcS"
+              />
             </div>
             <div class="flex flex-col gap-8">
               <div class="flex flex-col gap-4">

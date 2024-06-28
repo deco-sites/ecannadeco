@@ -33,6 +33,7 @@ export type AvailableIcons =
   | "Heart"
   | "Hungry"
   | "Headache"
+  | "Help"
   | "Instagram"
   | "Info"
   | "QRicon"
@@ -93,9 +94,14 @@ interface Props extends JSX.SVGAttributes<SVGSVGElement> {
   size?: number;
 }
 
-function Icon(
-  { id, strokeWidth = 16, size, width, height, ...otherProps }: Props,
-) {
+function Icon({
+  id,
+  strokeWidth = 16,
+  size,
+  width,
+  height,
+  ...otherProps
+}: Props) {
   return (
     <svg
       {...otherProps}
