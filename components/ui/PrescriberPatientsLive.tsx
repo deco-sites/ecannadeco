@@ -9,6 +9,7 @@ import { useUI } from "../../sdk/useUI.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import PrescriberNewPatientModal from "../../islands/PrescriberNewPatientModalLive.tsx";
 import ModalTextAction from "./ModalTextAction.tsx";
+import ModalVideo from "deco-sites/ecannadeco/components/ui/ModalVideo.tsx";
 
 export type Address = {
   cep: string;
@@ -143,7 +144,8 @@ function PrescriberPatients() {
     }
   }, []);
 
-  const { displayNewPatientModal, displayModalTextAction } = useUI();
+  const { displayNewPatientModal, displayModalTextAction, displayVideoModal } =
+    useUI();
 
   const timeAgo = (date: Date): string => {
     const seconds = Math.floor((Number(new Date()) - +date) / 1000); // Explicitly convert to number
@@ -171,6 +173,13 @@ function PrescriberPatients() {
           >
             <Icon id="GoBack" size={19} />
           </button>
+          <button
+            class="btn btn-xs bg-[#d8d8d8] text-[#8c8c8c] border-none rounded-full"
+            onClick={() => (displayVideoModal.value = true)}
+          >
+            <Icon id="Help" size={19} />
+            Como Funciona?
+          </button>
         </div>
       </div>
       <PageWrap>
@@ -178,7 +187,13 @@ function PrescriberPatients() {
           ? <span class="loading loading-spinner text-green-600"></span>
           : (
             <div class="flex flex-col gap-3 w-full">
-              <div class="flex justify-center">
+              <ModalVideo
+                open={displayVideoModal.value}
+                onClose={() => (displayVideoModal.value = false)}
+                title="Prescritor - Como usar?"
+                videoURL="https://www.youtube.com/embed/jCUQwbZsWrk?si=eVBWz87A8L4atM0j"
+              />
+              <div class="flex flex-col items-center justify-center gap-1">
                 <h3 class="text-2xl text-[#8b8b8b] text-center mb-8">
                   Meus Pacientes
                 </h3>
