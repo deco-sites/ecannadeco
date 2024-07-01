@@ -19,7 +19,7 @@ function ChoosePlanSignupPrescriber() {
     setLoading(true);
     try {
       const _params = fetch(
-        `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=true`
+        `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=true`,
       ).then(async (r) => {
         const c = await r.json();
         console.log({ plans: c.docs });
@@ -70,7 +70,7 @@ function ChoosePlanSignupPrescriber() {
       localStorage.setItem("planPeriodPrescriber", newPlan!.period);
       localStorage.setItem(
         "planStartBillingPrescriber",
-        String(newPlan!.startBilling)
+        String(newPlan!.startBilling),
       );
     }
 
@@ -80,153 +80,158 @@ function ChoosePlanSignupPrescriber() {
   return (
     <FormWrap large={true}>
       <div class="">
-        {loading ? (
-          <div class="w-full flex justify-center">
-            <span class="loading loading-spinner w-4" />
-          </div>
-        ) : (
-          <form
-            class="form-control flex flex-col gap-2"
-            onSubmit={(e) => handleSubmit(e)}
-          >
-            <span class="text-2xl text-[#8b8b8b] font-semibold text-center my-4">
-              Planos para Prescritores
-            </span>
-            <span class="label-text text-xs text-[#585858]">
-              Selecione seu plano
-            </span>
-            <div id={id}>
-              <Slider class="carousel gap-3 max-w-[105%]">
-                {plans.map((plan, i) => (
-                  <Slider.Item class="carousel-item" index={i}>
-                    <div
-                      class="bg-white rounded-md p-3 flex flex-col justify-between"
-                      onClick={() =>
-                        setNewPlan(plans.find((p) => p.name === plan.name))
-                      }
-                    >
-                      <div class="flex items-center gap-4">
-                        <div
-                          class={`h-8 w-8 rounded-full ${
-                            plan.name == newPlan?.name
-                              ? "bg-primary flex items-center justify-center"
-                              : "bg-white"
-                          }`}
-                          style={{
-                            "box-shadow": "inset 1px 3px 7px rgb(0 0 0 / 20%)",
-                          }}
-                        >
-                          {plan.name == newPlan?.name && (
-                            <Icon class="text-white" id="Check" size={19} />
-                          )}
-                        </div>
-                        <div class="flex flex-col text-[#898989]">
-                          <span class=" uppercase text-sm">{plan.name}</span>
-                          <span class="text-xs">
-                            {"R$ " +
-                              (plan.price / 100).toFixed(2) +
-                              "/" +
-                              (plan.period === "MONTHLY" && "mês")}
-                          </span>
-                        </div>
-                      </div>
-                      <div class="flex flex-col gap-2">
-                        {plan.startBilling && plan.startBilling > 0 && (
-                          <span class="text-xs font-semibold mt-2 text-primary">
-                            {plan.startBilling} dias grátis
-                          </span>
-                        )}
-                        <ul class="flex flex-col gap-3 py-4">
-                          <li class="flex gap-3 items-center">
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Gestão visual de paciente/tratamento
-                            </span>
-                          </li>
-                          <li class="flex gap-3 items-center">
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Gestão de assiduidade de tratamento
-                            </span>
-                          </li>
-                          <li
-                            // class={`flex gap-3 items-center ${
-                            //   plan.name == "FREE" && "opacity-20"
-                            // }`}
-                            class={`flex gap-3 items-center`}
-                          >
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Visão gráfica de histórico de tratamento
-                            </span>
-                          </li>
-                          <li
-                            // class={`flex gap-3 items-center ${
-                            //   plan.name == "FREE" && "opacity-20"
-                            // }`}
-                            class={`flex gap-3 items-center`}
-                          >
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Atualização de posologia/medicação
-                            </span>
-                          </li>
-                          <li
-                            // class={`flex gap-3 items-center ${
-                            //   plan.name == "FREE" && "opacity-20"
-                            // }`}
-                            class={`flex gap-3 items-center`}
-                          >
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">Login do paciente</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </Slider.Item>
-                ))}
-              </Slider>
-              <div class="hidden md:flex justify-center ">
-                <div class=" block z-10 col-start-1 row-start-3">
-                  <Slider.PrevButton class=" w-12 h-12 flex justify-center items-center">
-                    <Icon
-                      size={24}
-                      id="ChevronLeft"
-                      strokeWidth={3}
-                      class="w-5"
-                    />
-                  </Slider.PrevButton>
-                </div>
-                <div class=" block z-10 col-start-3 row-start-3">
-                  <Slider.NextButton class=" w-12 h-12 flex justify-center items-center">
-                    <Icon size={24} id="ChevronRight" strokeWidth={3} />
-                  </Slider.NextButton>
-                </div>
-              </div>
-              <SliderJS rootId={id} />
+        {loading
+          ? (
+            <div class="w-full flex justify-center">
+              <span class="loading loading-spinner w-4" />
             </div>
+          )
+          : (
+            <form
+              class="form-control flex flex-col gap-2"
+              onSubmit={(e) => handleSubmit(e)}
+            >
+              <span class="text-2xl text-[#8b8b8b] font-semibold text-center my-4">
+                Planos para Prescritores
+              </span>
+              <span class="label-text text-xs text-[#585858]">
+                Selecione seu plano
+              </span>
+              <div id={id}>
+                <Slider class="carousel gap-3 max-w-[105%]">
+                  {plans.map((plan, i) => (
+                    <Slider.Item class="carousel-item" index={i}>
+                      <div
+                        class="bg-white rounded-md p-3 flex flex-col justify-between"
+                        onClick={() =>
+                          setNewPlan(plans.find((p) =>
+                            p.name === plan.name
+                          ))}
+                      >
+                        <div class="flex items-center gap-4">
+                          <div
+                            class={`h-8 w-8 rounded-full ${
+                              plan.name == newPlan?.name
+                                ? "bg-primary flex items-center justify-center"
+                                : "bg-white"
+                            }`}
+                            style={{
+                              "box-shadow":
+                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                            }}
+                          >
+                            {plan.name == newPlan?.name && (
+                              <Icon class="text-white" id="Check" size={19} />
+                            )}
+                          </div>
+                          <div class="flex flex-col text-[#898989]">
+                            <span class=" uppercase text-sm">{plan.name}</span>
+                            <span class="text-xs">
+                              {"R$ " +
+                                (plan.price / 100).toFixed(2) +
+                                "/" +
+                                (plan.period === "MONTHLY" && "mês")}
+                            </span>
+                          </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                          {plan.startBilling && plan.startBilling > 0 && (
+                            <span class="text-xs font-semibold mt-2 text-primary">
+                              {plan.startBilling} dias grátis
+                            </span>
+                          )}
+                          <ul class="flex flex-col gap-3 py-4">
+                            <li class="flex gap-3 items-center">
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Gestão visual de paciente/tratamento
+                              </span>
+                            </li>
+                            <li class="flex gap-3 items-center">
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Gestão de assiduidade de tratamento
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Visão gráfica de histórico de tratamento
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Atualização de posologia/medicação
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">Login do paciente</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </Slider.Item>
+                  ))}
+                </Slider>
+                <div class="hidden md:flex justify-center ">
+                  <div class=" block z-10 col-start-1 row-start-3">
+                    <Slider.PrevButton class=" w-12 h-12 flex justify-center items-center">
+                      <Icon
+                        size={24}
+                        id="ChevronLeft"
+                        strokeWidth={3}
+                        class="w-5"
+                      />
+                    </Slider.PrevButton>
+                  </div>
+                  <div class=" block z-10 col-start-3 row-start-3">
+                    <Slider.NextButton class=" w-12 h-12 flex justify-center items-center">
+                      <Icon size={24} id="ChevronRight" strokeWidth={3} />
+                    </Slider.NextButton>
+                  </div>
+                </div>
+                <SliderJS rootId={id} />
+              </div>
 
-            {/* <div class="collapse max-w-[330px]">
+              {
+                /* <div class="collapse max-w-[330px]">
               <input type="checkbox" />
               <div class="collapse-title text-xl font-medium">
                 <span class="underline text-sm">
@@ -260,16 +265,17 @@ function ChoosePlanSignupPrescriber() {
                   </label>
                 </div>
               </div>
-            </div> */}
+            </div> */
+              }
 
-            <button
-              type={"submit"}
-              class="btn btn-primary text-white mt-5 disabled:loading border-none"
-            >
-              {"Escolher Plano"}
-            </button>
-          </form>
-        )}
+              <button
+                type={"submit"}
+                class="btn btn-primary text-white mt-5 disabled:loading border-none"
+              >
+                {"Escolher Plano"}
+              </button>
+            </form>
+          )}
       </div>
     </FormWrap>
   );
