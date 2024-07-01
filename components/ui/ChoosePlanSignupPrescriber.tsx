@@ -19,7 +19,7 @@ function ChoosePlanSignupPrescriber() {
     setLoading(true);
     try {
       const _params = fetch(
-        `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=true`,
+        `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=true&isActive=true`,
       ).then(async (r) => {
         const c = await r.json();
         console.log({ plans: c.docs });
@@ -68,6 +68,10 @@ function ChoosePlanSignupPrescriber() {
       localStorage.setItem("planNamePrescriber", newPlan!.name);
       localStorage.setItem("planPricePrescriber", String(newPlan!.price));
       localStorage.setItem("planPeriodPrescriber", newPlan!.period);
+      localStorage.setItem(
+        "planStartBillingPrescriber",
+        String(newPlan!.startBilling),
+      );
     }
 
     window.location.href = "/prescritor/confirmar-cadastro/checkout";
