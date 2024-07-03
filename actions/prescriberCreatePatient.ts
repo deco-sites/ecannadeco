@@ -1,3 +1,5 @@
+import { API_URL } from "../sdk/constants.ts";
+
 export interface Props {
   token: string;
   name: string;
@@ -10,7 +12,7 @@ const prescriberCreatePetient = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      `https://api.ecanna.com.br/prescribers/patients`,
+      `${API_URL}/prescribers/patients`,
       {
         method: "POST",
         headers: {
@@ -23,6 +25,7 @@ const prescriberCreatePetient = async (
         }),
       },
     );
+    // TODO: handle errors
     const res = await response.json();
     console.log({ res });
     return res;

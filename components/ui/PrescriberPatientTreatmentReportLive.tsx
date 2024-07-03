@@ -61,6 +61,27 @@ function PrescriberPatientTreatmentReport() {
     }
   };
 
+  const getPrescriber = async (accessToken: string) => {
+    const response = await invoke["deco-sites/ecannadeco"].actions
+      .getUserPrescriber({
+        token: accessToken,
+      })
+      .then((r) => {
+        const res = r as {
+          plan: string;
+          isExpiredTrial: boolean;
+        };
+
+        if (res.plan === "DEFAULT" && res.isExpiredTrial) {
+          alert(
+            "Seu tempo de acesso gratuito expirou! Selecione um plano para continuar.",
+          );
+          window.location.href = "/prescritor/minha-conta";
+        }
+      });
+    return response;
+  };
+
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
     let accessToken = "";
@@ -74,6 +95,7 @@ function PrescriberPatientTreatmentReport() {
     }
 
     try {
+      getPrescriber(accessToken);
       getTreatment(accessToken);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
