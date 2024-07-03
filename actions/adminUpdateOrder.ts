@@ -2,12 +2,8 @@ import { Product } from "deco-sites/ecannadeco/components/ui/CheckoutUpsellModal
 
 export interface Props {
   token: string;
-  params?: {
-    status?: string;
-    type?: string;
-    page: number;
-    limit: number;
-  };
+  orderId: string;
+  newStatus: string;
 }
 
 export interface Sku {
@@ -38,39 +34,20 @@ export interface Order {
   }[];
 }
 
-export interface PaginationOrderResponse {
-  docs: Order[];
-  totalDocs: number;
-  totalPages: number;
-  page: number;
-  limit?: number;
-  pagingCounter?: number;
-  hasPrevPage: boolean;
-  hasNextPage: boolean;
-}
-
-const adminGetOrders = async (
-  { token, params }: Props,
+const adminUpdateOrder = async (
+  { token, orderId, newStatus }: Props,
   _req: Request,
-): Promise<PaginationOrderResponse> => {
-  let url = `https://api.ecanna.com.br/admin/orders/`;
-
-  if (params) {
-    const query = `?limit=${params.limit}&page=${params.page}${
-      params.status && `&status=${params.status}`
-    }${(params.type && params.type !== "") && `&type=${params.type}`}`;
-    url = `https://api.ecanna.com.br/admin/orders${query}`;
-  }
-
-  console.log({ url });
+): Promise<unknown> => {
+  const url = `https://api.ecanna.com.br/admin/orders/${orderId}`;
 
   try {
     const response = await fetch(url, {
-      method: "GET",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
       },
+      body: JSON.stringify({ status: newStatus }),
     });
 
     const res = await response.json();
@@ -81,4 +58,4 @@ const adminGetOrders = async (
   }
 };
 
-export default adminGetOrders;
+export default adminUpdateOrder;
