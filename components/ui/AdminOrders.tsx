@@ -13,38 +13,42 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 
 import type { Order } from "../../actions/getUserOrders.ts";
 
-const OrderItem = (
-  { productName, userEmail, productPrice, created_at, status }: {
-    userEmail: string;
-    productName: string;
-    productPrice: string;
-    created_at: string;
-    status:
-      | "PAID"
-      | "PENDING"
-      | "CANCELED"
-      | "IN_PRODUCTION"
-      | "PENDING_SHIPPING"
-      | "SHIPPED"
-      | "DELIVERED";
-  },
-) => {
+const OrderItem = ({
+  productName,
+  userEmail,
+  productPrice,
+  created_at,
+  status,
+  id,
+}: {
+  userEmail: string;
+  productName: string;
+  productPrice: string;
+  created_at: string;
+  id: string;
+  status:
+    | "PAID"
+    | "PENDING"
+    | "CANCELED"
+    | "IN_PRODUCTION"
+    | "PENDING_SHIPPING"
+    | "SHIPPED"
+    | "DELIVERED";
+}) => {
   return (
     <li class="p-3 bg-[#cacaca] flex justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
       <div class="w-[40%] flex justify-start truncate pr-4">
-        <span>{userEmail}</span>
+        <span>{userEmail ? userEmail : "n/a"}</span>
       </div>
       <div class="w-[20%] flex flex-col justify-start">
         <span>{productName}</span>
         <span>{"RS " + productPrice}</span>
       </div>
       <div class="w-[20%] flex justify-center">
-        <span>
-          {created_at}
-        </span>
+        <span>{created_at}</span>
       </div>
       <div class="w-[20%] flex justify-end">
-        <OrderStatus status={status} />
+        <OrderStatus status={status} id={id} adminView={true} />
       </div>
     </li>
   );
@@ -59,6 +63,7 @@ function AdminOrders() {
   const [page, setPage] = useState<number>();
   const [totalPages, setTotalPages] = useState<number>();
   const [statusSearch, setStatusSearch] = useState("");
+  const [typeFilter, setTypeFilter] = useState("");
 
   useEffect(() => {
     setIsLoading(true);
@@ -70,29 +75,33 @@ function AdminOrders() {
     }
 
     try {
-      invoke["deco-sites/ecannadeco"].actions.adminGetOrders({
-        token: accessToken,
-      }).then((r) => {
-        setPage(r.page);
-        setTotalPages(r.totalPages);
-        setLimit(r.limit);
-        setHasNextPage(r.hasNextPage);
-        setHasPrevPage(r.hasPrevPage);
-        setOrders(r.docs);
+      invoke["deco-sites/ecannadeco"].actions
+        .adminGetOrders({
+          token: accessToken,
+        })
+        .then((r) => {
+          setPage(r.page);
+          setTotalPages(r.totalPages);
+          setLimit(r.limit);
+          setHasNextPage(r.hasNextPage);
+          setHasPrevPage(r.hasPrevPage);
+          setOrders(r.docs);
 
-        console.log({ r });
+          console.log({ r });
 
-        setIsLoading(false);
-      });
+          setIsLoading(false);
+        });
     } catch (_e) {
       setIsLoading(false);
-      alert(
-        "Não foi possível recuperar Pedidos..",
-      );
+      alert("Não foi possível recuperar Pedidos..");
     }
   }, []); // Passando um array de dependências vazio
 
-  const handleGetOrders = (pageParam: number, status?: string) => {
+  const handleGetOrders = (
+    pageParam: number,
+    status?: string,
+    type?: string,
+  ) => {
     let accessToken = "";
 
     if (IS_BROWSER) {
@@ -102,32 +111,45 @@ function AdminOrders() {
     setIsLoading(true);
 
     try {
-      invoke["deco-sites/ecannadeco"].actions.adminGetOrders({
-        token: accessToken,
-        params: {
-          status: status,
-          page: pageParam,
-          limit: limit || 25,
-        },
-      }).then((r) => {
-        const res = r as { message?: string; errors?: Array<unknown> };
-        if (res.message) {
-          throw new Error(res.message);
-        }
-        setPage(r.page);
-        setTotalPages(r.totalPages);
-        setLimit(r.limit);
-        setHasNextPage(r.hasNextPage);
-        setHasPrevPage(r.hasPrevPage);
-        console.log({ docs: r.docs });
-        setOrders(r.docs);
-        setIsLoading(false);
-      });
+      invoke["deco-sites/ecannadeco"].actions
+        .adminGetOrders({
+          token: accessToken,
+          params: {
+            status: status,
+            page: pageParam,
+            type: type,
+            limit: limit || 25,
+          },
+        })
+        .then((r) => {
+          const res = r as { message?: string; errors?: Array<unknown> };
+          if (res.message) {
+            throw new Error(res.message);
+          }
+          setPage(r.page);
+          setTotalPages(r.totalPages);
+          setLimit(r.limit);
+          setHasNextPage(r.hasNextPage);
+          setHasPrevPage(r.hasPrevPage);
+          console.log({ docs: r.docs });
+          setOrders(r.docs);
+          setIsLoading(false);
+        });
     } catch (_e) {
       alert(
         "Não foi possível carregar usuários. Tente novamente mais tarde ou contecte o suporte.",
       );
       setIsLoading(false);
+    }
+  };
+
+  const handleToggleOnTimeFilter = () => {
+    if (typeFilter === "") {
+      setTypeFilter("ON_TIME");
+      handleGetOrders(1, "", "ON_TIME");
+    } else {
+      setTypeFilter("");
+      handleGetOrders(1, "", "");
     }
   };
 
@@ -142,7 +164,7 @@ function AdminOrders() {
                 Pedidos Do Sistema
               </h3>
             </div>
-            <div class="my-5">
+            <div class="my-5 flex gap-8">
               <select
                 value={statusSearch}
                 onChange={(e) => {
@@ -151,7 +173,9 @@ function AdminOrders() {
                 }}
                 class="select select-primary h-[35px] rounded-full max-w-xs text-[#8b8b8b] border-none disabled:bg-[#e3e3e3] bg-white"
               >
-                <option disabled selected>Selecione o Status</option>
+                <option disabled selected>
+                  Selecione o Status
+                </option>
                 <option value="">Todos</option>
                 <option value="PAID">Pago</option>
                 <option value="PENDING">Pendente</option>
@@ -161,6 +185,15 @@ function AdminOrders() {
                 <option value="SHIPPED">Enviado</option>
                 <option value="DELIVERED">Entregue</option>
               </select>
+              <div class="flex gap-1">
+                <input
+                  type="checkbox"
+                  class="toggle"
+                  checked={typeFilter === "ON_TIME"}
+                  onChange={handleToggleOnTimeFilter}
+                />
+                <span>Pedidos de Carteirinha</span>
+              </div>
             </div>
             <div>
               <div class="flex pb-2 px-2 border-b border-[#cdcdcd] mb-4">
@@ -171,26 +204,29 @@ function AdminOrders() {
                   <span class="text-xs">Produto</span>
                 </div>
                 <div class="w-[20%] flex justify-center">
-                  <span class="text-xs">
-                    Data
-                  </span>
+                  <span class="text-xs">Data</span>
                 </div>
                 <div class="w-[20%] flex justify-end">
                   <span class="text-xs">Status</span>
                 </div>
               </div>
               <ul class="flex flex-col gap-2">
-                {orders && orders.map((o) => {
-                  return (
-                    <OrderItem
-                      userEmail={o.user_data?.email || ""}
-                      productName={o.items[0].sku.name}
-                      productPrice={(o.value / 100).toFixed(2)}
-                      created_at={format(new Date(o.created_at), "dd/MM/yyyy")}
-                      status={o.status}
-                    />
-                  );
-                })}
+                {orders &&
+                  orders.map((o) => {
+                    return (
+                      <OrderItem
+                        userEmail={o.user_data?.email || ""}
+                        id={o._id}
+                        productName={o.items[0].sku.name}
+                        productPrice={(o.value / 100).toFixed(2)}
+                        created_at={format(
+                          new Date(o.created_at),
+                          "dd/MM/yyyy",
+                        )}
+                        status={o.status}
+                      />
+                    );
+                  })}
               </ul>
               {/* pagination */}
               <div class="flex justify-center mt-4">
@@ -204,9 +240,7 @@ function AdminOrders() {
                   )}
                 </div>
                 <div>
-                  <span class="text-xs">
-                    {`Página ${page}/${totalPages}`}
-                  </span>
+                  <span class="text-xs">{`Página ${page}/${totalPages}`}</span>
                 </div>
                 <div>
                   {hasNextPage && (
