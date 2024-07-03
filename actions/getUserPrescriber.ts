@@ -1,3 +1,4 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 export interface Props {
   token: string;
 }
@@ -7,7 +8,7 @@ const getUserPrescriber = async (
   _req: Request,
 ): Promise<unknown | null> => {
   try {
-    const response = await fetch("https://api.ecanna.com.br/prescribers/me", {
+    const response = await fetch(`${API_URL}/prescribers/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

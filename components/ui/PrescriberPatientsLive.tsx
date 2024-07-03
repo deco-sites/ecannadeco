@@ -110,10 +110,13 @@ function PrescriberPatients() {
       .then((r) => {
         const res = r as {
           plan: string;
+          isExpiredTrial: boolean;
         };
 
-        if (res.plan === "DEFAULT") {
-          alert("Escolha seu plano para começar a cadastrar seus pacientes");
+        if (res.plan === "DEFAULT" && res.isExpiredTrial) {
+          alert(
+            "Seu tempo de acesso gratuito expirou! Selecione um plano para continuar.",
+          );
           window.location.href = "/prescritor/minha-conta";
         }
       });

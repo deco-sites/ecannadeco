@@ -39,6 +39,27 @@ function PrescriberPatientTreatments() {
     }
   };
 
+  const getPrescriber = async (accessToken: string) => {
+    const response = await invoke["deco-sites/ecannadeco"].actions
+      .getUserPrescriber({
+        token: accessToken,
+      })
+      .then((r) => {
+        const res = r as {
+          plan: string;
+          isExpiredTrial: boolean;
+        };
+
+        if (res.plan === "DEFAULT" && res.isExpiredTrial) {
+          alert(
+            "Seu tempo de acesso gratuito expirou! Selecione um plano para continuar.",
+          );
+          window.location.href = "/prescritor/minha-conta";
+        }
+      });
+    return response;
+  };
+
   const getTreatmentsByPatient = async (
     accessToken: string,
     patientId: string,
@@ -75,6 +96,7 @@ function PrescriberPatientTreatments() {
     const patientId = IS_BROWSER
       ? window.location.pathname.split("/")[3] || ""
       : "";
+    getPrescriber(accessToken);
     getTreatmentsByPatient(accessToken, patientId, 1, true);
     getTreatmentsByPatient(accessToken, patientId, 1, false);
     getPatient(accessToken, patientId);

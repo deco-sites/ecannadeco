@@ -64,7 +64,7 @@ function ConfirmSignup() {
         alert(`Erro: ${data.message}`);
       } else {
         setLoading(false);
-        window.location.href = "/prescritor/confirmar-cadastro/plano";
+        window.location.href = "/prescritor/entrar";
       }
     } catch (e) {
       alert(
