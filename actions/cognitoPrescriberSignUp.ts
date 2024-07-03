@@ -33,7 +33,7 @@ const signUpCognitoPrescriber = async (
     );
     const statusCode = response.status;
     const res = await response.json();
-    if(statusCode >= 400) {
+    if (statusCode >= 400) {
       throw res.message;
     }
 
