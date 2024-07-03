@@ -31,12 +31,15 @@ const signUpCognitoPrescriber = async (
         }),
       },
     );
-
+    const statusCode = response.status;
     const res = await response.json();
+    if(statusCode >= 400) {
+      throw res.message;
+    }
+
     return res;
   } catch (e) {
-    // console.log({ e });
-    return e;
+    throw new Error(e);
   }
 };
 

@@ -35,9 +35,7 @@ function PublicPageControl(props: Props) {
         };
       };
 
-      const username = response.data.Username;
-
-      if (username) {
+      if (response.data && response.data.Username) {
         window.location.href = props.redirectTo || "/tratamentos";
       } else {
         if (IS_BROWSER) {
