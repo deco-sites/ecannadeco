@@ -59,7 +59,7 @@ function MyAccount() {
       setIsLoading(true);
 
       const _params = fetch(
-        `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=true`
+        `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=true`,
       ).then(async (r) => {
         const c = await r.json();
 
@@ -67,7 +67,7 @@ function MyAccount() {
 
         //remove the ONBOARDING plan from list
         const updatedPlanlist = plansList.filter(
-          (p) => p.plan !== "ONBOARDING"
+          (p) => p.plan !== "ONBOARDING",
         );
 
         setPlans(updatedPlanlist);
@@ -100,7 +100,7 @@ function MyAccount() {
 
             if (res.address.length > 0) {
               const billingAddress = res.address.find(
-                (a) => a.addressType === "BILLING"
+                (a) => a.addressType === "BILLING",
               );
               setAddress(billingAddress);
             }
@@ -118,7 +118,7 @@ function MyAccount() {
       });
     } catch (_e) {
       alert(
-        "Não foi possível carregar dados do usuário. Tente novamente mais tarde ou contecte o suporte."
+        "Não foi possível carregar dados do usuário. Tente novamente mais tarde ou contecte o suporte.",
       );
       setIsLoading(false);
     }
@@ -133,7 +133,7 @@ function MyAccount() {
 
     if (confirmNewPassword !== newPassword || !currentPassword) {
       alert(
-        "Verifique os campos necessários para alterar a senha e tente novamente."
+        "Verifique os campos necessários para alterar a senha e tente novamente.",
       );
     } else {
       try {
@@ -188,7 +188,7 @@ function MyAccount() {
         setIsCanceling(false);
 
         alert(
-          "Foi aberto chamado com requisição de cancelar assinatura! Em breve, te retornaremos no email da conta."
+          "Foi aberto chamado com requisição de cancelar assinatura! Em breve, te retornaremos no email da conta.",
         );
       }
     } catch (_e) {
@@ -199,60 +199,62 @@ function MyAccount() {
 
   return (
     <PageWrap>
-      {isLoading ? (
-        <span class="loading loading-spinner text-green-600"></span>
-      ) : (
-        <div class="flex flex-col gap-3 w-full">
-          <div class="flex justify-center">
-            <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
-              Minha Conta
-            </h3>
-          </div>
-          {currentPlan == "DEFAULT" && daysToEndTrial > 0 && (
-            <div class="rounded p-4 bg-green-700 text-white flex flex-col gap-3 items-center justify-center">
-              <Icon id="LoyaltyClub" size={28} />
-              <span class="text-lg">
-                Você possui <span class="font-bold">{daysToEndTrial}</span> dias
-                de teste gratuito
-              </span>
-              <span class="text-center text-sm">
-                Enquanto isso, aproveite para acompanhar o tratamento dos seus
-                pacientes, fazer ajustes de dose e subir prescrições sem
-                qualquer custo!
-              </span>
+      {isLoading
+        ? <span class="loading loading-spinner text-green-600"></span>
+        : (
+          <div class="flex flex-col gap-3 w-full">
+            <div class="flex justify-center">
+              <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
+                Minha Conta
+              </h3>
             </div>
-          )}
-          {currentPlan == "DEFAULT" && daysToEndTrial <= 0 && (
-            <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
-              <Icon id="Info" size={28} />
-              <span class="text-lg">
-                Seu período de testa gratuito terminou. Escolha um plano para
-                continuar!
-              </span>
-              <span class="text-center text-sm">
-                Continue a acompanhar o tratamento dos seus pacientes, fazer
-                ajustes de dose e subir prescrições de forma facilitada!
-              </span>
-              <a class="btn bg-white text-primary btn-sm" href="#planUpgrade">
-                Escolher um plano
-              </a>
-            </div>
-          )}
-          <div class="flex flex-col gap-3">
-            <label class="form-control w-full">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">Email</span>
+            {currentPlan == "DEFAULT" && daysToEndTrial > 0 && (
+              <div class="rounded p-4 bg-green-700 text-white flex flex-col gap-3 items-center justify-center">
+                <Icon id="LoyaltyClub" size={28} />
+                <span class="text-lg">
+                  Você possui <span class="font-bold">{daysToEndTrial}</span>
+                  {" "}
+                  dias de teste gratuito
+                </span>
+                <span class="text-center text-sm">
+                  Enquanto isso, aproveite para acompanhar o tratamento dos seus
+                  pacientes, fazer ajustes de dose e subir prescrições sem
+                  qualquer custo!
+                </span>
               </div>
-              <input
-                placeholder="Email"
-                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
-                name="name"
-                disabled
-                value={email}
-              />
-            </label>
-          </div>
-          {/* <div class="w-full sm:w-[60%] md:w-[40%] flex flex-col gap-3">
+            )}
+            {currentPlan == "DEFAULT" && daysToEndTrial <= 0 && (
+              <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
+                <Icon id="Info" size={28} />
+                <span class="text-lg">
+                  Seu período de testa gratuito terminou. Escolha um plano para
+                  continuar!
+                </span>
+                <span class="text-center text-sm">
+                  Continue a acompanhar o tratamento dos seus pacientes, fazer
+                  ajustes de dose e subir prescrições de forma facilitada!
+                </span>
+                <a class="btn bg-white text-primary btn-sm" href="#planUpgrade">
+                  Escolher um plano
+                </a>
+              </div>
+            )}
+            <div class="flex flex-col gap-3">
+              <label class="form-control w-full">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">Email</span>
+                </div>
+                <input
+                  placeholder="Email"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  name="name"
+                  disabled
+                  value={email}
+                />
+              </label>
+            </div>
+            {
+              /* <div class="w-full sm:w-[60%] md:w-[40%] flex flex-col gap-3">
               <h2 class="text-[#8b8b8b] font-semibold mb-4 w-full">
                 Alterar Senha
               </h2>
@@ -333,179 +335,185 @@ function MyAccount() {
                   )}
                 </button>
               </div>
-            </div> */}
-          <div id="planUpgrade">
-            <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
-              {currentPlan === "DEFAULT" ? "Faça sua assinatura" : "Plano"}
-            </h2>
-            <div id={id}>
-              <Slider class="carousel gap-3 max-w-[105%]">
-                {plans.map((plan, i) => (
-                  <Slider.Item class="carousel-item" index={i}>
-                    <div
-                      class="bg-white rounded-md p-3 flex flex-col justify-between"
-                      onClick={() =>
-                        setNewPlan(plans.find((p) => p.name === plan.name))
-                      }
-                    >
-                      <div class="flex items-center gap-4">
-                        <div
-                          class={`h-8 w-8 rounded-full ${
-                            plan.name == (newPlan?.name || currentPlan)
-                              ? "bg-primary flex items-center justify-center"
-                              : "bg-white"
-                          }`}
-                          style={{
-                            "box-shadow": "inset 1px 3px 7px rgb(0 0 0 / 20%)",
-                          }}
-                        >
-                          {plan.name == (newPlan?.name || currentPlan) && (
-                            <Icon class="text-white" id="Check" size={19} />
-                          )}
+            </div> */
+            }
+            <div id="planUpgrade">
+              <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+                {currentPlan === "DEFAULT" ? "Faça sua assinatura" : "Plano"}
+              </h2>
+              <div id={id}>
+                <Slider class="carousel gap-3 max-w-[105%]">
+                  {plans.map((plan, i) => (
+                    <Slider.Item class="carousel-item" index={i}>
+                      <div
+                        class="bg-white rounded-md p-3 flex flex-col justify-between"
+                        onClick={() =>
+                          setNewPlan(plans.find((p) =>
+                            p.name === plan.name
+                          ))}
+                      >
+                        <div class="flex items-center gap-4">
+                          <div
+                            class={`h-8 w-8 rounded-full ${
+                              plan.name == (newPlan?.name || currentPlan)
+                                ? "bg-primary flex items-center justify-center"
+                                : "bg-white"
+                            }`}
+                            style={{
+                              "box-shadow":
+                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                            }}
+                          >
+                            {plan.name == (newPlan?.name || currentPlan) && (
+                              <Icon class="text-white" id="Check" size={19} />
+                            )}
+                          </div>
+                          <div class="flex flex-col text-[#898989]">
+                            <span class=" uppercase text-sm">{plan.name}</span>
+                            <span class="text-xs">
+                              {"R$ " +
+                                (plan.price / 100).toFixed(2) +
+                                "/" +
+                                (plan.period === "MONTHLY" && "mês")}
+                            </span>
+                          </div>
                         </div>
-                        <div class="flex flex-col text-[#898989]">
-                          <span class=" uppercase text-sm">{plan.name}</span>
-                          <span class="text-xs">
-                            {"R$ " +
-                              (plan.price / 100).toFixed(2) +
-                              "/" +
-                              (plan.period === "MONTHLY" && "mês")}
-                          </span>
-                        </div>
-                      </div>
-                      <div class="flex flex-col gap-2">
-                        {/* {plan.name === "FREE" && (
+                        <div class="flex flex-col gap-2">
+                          {
+                            /* {plan.name === "FREE" && (
                             <span class="text-xs font-semibold mt-2 text-primary">
                               30 dias grátis
                             </span>
-                          )} */}
-                        <ul class="flex flex-col gap-3 py-4">
-                          <li class="flex gap-3 items-center">
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Gestão visual de paciente/tratamento
-                            </span>
-                          </li>
-                          <li class="flex gap-3 items-center">
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Gestão de assiduidade de tratamento
-                            </span>
-                          </li>
-                          <li
-                            // class={`flex gap-3 items-center ${
-                            //   plan.name == "FREE" && "opacity-20"
-                            // }`}
-                            class={`flex gap-3 items-center`}
-                          >
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Visão gráfica de histórico de tratamento
-                            </span>
-                          </li>
-                          <li
-                            // class={`flex gap-3 items-center ${
-                            //   plan.name == "FREE" && "opacity-20"
-                            // }`}
-                            class={`flex gap-3 items-center`}
-                          >
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Atualização de posologia/medicação
-                            </span>
-                          </li>
-                          <li
-                            // class={`flex gap-3 items-center ${
-                            //   plan.name == "FREE" && "opacity-20"
-                            // }`}
-                            class={`flex gap-3 items-center`}
-                          >
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">Login do paciente</span>
-                          </li>
-                        </ul>{" "}
+                          )} */
+                          }
+                          <ul class="flex flex-col gap-3 py-4">
+                            <li class="flex gap-3 items-center">
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Gestão visual de paciente/tratamento
+                              </span>
+                            </li>
+                            <li class="flex gap-3 items-center">
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Gestão de assiduidade de tratamento
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Visão gráfica de histórico de tratamento
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Atualização de posologia/medicação
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">Login do paciente</span>
+                            </li>
+                          </ul>
+                          {" "}
+                        </div>
                       </div>
-                    </div>
-                  </Slider.Item>
-                ))}
-              </Slider>
-              <div class="hidden md:flex justify-center ">
-                <div class=" block z-10 col-start-1 row-start-3">
-                  <Slider.PrevButton class=" w-12 h-12 flex justify-center items-center">
-                    <Icon
-                      size={24}
-                      id="ChevronLeft"
-                      strokeWidth={3}
-                      class="w-5"
-                    />
-                  </Slider.PrevButton>
+                    </Slider.Item>
+                  ))}
+                </Slider>
+                <div class="hidden md:flex justify-center ">
+                  <div class=" block z-10 col-start-1 row-start-3">
+                    <Slider.PrevButton class=" w-12 h-12 flex justify-center items-center">
+                      <Icon
+                        size={24}
+                        id="ChevronLeft"
+                        strokeWidth={3}
+                        class="w-5"
+                      />
+                    </Slider.PrevButton>
+                  </div>
+                  <div class=" block z-10 col-start-3 row-start-3">
+                    <Slider.NextButton class=" w-12 h-12 flex justify-center items-center">
+                      <Icon size={24} id="ChevronRight" strokeWidth={3} />
+                    </Slider.NextButton>
+                  </div>
                 </div>
-                <div class=" block z-10 col-start-3 row-start-3">
-                  <Slider.NextButton class=" w-12 h-12 flex justify-center items-center">
-                    <Icon size={24} id="ChevronRight" strokeWidth={3} />
-                  </Slider.NextButton>
-                </div>
+                <SliderJS rootId={id} />
               </div>
-              <SliderJS rootId={id} />
-            </div>
-            <div class="flex  flex-col justify-end mt-4">
-              <ModalConfirm
-                text="Tem certeza que deseja encerrar sua assinatura?"
-                confirmButtonText="Encerrar"
-                open={displayConfirmCancelSubscription.value}
-                onClose={() => {
-                  displayConfirmCancelSubscription.value = false;
-                }}
-                onConfirm={handleCancelSubscription}
-                loading={isCanceling}
-              />
-              <CheckoutUpsellModalPrescriber
-                creditCards={creditCards}
-                plan={newPlan!}
-                address={address!}
-                email={email}
-              />
-              <button
-                class="btn btn-primary text-white"
-                disabled={(newPlan?.plan || currentPlan) == currentPlan}
-                onClick={() => {
-                  displayCheckoutUpsellModal.value = true;
-                }}
-              >
-                Alterar Plano
-              </button>
-              <button
-                class="btn btn-ghost text-xs font-normal text-red-500"
-                onClick={() => {
-                  displayConfirmCancelSubscription.value = true;
-                }}
-              >
-                Cancelar Assinatura
-              </button>
+              <div class="flex  flex-col justify-end mt-4">
+                <ModalConfirm
+                  text="Tem certeza que deseja encerrar sua assinatura?"
+                  confirmButtonText="Encerrar"
+                  open={displayConfirmCancelSubscription.value}
+                  onClose={() => {
+                    displayConfirmCancelSubscription.value = false;
+                  }}
+                  onConfirm={handleCancelSubscription}
+                  loading={isCanceling}
+                />
+                <CheckoutUpsellModalPrescriber
+                  creditCards={creditCards}
+                  plan={newPlan!}
+                  address={address!}
+                  email={email}
+                />
+                <button
+                  class="btn btn-primary text-white"
+                  disabled={(newPlan?.plan || currentPlan) == currentPlan}
+                  onClick={() => {
+                    displayCheckoutUpsellModal.value = true;
+                  }}
+                >
+                  Alterar Plano
+                </button>
+                <button
+                  class="btn btn-ghost text-xs font-normal text-red-500"
+                  onClick={() => {
+                    displayConfirmCancelSubscription.value = true;
+                  }}
+                >
+                  Cancelar Assinatura
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </PageWrap>
   );
 }
