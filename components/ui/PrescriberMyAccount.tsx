@@ -16,6 +16,7 @@ import { useUI } from "../../sdk/useUI.ts";
 import SliderJS from "../../islands/SliderJS.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useId } from "../../sdk/useId.ts";
+import { difference } from "https://deno.land/std@0.222.1/datetime/difference.ts";
 
 export type Address = {
   cep: string;
@@ -40,6 +41,7 @@ function MyAccount() {
   const { displayConfirmCancelSubscription, displayCheckoutUpsellModal } =
     useUI();
   const id = useId();
+  const [daysToEndTrial, setDaysToEndTrial] = useState(0);
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -81,7 +83,20 @@ function MyAccount() {
               address: Address[];
               name: string;
               email: string;
+              free_days: number;
+              created_at: string;
             };
+
+            //calculate end of trial date, based on created_at and free_days
+            const endTrialDate = new Date(res.created_at);
+            endTrialDate.setDate(endTrialDate.getDate() + res.free_days);
+
+            //difference in days from today to the end of the trial
+            const daysLeft = difference(new Date(), endTrialDate, {
+              units: ["days"],
+            });
+
+            setDaysToEndTrial(Number(daysLeft.days));
 
             if (res.address.length > 0) {
               const billingAddress = res.address.find(
@@ -96,7 +111,8 @@ function MyAccount() {
             setCreditCards(res.credit_cards);
 
             setIsLoading(false);
-          }).catch((e) => {
+          })
+          .catch((e) => {
             throw new Error(e);
           });
       });
@@ -192,19 +208,34 @@ function MyAccount() {
                 Minha Conta
               </h3>
             </div>
-            {(currentPlan == "DEFAULT") && (
-              <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
-                <Icon id="Profile" size={16} />
+            {daysToEndTrial > 0 && (
+              <div class="rounded p-4 bg-green-700 text-white flex flex-col gap-3 items-center justify-center">
+                <Icon id="LoyaltyClub" size={28} />
                 <span class="text-lg">
-                  GARANTA O ACESSO E CADASTRE SEUS PACIENTES!
+                  Você possui <span class="font-bold">{daysToEndTrial}</span>
+                  {" "}
+                  dias de teste gratuito
                 </span>
                 <span class="text-center text-sm">
-                  Para obter o acesso a plataforma de acompanhamento de
-                  tratamentos de cannabis medicinal, garantindo sua segurança no
-                  uso da medicina, faça upgrade do seu plano na seção abaixo!
+                  Enquanto isso, aproveite para acompanhar o tratamento dos seus
+                  pacientes, fazer ajustes de dose e subir prescrições sem
+                  qualquer custo!
+                </span>
+              </div>
+            )}
+            {daysToEndTrial <= 0 && (
+              <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
+                <Icon id="Info" size={28} />
+                <span class="text-lg">
+                  Seu período de testa gratuito terminou. Escolha um plano para
+                  continuar!
+                </span>
+                <span class="text-center text-sm">
+                  Continue a acompanhar o tratamento dos seus pacientes, fazer
+                  ajustes de dose e subir prescrições de forma facilitada!
                 </span>
                 <a class="btn bg-white text-primary btn-sm" href="#planUpgrade">
-                  Fazer Assinatura
+                  Escolher um plano
                 </a>
               </div>
             )}
