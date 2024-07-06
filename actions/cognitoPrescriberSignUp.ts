@@ -5,6 +5,7 @@ export interface Props {
   registryType: string;
   registryNumber: string;
   registryState: string;
+  phone: string;
   name: string;
 }
 
@@ -25,6 +26,7 @@ const signUpCognitoPrescriber = async (
           cpf: props.cpf,
           password: props.password,
           name: props.name,
+          phone: props.phone,
           registry_type: props.registryType,
           registry_number: props.registryNumber,
           registry_state: props.registryState,

@@ -20,6 +20,8 @@ function SignUpFormPrescriber({
   const [loading, setLoading] = useState<boolean>(false);
   const [termsAgree, setTermsAgree] = useState<boolean>(false);
   const [cpfError, setCpfError] = useState("");
+  const [whatsappError, setWhatsappError] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
 
@@ -87,8 +89,18 @@ function SignUpFormPrescriber({
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
-    if (name == "" || registryType == "" || email == "" || password == "") {
+    if (
+      name == "" ||
+      registryType == "" ||
+      email == "" ||
+      password == "" ||
+      whatsapp == ""
+    ) {
       alert("Preencha todos os campos");
+      return null;
+    }
+    if (whatsappError || emailError) {
+      alert("Corrija o erro das informações (em vermelho) para continuar");
       return null;
     }
     if (termsAgree) {
@@ -103,6 +115,7 @@ function SignUpFormPrescriber({
           registryNumber,
           registryState,
           name,
+          phone: "+55" + whatsapp,
           cpf,
         });
 
@@ -156,6 +169,31 @@ function SignUpFormPrescriber({
     }
   };
 
+  const validateWhatsapp = (whatsAppNumber: string) => {
+    // Verifica se o número tem o formato correto com DDD no início e 11 dígitos
+    const regex = /^\d{11}$/;
+    return regex.test(whatsAppNumber);
+  };
+
+  const maskWhatsAppNumber = (whatsAppNumber: string) => {
+    if (whatsAppNumber.length < 11) return whatsAppNumber;
+
+    // Recebe um número de WhatsApp nacional e insere os caracteres de formatação
+    return whatsAppNumber.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
+  };
+
+  const stripWhatsappNonNumericCharacters = (str: string) => {
+    return str.replace(/[^\d]/g, "");
+  };
+
+  const handleWhatsAppInputChange = (event: Event) => {
+    const inputValue = (event.target as HTMLInputElement).value;
+    setWhatsapp(stripWhatsappNonNumericCharacters(inputValue));
+    setWhatsappError(
+      validateWhatsapp(inputValue) ? "" : "Número de WhatsApp inválido",
+    );
+  };
+
   return (
     <div class="max-w-[480px] flex flex-col">
       <StepTimeline step={1} />
@@ -181,6 +219,27 @@ function SignUpFormPrescriber({
               setName(e.currentTarget.value);
             }}
           />
+        </label>
+        <label class="w-full">
+          <div class="label pb-1">
+            <span class="label-text text-xs text-[#585858]">
+              Whatsapp (somente números)
+            </span>
+          </div>
+          <input
+            class="input rounded-md text-[#8b8b8b] border-none w-full"
+            placeholder="Seu whatsapp"
+            name="whatsapp"
+            value={maskWhatsAppNumber(whatsapp)}
+            onChange={(e) => {
+              handleWhatsAppInputChange(e);
+            }}
+          />
+          {whatsappError !== "" && (
+            <div class="label">
+              <span class="label-text-alt text-red-500">{whatsappError}</span>
+            </div>
+          )}
         </label>
         <label class="w-full">
           <div class="label pb-1">
