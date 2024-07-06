@@ -11,6 +11,7 @@ export type Service = {
   description?: string;
   ctaText?: string;
   serviceLabel?: string;
+  hidden?: boolean;
 };
 
 /** @titleBy title */
@@ -79,7 +80,11 @@ function Navbar({
           <span class="uppercase">Selecione o serviço que deseja acessar</span>
           <div class="flex flex-wrap gap-6 max-w-[580px] justify-center">
             {services.map((service) => (
-              <div class="flex flex-col cursor-pointer gap-2 items-center justify-center text-center p-4 h-76 sm:h-72 w-40 sm:w-44 text-primary bg-white rounded-md shadow-lg">
+              <div
+                class={`flex flex-col cursor-pointer gap-2 items-center justify-center text-center p-4 h-76 sm:h-72 w-40 sm:w-44 text-primary bg-white rounded-md shadow-lg ${
+                  service.hidden && "hidden"
+                }`}
+              >
                 <div class="flex flex-col items-center">
                   <Icon id={service.icon} size={24} />
                   <span class="text-sm h-9 flex items-center font-semibold">

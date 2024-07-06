@@ -28,7 +28,9 @@ function PatientDashboard({ services }: Props) {
             {services.map((service) => (
               <a
                 href={service.link}
-                class="flex flex-col gap-2 items-center justify-center text-center p-4 h-28 w-40 sm:w-44 text-primary bg-white rounded-md shadow-lg"
+                class={`flex flex-col gap-2 items-center justify-center text-center p-4 h-28 w-40 sm:w-44 text-primary bg-white rounded-md shadow-lg ${
+                  service.hidden && "hidden"
+                }`}
               >
                 <Icon id={service.icon} size={24} />
                 <span class="text-sm">{service.title}</span>
