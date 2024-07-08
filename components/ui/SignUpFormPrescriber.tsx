@@ -295,10 +295,11 @@ function SignUpFormPrescriber({
               setRegistryType(e.currentTarget.value);
             }}
           >
-            <option value="">Selecione (CRM, CRO, CRMV)</option>
+            <option value="">Selecione</option>
             <option value="CRM">CRM - Médico</option>
-            <option value="CRM">CRMV - Veterinário</option>
+            <option value="CRMV">CRMV - Veterinário</option>
             <option value="CRO">CRO - Dentista</option>
+            <option value="CRP">CRP - Psicólogo</option>
           </select>
         </label>
         <label className="w-full">
