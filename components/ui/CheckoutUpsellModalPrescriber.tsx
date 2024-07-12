@@ -38,7 +38,7 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
   const { creditCards, plan, product } = props;
   const { displayCheckoutUpsellModal } = useUI();
   const [loading, setLoading] = useState(false);
-  const [addNewCard, setAddNewCard] = useState(false);
+  const [addNewCard, setAddNewCard] = useState(creditCards.length === 0);
 
   const [creditCardNumber, setCreditCardNumber] = useState<string>("");
   const [creditCardExpMonth, setCreditCardExpMonth] = useState<string>("");
@@ -50,6 +50,8 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
   const [cep, setCep] = useState<string>(props.address?.cep || "");
   const [phone, setPhone] = useState<string>("");
   const [addressStreet, setAddressStreet] = useState<string>("");
+  const [addressState, setAddressState] = useState<string>("");
+  const [addressCity, setAddressCity] = useState<string>("");
   const [addressNumber, setAddressNumber] = useState<string>(
     props.address?.number || "",
   );
@@ -57,6 +59,28 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
     props.address?.complement || "",
   );
   const [cardSelected, setCardSelected] = useState(0);
+  const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
+
+  const handleValidatePostalCode = async (code: string) => {
+    setIsLoadingPostalCode(true);
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${code}/json`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const r = await response.json();
+
+      setAddressStreet(r.logradouro);
+      setAddressCity(r.localidade);
+      setAddressState(r.uf);
+      setIsLoadingPostalCode(false);
+    } catch (_e) {
+      setIsLoadingPostalCode(false);
+    }
+  };
 
   const handleCheckout = async () => {
     setLoading(true);
@@ -133,11 +157,11 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
       open={displayCheckoutUpsellModal.value}
       onClose={() => (displayCheckoutUpsellModal.value = false)}
     >
-      <div class="flex flex-col p-16 gap-3 bg-[#EDEDED] rounded-xl max-w-[90%] max-h-[90vh] overflow-scroll">
-        <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
+      <div class="flex flex-col py-4 px-8 gap-3 bg-[#EDEDED] rounded-xl max-w-[90%] max-h-[90vh] overflow-scroll">
+        <h3 class="text-xl text-[#8b8b8b] font-semibold text-center mb-4">
           Confirmar Pedido
         </h3>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 text-sm">
           <span>
             {plan
               ? "Você está fazendo a mudança do seu plano atual para o plano: "
@@ -170,7 +194,7 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
           </span>
         </div>
         <div>
-          <span>Forma de Pagamento:</span>
+          <span>Cartão de crédito:</span>
           <div>
             <ul
               class={`${
@@ -225,18 +249,26 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
         </div>
         <div class={`${!addNewCard && "hidden"}`}>
           <form class="flex flex-wrap gap-[2%]">
-            <CreditCardInput
-              onChange={(value) => setCreditCardNumber(value)}
-              value={creditCardNumber}
-            />
-            <fieldset class="w-full sm:w-[48%] flex flex-col">
+            <div class="flex w-[80%]">
+              <CreditCardInput
+                onChange={(value) => setCreditCardNumber(value)}
+                value={creditCardNumber}
+              />
+            </div>
+            <div class="flex w-[18%]">
+              <CVVInput
+                value={creditCardCCV}
+                onChange={(value) => setCreditCardCCV(value)}
+              />
+            </div>
+            <fieldset class="w-full flex flex-col">
               <legend class="label-text text-xs text-[#585858] p-1 pt-2">
                 Validade do Cartão
               </legend>
               <div class="flex gap-2">
                 <input
                   placeholder="Mês (Ex: 05)"
-                  class="input rounded-md text-[#8b8b8b] border-none w-1/2"
+                  class="input input-sm rounded-md text-[#8b8b8b] border-none w-1/2"
                   value={creditCardExpMonth}
                   maxLength={2}
                   onChange={(e) =>
@@ -244,125 +276,164 @@ const CheckoutUpsellModalPrescriber = (props: Props) => {
                 />
                 <input
                   placeholder="Ano (Ex: 2030)"
-                  class="input rounded-md text-[#8b8b8b] border-none w-1/2"
+                  class="input input-sm rounded-md text-[#8b8b8b] border-none w-1/2"
                   value={creditCardExpYear}
                   maxlength={4}
                   onChange={(e) =>
                     e.target && setCreditCardExpYear(e.currentTarget.value)}
                 />
               </div>
+              <div class="flex flex-row gap-2">
+                <label class="w-full sm:w-1/2  flex flex-col">
+                  <div class="label pb-1">
+                    <span class="label-text text-xs text-[#585858]">
+                      Nome do Titular
+                    </span>
+                  </div>
+                  <input
+                    class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
+                    placeholder="Nome"
+                    value={holderName}
+                    onChange={(e) =>
+                      e.target && setHolderName(e.currentTarget.value)}
+                  />
+                </label>
+                <label class="w-full sm:w-1/2  flex flex-col">
+                  <div class="label pb-1">
+                    <span class="label-text text-xs text-[#585858]">
+                      CPF do Titular
+                    </span>
+                  </div>
+                  <input
+                    class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
+                    placeholder="CPF"
+                    maxLength={11}
+                    value={holderCPF}
+                    onChange={(e) =>
+                      e.target && setHolderCPF(e.currentTarget.value)}
+                  />
+                </label>
+              </div>
             </fieldset>
-            <CVVInput
-              value={creditCardCCV}
-              onChange={(value) => setCreditCardCCV(value)}
-            />
-            <label class="w-full sm:w-[48%]  flex flex-col">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Nome do Titular
-                </span>
-              </div>
-              <input
-                class="input rounded-md text-[#8b8b8b] border-none w-full"
-                placeholder="Nome"
-                value={holderName}
-                onChange={(e) =>
-                  e.target && setHolderName(e.currentTarget.value)}
-              />
-            </label>
-            <label class="w-full sm:w-[48%]  flex flex-col">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  CPF do Titular
-                </span>
-              </div>
-              <input
-                class="input rounded-md text-[#8b8b8b] border-none w-full"
-                placeholder="CPF"
-                maxLength={11}
-                value={holderCPF}
-                onChange={(e) =>
-                  e.target && setHolderCPF(e.currentTarget.value)}
-              />
-            </label>
           </form>
         </div>
-        <div>
-          <form class="flex flex-wrap gap-[2%]">
-            <div class="w-full flex flex-col my-2">
-              <span class="label-text>text-xs text-[#585858]">
-                Endereço de Cobrança
-              </span>
+        <div class="flex flex-wrap gap-[2%]">
+          <div class="flex flex-col gap-5 justify-left w-full">
+            <div class="join">
+              <label class="join-item">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">CEP</span>
+                </div>
+                <input
+                  placeholder="CEP"
+                  name="cep"
+                  type="tel"
+                  class="input input-sm rounded-md text-[#8b8b8b] border-none"
+                  // disabled={addressStreet != "" ? true : false}
+                  value={cep}
+                  onChange={(e) => {
+                    setCep(e.currentTarget.value);
+                  }}
+                  // onFocus={() => setDisplayCidResults(true)}
+                  // onBlur={() => setDisplayCidResults(false)}
+                />
+                <button
+                  class="btn btn-sm btn-ghost bg-[#dedede] text-[#5d5d5d] join-item"
+                  onClick={() => handleValidatePostalCode(cep)}
+                >
+                  Validar CEP{" "}
+                  {isLoadingPostalCode && (
+                    <span class="loading loading-spinner text-green-600"></span>
+                  )}
+                </button>
+              </label>
             </div>
-            <label class="w-full sm:w-[48%]  flex flex-col">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  CEP
-                </span>
+            <div
+              class={`flex flex-wrap gap-[2%] justify-left ${
+                addressStreet !== "" ? "" : "hidden"
+              }`}
+            >
+              <label class="w-full sm:w-[32%]">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Logradouro
+                  </span>
+                </div>
+                <input
+                  class="input input-sm rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  placeholder="logradouro"
+                  name="cep"
+                  disabled
+                  value={addressStreet}
+                />
+              </label>
+              <label class="w-full sm:w-[32%]">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">Número</span>
+                </div>
+                <input
+                  class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
+                  placeholder="número"
+                  type="tel"
+                  name="numero"
+                  value={addressNumber}
+                  onChange={(e) => {
+                    setAddressNumber(e.currentTarget.value);
+                  }}
+                />
+              </label>
+              <label class="w-full sm:w-[32%]">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Complemento
+                  </span>
+                </div>
+                <input
+                  class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
+                  placeholder="complemento"
+                  name="complemento"
+                  type="text"
+                  value={addressComplement}
+                  onChange={(e) => {
+                    setAddressComplement(e.currentTarget.value);
+                  }}
+                />
+              </label>
+              <label class="w-full sm:w-[32%]">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Cidade / Estado
+                  </span>
+                </div>
+                <input
+                  class="input input-sm rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  placeholder="Cidade / Estado"
+                  name="cidadeestado"
+                  disabled
+                  value={`${addressCity + "/" + addressState}`}
+                />
+              </label>
+              <div class="w-full sm:w-[32%]">
+                <label class="w-full">
+                  <div class="label pb-1">
+                    <span class="label-text text-xs text-[#585858]">
+                      Telefone
+                    </span>
+                  </div>
+                  <input
+                    class="input input-sm rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                    placeholder="Telefone"
+                    type="tel"
+                    name="phone"
+                    value={phone}
+                    onChange={(e) => {
+                      setPhone(e.currentTarget.value);
+                    }}
+                  />
+                </label>
               </div>
-              <input
-                class="input rounded-md text-[#8b8b8b] border-none w-full"
-                placeholder="CEP"
-                value={cep}
-                onChange={(e) => e.target && setCep(e.currentTarget.value)}
-              />
-            </label>
-            <label class="w-full sm:w-[48%]  flex flex-col">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Rua
-                </span>
-              </div>
-              <input
-                class="input rounded-md text-[#8b8b8b] border-none w-full"
-                placeholder="Rua"
-                value={addressStreet}
-                onChange={(e) =>
-                  e.target && setAddressStreet(e.currentTarget.value)}
-              />
-            </label>
-            <label class="w-full sm:w-[48%]  flex flex-col">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Número
-                </span>
-              </div>
-              <input
-                class="input rounded-md text-[#8b8b8b] border-none w-full"
-                placeholder="Número"
-                value={addressNumber}
-                onChange={(e) =>
-                  e.target && setAddressNumber(e.currentTarget.value)}
-              />
-            </label>
-            <label class="w-full sm:w-[48%]  flex flex-col">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Complemeto
-                </span>
-              </div>
-              <input
-                class="input rounded-md text-[#8b8b8b] border-none w-full"
-                placeholder="Complemento"
-                value={addressComplement}
-                onChange={(e) =>
-                  e.target && setAddressComplement(e.currentTarget.value)}
-              />
-            </label>
-            <label class="w-full sm:w-[48%]  flex flex-col">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Telefone
-                </span>
-              </div>
-              <input
-                class="input rounded-md text-[#8b8b8b] border-none w-full"
-                placeholder="Telefone"
-                value={phone}
-                onChange={(e) => e.target && setPhone(e.currentTarget.value)}
-              />
-            </label>
-          </form>
+            </div>
+          </div>
         </div>
 
         <button
