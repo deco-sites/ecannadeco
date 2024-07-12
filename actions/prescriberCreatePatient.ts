@@ -4,10 +4,11 @@ export interface Props {
   token: string;
   name: string;
   email: string;
+  phone: string;
 }
 
 const prescriberCreatePetient = async (
-  { token, name, email }: Props,
+  { token, name, email, phone }: Props,
   _req: Request,
 ): Promise<unknown | null> => {
   try {
@@ -22,6 +23,7 @@ const prescriberCreatePetient = async (
         body: JSON.stringify({
           name,
           email,
+          phone,
         }),
       },
     );
