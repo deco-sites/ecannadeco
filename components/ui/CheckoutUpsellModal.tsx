@@ -333,26 +333,24 @@ const CheckoutUpsellModal = (props: Props) => {
             </span>
           </span>
           <span>
-            {plan
-              ? (
-                <>
-                  Valor da assinatura:{" "}
-                  <span class="font-bold">
-                    {plan &&
-                      "R$ " +
-                        (plan.price / 100).toFixed(2) +
-                        (plan?.period == "MONTHLY" && "/mês")}
-                  </span>
-                </>
-              )
-              : (
-                <>
-                  Valor do produto:{" "}
-                  <span class="font-bold">
-                    {product && "R$ " + (product.price / 100).toFixed(2)}
-                  </span>
-                </>
-              )}
+            {plan ? (
+              <>
+                Valor da assinatura:{" "}
+                <span class="font-bold">
+                  {plan &&
+                    "R$ " +
+                      (plan.price / 100).toFixed(2) +
+                      (plan?.period == "MONTHLY" && "/mês")}
+                </span>
+              </>
+            ) : (
+              <>
+                Valor do produto:{" "}
+                <span class="font-bold">
+                  {product && "R$ " + (product.price / 100).toFixed(2)}
+                </span>
+              </>
+            )}
           </span>
         </div>
 
@@ -460,8 +458,8 @@ const CheckoutUpsellModal = (props: Props) => {
                       value={creditCardExpMonth}
                       maxLength={2}
                       onChange={(e) =>
-                        e.target &&
-                        setCreditCardExpMonth(e.currentTarget.value)}
+                        e.target && setCreditCardExpMonth(e.currentTarget.value)
+                      }
                     />
                     <input
                       placeholder="Ano (Ex: 2030)"
@@ -469,7 +467,8 @@ const CheckoutUpsellModal = (props: Props) => {
                       value={creditCardExpYear}
                       maxlength={4}
                       onChange={(e) =>
-                        e.target && setCreditCardExpYear(e.currentTarget.value)}
+                        e.target && setCreditCardExpYear(e.currentTarget.value)
+                      }
                     />
                   </div>
                 </fieldset>
@@ -501,7 +500,8 @@ const CheckoutUpsellModal = (props: Props) => {
                 placeholder="CPF"
                 value={holderCPF}
                 onChange={(e) =>
-                  e.target && setHolderCPF(e.currentTarget.value)}
+                  e.target && setHolderCPF(e.currentTarget.value)
+                }
               />
             </label>
             <label class="w-full sm:w-[48%]  flex flex-col">
@@ -516,7 +516,8 @@ const CheckoutUpsellModal = (props: Props) => {
                 placeholder="Data de Nascimento"
                 value={birthDate}
                 onChange={(e) =>
-                  e.target && setBirthDate(e.currentTarget.value)}
+                  e.target && setBirthDate(e.currentTarget.value)
+                }
               />
             </label>
           </div>
@@ -546,8 +547,7 @@ const CheckoutUpsellModal = (props: Props) => {
                   >
                     Validar CEP{" "}
                     {isLoadingPostalCode && (
-                      <span class="loading loading-spinner text-green-600">
-                      </span>
+                      <span class="loading loading-spinner text-green-600"></span>
                     )}
                   </button>
                 </label>
@@ -657,7 +657,7 @@ const CheckoutUpsellModal = (props: Props) => {
           </button>
           <button
             onClick={() => (displayCheckoutUpsellModal.value = false)}
-            class="btn  btn-sm btn-ghost uppercase font-medium"
+            class="btn btn-sm btn-ghost uppercase font-medium"
             disabled={loading}
           >
             Cancelar
@@ -719,7 +719,7 @@ const CheckoutUpsellModal = (props: Props) => {
         />
         <button
           class="btn btn-secondary text-white"
-          onClick={() => (confirmPayment())}
+          onClick={() => confirmPayment()}
           disabled={loading || invalidForm}
         >
           {loading ? "Processando..." : "Confirmar Pagamento"}
@@ -743,7 +743,7 @@ const CheckoutUpsellModal = (props: Props) => {
     >
       <div class="flex flex-col py-4 px-8 gap-3 bg-[#EDEDED] rounded-xl max-w-[90%] max-h-[90vh] overflow-scroll">
         <div class="container max-w-lg flex-col gap-3">
-          {pixCode ? <PixPaymentStep /> : <ConfirmOrder />}
+          {pixCode ? PixPaymentStep() : ConfirmOrder()}
         </div>
       </div>
     </Modal>
