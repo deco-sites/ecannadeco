@@ -18,7 +18,7 @@ const maskPhone = (value: string) => {
       .replace(/^(\d{2})(\d)/, "($1) $2")
       .replace(/(\d{5})(\d)/, "$1-$2");
   }
-}
+};
 
 const PhoneInput = ({ value, onChange, label = "Telefone" }: Props) => {
   return (
