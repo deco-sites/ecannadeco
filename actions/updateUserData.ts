@@ -1,3 +1,5 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
+
 export interface Props {
   token: string;
   avatar_photo: string;
@@ -5,6 +7,7 @@ export interface Props {
   cpf: string;
   cids: string[];
   phone: string;
+  birth_date: string;
   address: {
     cep: string;
     street: string;
@@ -21,7 +24,8 @@ const updateUserData = async (
   props: Props,
   _req: Request,
 ): Promise<unknown | null> => {
-  const { token, avatar_photo, name, cpf, address, cids, phone } = props;
+  const { token, avatar_photo, name, cpf, address, cids, phone, birth_date } =
+    props;
 
   const updateCognitoUserBody = {
     name,
@@ -35,11 +39,12 @@ const updateUserData = async (
     cids,
     address,
     phone,
+    birth_date,
   };
 
   try {
     const responseUpdateProfile = await fetch(
-      "https://api.ecanna.com.br/profile",
+      `${API_URL}/profile`,
       {
         method: "PUT",
         body: JSON.stringify(updateProfileBody),
@@ -55,7 +60,7 @@ const updateUserData = async (
     console.log({ resProfile });
 
     const responseUpdateCognito = await fetch(
-      "https://api.ecanna.com.br/auth/me",
+      `${API_URL}/auth/me`,
       {
         method: "PUT",
         body: JSON.stringify(updateCognitoUserBody),
@@ -67,8 +72,6 @@ const updateUserData = async (
     );
 
     const resCognito = await responseUpdateCognito.json();
-
-    console.log({ resCognito });
 
     return { resProfile, resCognito };
   } catch (e) {

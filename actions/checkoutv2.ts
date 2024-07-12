@@ -1,3 +1,5 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
+
 export interface Props {
   token?: string;
   items: {
@@ -12,13 +14,18 @@ export interface Props {
     exp_year: string;
     ccv: string;
   };
+  pix?: boolean;
   holder_info?: {
     full_name: string;
     email: string;
+    birth_date: string;
     cpf_cnpj: string;
     postal_code: string;
     address_number: string;
     address_complement: string;
+    address_state: string;
+    address_city: string;
+    address_street: string;
     phone: string;
   };
 }
@@ -30,7 +37,7 @@ const checkoutv2 = async (
   const params = { ...props };
   delete params.token;
 
-  const response = await fetch("https://api.ecanna.com.br/checkout/v2", {
+  const response = await fetch(`${API_URL}/checkout/v2`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

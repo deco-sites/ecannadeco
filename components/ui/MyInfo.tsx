@@ -23,6 +23,7 @@ function MyInfo() {
   const [authorization, setAuthorization] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [addressStreet, setAddressStreet] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [addressCity, setAddressCity] = useState("");
   const [addressState, setAddressState] = useState("");
   const [addressNeighborhood, setAddressNeighborhood] = useState("");
@@ -66,8 +67,6 @@ function MyInfo() {
             };
           };
 
-          console.log({ res, accessToken });
-
           const userName = res.data.UserAttributes.find(
             (a) => a["Name"] === "name",
           );
@@ -77,6 +76,7 @@ function MyInfo() {
 
           setName(userName?.Value || "NOME NÃO CADASTRADO");
           setCpf(userCpf?.Value || "CPF NÃO CADASTRADO");
+          setBirthDate(res.dataProfile.birth_date.slice(0, 10));
 
           setPhone(res.dataProfile.phone);
           setProfile(res.dataProfile._id);
@@ -233,6 +233,7 @@ function MyInfo() {
     const body: UpdateDataProps = {
       token: accessToken,
       avatar_photo: userImg || "no_img",
+      birth_date: birthDate,
       name,
       cpf,
       phone,
@@ -400,6 +401,21 @@ function MyInfo() {
                 )}
               />
             </label>
+            <label class="w-full sm:w-[48%]  flex flex-col">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Data de Nascimento
+                </span>
+              </div>
+              <input
+                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                type="date"
+                placeholder="Data de Nascimento"
+                value={birthDate}
+                onChange={(e) =>
+                  e.target && setBirthDate(e.currentTarget.value)}
+              />
+            </label>
           </div>
 
           {/* Adrress */}
@@ -502,12 +518,12 @@ function MyInfo() {
                 <label class="w-full">
                   <div class="label pb-1">
                     <span class="label-text text-xs text-[#585858]">
-                      Whatsapp
+                      Telefone
                     </span>
                   </div>
                   <input
                     class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
-                    placeholder="Whatsapp"
+                    placeholder="Telefone"
                     name="phone"
                     value={phone}
                     onChange={(e) => {

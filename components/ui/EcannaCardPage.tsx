@@ -12,12 +12,14 @@ import {
 } from "../../components/ui/CheckoutUpsellModal.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useUI } from "../../sdk/useUI.ts";
+import { useHolderInfo } from "deco-sites/ecannadeco/sdk/useHolderInfo.ts";
 
 export interface UserData {
   data: { UserAttributes: { Name: string; Value: string }[] };
   dataProfile: Omit<UpdateDataProps, "name cpf address"> & {
     address: UpdateDataProps["address"][];
     created_at?: Date;
+    plan: string;
     association: { name: string; logo_url: string; cnpj: string };
     qrcode_url: string;
     credit_cards: SavedCreditCard[];
@@ -45,6 +47,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
   const [cardProduct, setCardProduct] = useState<Product>({} as Product);
 
   const { displayCheckoutUpsellModal } = useUI();
+  const holderInfo = useHolderInfo();
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -67,10 +70,25 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         })
         .then(async (r) => {
           const res = r as UserData;
-          console.log({ user: res });
           const date = res.dataProfile?.created_at;
           const associationObj = res.dataProfile?.association;
           const qr = res.dataProfile?.qrcode_url;
+
+          holderInfo.value = {
+            email: res.data.UserAttributes.find((a) =>
+              a.Name === "email"
+            )?.Value || "",
+            phone: res.dataProfile.phone,
+            full_name: res.dataProfile.name,
+            birth_date: res.dataProfile.birth_date,
+            cpf_cnpj: res.dataProfile.cpf,
+            postal_code: res.dataProfile.address[0].cep,
+            address_number: res.dataProfile.address[0].number,
+            address_complement: res.dataProfile.address[0].complement,
+            address_city: res.dataProfile.address[0].city,
+            address_state: res.dataProfile.address[0].state,
+            address_street: res.dataProfile.address[0].street,
+          };
 
           setUserData(res);
           setAssociation(associationObj);

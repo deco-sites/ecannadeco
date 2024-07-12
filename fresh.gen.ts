@@ -11,6 +11,7 @@ import * as $AddToCartButton_vtex from "./islands/AddToCartButton/vtex.tsx";
 import * as $AddToCartButton_wake from "./islands/AddToCartButton/wake.tsx";
 import * as $AdminNewDocModal from "./islands/AdminNewDocModal.tsx";
 import * as $AdminOrders from "./islands/AdminOrders.tsx";
+import * as $AlertInfo from "./islands/AlertInfo.tsx";
 import * as $AssociationAdmin from "./islands/AssociationAdmin.tsx";
 import * as $Chart from "./islands/Chart.tsx";
 import * as $CheckoutForm from "./islands/CheckoutForm.tsx";
@@ -99,6 +100,7 @@ const manifest = {
     "./islands/AddToCartButton/wake.tsx": $AddToCartButton_wake,
     "./islands/AdminNewDocModal.tsx": $AdminNewDocModal,
     "./islands/AdminOrders.tsx": $AdminOrders,
+    "./islands/AlertInfo.tsx": $AlertInfo,
     "./islands/AssociationAdmin.tsx": $AssociationAdmin,
     "./islands/Chart.tsx": $Chart,
     "./islands/CheckoutForm.tsx": $CheckoutForm,

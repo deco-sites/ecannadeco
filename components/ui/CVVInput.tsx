@@ -9,15 +9,15 @@ const maskCVV = (value: string) => {
 
 const CVVInput = ({ value, onChange }: CVVInputProps) => {
   return (
-    <label class="w-full sm:w-[48%] flex flex-col">
+    <label class="w-full flex flex-col">
       <div class="label pb-1">
         <span class="label-text text-xs text-[#585858]">
-          Código Verificador
+          CVV
         </span>
       </div>
       <input
-        class="input rounded-md text-[#8b8b8b] border-none w-full"
-        placeholder="Código Verificador"
+        class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
+        placeholder="CVV"
         maxLength={4}
         value={value}
         onChange={(e) => onChange(maskCVV(e.currentTarget.value))}

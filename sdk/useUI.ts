@@ -13,6 +13,9 @@ export type UserSession = {
 };
 
 const displayCart = signal(false);
+const displayAlert = signal(false);
+const alertText = signal("");
+const alertType = signal<"warning" | "error" | "success">("warning");
 const displayMenu = signal(false);
 const displaySearchPopup = signal(false);
 const displaySearchDrawer = signal(false);
@@ -47,6 +50,9 @@ const modalTextAction = signal<{ text: string; actionUrl: string }>({
 const state = {
   displayCart,
   displayMenu,
+  displayAlert,
+  alertText,
+  alertType,
   displaySearchPopup,
   displaySearchDrawer,
   displayNewDocModal,
