@@ -69,7 +69,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
           </div>
           <input
             class="input input-sm rounded-md text-[#535353] border-none w-full disabled:bg-[#e3e3e3] bg-white"
-            placeholder="Nome aqui"
+            placeholder="Nome"
             value={name}
             onChange={(e) => {
               setName(e.currentTarget.value);
@@ -79,12 +79,12 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
         <label class="form-control w-full">
           <div class="label pb-1">
             <span class="label-text text-xs text-[#585858]">
-              Email do Paciente
+              E-mail do Paciente
             </span>
           </div>
           <input
             class="input input-sm rounded-md text-[#535353] border-none w-full disabled:bg-[#e3e3e3] bg-white"
-            placeholder="Nome aqui"
+            placeholder="E-mail"
             value={email}
             onChange={(e) => {
               setEmail(e.currentTarget.value);
