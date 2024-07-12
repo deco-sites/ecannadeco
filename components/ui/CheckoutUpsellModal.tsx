@@ -333,24 +333,26 @@ const CheckoutUpsellModal = (props: Props) => {
             </span>
           </span>
           <span>
-            {plan ? (
-              <>
-                Valor da assinatura:{" "}
-                <span class="font-bold">
-                  {plan &&
-                    "R$ " +
-                      (plan.price / 100).toFixed(2) +
-                      (plan?.period == "MONTHLY" && "/mês")}
-                </span>
-              </>
-            ) : (
-              <>
-                Valor do produto:{" "}
-                <span class="font-bold">
-                  {product && "R$ " + (product.price / 100).toFixed(2)}
-                </span>
-              </>
-            )}
+            {plan
+              ? (
+                <>
+                  Valor da assinatura:{" "}
+                  <span class="font-bold">
+                    {plan &&
+                      "R$ " +
+                        (plan.price / 100).toFixed(2) +
+                        (plan?.period == "MONTHLY" && "/mês")}
+                  </span>
+                </>
+              )
+              : (
+                <>
+                  Valor do produto:{" "}
+                  <span class="font-bold">
+                    {product && "R$ " + (product.price / 100).toFixed(2)}
+                  </span>
+                </>
+              )}
           </span>
         </div>
 
@@ -458,8 +460,8 @@ const CheckoutUpsellModal = (props: Props) => {
                       value={creditCardExpMonth}
                       maxLength={2}
                       onChange={(e) =>
-                        e.target && setCreditCardExpMonth(e.currentTarget.value)
-                      }
+                        e.target &&
+                        setCreditCardExpMonth(e.currentTarget.value)}
                     />
                     <input
                       placeholder="Ano (Ex: 2030)"
@@ -467,8 +469,7 @@ const CheckoutUpsellModal = (props: Props) => {
                       value={creditCardExpYear}
                       maxlength={4}
                       onChange={(e) =>
-                        e.target && setCreditCardExpYear(e.currentTarget.value)
-                      }
+                        e.target && setCreditCardExpYear(e.currentTarget.value)}
                     />
                   </div>
                 </fieldset>
@@ -500,8 +501,7 @@ const CheckoutUpsellModal = (props: Props) => {
                 placeholder="CPF"
                 value={holderCPF}
                 onChange={(e) =>
-                  e.target && setHolderCPF(e.currentTarget.value)
-                }
+                  e.target && setHolderCPF(e.currentTarget.value)}
               />
             </label>
             <label class="w-full sm:w-[48%]  flex flex-col">
@@ -516,8 +516,7 @@ const CheckoutUpsellModal = (props: Props) => {
                 placeholder="Data de Nascimento"
                 value={birthDate}
                 onChange={(e) =>
-                  e.target && setBirthDate(e.currentTarget.value)
-                }
+                  e.target && setBirthDate(e.currentTarget.value)}
               />
             </label>
           </div>
@@ -547,7 +546,8 @@ const CheckoutUpsellModal = (props: Props) => {
                   >
                     Validar CEP{" "}
                     {isLoadingPostalCode && (
-                      <span class="loading loading-spinner text-green-600"></span>
+                      <span class="loading loading-spinner text-green-600">
+                      </span>
                     )}
                   </button>
                 </label>
