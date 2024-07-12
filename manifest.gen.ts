@@ -41,22 +41,23 @@ import * as $$$$$$$$$35 from "./actions/getTreatment.ts";
 import * as $$$$$$$$$36 from "./actions/getTreatments.ts";
 import * as $$$$$$$$$37 from "./actions/getUser.ts";
 import * as $$$$$$$$$38 from "./actions/getUserAdmin.ts";
-import * as $$$$$$$$$39 from "./actions/getUserOrders.ts";
-import * as $$$$$$$$$40 from "./actions/getUserPrescriber.ts";
-import * as $$$$$$$$$41 from "./actions/prescriberCheckout.ts";
-import * as $$$$$$$$$42 from "./actions/prescriberCreatePatient.ts";
-import * as $$$$$$$$$43 from "./actions/prescriberCreateTreatment.ts";
-import * as $$$$$$$$$44 from "./actions/prescriberGetActiveTreatmentByPatient.ts";
-import * as $$$$$$$$$45 from "./actions/prescriberGetPatient.ts";
-import * as $$$$$$$$$46 from "./actions/prescriberGetPatients.ts";
-import * as $$$$$$$$$47 from "./actions/prescriberGetTreatmentByPatient.ts";
-import * as $$$$$$$$$48 from "./actions/prescriberGetTreatmentsByPatient.ts";
-import * as $$$$$$$$$49 from "./actions/prescriberSignOut.ts";
-import * as $$$$$$$$$50 from "./actions/resendConfirmationCode.ts";
-import * as $$$$$$$$$51 from "./actions/signOut.ts";
-import * as $$$$$$$$$52 from "./actions/updateProfile.ts";
-import * as $$$$$$$$$53 from "./actions/updateUserData.ts";
-import * as $$$$$$$$$54 from "./actions/uploadFile.ts";
+import * as $$$$$$$$$39 from "./actions/getUserOrder.ts";
+import * as $$$$$$$$$40 from "./actions/getUserOrders.ts";
+import * as $$$$$$$$$41 from "./actions/getUserPrescriber.ts";
+import * as $$$$$$$$$42 from "./actions/prescriberCheckout.ts";
+import * as $$$$$$$$$43 from "./actions/prescriberCreatePatient.ts";
+import * as $$$$$$$$$44 from "./actions/prescriberCreateTreatment.ts";
+import * as $$$$$$$$$45 from "./actions/prescriberGetActiveTreatmentByPatient.ts";
+import * as $$$$$$$$$46 from "./actions/prescriberGetPatient.ts";
+import * as $$$$$$$$$47 from "./actions/prescriberGetPatients.ts";
+import * as $$$$$$$$$48 from "./actions/prescriberGetTreatmentByPatient.ts";
+import * as $$$$$$$$$49 from "./actions/prescriberGetTreatmentsByPatient.ts";
+import * as $$$$$$$$$50 from "./actions/prescriberSignOut.ts";
+import * as $$$$$$$$$51 from "./actions/resendConfirmationCode.ts";
+import * as $$$$$$$$$52 from "./actions/signOut.ts";
+import * as $$$$$$$$$53 from "./actions/updateProfile.ts";
+import * as $$$$$$$$$54 from "./actions/updateUserData.ts";
+import * as $$$$$$$$$55 from "./actions/uploadFile.ts";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
@@ -366,25 +367,26 @@ const manifest = {
     "deco-sites/ecannadeco/actions/getTreatments.ts": $$$$$$$$$36,
     "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$37,
     "deco-sites/ecannadeco/actions/getUserAdmin.ts": $$$$$$$$$38,
-    "deco-sites/ecannadeco/actions/getUserOrders.ts": $$$$$$$$$39,
-    "deco-sites/ecannadeco/actions/getUserPrescriber.ts": $$$$$$$$$40,
-    "deco-sites/ecannadeco/actions/prescriberCheckout.ts": $$$$$$$$$41,
-    "deco-sites/ecannadeco/actions/prescriberCreatePatient.ts": $$$$$$$$$42,
-    "deco-sites/ecannadeco/actions/prescriberCreateTreatment.ts": $$$$$$$$$43,
+    "deco-sites/ecannadeco/actions/getUserOrder.ts": $$$$$$$$$39,
+    "deco-sites/ecannadeco/actions/getUserOrders.ts": $$$$$$$$$40,
+    "deco-sites/ecannadeco/actions/getUserPrescriber.ts": $$$$$$$$$41,
+    "deco-sites/ecannadeco/actions/prescriberCheckout.ts": $$$$$$$$$42,
+    "deco-sites/ecannadeco/actions/prescriberCreatePatient.ts": $$$$$$$$$43,
+    "deco-sites/ecannadeco/actions/prescriberCreateTreatment.ts": $$$$$$$$$44,
     "deco-sites/ecannadeco/actions/prescriberGetActiveTreatmentByPatient.ts":
-      $$$$$$$$$44,
-    "deco-sites/ecannadeco/actions/prescriberGetPatient.ts": $$$$$$$$$45,
-    "deco-sites/ecannadeco/actions/prescriberGetPatients.ts": $$$$$$$$$46,
+      $$$$$$$$$45,
+    "deco-sites/ecannadeco/actions/prescriberGetPatient.ts": $$$$$$$$$46,
+    "deco-sites/ecannadeco/actions/prescriberGetPatients.ts": $$$$$$$$$47,
     "deco-sites/ecannadeco/actions/prescriberGetTreatmentByPatient.ts":
-      $$$$$$$$$47,
-    "deco-sites/ecannadeco/actions/prescriberGetTreatmentsByPatient.ts":
       $$$$$$$$$48,
-    "deco-sites/ecannadeco/actions/prescriberSignOut.ts": $$$$$$$$$49,
-    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$50,
-    "deco-sites/ecannadeco/actions/signOut.ts": $$$$$$$$$51,
-    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$52,
-    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$53,
-    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$54,
+    "deco-sites/ecannadeco/actions/prescriberGetTreatmentsByPatient.ts":
+      $$$$$$$$$49,
+    "deco-sites/ecannadeco/actions/prescriberSignOut.ts": $$$$$$$$$50,
+    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$51,
+    "deco-sites/ecannadeco/actions/signOut.ts": $$$$$$$$$52,
+    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$53,
+    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$54,
+    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$55,
   },
   "apps": {
     "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,

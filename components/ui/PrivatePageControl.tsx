@@ -73,7 +73,7 @@ function PrivatePageControl(_props: Props) {
         }
       }
 
-      if (currentPlan === "CARD") {
+      if (currentPlan === "CARD" || currentPlan === "CARD_ASSOCIATED") {
         if (!r.dataProfile.updatedData) {
           console.log("não fez updatedData");
           if (window.location.pathname !== "/meus-dados") {

@@ -14,6 +14,8 @@ import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
 import Slider from "../../components/ui/Slider.tsx";
 import { useUI } from "../../sdk/useUI.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { useHolderInfo } from "deco-sites/ecannadeco/sdk/useHolderInfo.ts";
+import { UserData } from "deco-sites/ecannadeco/components/ui/EcannaCardPage.tsx";
 
 export type Address = {
   cep: string;
@@ -37,6 +39,7 @@ function MyAccount() {
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");
   const { displayConfirmCancelSubscription, displayCheckoutUpsellModal } =
     useUI();
+  const holderInfo = useHolderInfo();
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -54,36 +57,46 @@ function MyAccount() {
     try {
       setIsLoading(true);
 
-      invoke["deco-sites/ecannadeco"].actions.getUser({
-        token: accessToken,
-      }).then((r) => {
-        const res = r as {
-          data: { UserAttributes: { Name: string; Value: string }[] };
-          dataProfile: {
-            plan: string;
-            credit_cards: SavedCreditCard[];
-            address: Address[];
+      invoke["deco-sites/ecannadeco"].actions
+        .getUser({
+          token: accessToken,
+        })
+        .then((r) => {
+          const res = r as UserData;
+          holderInfo.value = {
+            email: res.data.UserAttributes.find((a) =>
+              a.Name === "email"
+            )?.Value ||
+              "",
+            phone: res.dataProfile.phone,
+            full_name: res.dataProfile.name,
+            birth_date: res.dataProfile.birth_date,
+            cpf_cnpj: res.dataProfile.cpf,
+            postal_code: res.dataProfile.address[0].cep,
+            address_number: res.dataProfile.address[0].number,
+            address_complement: res.dataProfile.address[0].complement,
+            address_city: res.dataProfile.address[0].city,
+            address_state: res.dataProfile.address[0].state,
+            address_street: res.dataProfile.address[0].street,
           };
-        };
+          const billingAddress = res.dataProfile.address.find(
+            (a) => a.addressType === "BILLING",
+          );
 
-        const billingAddress = res.dataProfile.address.find((a) =>
-          a.addressType === "BILLING"
-        );
+          const email = res.data.UserAttributes.find(
+            (a) => a["Name"] === "email",
+          );
 
-        const email = res.data.UserAttributes.find((a) =>
-          a["Name"] === "email"
-        );
+          console.log({ dataProfile: res.dataProfile });
 
-        console.log({ dataProfile: res.dataProfile });
+          setAddress(billingAddress);
+          setEmail(email?.Value || "");
+          setCurrentPlan(res.dataProfile.plan);
+          setNewPlan(plans.find((p) => p.name === res.dataProfile.plan));
+          setCreditCards(res.dataProfile.credit_cards);
 
-        setAddress(billingAddress);
-        setEmail(email?.Value || "");
-        setCurrentPlan(res.dataProfile.plan);
-        setNewPlan(plans.find((p) => p.name === res.dataProfile.plan));
-        setCreditCards(res.dataProfile.credit_cards);
-
-        setIsLoading(false);
-      });
+          setIsLoading(false);
+        });
 
       fetch(
         `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=false`,
@@ -107,7 +120,7 @@ function MyAccount() {
       accessToken = localStorage.getItem("AccessToken") || "";
     }
 
-    if ((confirmNewPassword !== newPassword) || (!currentPassword)) {
+    if (confirmNewPassword !== newPassword || !currentPassword) {
       alert(
         "Verifique os campos necessários para alterar a senha e tente novamente.",
       );
@@ -115,29 +128,29 @@ function MyAccount() {
       try {
         setIsChanging(true);
 
-        invoke["deco-sites/ecannadeco"].actions.changePassword({
-          token: accessToken,
-          body: {
-            newPassword: confirmNewPassword,
-            oldPassword: currentPassword,
-          },
-        }).then((r) => {
-          const res = r as { message?: string };
-          if (res.message) {
-            alert(res.message);
-          } else {
-            console.log({ r });
-            setCurrentPassword("");
-            setNewPassword("");
-            setConfirmNewPassword("");
-            setIsChanging(false);
-            alert("senha alterada com sucesso!");
-          }
-        });
+        invoke["deco-sites/ecannadeco"].actions
+          .changePassword({
+            token: accessToken,
+            body: {
+              newPassword: confirmNewPassword,
+              oldPassword: currentPassword,
+            },
+          })
+          .then((r) => {
+            const res = r as { message?: string };
+            if (res.message) {
+              alert(res.message);
+            } else {
+              console.log({ r });
+              setCurrentPassword("");
+              setNewPassword("");
+              setConfirmNewPassword("");
+              setIsChanging(false);
+              alert("senha alterada com sucesso!");
+            }
+          });
       } catch (_e) {
-        alert(
-          "Não foi possível alterar a senha. Tente mais tarde",
-        );
+        alert("Não foi possível alterar a senha. Tente mais tarde");
         setIsChanging(false);
       }
     }
@@ -203,9 +216,7 @@ function MyAccount() {
             <div class="flex flex-col gap-3">
               <label class="form-control w-full">
                 <div class="label pb-1">
-                  <span class="label-text text-xs text-[#585858]">
-                    Email
-                  </span>
+                  <span class="label-text text-xs text-[#585858]">Email</span>
                 </div>
                 <input
                   placeholder="Email"
@@ -233,8 +244,7 @@ function MyAccount() {
                   name="currentPassword"
                   value={currentPassword}
                   onChange={(e) =>
-                    e.target &&
-                    setCurrentPassword(e.currentTarget.value)}
+                    e.target && setCurrentPassword(e.currentTarget.value)}
                   disabled={isChanging}
                 />
               </label>
@@ -251,8 +261,7 @@ function MyAccount() {
                   name="newPassword"
                   value={newPassword}
                   onChange={(e) =>
-                    e.target &&
-                    setNewPassword(e.currentTarget.value)}
+                    e.target && setNewPassword(e.currentTarget.value)}
                   disabled={isChanging}
                 />
               </label>
@@ -273,8 +282,7 @@ function MyAccount() {
                   name="confirmNewPassword"
                   value={confirmNewPassword}
                   onChange={(e) =>
-                    e.target &&
-                    setConfirmNewPassword(e.currentTarget.value)}
+                    e.target && setConfirmNewPassword(e.currentTarget.value)}
                   disabled={isChanging}
                 />
                 {confirmNewPassword !== newPassword && (
@@ -298,147 +306,149 @@ function MyAccount() {
                 </button>
               </div>
             </div>
-            <div id="planUpgrade">
-              <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
-                Plano
-              </h2>
-              {/* <div class="flex gap-3"> */}
-              <Slider class="carousel gap-3 max-w-[105%]">
-                {plans.map((plan, i) => (
-                  <Slider.Item class="carousel-item" index={i}>
-                    <div
-                      class="bg-white rounded-md p-3 flex flex-col justify-between"
-                      onClick={() =>
-                        setNewPlan(
-                          plans.find((p) =>
+            {currentPlan !== "CARD_ASSOCIATED" && (
+              <div id="planUpgrade">
+                <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+                  Plano
+                </h2>
+                {/* <div class="flex gap-3"> */}
+                <Slider class="carousel gap-3 max-w-[105%]">
+                  {plans.map((plan, i) => (
+                    <Slider.Item class="carousel-item" index={i}>
+                      <div
+                        class="bg-white rounded-md p-3 flex flex-col justify-between"
+                        onClick={() =>
+                          setNewPlan(plans.find((p) =>
                             p.name === plan.name
-                          ),
-                        )}
-                    >
-                      <div class="flex items-center gap-4">
-                        <div
-                          class={`h-8 w-8 rounded-full ${
-                            plan.plan == (newPlan?.plan || currentPlan)
-                              ? "bg-primary flex items-center justify-center"
-                              : "bg-white"
-                          }`}
-                          style={{
-                            "box-shadow": "inset 1px 3px 7px rgb(0 0 0 / 20%)",
-                          }}
-                        >
-                          {plan.plan == (newPlan?.plan || currentPlan) && (
-                            <Icon class="text-white" id="Check" size={19} />
-                          )}
+                          ))}
+                      >
+                        <div class="flex items-center gap-4">
+                          <div
+                            class={`h-8 w-8 rounded-full ${
+                              plan.plan == (newPlan?.plan || currentPlan)
+                                ? "bg-primary flex items-center justify-center"
+                                : "bg-white"
+                            }`}
+                            style={{
+                              "box-shadow":
+                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                            }}
+                          >
+                            {plan.plan == (newPlan?.plan || currentPlan) && (
+                              <Icon class="text-white" id="Check" size={19} />
+                            )}
+                          </div>
+                          <div class="flex flex-col text-[#898989]">
+                            <span class=" uppercase text-sm">{plan.name}</span>
+                            <span class="text-xs">
+                              {"R$ " +
+                                (plan.price / 100).toFixed(2) +
+                                "/" +
+                                (plan.period === "MONTHLY" && "mês")}
+                            </span>
+                          </div>
                         </div>
-                        <div class="flex flex-col text-[#898989]">
-                          <span class=" uppercase text-sm">{plan.name}</span>
-                          <span class="text-xs">
-                            {"R$ " + (plan.price / 100).toFixed(2) + "/" +
-                              (plan.period === "MONTHLY" && "mês")}
-                          </span>
+                        <div class="flex flex-col gap-2">
+                          <ul class="flex flex-col gap-3 py-3">
+                            <li class="flex gap-3 items-center">
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Carteirinha digital oficial
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Upload ilimitado de documentos
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Direito a via física{" "}
+                                <span class="font-bold">GRÁTIS</span>
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Acesso acompanhamento de Tratamento
+                              </span>
+                            </li>
+                          </ul>
                         </div>
                       </div>
-                      <div class="flex flex-col gap-2">
-                        <ul class="flex flex-col gap-3 py-3">
-                          <li class="flex gap-3 items-center">
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Carteirinha digital oficial
-                            </span>
-                          </li>
-                          <li
-                            // class={`flex gap-3 items-center ${
-                            //   plan.name == "FREE" && "opacity-20"
-                            // }`}
-                            class={`flex gap-3 items-center`}
-                          >
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Upload ilimitado de documentos
-                            </span>
-                          </li>
-                          <li
-                            // class={`flex gap-3 items-center ${
-                            //   plan.name == "FREE" && "opacity-20"
-                            // }`}
-                            class={`flex gap-3 items-center`}
-                          >
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Direito a via física{" "}
-                              <span class="font-bold">GRÁTIS</span>
-                            </span>
-                          </li>
-                          <li
-                            // class={`flex gap-3 items-center ${
-                            //   plan.name == "FREE" && "opacity-20"
-                            // }`}
-                            class={`flex gap-3 items-center`}
-                          >
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Acesso acompanhamento de Tratamento
-                            </span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </Slider.Item>
-                ))}
-              </Slider>
-              <div class="flex  flex-col justify-end mt-4">
-                <ModalConfirm
-                  text="Tem certeza que deseja encerrar sua assinatura?"
-                  confirmButtonText="Encerrar"
-                  open={displayConfirmCancelSubscription.value}
-                  onClose={() => {
-                    displayConfirmCancelSubscription.value = false;
-                  }}
-                  onConfirm={handleCancelSubscription}
-                  loading={isCanceling}
-                />
-                <CheckoutUpsellModal
-                  creditCards={creditCards}
-                  plan={newPlan!}
-                  email={email}
-                  address={address!}
-                />
-                <button
-                  class="btn btn-primary text-white"
-                  disabled={(newPlan?.name || currentPlan) == currentPlan}
-                  onClick={() => {
-                    console.log({ creditCards });
-                    displayCheckoutUpsellModal.value = true;
-                  }}
-                >
-                  Alterar Plano
-                </button>
-                <button
-                  class="btn btn-ghost text-xs font-normal text-red-500"
-                  onClick={() => {
-                    displayConfirmCancelSubscription.value = true;
-                  }}
-                >
-                  Cancelar Assinatura
-                </button>
+                    </Slider.Item>
+                  ))}
+                </Slider>
+                <div class="flex  flex-col justify-end mt-4">
+                  <ModalConfirm
+                    text="Tem certeza que deseja encerrar sua assinatura?"
+                    confirmButtonText="Encerrar"
+                    open={displayConfirmCancelSubscription.value}
+                    onClose={() => {
+                      displayConfirmCancelSubscription.value = false;
+                    }}
+                    onConfirm={handleCancelSubscription}
+                    loading={isCanceling}
+                  />
+                  <CheckoutUpsellModal
+                    creditCards={creditCards}
+                    plan={newPlan!}
+                    address={address!}
+                  />
+                  <button
+                    class="btn btn-primary text-white"
+                    disabled={(newPlan?.name || currentPlan) == currentPlan}
+                    onClick={() => {
+                      console.log({ creditCards });
+                      displayCheckoutUpsellModal.value = true;
+                    }}
+                  >
+                    Alterar Plano
+                  </button>
+                  <button
+                    class="btn btn-ghost text-xs font-normal text-red-500"
+                    onClick={() => {
+                      displayConfirmCancelSubscription.value = true;
+                    }}
+                  >
+                    Cancelar Assinatura
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
     </PageWrap>

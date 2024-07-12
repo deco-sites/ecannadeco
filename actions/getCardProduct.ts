@@ -1,3 +1,4 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 export interface Props {
   token: string;
 }
@@ -8,7 +9,7 @@ const getPlans = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "https://api.ecanna.com.br/products/user-card-product-offer",
+      `${API_URL}/products/user-card-product-offer`,
       {
         method: "GET",
         headers: {
@@ -21,7 +22,6 @@ const getPlans = async (
     const res = await response.json();
     return res;
   } catch (e) {
-    // console.log({ e });
     return e;
   }
 };
