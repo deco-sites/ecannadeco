@@ -2,6 +2,8 @@ import { invoke } from "../../runtime.ts";
 import { useEffect, useState } from "preact/hooks";
 import StepTimeline from "../../components/ui/StepTimeline.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { firstMessages, isEmail, required, validate } from "validasaur";
+import { useUI } from "../../sdk/useUI.ts";
 
 export interface Props {
   formTitle?: string;
@@ -20,6 +22,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   const [whatsappError, setWhatsappError] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [interest, setInterest] = useState("");
+  const { displayAlert, alertText, alertType } = useUI();
 
   useEffect(() => {
     if (IS_BROWSER) {
@@ -30,8 +33,31 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
-    if (name == "" || cpf == "" || email == "" || password == "") {
-      alert("Preencha todos os campos para prosseguir!");
+
+    const inputs = {
+      email,
+      password,
+      name,
+      cpf,
+      whatsapp,
+    };
+
+    const [_passes, errors] = await validate(inputs, {
+      name: required,
+      cpf: required,
+      email: [required, isEmail],
+      password: required,
+      whatsapp: required,
+    });
+
+    const firstErrors = firstMessages(errors);
+
+    if (errors) {
+      const firstField = Object.keys(firstErrors)[0];
+      const firstErrorMessage = firstErrors[firstField];
+      displayAlert.value = true;
+      alertText.value = String(firstErrorMessage);
+      alertType.value = "error";
       return null;
     }
     if (
