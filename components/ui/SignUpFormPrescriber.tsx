@@ -104,7 +104,7 @@ function SignUpFormPrescriber({
       termsAgree,
     };
 
-    const [passes, errors] = await validate(inputs, {
+    const [_passes, errors] = await validate(inputs, {
       name: required,
       registryType: required,
       email: [required, isEmail],
@@ -198,7 +198,7 @@ function SignUpFormPrescriber({
       setPasswordError("");
     } else {
       setPasswordError(
-        "A senha deve conter pelo menos 8 caracteres, incluindo: letras maiúsculas, minúsculas, números e caracteres especiais."
+        "A senha deve conter pelo menos 8 caracteres, incluindo: letras maiúsculas, minúsculas, números e caracteres especiais.",
       );
     }
   };
@@ -224,7 +224,7 @@ function SignUpFormPrescriber({
     const inputValue = (event.target as HTMLInputElement).value;
     setWhatsapp(stripWhatsappNonNumericCharacters(inputValue));
     setWhatsappError(
-      validateWhatsapp(inputValue) ? "" : "Número de WhatsApp inválido"
+      validateWhatsapp(inputValue) ? "" : "Número de WhatsApp inválido",
     );
   };
 
