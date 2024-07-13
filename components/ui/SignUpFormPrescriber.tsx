@@ -2,6 +2,8 @@ import { invoke } from "../../runtime.ts";
 import { useState } from "preact/hooks";
 import StepTimeline from "./StepTimeline.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { firstMessages, isEmail, required, validate } from "validasaur";
+import { useUI } from "../../sdk/useUI.ts";
 
 export interface Props {
   formTitle?: string;
@@ -24,6 +26,7 @@ function SignUpFormPrescriber({
   const [whatsapp, setWhatsapp] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
+  const { displayAlert, alertText, alertType } = useUI();
 
   const validarCPF = (cpf: string) => {
     cpf = cpf.replace(/[^\d]/g, ""); // Remove caracteres não numéricos
@@ -89,18 +92,45 @@ function SignUpFormPrescriber({
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
-    if (
-      name == "" ||
-      registryType == "" ||
-      email == "" ||
-      password == "" ||
-      whatsapp == ""
-    ) {
-      alert("Preencha todos os campos");
+
+    const inputs = {
+      name,
+      registryType,
+      email,
+      password,
+      whatsapp,
+      registryNumber,
+      registryState,
+      termsAgree,
+    };
+
+    const [passes, errors] = await validate(inputs, {
+      name: required,
+      registryType: required,
+      email: [required, isEmail],
+      password: required,
+      whatsapp: required,
+      registryNumber: required,
+      registryState: required,
+      termsAgree: required,
+    });
+
+    const firstErrors = firstMessages(errors);
+    console.log({ errors });
+
+    if (errors) {
+      const firstField = Object.keys(firstErrors)[0];
+      const firstErrorMessage = firstErrors[firstField];
+      displayAlert.value = true;
+      alertText.value = String(firstErrorMessage);
+      alertType.value = "error";
       return null;
     }
     if (whatsappError || emailError) {
-      alert("Corrija o erro das informações (em vermelho) para continuar");
+      displayAlert.value = true;
+      alertText.value =
+        "Corrija o erro das informações (em vermelho) para continuar";
+      alertType.value = "error";
       return null;
     }
     if (termsAgree) {
@@ -124,9 +154,11 @@ function SignUpFormPrescriber({
         };
 
         if (dataS.errors && dataS.errors.length > 0) {
-          alert(
-            "Não foi possível fazer signup. Verifique as informações fornecidas e tente novamente.",
-          );
+          displayAlert.value = true;
+          alertText.value =
+            "Não foi possível fazer signup. Verifique as informações fornecidas e tente novamente.";
+          alertType.value = "error";
+
           setLoading(false);
         } else {
           if (IS_BROWSER) {
@@ -139,16 +171,18 @@ function SignUpFormPrescriber({
           window.location.href = "/prescritor/confirmar-cadastro";
         }
       } catch (e) {
-        alert(
-          "Não foi possível fazer signup. Verifique as informações fornecidas e tente novamente.",
-        );
+        displayAlert.value = true;
+        alertText.value =
+          "Não foi possível fazer signup. Verifique as informações fornecidas e tente novamente.";
+        alertType.value = "error";
         console.log({ e });
         setLoading(false);
       }
     } else {
-      alert(
-        "Você deve concordar com os Termos de Uso e Políticas de Privacidade para continuar seu cadastro",
-      );
+      displayAlert.value = true;
+      alertText.value =
+        "Você deve concordar com os Termos de Uso e Políticas de Privacidade para continuar seu cadastro";
+      alertType.value = "error";
     }
   };
 
@@ -164,7 +198,7 @@ function SignUpFormPrescriber({
       setPasswordError("");
     } else {
       setPasswordError(
-        "A senha deve conter pelo menos 8 caracteres, incluindo: letras maiúsculas, minúsculas, números e caracteres especiais.",
+        "A senha deve conter pelo menos 8 caracteres, incluindo: letras maiúsculas, minúsculas, números e caracteres especiais."
       );
     }
   };
@@ -190,7 +224,7 @@ function SignUpFormPrescriber({
     const inputValue = (event.target as HTMLInputElement).value;
     setWhatsapp(stripWhatsappNonNumericCharacters(inputValue));
     setWhatsappError(
-      validateWhatsapp(inputValue) ? "" : "Número de WhatsApp inválido",
+      validateWhatsapp(inputValue) ? "" : "Número de WhatsApp inválido"
     );
   };
 
