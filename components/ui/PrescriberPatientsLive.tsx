@@ -4,6 +4,7 @@
 import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import PageWrap from "./PageWrap.tsx";
+import PatientCard from "./PatientCard.tsx";
 import Icon from "./Icon.tsx";
 import { useUI } from "../../sdk/useUI.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
@@ -150,22 +151,6 @@ function PrescriberPatients() {
   const { displayNewPatientModal, displayModalTextAction, displayVideoModal } =
     useUI();
 
-  const timeAgo = (date: Date): string => {
-    const seconds = Math.floor((Number(new Date()) - +date) / 1000); // Explicitly convert to number
-    let interval = Math.floor(seconds / 31536000);
-
-    if (interval >= 1) return `${interval}a atrás`;
-    interval = Math.floor(seconds / 2592000);
-    if (interval >= 1) return `${interval}m atrás`;
-    interval = Math.floor(seconds / 86400);
-    if (interval >= 1) return `${interval}d atrás`;
-    interval = Math.floor(seconds / 3600);
-    if (interval >= 1) return `${interval}h atrás`;
-    interval = Math.floor(seconds / 60);
-    if (interval >= 1) return `${interval}min atrás`;
-    return `${Math.floor(seconds)}seg atrás`;
-  };
-
   return (
     <>
       <div class="w-full flex justify-center mb-4">
@@ -279,75 +264,7 @@ function PrescriberPatients() {
                     <div class="flex justify-between"></div>
                     {patients &&
                       patients.map((p) => {
-                        return (
-                          <a
-                            href={`/prescritor/meus-pacientes/${p._id}`}
-                            class=""
-                          >
-                            <div tabindex={0} role="button" class="">
-                              <div target="_blank">
-                                <li
-                                  class={`p-3 ${
-                                    p.status === "GOOD"
-                                      ? "bg-[#ffffff]"
-                                      : "bg-[#fff8dc]"
-                                  } rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
-                                >
-                                  <div class="flex justify-between">
-                                    <div class="flex gap-4 items-center">
-                                      <div class="text-[#808080]">
-                                        <Icon id="Profile" size={16} />
-                                      </div>
-                                      <div class="flex flex-col items-start">
-                                        <span class="font-semibold">
-                                          {p.name}
-                                        </span>
-                                        <span class="text-sm">
-                                          {p.profile?.email ||
-                                            "E-mail não informado"}
-                                        </span>
-                                      </div>
-                                    </div>
-                                    {p.lastReport
-                                      ? (
-                                        <div class="flex flex-col items-end gap-2">
-                                          <div class="flex justify-between items-center gap-2 text-[#808080]">
-                                            <Icon id="Update" size={16} />
-                                            <span>
-                                              {timeAgo(new Date(p.lastReport))}
-                                            </span>
-                                          </div>
-                                          <div
-                                            class={`${
-                                              p.status === "GOOD"
-                                                ? "text-green-600"
-                                                : "text-red-600"
-                                            }`}
-                                          >
-                                            <Icon
-                                              id={`${
-                                                p.status === "GOOD"
-                                                  ? "HappyFace"
-                                                  : "SadFace"
-                                              }`}
-                                              size={19}
-                                            />
-                                          </div>
-                                        </div>
-                                      )
-                                      : (
-                                        <div class="flex items-center justify-end">
-                                          <div class="badge badge-primary badge-xs p-2">
-                                            Sem Registro
-                                          </div>
-                                        </div>
-                                      )}
-                                  </div>
-                                </li>
-                              </div>
-                            </div>
-                          </a>
-                        );
+                        return <PatientCard patient={p} />;
                       })}
                   </ul>
                 )}
