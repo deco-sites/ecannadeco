@@ -104,18 +104,27 @@ function PrescriberPatients({ patient }: { patient: Patient }) {
                   }`}
                 >
                   <div class="timeline-middle">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      class="h-5 w-5"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
+                    {[
+                        "RECEIVED_PRESCRIPTION",
+                        "BOUGHT_MEDICATION",
+                        "RECEIVED_MEDICATION",
+                        "STARTED_TREATMENT",
+                      ].includes(patient.treatmentJourneyStatus!)
+                      ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          class="h-5 w-5"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      )
+                      : <Icon id="Pending" size={20} />}
                   </div>
                   <div class="timeline-end text-[9px] text-center max-w-[65px] leading-3">
                     Recebeu Prescrição
@@ -156,18 +165,26 @@ function PrescriberPatients({ patient }: { patient: Patient }) {
                     }`}
                   />
                   <div class="timeline-middle">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      class="h-5 w-5"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
+                    {[
+                        "BOUGHT_MEDICATION",
+                        "RECEIVED_MEDICATION",
+                        "STARTED_TREATMENT",
+                      ].includes(patient.treatmentJourneyStatus!)
+                      ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          class="h-5 w-5"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      )
+                      : <Icon id="Pending" size={20} />}
                   </div>
                   <div class="timeline-end text-[9px] text-center max-w-[65px] leading-3">
                     Comprou Medicamento
@@ -203,18 +220,24 @@ function PrescriberPatients({ patient }: { patient: Patient }) {
                     }`}
                   />
                   <div class="timeline-middle">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      class="h-5 w-5"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
+                    {["RECEIVED_MEDICATION", "STARTED_TREATMENT"].includes(
+                        patient.treatmentJourneyStatus!,
+                      )
+                      ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          class="h-5 w-5"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      )
+                      : <Icon id="Pending" size={20} />}
                   </div>
                   <div class="timeline-end text-[9px] text-center max-w-[65px] leading-3">
                     Recebeu Medicamento
@@ -248,18 +271,24 @@ function PrescriberPatients({ patient }: { patient: Patient }) {
                     }`}
                   />
                   <div class="timeline-middle">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      class="h-5 w-5"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
+                    {["STARTED_TREATMENT"].includes(
+                        patient.treatmentJourneyStatus!,
+                      )
+                      ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          class="h-5 w-5"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      )
+                      : <Icon id="Pending" size={20} />}
                   </div>
                   <div class="timeline-end text-[9px] text-center max-w-[65px] leading-3">
                     Iniciou Tratamento
