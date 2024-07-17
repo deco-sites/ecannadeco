@@ -76,7 +76,7 @@ function MyInfo() {
 
           setName(userName?.Value || "NOME NÃO CADASTRADO");
           setCpf(userCpf?.Value || "CPF NÃO CADASTRADO");
-          setBirthDate(res.dataProfile.birth_date.slice(0, 10));
+          setBirthDate((res.dataProfile.birth_date || "").slice(0, 10));
 
           setPhone(res.dataProfile.phone);
           setProfile(res.dataProfile._id);
