@@ -57,6 +57,7 @@ export type AvailableIcons =
   | "Plus"
   | "Pending"
   | "QuestionMarkCircle"
+  | "QRCode"
   | "Return"
   | "Ruler"
   | "ShoppingCart"
