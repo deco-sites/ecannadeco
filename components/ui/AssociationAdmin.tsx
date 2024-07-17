@@ -29,6 +29,7 @@ function MyAccount() {
   const [isLoading, setIsLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [isApproving, setIsApproving] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [emailSearch, setEmailSearch] = useState("");
   const [associationName, setAssociationName] = useState("");
@@ -260,6 +261,30 @@ function MyAccount() {
     } catch (_e) {
       alert(
         "Não foi possível Atualizar dados da associação. Tente novamente mais tarde ou contecte o suporte.",
+      );
+      setUpdating(false);
+    }
+  };
+
+  const handleApproveUser = async (id: string) => {
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+    setIsApproving(true);
+
+    try {
+      await invoke["deco-sites/ecannadeco"].actions.associationAdminUpdateUser({
+        token: accessToken,
+        id,
+      });
+      setIsApproving(false);
+
+      handleGetUsers(1);
+    } catch (_e) {
+      alert(
+        "Não foi possível aprovar paciente. Tente novamente mais tarde ou contecte o suporte.",
       );
       setUpdating(false);
     }
@@ -506,14 +531,17 @@ function MyAccount() {
               </div>
               <div>
                 <div class="flex pb-2 px-2 border-b border-[#cdcdcd] mb-4">
-                  <div class="w-[32%] flex justify-start">
+                  <div class="w-[30%] flex justify-start">
                     <span class="text-xs">Nome</span>
                   </div>
-                  <div class="w-[32%] flex justify-start">
+                  <div class="w-[30%] flex justify-start">
                     <span class="text-xs">Email</span>
                   </div>
-                  <div class="w-[32%] flex justify-end">
+                  <div class="w-[30%] flex justify-end">
                     <span class="text-xs">CPF</span>
+                  </div>
+                  <div class="w-[10%] flex justify-end">
+                    <span class="text-xs">Aprovado</span>
                   </div>
                 </div>
                 <PreSignupUsersModal
@@ -534,7 +562,7 @@ function MyAccount() {
                               <div tabindex={0} role="button" class="">
                                 <div target="_blank">
                                   <li class="p-3 bg-[#cacaca] flex gap-[2%] justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
-                                    <div class="w-[32%] flex justify-start">
+                                    <div class="w-[30%] flex justify-start">
                                       <span>
                                         {u.cognito_data
                                           ? (
@@ -547,10 +575,10 @@ function MyAccount() {
                                           )}
                                       </span>
                                     </div>
-                                    <div class="w-[32%] flex justify-start">
+                                    <div class="w-[30%] flex justify-start">
                                       <span>{u.email}</span>
                                     </div>
-                                    <div class="w-[32%] flex justify-end">
+                                    <div class="w-[30%] flex justify-end">
                                       <span>
                                         {u.cognito_data
                                           ? (
@@ -559,6 +587,21 @@ function MyAccount() {
                                           : (
                                             <span class="badge text-xs font-bold">
                                               Cadastro Pendente
+                                            </span>
+                                          )}
+                                      </span>
+                                    </div>
+                                    <div class="w-[10%] flex justify-end">
+                                      <span>
+                                        {u.associationApproved
+                                          ? (
+                                            <span class="badge badge-xs text-xs bg-green-700 text-white border-none p-2">
+                                              Aprovado
+                                            </span>
+                                          )
+                                          : (
+                                            <span class="badge badge-xs text-xs bg-orange-600 text-white border-none p-2">
+                                              Pendente
                                             </span>
                                           )}
                                       </span>
@@ -579,6 +622,7 @@ function MyAccount() {
                                     target="_blank"
                                     class="flex items-center"
                                   >
+                                    <Icon id="Form" size={19} />
                                     Ficha do Paciente
                                   </a>
                                 </li>
@@ -590,7 +634,10 @@ function MyAccount() {
                                     );
                                   }}
                                 >
-                                  <a>Baixar QR Code</a>
+                                  <a>
+                                    <Icon id="QRCode" size={19} />{" "}
+                                    Baixar QR Code
+                                  </a>
                                 </li>
                                 <li>
                                   <a
@@ -604,9 +651,24 @@ function MyAccount() {
                                       };
                                     }}
                                   >
+                                    <Icon id="Upload" size={19} />
                                     Subir Documento
                                   </a>
                                 </li>
+                                {!u.associationApproved && (
+                                  <li>
+                                    <a
+                                      onClick={() => {
+                                        handleApproveUser(u._id);
+                                      }}
+                                    >
+                                      <Icon id="CircleCheck" size={19} />
+                                      {isApproving
+                                        ? "Aprovando..."
+                                        : "Aprovar Paciente"}
+                                    </a>
+                                  </li>
+                                )}
                               </ul>
                             </div>
                           );

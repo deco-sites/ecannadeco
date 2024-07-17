@@ -20,6 +20,7 @@ export interface UserData {
     address: UpdateDataProps["address"][];
     created_at?: Date;
     plan: string;
+    associationApproved?: boolean;
     association: { name: string; logo_url: string; cnpj: string };
     qrcode_url: string;
     credit_cards: SavedCreditCard[];
@@ -77,7 +78,8 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           holderInfo.value = {
             email: res.data.UserAttributes.find((a) =>
               a.Name === "email"
-            )?.Value || "",
+            )?.Value ||
+              "",
             phone: res.dataProfile.phone,
             full_name: res.dataProfile.name,
             birth_date: res.dataProfile.birth_date,
@@ -158,7 +160,11 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         </a>
         <a
           href={`/ficha/${userData?.dataProfile?._id}`}
-          class="btn btn-secondary btn-xs text-white"
+          class={`btn btn-secondary btn-xs text-white ${
+            userData?.dataProfile?.association &&
+            !userData?.dataProfile?.associationApproved &&
+            "hidden"
+          }`}
         >
           <Icon id="Form" size={19} /> Ficha Pública
         </a>
@@ -168,14 +174,27 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           ? <span class="loading loading-spinner loading-xs" />
           : (
             <div id="ecannaCard" class="relative text-[#1878b8]">
-              <Image
-                class="card"
-                src={userData?.dataProfile?.ecannacard_url || cardSkeleton}
-                alt="Carteirinha eCanna"
-                width={352}
-                height={234}
-                loading="lazy"
-              />
+              {userData?.dataProfile?.association &&
+                  !userData?.dataProfile?.associationApproved
+                ? (
+                  <div class="w-[352px] h-[234px] bg-white rounded-md flex justify-center items-center p-10 text-center">
+                    <span class="text-black uppercase">
+                      Estamos aguardando a associação confirmar sua identidade
+                      para liberar a carteirinha! Em breve, sua carteirinha
+                      estará disponível!
+                    </span>
+                  </div>
+                )
+                : (
+                  <Image
+                    class="card"
+                    src={userData?.dataProfile?.ecannacard_url || cardSkeleton}
+                    alt="Carteirinha eCanna"
+                    width={352}
+                    height={234}
+                    loading="lazy"
+                  />
+                )}
             </div>
           )}
       </div>
@@ -203,6 +222,8 @@ function EcannaCardPage({ cardSkeleton }: Props) {
             <button
               type="button"
               download
+              disabled={userData?.dataProfile?.association &&
+                !userData?.dataProfile?.associationApproved}
               onClick={() =>
                 downloadFile(
                   userData?.dataProfile?.ecannacard_url,
@@ -218,6 +239,8 @@ function EcannaCardPage({ cardSkeleton }: Props) {
 
         <button
           type="button"
+          disabled={userData?.dataProfile?.association &&
+            !userData?.dataProfile?.associationApproved}
           download="carteirinha.png"
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
           onClick={() => {
