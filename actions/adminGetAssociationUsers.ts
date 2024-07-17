@@ -12,6 +12,7 @@ export type AssociationUsers = {
   qrcode_url: string;
   email: string;
   cognito_id: string;
+  associationApproved?: boolean;
   cognito_data: {
     cpf: string;
     name: string;

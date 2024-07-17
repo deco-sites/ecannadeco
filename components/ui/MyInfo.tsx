@@ -37,6 +37,12 @@ function MyInfo() {
   const [cids, setCids] = useState<unknown[]>([]);
   const [userImg, setUserImg] = useState<string | null>(null);
   const [profile, setProfile] = useState("");
+  const [association, setAssociation] = useState<{
+    name: string;
+    logo_url: string;
+    cnpj: string;
+  }>();
+  const [associationApproved, setAssociationApproved] = useState<boolean>();
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -64,8 +70,13 @@ function MyInfo() {
             dataProfile: Omit<UpdateDataProps, "name cpf address"> & {
               _id: string;
               address: UpdateDataProps["address"][];
+              associationApproved?: boolean;
+              association: { name: string; logo_url: string; cnpj: string };
             };
           };
+
+          setAssociation(res.dataProfile.association);
+          setAssociationApproved(res.dataProfile.associationApproved);
 
           const userName = res.data.UserAttributes.find(
             (a) => a["Name"] === "name",
@@ -291,7 +302,9 @@ function MyInfo() {
           </a>
           <a
             href={`/ficha/${profile}`}
-            class="btn btn-secondary btn-xs text-white"
+            class={`btn btn-secondary btn-xs text-white ${
+              association && !associationApproved && "hidden"
+            }`}
           >
             <Icon id="Form" size={19} /> Ficha Pública
           </a>
