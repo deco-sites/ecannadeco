@@ -2,7 +2,7 @@ import { invoke } from "../../runtime.ts";
 import { useState } from "preact/hooks";
 import StepTimeline from "./StepTimeline.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import { firstMessages, isEmail, required, validate } from "validasaur";
+// import { firstMessages, isEmail, required, validate } from "validasaur";
 import { useUI } from "../../sdk/useUI.ts";
 
 export interface Props {
@@ -93,39 +93,39 @@ function SignUpFormPrescriber({
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
 
-    const inputs = {
-      name,
-      registryType,
-      email,
-      password,
-      whatsapp,
-      registryNumber,
-      registryState,
-      termsAgree,
-    };
+    // const inputs = {
+    //   name,
+    //   registryType,
+    //   email,
+    //   password,
+    //   whatsapp,
+    //   registryNumber,
+    //   registryState,
+    //   termsAgree,
+    // };
 
-    const [_passes, errors] = await validate(inputs, {
-      name: required,
-      registryType: required,
-      email: [required, isEmail],
-      password: required,
-      whatsapp: required,
-      registryNumber: required,
-      registryState: required,
-      termsAgree: required,
-    });
+    // const [_passes, errors] = await validate(inputs, {
+    //   name: required,
+    //   registryType: required,
+    //   email: [required, isEmail],
+    //   password: required,
+    //   whatsapp: required,
+    //   registryNumber: required,
+    //   registryState: required,
+    //   termsAgree: required,
+    // });
 
-    const firstErrors = firstMessages(errors);
-    console.log({ errors });
+    // const firstErrors = firstMessages(errors);
+    // console.log({ errors });
 
-    if (errors) {
-      const firstField = Object.keys(firstErrors)[0];
-      const firstErrorMessage = firstErrors[firstField];
-      displayAlert.value = true;
-      alertText.value = String(firstErrorMessage);
-      alertType.value = "error";
-      return null;
-    }
+    // if (errors) {
+    //   const firstField = Object.keys(firstErrors)[0];
+    //   const firstErrorMessage = firstErrors[firstField];
+    //   displayAlert.value = true;
+    //   alertText.value = String(firstErrorMessage);
+    //   alertType.value = "error";
+    //   return null;
+    // }
     if (whatsappError || emailError) {
       displayAlert.value = true;
       alertText.value =
