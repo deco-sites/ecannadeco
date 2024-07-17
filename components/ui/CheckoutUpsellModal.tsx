@@ -246,7 +246,7 @@ const CheckoutUpsellModal = (props: Props) => {
       setAddressState(holderInfo.value.address_state);
       setAddressStreet(holderInfo.value.address_street);
       setPhone(holderInfo.value.phone);
-      setBirthDate(holderInfo.value.birth_date.slice(0, 10));
+      setBirthDate((holderInfo.value.birth_date || "").slice(0, 10));
       setFilledFields(true);
     }
   });
