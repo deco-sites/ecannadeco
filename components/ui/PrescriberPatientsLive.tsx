@@ -188,7 +188,7 @@ function PrescriberPatients() {
               </div>
               <div class="flex flex-col sm:flex-row gap-4 justify-between mb-4">
                 <PrescriberNewPatientModal
-                  onFinished={() => {
+                  _onFinished={() => {
                     displayNewPatientModal.value = false;
                     let accessToken = "";
                     if (IS_BROWSER) {
@@ -196,6 +196,7 @@ function PrescriberPatients() {
                         localStorage.getItem("PrescriberAccessToken") || "";
                     }
                     getPatients(accessToken);
+                    // globalThis.loca = '/'
                   }}
                 />
                 <input

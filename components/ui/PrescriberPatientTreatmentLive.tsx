@@ -79,6 +79,9 @@ function PrescriberPatientTreatments() {
     if (response) {
       if (isActive) {
         setCurrentTreatment(response.docs[0] as Treatment);
+        if (!response.docs[0]) {
+          displayNewTreatmentModal.value = true;
+        }
       } else {
         setHasNextPage(response.hasNextPage);
         setHasPrevPage(response.hasPrevPage);

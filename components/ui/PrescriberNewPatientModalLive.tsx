@@ -9,10 +9,10 @@ import type { Treatment } from "./PrescriberPatients.tsx";
 type Medication = Treatment["medication"];
 
 export interface Props {
-  onFinished: () => void;
+  _onFinished: () => void;
 }
 
-const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
+const PrescriberUpdateTreatmentModal = ({ _onFinished }: Props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -33,7 +33,13 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
       email,
       phone,
     });
-    const res = response as { message?: string };
+    console.log({ response });
+    const res = response as {
+      message?: string;
+      patient?: {
+        _id: string;
+      };
+    };
 
     // console.log({res});
     setUpdating(false);
@@ -47,7 +53,9 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
       displayModalTextAction.value = true;
     } else if (response) {
       displayNewPatientModal.value = false;
-      onFinished();
+      // onFinished();
+      globalThis.location.href =
+        `/prescritor/meus-pacientes/${res.patient?._id}`;
     }
   };
 

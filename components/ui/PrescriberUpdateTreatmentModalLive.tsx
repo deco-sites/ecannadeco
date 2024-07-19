@@ -151,7 +151,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
         <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
           {currentTreatment
             ? `Atualizar tratamento - ${currentTreatment.patient?.name}`
-            : `Criar tratamento`}
+            : `Cadastrar tratamento`}
         </h3>
 
         {newMedication?.map((medication, index) => (
@@ -228,7 +228,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
           />
         </label>
         <button class="btn btn-secondary text-white" onClick={handleSubmit}>
-          {currentTreatment ? "Atualizar Tratamento" : "Criar Tratamento"}
+          {currentTreatment ? "Atualizar Tratamento" : "Cadastrar Tratamento"}
           {"    "}{updating
             ? <span class="loading loading-spinner text-white"></span>
             : <Icon id="Update" size={16} />}
