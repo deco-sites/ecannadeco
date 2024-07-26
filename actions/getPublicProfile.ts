@@ -1,3 +1,5 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
+
 export interface Props {
   id: string;
   pin: string;
@@ -40,7 +42,7 @@ const getPublicProfile = async (
 ): Promise<PublicProfile> => {
   try {
     const response = await fetch(
-      "http://localhost/auth/public/" + id + "?pin=" + pin,
+      `${API_URL}/auth/public/` + id + "?pin=" + pin,
     );
 
     const res = await response.json();

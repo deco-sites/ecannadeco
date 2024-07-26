@@ -45,6 +45,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
     cnpj: string;
   }>();
   const [pin, setPin] = useState("");
+  const [updatingPin, setUpdatingPin] = useState(false);
   const [_qrcode, setQrcode] = useState<string>();
   const [creditCards, setCreditCards] = useState<SavedCreditCard[]>([]);
   const [cardProduct, setCardProduct] = useState<Product>({} as Product);
@@ -152,10 +153,26 @@ function EcannaCardPage({ cardSkeleton }: Props) {
       });
   }
 
-  // const updateUserPin = () => {
-  //   invoke["deco-sites/ecannadeco"].actions
-  //       .updateUserData(body)
-  // }
+  const updateUserPin = async () => {
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+    setUpdatingPin(true);
+
+    try {
+      await invoke["deco-sites/ecannadeco"].actions.updateUserPin({
+        pin,
+        token: accessToken,
+      });
+    } catch (e) {
+      console.log({ e });
+      alert("erro ao atualizar pin. Contacte o suporte!");
+    }
+
+    setUpdatingPin(false);
+  };
 
   return (
     <div class="flex flex-col justify-center items-center my-10 gap-[30px]">
@@ -220,20 +237,18 @@ function EcannaCardPage({ cardSkeleton }: Props) {
               maxLength={4}
               class="input input-xs rounded-md rounded-r-none text-[#8b8b8b] border border-[#ececec]"
               value={pin}
-              // onChange={(e) =>
-              //   e.target && setBillingAddressPostalCode(e.currentTarget.value)
-              // }
+              disabled={updatingPin}
+              onChange={(e) => e.target && setPin(e.currentTarget.value)}
             />
             <button
               class="btn btn-ghost btn-xs bg-secondary text-white join-item"
               type="button"
-              // onClick={() => handleValidatePostalCode(billingAddressPostalCode)}
+              onClick={updateUserPin}
             >
-              Atualizar PIN {
-                /* {isLoadingPostalCode && (
+              Atualizar PIN{" "}
+              {updatingPin && (
                 <span class="loading loading-spinner text-green-600"></span>
-              )} */
-              }
+              )}
             </button>
           </label>
         </div>
