@@ -26,6 +26,7 @@ export interface UserData {
     credit_cards: SavedCreditCard[];
     ecannacard_url: string;
     _id: string;
+    pin: string;
   };
 }
 
@@ -43,6 +44,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
     logo_url: string;
     cnpj: string;
   }>();
+  const [pin, setPin] = useState("");
   const [_qrcode, setQrcode] = useState<string>();
   const [creditCards, setCreditCards] = useState<SavedCreditCard[]>([]);
   const [cardProduct, setCardProduct] = useState<Product>({} as Product);
@@ -96,6 +98,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           setAssociation(associationObj);
           setQrcode(qr);
           setCreatedAt(new Date(String(date)));
+          setPin(res.dataProfile.pin);
 
           setLoadingProduct(true);
 
@@ -149,6 +152,11 @@ function EcannaCardPage({ cardSkeleton }: Props) {
       });
   }
 
+  // const updateUserPin = () => {
+  //   invoke["deco-sites/ecannadeco"].actions
+  //       .updateUserData(body)
+  // }
+
   return (
     <div class="flex flex-col justify-center items-center my-10 gap-[30px]">
       <div class="flex flex-wrap gap-4 items-center justify-center my-4 mb-10">
@@ -197,6 +205,38 @@ function EcannaCardPage({ cardSkeleton }: Props) {
                 )}
             </div>
           )}
+      </div>
+      <div>
+        <div class="join w-full">
+          <label class="join-item">
+            {
+              /* <div class="label pb-1">
+              <span class="label-text text-xs text-[#585858]">CEP</span>
+            </div> */
+            }
+            <input
+              placeholder="PIN"
+              name="pin"
+              maxLength={4}
+              class="input input-xs rounded-md rounded-r-none text-[#8b8b8b] border border-[#ececec]"
+              value={pin}
+              // onChange={(e) =>
+              //   e.target && setBillingAddressPostalCode(e.currentTarget.value)
+              // }
+            />
+            <button
+              class="btn btn-ghost btn-xs bg-secondary text-white join-item"
+              type="button"
+              // onClick={() => handleValidatePostalCode(billingAddressPostalCode)}
+            >
+              Atualizar PIN {
+                /* {isLoadingPostalCode && (
+                <span class="loading loading-spinner text-green-600"></span>
+              )} */
+              }
+            </button>
+          </label>
+        </div>
       </div>
       <div class="max-w-[472px] w-[90%] mt-10 sm:mt-0">
         <div class="bg-[#ececec] p-4 rounded-md">

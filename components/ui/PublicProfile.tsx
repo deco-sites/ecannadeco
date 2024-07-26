@@ -2,32 +2,73 @@ import type { PublicProfile } from "../../loaders/getPublicProfile.ts";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 import Image from "apps/website/components/Image.tsx";
 import Icon from "../../components/ui/Icon.tsx";
+import { useEffect, useState } from "preact/hooks";
+import { invoke } from "../../runtime.ts";
+import { IS_BROWSER } from "$fresh/runtime.ts";
+import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
 
-interface Props {
-  publicProfile: PublicProfile;
+export interface Props {
+  // publicProfile: PublicProfile;
+  slug: RequestURLParam;
 }
 
-function PublicProfileComponent(
-  { publicProfile }: Props,
-) {
-  const {
-    cpf,
-    name,
-    cids,
-    documents,
-    associationDocuments,
-    avatar_photo,
-    association,
-    _id,
-    email,
-  } = publicProfile;
+function PublicProfileComponent({ slug }: Props) {
+  const [pinVerified, setPinVerified] = useState(false);
+  const [insertedPin, setInsertedPin] = useState("");
+  const [pinError, _setPinError] = useState("");
+  const [publicProfile, setPublicProfile] = useState<PublicProfile>();
+  const [_loading, setLoading] = useState(false);
+
+  const [_id, _setId] = useState("");
+
+  console.log({ slug });
+
+  // const {
+  //   cpf,
+  //   name,
+  //   cids,
+  //   documents,
+  //   associationDocuments,
+  //   avatar_photo,
+  //   association,
+  //   _id,
+  //   email,
+  //   pin,
+  // } = publicProfile;
+
+  const getPublicProfile = async ({ id, pin }: { id: string; pin: string }) => {
+    const response = await invoke[
+      "deco-sites/ecannadeco"
+    ].actions.getPublicProfile({
+      id,
+      pin,
+    });
+
+    setPinVerified(true);
+    console.log({ responseValidate: response });
+
+    setPublicProfile(response);
+  };
+
+  const validatePin = async (pin: string) => {
+    setLoading(true);
+    await getPublicProfile({ id: slug || "", pin });
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (IS_BROWSER) {
+      const params = new URLSearchParams(globalThis.location.search);
+      const pin = params.get("pin");
+      validatePin(pin || "");
+    }
+  }, []);
 
   console.log({ publicProfile });
   return (
     <PageWrap>
-      {!_id
-        ? <span>Usuário não encontrado</span>
-        : (
+      {pinVerified
+        ? (
           <div class="flex flex-col items-center gap-5 max-w-[95%]">
             <div class="flex items-center gap-4 text-secondary">
               <Icon id="MedCanna" size={34} />
@@ -37,25 +78,27 @@ function PublicProfileComponent(
             </div>
             <Image
               class="rounded-md"
-              src={avatar_photo
-                ? avatar_photo
+              src={publicProfile?.avatar_photo
+                ? publicProfile?.avatar_photo
                 : "http://drive.google.com/uc?export=view&id=1tSFTp0YZKVQVGJHOqzKaJw6SEe7Q8LL7"}
               alt={"user selfie"}
               width={108}
               height={144}
             />
             <div class="flex flex-col items-center">
-              {name && cpf
+              {publicProfile?.name && publicProfile?.cpf
                 ? (
                   <div class="flex flex-col items-center">
                     <span class="text-2xl text-secondary font-semibold">
-                      {name}
+                      {publicProfile?.name}
                     </span>
                     <span class="text-secondary font-semibold">
-                      CPF:{" " + cpf.replace(
-                        /(\d{3})(\d{3})(\d{3})(\d{2})/,
-                        "$1.$2.$3-$4",
-                      )}
+                      CPF:
+                      {" " +
+                        publicProfile?.cpf.replace(
+                          /(\d{3})(\d{3})(\d{3})(\d{2})/,
+                          "$1.$2.$3-$4",
+                        )}
                     </span>
                   </div>
                 )
@@ -63,7 +106,8 @@ function PublicProfileComponent(
                   <div class="p-3 flex flex-col items-center text-[#5e5e5e] text-sm bg-[#cecece] rounded-md gap-3">
                     <span class="text-center">
                       Informação Pendente: Paciente deve fazer cadastro com
-                      email <span class="font-bold">{email}</span>{" "}
+                      email{" "}
+                      <span class="font-bold">{publicProfile?.email}</span>{" "}
                       e atualizar dados médicos / pessoais.
                     </span>
                     <a
@@ -75,13 +119,14 @@ function PublicProfileComponent(
                   </div>
                 )}
 
-              {association && association.cnpj !== "47774121000154" && (
+              {publicProfile?.association &&
+                publicProfile?.association.cnpj !== "47774121000154" && (
                 <div class="flex flex-col items-center mt-4">
                   <span class="text-[#5B5B5B] font-semibold text-sm">
-                    Associação: {association.name}
+                    Associação: {publicProfile?.association.name}
                   </span>
                   <span class="text-[#5B5B5B] font-semibold text-sm">
-                    CNPJ {association.cnpj.replace(
+                    CNPJ {publicProfile?.association.cnpj.replace(
                       /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
                       "$1.$2.$3/$4-$5",
                     )}
@@ -93,10 +138,10 @@ function PublicProfileComponent(
               <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
                 CIDs (Diagnósticos)
               </h2>
-              {cids && cids.length
+              {publicProfile?.cids && publicProfile?.cids.length
                 ? (
                   <ul class="flex flex-col gap-2 max-w-[100%]">
-                    {cids.map((c) => {
+                    {publicProfile?.cids.map((c) => {
                       return (
                         <li>
                           <div class="badge badge-secondary text-white gap-2 p-3 max-w-[100%]">
@@ -113,7 +158,8 @@ function PublicProfileComponent(
                   <div class="p-3 flex flex-col items-center text-[#5e5e5e] text-sm bg-[#cecece] rounded-md gap-3">
                     <span class="text-center">
                       Informação Pendente: Paciente deve fazer cadastro com
-                      email <span class="font-bold">{email}</span>{" "}
+                      email{" "}
+                      <span class="font-bold">{publicProfile?.email}</span>{" "}
                       e atualizar dados médicos / pessoais.
                     </span>
                     <a
@@ -130,7 +176,7 @@ function PublicProfileComponent(
                 Documentos do Paciente
               </h2>
               <ul class="flex flex-col gap-2 w-full">
-                {documents.map((doc) => {
+                {publicProfile?.documents.map((doc) => {
                   return (
                     <li>
                       <a class="w-full" href={doc.file_url}>
@@ -139,9 +185,7 @@ function PublicProfileComponent(
                             <span class="text-[#8F8D8D]">
                               <Icon id="Anexo" size={19} />
                             </span>
-                            <span class="text-[#393939]">
-                              {doc.title}
-                            </span>
+                            <span class="text-[#393939]">{doc.title}</span>
                           </div>
                           <span class="text-[#8F8D8D] flex justify-end w-6">
                             <Icon id="Download" height={16} />
@@ -153,13 +197,14 @@ function PublicProfileComponent(
                 })}
               </ul>
             </div>
-            {association && association.cnpj !== "47774121000154" && (
+            {publicProfile?.association &&
+              publicProfile?.association.cnpj !== "47774121000154" && (
               <div class="flex flex-col items-start w-full">
                 <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
-                  Documentos da {association.name}
+                  Documentos da {publicProfile?.association.name}
                 </h2>
                 <ul class="flex flex-col gap-2 w-full">
-                  {associationDocuments.map((doc) => {
+                  {publicProfile?.associationDocuments.map((doc) => {
                     return (
                       <li>
                         <a class="w-full" href={doc.file_url}>
@@ -168,9 +213,7 @@ function PublicProfileComponent(
                               <span class="text-[#8F8D8D]">
                                 <Icon id="Anexo" size={19} />
                               </span>
-                              <span class="text-[#393939]">
-                                {doc.title}
-                              </span>
+                              <span class="text-[#393939]">{doc.title}</span>
                             </div>
                             <span class="text-[#8F8D8D] flex justify-end w-6">
                               <Icon id="Download" height={16} />
@@ -183,6 +226,37 @@ function PublicProfileComponent(
                 </ul>
               </div>
             )}
+          </div>
+        )
+        : (
+          <div class="join w-full flex justify-center flex-col items-center gap-5">
+            <span>
+              Requisite ao paciente o número do PIN, presente na área interna de
+              gestão da carteirinha, para visualizar as informações
+            </span>
+            <label class="join-item">
+              <input
+                type="password"
+                placeholder="PIN"
+                name="pin"
+                class="input rounded-md rounded-r-none text-[#8b8b8b] border border-[#ececec]"
+                value={insertedPin}
+                onChange={(e) =>
+                  e.target && setInsertedPin(e.currentTarget.value)}
+              />
+              <a
+                class="btn btn-ghost bg-secondary text-white join-item"
+                type="button"
+                href={`/ficha2/${slug}?pin=${insertedPin}`}
+              >
+                Verificar PIN {
+                  /* {isLoadingPostalCode && (
+                <span class="loading loading-spinner text-green-600"></span>
+              )} */
+                }
+              </a>
+            </label>
+            {pinError && <span class="text-red-700">{pinError}</span>}
           </div>
         )}
     </PageWrap>

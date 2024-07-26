@@ -1,7 +1,6 @@
-import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
-
 export interface Props {
-  slug: RequestURLParam;
+  id: string;
+  pin: string;
 }
 
 export interface Cid {
@@ -36,12 +35,12 @@ export interface PublicProfile {
 }
 
 const getPublicProfile = async (
-  { slug }: Props,
+  { id, pin }: Props,
   _req: Request,
 ): Promise<PublicProfile> => {
   try {
     const response = await fetch(
-      "http://localhost/auth/public/" + slug,
+      "http://localhost/auth/public/" + id + "?pin=" + pin,
     );
 
     const res = await response.json();
