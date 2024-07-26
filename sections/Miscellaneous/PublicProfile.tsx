@@ -1,1 +1,1 @@
-export { default } from "../../components/ui/PublicProfile.tsx";
+export { default } from "../../islands/PublicProfile.tsx";

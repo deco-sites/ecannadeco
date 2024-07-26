@@ -1,9 +1,8 @@
-import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
 import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 
 export interface Props {
-  slug: RequestURLParam;
-  pin: RequestURLParam;
+  id: string;
+  pin: string;
 }
 
 export interface Cid {
@@ -38,18 +37,16 @@ export interface PublicProfile {
 }
 
 const getPublicProfile = async (
-  { slug, pin }: Props,
+  { id, pin }: Props,
   _req: Request,
 ): Promise<PublicProfile> => {
   try {
     const response = await fetch(
-      `${API_URL}/auth/public/${slug}?pin=${pin}`,
+      `${API_URL}/auth/public/` + id + "?pin=" + pin,
     );
 
     const res = await response.json();
-    if (!res._id) {
-      res._id = slug;
-    }
+    console.log({ responsePublicProfile: res });
     return res;
   } catch (e) {
     // console.log({ e });
