@@ -60,9 +60,11 @@ const CheckoutUpsellModal = (props: Props) => {
   const [addressNumber, setAddressNumber] = useState<string>("");
   const [addressComplement, setAddressComplement] = useState<string>("");
   const [pixCode, setPixCode] = useState<string>("");
-  const [isPix, setIsPix] = useState(true);
+  const [isPix, setIsPix] = useState(plan ? false : true);
   const [pixImg, setPixImg] = useState<string | QRCode>("");
-  const [paymentType, setPaymentType] = useState<string>("PIX");
+  const [paymentType, setPaymentType] = useState<string>(
+    plan ? "CREDIT_CARD" : "PIX",
+  );
   const [clipboardText, setClipboardText] = useState("Copiar");
   const [cardSelected, setCardSelected] = useState(0);
   const [filledFields, setFilledFields] = useState(false);
@@ -236,6 +238,11 @@ const CheckoutUpsellModal = (props: Props) => {
   };
 
   effect(() => {
+    if (plan) {
+      setPaymentType("CREDIT_CARD");
+      setIsPix(false);
+    }
+
     if (holderInfo.value && filledFields === false) {
       setHolderName(holderInfo.value.full_name);
       setHolderCPF(holderInfo.value.cpf_cnpj);
@@ -366,6 +373,7 @@ const CheckoutUpsellModal = (props: Props) => {
           <select
             name="payment-type"
             class="select select-sm w-full max-w-xs"
+            disabled={plan ? true : false}
             value={paymentType}
             onChange={(e) => {
               if (e.target) {
