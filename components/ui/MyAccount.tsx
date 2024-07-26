@@ -72,12 +72,12 @@ function MyAccount() {
             full_name: res.dataProfile.name,
             birth_date: res.dataProfile.birth_date,
             cpf_cnpj: res.dataProfile.cpf,
-            postal_code: res.dataProfile.address[0].cep,
-            address_number: res.dataProfile.address[0].number,
-            address_complement: res.dataProfile.address[0].complement,
-            address_city: res.dataProfile.address[0].city,
-            address_state: res.dataProfile.address[0].state,
-            address_street: res.dataProfile.address[0].street,
+            postal_code: res.dataProfile.address[0]?.cep ?? "",
+            address_number: res.dataProfile.address[0]?.number ?? "",
+            address_complement: res.dataProfile.address[0]?.complement ?? "",
+            address_city: res.dataProfile.address[0]?.city ?? "",
+            address_state: res.dataProfile.address[0]?.state ?? "",
+            address_street: res.dataProfile.address[0]?.street ?? "",
           };
           const billingAddress = res.dataProfile.address.find(
             (a) => a.addressType === "BILLING",

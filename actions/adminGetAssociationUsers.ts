@@ -1,3 +1,5 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
+
 export interface Props {
   token: string;
   params?: {
@@ -36,13 +38,13 @@ const getAssociation = async (
   _req: Request,
 ): Promise<AssociationUsersResponse> => {
   try {
-    let url = `https://api.ecanna.com.br/profile/admin`;
+    let url = `${API_URL}/profile/admin`;
 
     if (params) {
       const query = `?limit=${params.limit}&page=${params.page}${
         params.email && `&email=${params.email}`
       }`;
-      url = `https://api.ecanna.com.br/profile/admin${query}`;
+      url = `${API_URL}/profile/admin${query}`;
     }
 
     const response = await fetch(url, {
