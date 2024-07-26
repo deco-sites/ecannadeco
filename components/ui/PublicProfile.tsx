@@ -2,72 +2,18 @@ import type { PublicProfile } from "../../loaders/getPublicProfile.ts";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 import Image from "apps/website/components/Image.tsx";
 import Icon from "../../components/ui/Icon.tsx";
-import { useEffect, useState } from "preact/hooks";
-import { invoke } from "../../runtime.ts";
-import { IS_BROWSER } from "$fresh/runtime.ts";
-import type { RequestURLParam } from "apps/website/functions/requestToParam.ts";
+import { useState } from "preact/hooks";
 
 export interface Props {
-  // publicProfile: PublicProfile;
-  slug: RequestURLParam;
+  publicProfile: PublicProfile;
 }
 
-function PublicProfileComponent({ slug }: Props) {
-  const [pinVerified, setPinVerified] = useState(false);
+function PublicProfileComponent({ publicProfile }: Props) {
   const [insertedPin, setInsertedPin] = useState("");
   const [pinError, _setPinError] = useState("");
-  const [publicProfile, setPublicProfile] = useState<PublicProfile>();
-  const [_loading, setLoading] = useState(false);
-
-  const [_id, _setId] = useState("");
-
-  console.log({ slug });
-
-  // const {
-  //   cpf,
-  //   name,
-  //   cids,
-  //   documents,
-  //   associationDocuments,
-  //   avatar_photo,
-  //   association,
-  //   _id,
-  //   email,
-  //   pin,
-  // } = publicProfile;
-
-  const getPublicProfile = async ({ id, pin }: { id: string; pin: string }) => {
-    const response = await invoke[
-      "deco-sites/ecannadeco"
-    ].actions.getPublicProfile({
-      id,
-      pin,
-    });
-
-    setPinVerified(true);
-    console.log({ responseValidate: response });
-
-    setPublicProfile(response);
-  };
-
-  const validatePin = async (pin: string) => {
-    setLoading(true);
-    await getPublicProfile({ id: slug || "", pin });
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (IS_BROWSER) {
-      const params = new URLSearchParams(globalThis.location.search);
-      const pin = params.get("pin");
-      validatePin(pin || "");
-    }
-  }, []);
-
-  console.log({ publicProfile });
   return (
     <PageWrap>
-      {pinVerified
+      {publicProfile.name
         ? (
           <div class="flex flex-col items-center gap-5 max-w-[95%]">
             <div class="flex items-center gap-4 text-secondary">
@@ -247,7 +193,7 @@ function PublicProfileComponent({ slug }: Props) {
               <a
                 class="btn btn-ghost bg-secondary text-white join-item"
                 type="button"
-                href={`/ficha2/${slug}?pin=${insertedPin}`}
+                href={`/ficha/${publicProfile?._id}/${insertedPin}`}
               >
                 Verificar PIN {
                   /* {isLoadingPostalCode && (
