@@ -131,7 +131,9 @@ function PublicProfileComponent({ publicProfile }: Props) {
                             <span class="text-[#8F8D8D]">
                               <Icon id="Anexo" size={19} />
                             </span>
-                            <span class="text-[#393939]">{doc.title}</span>
+                            <span class="text-[#393939] text-xs sm:text-sm truncate max-w-[230px] sm:max-w-full">
+                              {doc.title}
+                            </span>
                           </div>
                           <span class="text-[#8F8D8D] flex justify-end w-6">
                             <Icon id="Download" height={16} />
@@ -159,7 +161,9 @@ function PublicProfileComponent({ publicProfile }: Props) {
                               <span class="text-[#8F8D8D]">
                                 <Icon id="Anexo" size={19} />
                               </span>
-                              <span class="text-[#393939]">{doc.title}</span>
+                              <span class="text-[#393939] text-xs sm:text-sm truncate max-w-[230px] sm:max-w-full">
+                                {doc.title}
+                              </span>
                             </div>
                             <span class="text-[#8F8D8D] flex justify-end w-6">
                               <Icon id="Download" height={16} />
