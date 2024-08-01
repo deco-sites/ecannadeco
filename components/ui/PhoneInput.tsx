@@ -5,19 +5,29 @@ interface Props {
 }
 
 const maskPhone = (value: string) => {
-  const cleanedValue = value.replace(/\D/g, ""); // Remove qualquer caractere que não seja dígito
+  // Remove espaços, caracteres especiais e o sinal de "+"
+  const cleanedValue = value.replace(/\D/g, "");
 
-  if (cleanedValue.length <= 10) {
-    // Formata como (XX) XXXX-XXXX para números de 10 dígitos
-    return cleanedValue
-      .replace(/^(\d{2})(\d)/, "($1) $2")
-      .replace(/(\d{4})(\d)/, "$1-$2");
-  } else {
-    // Formata como (XX) XXXXX-XXXX para números de 11 dígitos
-    return cleanedValue
-      .replace(/^(\d{2})(\d)/, "($1) $2")
-      .replace(/(\d{5})(\d)/, "$1-$2");
+  // Verifica se o número tem o código de país +55
+  if (cleanedValue.startsWith("55")) {
+    const phoneNumber = cleanedValue.slice(2); // Remove o código do país (+55)
+
+    // Verifica o tamanho do número restante
+    if (phoneNumber.length === 10) {
+      // Formato (XX) XXXX-XXXX para números com 10 dígitos
+      return `+55 (${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2, 6)}-${
+        phoneNumber.slice(6)
+      }`;
+    } else if (phoneNumber.length === 11) {
+      // Formato (XX) XXXXX-XXXX para números com 11 dígitos
+      return `+55 (${phoneNumber.slice(0, 2)}) ${phoneNumber.slice(2, 7)}-${
+        phoneNumber.slice(7)
+      }`;
+    }
   }
+
+  // Caso contrário, formata como padrão internacional
+  return `+${cleanedValue}`;
 };
 
 const PhoneInput = ({ value, onChange, label = "Telefone" }: Props) => {
@@ -28,9 +38,9 @@ const PhoneInput = ({ value, onChange, label = "Telefone" }: Props) => {
       </div>
       <input
         class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
-        placeholder="(XX) XXXXX-XXXX"
+        placeholder="+55 (XX) XXXXX-XXXX"
         type="tel"
-        maxLength={15}
+        maxLength={19}
         value={value}
         onChange={(e) => onChange(maskPhone(e.currentTarget.value))}
       />

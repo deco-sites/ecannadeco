@@ -6,6 +6,7 @@ import Icon from "./Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatientsLive.tsx";
 import { h } from "preact";
+import { API_URL } from "../../sdk/constants.ts";
 
 type Medications = Treatment["medications"];
 
@@ -107,7 +108,6 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
       );
       return false;
     }
-    console.log({ file });
     formData.append("prescription", file! || "");
     formData.append("patient", newTreatment!.patient!._id);
     const medicationsJson = JSON.stringify(newTreatment!.medications!);
@@ -115,7 +115,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
 
     try {
       const response = await fetch(
-        "https://api.ecanna.com.br/prescribers/treatments",
+        `${API_URL}/prescribers/treatments`,
         {
           method: "POST",
           body: formData,
