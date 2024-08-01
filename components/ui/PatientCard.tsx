@@ -1,4 +1,8 @@
+import { invoke } from "deco-sites/ecannadeco/runtime.ts";
 import Icon from "./Icon.tsx";
+import TreatmentJourneyTimeline from "deco-sites/ecannadeco/components/ui/TreatmentJourneyTimeline.tsx";
+import { useState } from "preact/hooks";
+import { IS_BROWSER } from "$fresh/runtime.ts";
 
 export type Patient = {
   _id: string;
@@ -8,10 +12,21 @@ export type Patient = {
   };
   lastReport?: string | Date;
   status?: string;
-  treatmentJourneyStatus?: string;
+  // treatmentJourneyStatus?: string;
+  treatment?: {
+    treatmentJourneyStatus: string;
+    _id: string;
+  };
 };
 
-function PrescriberPatients({ patient }: { patient: Patient }) {
+function PrescriberPatients({
+  patient,
+  onFinish,
+}: {
+  patient: Patient;
+  onFinish: () => void;
+}) {
+  const [isLoading, setIsLoading] = useState(false);
   const timeAgo = (date: Date): string => {
     const seconds = Math.floor((Number(new Date()) - +date) / 1000); // Explicitly convert to number
     let interval = Math.floor(seconds / 31536000);
@@ -26,6 +41,27 @@ function PrescriberPatients({ patient }: { patient: Patient }) {
     interval = Math.floor(seconds / 60);
     if (interval >= 1) return `${interval}min atrás`;
     return `${Math.floor(seconds)}seg atrás`;
+  };
+
+  const updateTreatmentJourneyStatus = async (status: string) => {
+    let token = "";
+    if (IS_BROWSER) {
+      token = localStorage.getItem("PrescriberAccessToken") || "";
+    }
+    setIsLoading(true);
+    try {
+      await invoke[
+        "deco-sites/ecannadeco"
+      ].actions.prescriberUpdateJourneyStatus({
+        treatmentId: patient.treatment?._id,
+        status: status,
+        token,
+      });
+      onFinish();
+      setIsLoading(false);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -51,7 +87,50 @@ function PrescriberPatients({ patient }: { patient: Patient }) {
               </div>
               <div
                 class={`${
-                  patient.treatmentJourneyStatus === "STARTED_TREATMENT"
+                  patient.treatment?.treatmentJourneyStatus !==
+                      "STARTED_TREATMENT"
+                    ? ""
+                    : "hidden"
+                }`}
+              >
+                <details class="dropdown">
+                  <summary class="btn m-1 text-xs">
+                    {isLoading
+                      ? <span class="loading loading-spinner text-green-800" />
+                      : <Icon id="Update" size={16} />}
+                  </summary>
+                  <ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow text-xs">
+                    <li
+                      onClick={(e) => {
+                        e.preventDefault();
+                        updateTreatmentJourneyStatus("BOUGHT_MEDICATION");
+                      }}
+                    >
+                      <span>Comprou o Medicamento</span>
+                    </li>
+                    <li
+                      onClick={(e) => {
+                        e.preventDefault();
+                        updateTreatmentJourneyStatus("RECEIVED_MEDICATION");
+                      }}
+                    >
+                      <span>Recebeu o Medicamento</span>
+                    </li>
+                    <li
+                      onClick={(e) => {
+                        e.preventDefault();
+                        updateTreatmentJourneyStatus("STARTED_TREATMENT");
+                      }}
+                    >
+                      <span>Iniciou o Tratamento</span>
+                    </li>
+                  </ul>
+                </details>
+              </div>
+              <div
+                class={`${
+                  patient.treatment?.treatmentJourneyStatus ===
+                      "STARTED_TREATMENT"
                     ? ""
                     : "hidden"
                 }`}
@@ -88,214 +167,21 @@ function PrescriberPatients({ patient }: { patient: Patient }) {
                   )}
               </div>
             </div>
-            {/* Timeline Start */}
-            <div>
-              <ul class="timeline">
-                <li
-                  class={`flex-grow ${
-                    [
-                        "RECEIVED_PRESCRIPTION",
-                        "BOUGHT_MEDICATION",
-                        "RECEIVED_MEDICATION",
-                        "STARTED_TREATMENT",
-                      ].includes(patient.treatmentJourneyStatus!)
-                      ? "text-primary"
-                      : "text-[#b9b9b9]"
-                  }`}
-                >
-                  <div class="timeline-middle">
-                    {[
-                        "RECEIVED_PRESCRIPTION",
-                        "BOUGHT_MEDICATION",
-                        "RECEIVED_MEDICATION",
-                        "STARTED_TREATMENT",
-                      ].includes(patient.treatmentJourneyStatus!)
-                      ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          class="h-5 w-5"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
-                      )
-                      : <Icon id="Pending" size={20} />}
-                  </div>
-                  <div class="timeline-end text-[9px] text-center max-w-[65px] leading-3">
-                    Recebeu Prescrição
-                  </div>
-                  <hr
-                    class={`${
-                      [
-                          "RECEIVED_PRESCRIPTION",
-                          "BOUGHT_MEDICATION",
-                          "RECEIVED_MEDICATION",
-                          "STARTED_TREATMENT",
-                        ].includes(patient.treatmentJourneyStatus!)
-                        ? "bg-primary"
-                        : "bg-[#b9b9b9]"
-                    }`}
-                  />
-                </li>
-                <li
-                  class={`flex-grow ${
-                    [
-                        "BOUGHT_MEDICATION",
-                        "RECEIVED_MEDICATION",
-                        "STARTED_TREATMENT",
-                      ].includes(patient.treatmentJourneyStatus!)
-                      ? "text-primary"
-                      : "text-[#b9b9b9]"
-                  }`}
-                >
-                  <hr
-                    class={`${
-                      [
-                          "BOUGHT_MEDICATION",
-                          "RECEIVED_MEDICATION",
-                          "STARTED_TREATMENT",
-                        ].includes(patient.treatmentJourneyStatus!)
-                        ? "bg-primary"
-                        : "bg-[#b9b9b9]"
-                    }`}
-                  />
-                  <div class="timeline-middle">
-                    {[
-                        "BOUGHT_MEDICATION",
-                        "RECEIVED_MEDICATION",
-                        "STARTED_TREATMENT",
-                      ].includes(patient.treatmentJourneyStatus!)
-                      ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          class="h-5 w-5"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
-                      )
-                      : <Icon id="Pending" size={20} />}
-                  </div>
-                  <div class="timeline-end text-[9px] text-center max-w-[65px] leading-3">
-                    Comprou Medicamento
-                  </div>
-                  <hr
-                    class={`${
-                      [
-                          "BOUGHT_MEDICATION",
-                          "RECEIVED_MEDICATION",
-                          "STARTED_TREATMENT",
-                        ].includes(patient.treatmentJourneyStatus!)
-                        ? "bg-primary"
-                        : "bg-[#b9b9b9]"
-                    }`}
-                  />
-                </li>
-                <li
-                  class={`flex-grow ${
-                    ["RECEIVED_MEDICATION", "STARTED_TREATMENT"].includes(
-                        patient.treatmentJourneyStatus!,
-                      )
-                      ? "text-primary"
-                      : "text-[#b9b9b9]"
-                  }`}
-                >
-                  <hr
-                    class={`${
-                      ["RECEIVED_MEDICATION", "STARTED_TREATMENT"].includes(
-                          patient.treatmentJourneyStatus!,
-                        )
-                        ? "bg-primary"
-                        : "bg-[#b9b9b9]"
-                    }`}
-                  />
-                  <div class="timeline-middle">
-                    {["RECEIVED_MEDICATION", "STARTED_TREATMENT"].includes(
-                        patient.treatmentJourneyStatus!,
-                      )
-                      ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          class="h-5 w-5"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
-                      )
-                      : <Icon id="Pending" size={20} />}
-                  </div>
-                  <div class="timeline-end text-[9px] text-center max-w-[65px] leading-3">
-                    Recebeu Medicamento
-                  </div>
-                  <hr
-                    class={`${
-                      ["RECEIVED_MEDICATION", "STARTED_TREATMENT"].includes(
-                          patient.treatmentJourneyStatus!,
-                        )
-                        ? "bg-primary"
-                        : "bg-[#b9b9b9]"
-                    }`}
-                  />
-                </li>
-                <li
-                  class={`flex-grow ${
-                    ["STARTED_TREATMENT"].includes(
-                        patient.treatmentJourneyStatus!,
-                      )
-                      ? "text-primary"
-                      : "text-[#b9b9b9]"
-                  }`}
-                >
-                  <hr
-                    class={`${
-                      ["STARTED_TREATMENT"].includes(
-                          patient.treatmentJourneyStatus!,
-                        )
-                        ? "bg-primary"
-                        : "bg-[#b9b9b9]"
-                    }`}
-                  />
-                  <div class="timeline-middle">
-                    {["STARTED_TREATMENT"].includes(
-                        patient.treatmentJourneyStatus!,
-                      )
-                      ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          class="h-5 w-5"
-                        >
-                          <path
-                            fill-rule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                            clip-rule="evenodd"
-                          />
-                        </svg>
-                      )
-                      : <Icon id="Pending" size={20} />}
-                  </div>
-                  <div class="timeline-end text-[9px] text-center max-w-[65px] leading-3">
-                    Iniciou Tratamento
-                  </div>
-                </li>
-              </ul>
-            </div>
+            {patient.treatment
+              ? (
+                <TreatmentJourneyTimeline
+                  journeyStatus={patient.treatment?.treatmentJourneyStatus!}
+                />
+              )
+              : (
+                <div class="rounded-md bg-orange-200 text-orange-700 p-4 flex gap-4 items-center justify-center my-4">
+                  <Icon id="Info" size={22} />
+                  <span class="text-xs">
+                    Clique aqui e cadastre o primeiro tratamento para acompanhar
+                    este paciente!
+                  </span>
+                </div>
+              )}
           </li>
         </div>
       </div>
