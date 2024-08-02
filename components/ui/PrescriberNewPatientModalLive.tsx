@@ -3,7 +3,7 @@ import Modal from "./Modal.tsx";
 import { useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import PhoneInput from "../ui/PhoneInput.tsx";
+import PhoneInput from "../../islands/PhoneInput.tsx";
 import type { Treatment } from "./PrescriberPatients.tsx";
 
 type Medication = Treatment["medication"];

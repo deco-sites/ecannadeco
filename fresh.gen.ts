@@ -51,6 +51,7 @@ import * as $PatientTreatment from "./islands/PatientTreatment.tsx";
 import * as $PatientTreatmentLive from "./islands/PatientTreatmentLive.tsx";
 import * as $PatientTreatmentReport from "./islands/PatientTreatmentReport.tsx";
 import * as $PatientTreatmentReportLive from "./islands/PatientTreatmentReportLive.tsx";
+import * as $PhoneInput from "./islands/PhoneInput.tsx";
 import * as $PreSignupUsersModal from "./islands/PreSignupUsersModal.tsx";
 import * as $PrescriberMyAccount from "./islands/PrescriberMyAccount.tsx";
 import * as $PrescriberMyOrders from "./islands/PrescriberMyOrders.tsx";
@@ -143,6 +144,7 @@ const manifest = {
     "./islands/PatientTreatmentLive.tsx": $PatientTreatmentLive,
     "./islands/PatientTreatmentReport.tsx": $PatientTreatmentReport,
     "./islands/PatientTreatmentReportLive.tsx": $PatientTreatmentReportLive,
+    "./islands/PhoneInput.tsx": $PhoneInput,
     "./islands/PreSignupUsersModal.tsx": $PreSignupUsersModal,
     "./islands/PrescriberMyAccount.tsx": $PrescriberMyAccount,
     "./islands/PrescriberMyOrders.tsx": $PrescriberMyOrders,

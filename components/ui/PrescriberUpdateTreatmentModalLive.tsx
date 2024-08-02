@@ -125,7 +125,6 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
       );
       return false;
     }
-    console.log({ file });
     formData.append("prescription", file! || "");
     formData.append("patient", newTreatment!.patient!._id);
     const medicationsJson = JSON.stringify(newTreatment!.medications!);
@@ -133,14 +132,17 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
     formData.append("treatmentJourneyStatus", treatmentJourneyStatus);
 
     try {
-      const response = await fetch(`${API_URL}/prescribers/treatments`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: accessToken,
-          ContentType: "multipart/form-data",
+      const response = await fetch(
+        `${API_URL}/prescribers/treatments`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: accessToken,
+            ContentType: "multipart/form-data",
+          },
         },
-      });
+      );
 
       setUpdating(false);
       onFinished();

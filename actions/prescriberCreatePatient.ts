@@ -23,7 +23,7 @@ const prescriberCreatePetient = async (
         body: JSON.stringify({
           name,
           email,
-          phone,
+          phone: phone.replace(/\D/g, ""),
         }),
       },
     );
