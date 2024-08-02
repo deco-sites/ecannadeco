@@ -1,5 +1,6 @@
 import type { Treatment } from "./PrescriberPatientsLive.tsx";
 import Icon from "./Icon.tsx";
+import TreatmentJourneyTimeline from "deco-sites/ecannadeco/components/ui/TreatmentJourneyTimeline.tsx";
 
 export interface Props {
   treatment: Treatment;
@@ -78,6 +79,9 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
             )}
           </div>
         </div>
+        <TreatmentJourneyTimeline
+          journeyStatus={treatment.treatmentJourneyStatus}
+        />
         {(treatment.patient || treatment.prescriber) && (
           <div
             class={`${

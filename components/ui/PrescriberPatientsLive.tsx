@@ -56,6 +56,14 @@ export type Treatment = {
     name: string;
   };
   prescription?: File;
+  treatmentJourneyStatus:
+    | "DEFAULT"
+    | "RECEIVED_PRESCRIPTION"
+    | "BOUGHT_MEDICATION"
+    | "RECEIVED_MEDICATION"
+    | "STARTED_TREATMENT"
+    | "ABANDONED"
+    | "CONCLUDED";
 };
 
 export type Patient = {
@@ -92,6 +100,9 @@ function PrescriberPatients() {
       search,
       page: page || 1,
     });
+
+    console.log({ getPatientsResponse: response });
+
     setIsLoadingUsers(false);
     if (response) {
       setPatients(response.docs as Patient[]);
@@ -265,7 +276,22 @@ function PrescriberPatients() {
                     <div class="flex justify-between"></div>
                     {patients &&
                       patients.map((p) => {
-                        return <PatientCard patient={p} />;
+                        return (
+                          <PatientCard
+                            patient={p}
+                            onFinish={() => {
+                              let accessToken = "";
+
+                              if (IS_BROWSER) {
+                                accessToken = localStorage.getItem(
+                                  "PrescriberAccessToken",
+                                ) ||
+                                  "";
+                              }
+                              getPatients(accessToken);
+                            }}
+                          />
+                        );
                       })}
                   </ul>
                 )}

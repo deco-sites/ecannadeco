@@ -6,6 +6,7 @@ import Icon from "./Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatientsLive.tsx";
 import { h } from "preact";
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 
 type Medications = Treatment["medications"];
 
@@ -23,6 +24,8 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
   );
   const [updating, setUpdating] = useState<boolean>(false);
   const [file, setFile] = useState<File>();
+  const [hasMedication, setHasMedication] = useState(false);
+  const [startedTreatment, setStartedTreatment] = useState(false);
 
   const handleStoreDocument = (
     event: h.JSX.TargetedEvent<HTMLInputElement, Event>,
@@ -49,6 +52,12 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
       setCurrentTreatment(response as Treatment);
       setNewTreatment(response as Treatment);
       setNewMedication(response.medications as Medications);
+      if (response.treatmentJourneyStatus === "STARTED_TREATMENT") {
+        setHasMedication(true);
+        setStartedTreatment(true);
+      } else if (response.treatmentJourneyStatus === "BOUGHT_MEDICATION") {
+        setHasMedication(true);
+      }
       console.log({ newMedication });
     } else {
       setNewTreatment({
@@ -71,6 +80,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
     console.log({ patientId });
     getActiveTreatmentByPatient(accessToken, patientId);
   }, []);
+
   const { displayNewTreatmentModal } = useUI();
 
   const _handleUpdateTreatment = () => {
@@ -99,6 +109,14 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
   const handleSubmit = async () => {
     setUpdating(true);
 
+    let treatmentJourneyStatus = "DEFAULT";
+
+    if (startedTreatment) {
+      treatmentJourneyStatus = "STARTED_TREATMENT";
+    } else if (hasMedication) {
+      treatmentJourneyStatus = "BOUGHT_MEDICATION";
+    }
+
     const formData = new FormData();
 
     if (!newTreatment?.medications || newTreatment!.medications!.length === 0) {
@@ -112,19 +130,17 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
     formData.append("patient", newTreatment!.patient!._id);
     const medicationsJson = JSON.stringify(newTreatment!.medications!);
     formData.append("medications", medicationsJson);
+    formData.append("treatmentJourneyStatus", treatmentJourneyStatus);
 
     try {
-      const response = await fetch(
-        "https://api.ecanna.com.br/prescribers/treatments",
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            Authorization: accessToken,
-            ContentType: "multipart/form-data",
-          },
+      const response = await fetch(`${API_URL}/prescribers/treatments`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: accessToken,
+          ContentType: "multipart/form-data",
         },
-      );
+      });
 
       setUpdating(false);
       onFinished();
@@ -227,6 +243,34 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
             onChange={(e) => handleStoreDocument(e)}
           />
         </label>
+        <div class="flex flex-col gap-4">
+          <label class="form-control w-full flex flex-row items-center gap-2">
+            <input
+              type="checkbox"
+              checked={hasMedication}
+              class="checkbox checkbox-xs"
+              onChange={() => {
+                setHasMedication(!hasMedication);
+              }}
+            />
+            <span>O paciente já comprou/possui a medicação</span>
+          </label>
+
+          <label class="form-control w-full flex flex-row items-center gap-2">
+            <input
+              type="checkbox"
+              checked={startedTreatment}
+              class="checkbox checkbox-xs"
+              onChange={() => {
+                if (!startedTreatment) {
+                  setHasMedication(true);
+                }
+                setStartedTreatment(!startedTreatment);
+              }}
+            />
+            <span>O paciente já está tomando a medicação</span>
+          </label>
+        </div>
         <button class="btn btn-secondary text-white" onClick={handleSubmit}>
           {currentTreatment ? "Atualizar Tratamento" : "Cadastrar Tratamento"}
           {"    "}{updating
