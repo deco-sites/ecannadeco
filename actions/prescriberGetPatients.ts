@@ -1,3 +1,5 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
+
 export interface Props {
   token: string;
   search?: string;
@@ -34,7 +36,7 @@ const prescriberGetPetients = async (
     query += search ? `&search=${search}` : "";
 
     const response = await fetch(
-      `https://api.ecanna.com.br/prescribers/patients${query}`,
+      `${API_URL}/prescribers/patients${query}`,
       {
         method: "GET",
         headers: {
