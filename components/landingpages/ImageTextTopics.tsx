@@ -19,9 +19,9 @@ function ImageTextTopics({
   ctaText,
   mainImage,
 }: // partnerAssociations,
-  Props) {
+Props) {
   return (
-    <div class=" w-full bg-cover bg-center flex">
+    <div class=" w-full bg-cover bg-center flex flex-col sm:flex-row">
       <div class="w-[50%] flex justify-end self-end">
         <Image src={mainImage} width={585} height={529} alt="banner image" />
       </div>

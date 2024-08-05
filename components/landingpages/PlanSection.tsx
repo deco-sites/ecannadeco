@@ -25,7 +25,7 @@ function PlanSelection({ title, subtitle, plans }: Props) {
         <span class="text-4xl text-primary">{title}</span>
         <span>{subtitle}</span>
       </div>
-      <div class="flex justify-around gap-12">
+      <div class="flex flex-col sm:flex-row justify-around gap-12">
         {plans.map((plan) => {
           return (
             <div

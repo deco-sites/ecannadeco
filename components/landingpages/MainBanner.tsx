@@ -18,10 +18,10 @@ function MainBanner({
   ctaText,
   mainImage,
 }: // partnerAssociations,
-  Props) {
+Props) {
   return (
     <div
-      class="h-[486px] w-full bg-cover bg-center flex"
+      class="h-[486px] w-full bg-cover bg-center flex-col sm:flex"
       style={`background-image: linear-gradient(to bottom, #004B7E, #ffffff);`}
     >
       <div class="flex flex-col gap-8 text-white max-w-[50%] m-16 justify-center">
