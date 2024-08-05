@@ -21,13 +21,13 @@ function MainBanner({
   Props) {
   return (
     <div
-      class="h-[486px] w-full bg-cover bg-center flex-col sm:flex"
+      class="w-full bg-cover bg-center flex-col md:flex-row flex py-16 gap-y-8"
       style={`background-image: linear-gradient(to bottom, #004B7E, #ffffff);`}
     >
-      <div class="flex flex-col gap-8 text-white max-w-[50%] m-16 justify-center">
+      <div class="flex flex-col gap-y-8 px-8 text-white md:max-w-[50%] justify-center">
         <div class="flex flex-col gap-2">
           <span class="uppercase text-sm font-bold">{preTitle}</span>
-          <span class="text-5xl">{title}</span>
+          <span class="text-3xl lg:text-5xl">{title}</span>
         </div>
         <span class=" text-sm">{description}</span>
         <a
@@ -37,8 +37,15 @@ function MainBanner({
           {ctaText}
         </a>
       </div>
-      <div class="absolute right-0">
-        <Image src={mainImage} width={497} height={508} alt="banner image" />
+      <div class="flex w-full md:max-w-[50%] ml-8 md:ml-auto">
+        <Image
+          class="w-full "
+          style={{ aspectRatio: "497 / 508" }}
+          src={mainImage}
+          width={497}
+          height={508}
+          alt="banner image"
+        />
       </div>
     </div>
   );
