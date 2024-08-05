@@ -16,7 +16,7 @@ function ImageSteps({
   ctaText,
   mainImage,
 }: // partnerAssociations,
-Props) {
+  Props) {
   return (
     <div
       class=" w-full bg-cover bg-center flex justify-center"

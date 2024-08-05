@@ -18,7 +18,7 @@ function MainBanner({
   ctaText,
   mainImage,
 }: // partnerAssociations,
-Props) {
+  Props) {
   return (
     <div
       class="h-[486px] w-full bg-cover bg-center flex-col sm:flex"
