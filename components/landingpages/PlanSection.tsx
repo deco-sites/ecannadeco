@@ -21,7 +21,7 @@ function PlanSelection({ title, subtitle, plans }: Props) {
       class=" w-full flex flex-col gap-12 items-center my-14"
       id="planSection"
     >
-      <div class="flex flex-col items-center gap-2">
+      <div class="flex flex-col items-center gap-4 text-center px-4">
         <span class="text-4xl text-primary">{title}</span>
         <span>{subtitle}</span>
       </div>

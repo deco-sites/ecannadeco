@@ -19,13 +19,13 @@ function ImageTextTopics({
   ctaText,
   mainImage,
 }: // partnerAssociations,
-  Props) {
+Props) {
   return (
     <div class=" w-full bg-cover bg-center flex flex-col sm:flex-row">
-      <div class="w-[50%] flex justify-end self-end">
+      <div class="w-full sm:w-[50%] flex justify-end self-end">
         <Image src={mainImage} width={585} height={529} alt="banner image" />
       </div>
-      <div class="flex flex-col gap-8 w-[50%] p-16 justify-center">
+      <div class="flex flex-col gap-8 w-full sm:w-[50%] p-16 justify-center">
         <span class="text-3xl text-primary">{title}</span>
         <span class=" text-sm">{description}</span>
         <div class="flex flex-col gap-4">

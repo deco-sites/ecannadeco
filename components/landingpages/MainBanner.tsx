@@ -18,7 +18,7 @@ function MainBanner({
   ctaText,
   mainImage,
 }: // partnerAssociations,
-  Props) {
+Props) {
   return (
     <div
       class="w-full bg-cover bg-center flex-col md:flex-row flex py-16 gap-y-8"
@@ -37,9 +37,9 @@ function MainBanner({
           {ctaText}
         </a>
       </div>
-      <div class="flex w-full md:max-w-[50%] ml-8 md:ml-auto">
+      <div class="flex w-full md:w-[50%] justify-end">
         <Image
-          class="w-full "
+          class="max-w-[500px] "
           style={{ aspectRatio: "497 / 508" }}
           src={mainImage}
           width={497}

@@ -16,21 +16,21 @@ function ImageSteps({
   ctaText,
   mainImage,
 }: // partnerAssociations,
-  Props) {
+Props) {
   return (
     <div
       class=" w-full bg-cover bg-center flex justify-center"
       style={`background-image: linear-gradient(to bottom, #1677B9, #0A3553);`}
     >
-      <div class="flex flex-col sm:flex-row gap-8 p-16 justify-center">
+      <div class="flex flex-col sm:flex-row gap-8 p-10 sm:p-16 justify-center">
         <div class="flex flex-col gap-4 text-white">
           <span class="text-3xl">{title}</span>
           <div class="flex flex-col gap-5">
             {steps.map((t, i) => {
               return (
                 <div
-                  class={`flex items-center ${i === 1 && "ml-[60px]"} ${
-                    i === 2 && "ml-[120px]"
+                  class={`flex items-center ${i === 1 && "sm:ml-[60px]"} ${
+                    i === 2 && "sm:ml-[120px]"
                   } gap-2`}
                 >
                   <span class="text-[90px] font-bold">{i + 1}</span>
@@ -40,7 +40,7 @@ function ImageSteps({
             })}
           </div>
         </div>
-        <div class="flex flex-col justify-end self-end items-end gap-7">
+        <div class="flex flex-col justify-center items-center sm:justify-end self-end sm:items-end gap-7">
           <Image src={mainImage} width={585} height={529} alt="banner image" />
           <a
             href="#planSection"
