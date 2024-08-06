@@ -16,7 +16,7 @@ function ImageTextTopics({
   ctaText,
   mainImage,
 }: // partnerAssociations,
-Props) {
+  Props) {
   return (
     <div
       class=" w-full bg-cover bg-center flex flex-col sm:flex-row justify-between items-center gap-8 text-white"

@@ -18,7 +18,7 @@ function MainBanner({
   ctaText,
   mainImage,
 }: // partnerAssociations,
-Props) {
+  Props) {
   return (
     <div
       class="w-full bg-cover bg-center flex-col md:flex-row flex py-16 gap-y-8"
