@@ -80,13 +80,11 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
             )}
           </div>
         </div>
-        {
-          !isPatient && (
-            <TreatmentJourneyTimeline
-              journeyStatus={treatment.treatmentJourneyStatus}
-            />
-          )
-        }
+        {!isPatient && (
+          <TreatmentJourneyTimeline
+            journeyStatus={treatment.treatmentJourneyStatus}
+          />
+        )}
         {(treatment.patient || treatment.prescriber) && (
           <div
             class={`${

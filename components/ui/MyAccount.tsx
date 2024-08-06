@@ -40,14 +40,14 @@ function MyAccount() {
   const { displayConfirmCancelSubscription, displayCheckoutUpsellModal } =
     useUI();
   const holderInfo = useHolderInfo();
-  
+
   function formatPeriod(period: string) {
     if (period === "MONTHLY") {
       return "/mês";
     } else if (period === "YEARLY") {
       return "/ano";
     }
-    return
+    return;
   }
 
   useEffect(() => {
