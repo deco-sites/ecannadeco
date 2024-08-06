@@ -31,6 +31,7 @@ export type AvailableIcons =
   | "Form"
   | "GoBack"
   | "Heart"
+  | "HeartBeat"
   | "Hungry"
   | "Headache"
   | "Help"
