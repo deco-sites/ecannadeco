@@ -40,6 +40,15 @@ function MyAccount() {
   const { displayConfirmCancelSubscription, displayCheckoutUpsellModal } =
     useUI();
   const holderInfo = useHolderInfo();
+  
+  function formatPeriod(period: string) {
+    if (period === "MONTHLY") {
+      return "/mês";
+    } else if (period === "YEARLY") {
+      return "/ano";
+    }
+    return
+  }
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -343,8 +352,7 @@ function MyAccount() {
                             <span class="text-xs">
                               {"R$ " +
                                 (plan.price / 100).toFixed(2) +
-                                "/" +
-                                (plan.period === "MONTHLY" && "mês")}
+                                (formatPeriod(plan.period) || "")}
                             </span>
                           </div>
                         </div>
@@ -387,8 +395,7 @@ function MyAccount() {
                                 size={17}
                               />
                               <span class="text-[10px]">
-                                Direito a via física{" "}
-                                <span class="font-bold">GRÁTIS</span>
+                                Direito a solicitar via física
                               </span>
                             </li>
                             <li

@@ -8,6 +8,8 @@
   html {
     font-family: var(--font-family);
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   mark {

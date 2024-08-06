@@ -1,4 +1,5 @@
 import { TreatmentResponse } from "deco-sites/ecannadeco/components/ui/PatientTreatmentReportLive.tsx";
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 
 export interface Props {
   token: string;
@@ -18,7 +19,7 @@ const createTreatmentReport = async (
 ): Promise<TreatmentResponse> => {
   try {
     const response = await fetch(
-      `https://api.ecanna.com.br/treatment-reports`,
+      `${API_URL}/treatment-reports`,
       {
         method: "POST",
         body: JSON.stringify({
