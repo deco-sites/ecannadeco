@@ -23,7 +23,7 @@ function ImageTextTopics({
   return (
     <div class=" w-full bg-cover bg-center flex flex-col sm:flex-row">
       <div class="w-full sm:w-[50%] flex justify-end self-end">
-        <Image src={mainImage} width={424} height={396} alt="banner image" />
+        <Image src={mainImage} width={447} height={396} alt="banner image" />
       </div>
       <div class="flex flex-col gap-8 w-full sm:w-[50%] p-16 justify-center">
         <span class="text-3xl text-primary">{title}</span>

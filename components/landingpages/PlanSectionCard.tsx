@@ -26,8 +26,8 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
         <span class="text-4xl text-primary">{title}</span>
         <span>{subtitle}</span>
       </div>
-      <div class="flex flex-col sm:flex-row justify-around gap-12">
-        <Image src={auxImg} width={487} height={306} alt="banner image" />
+      <div class="flex flex-col sm:flex-row items-center justify-around gap-12">
+        <Image src={auxImg} width={487} height={306} alt="card image" />
         <div
           class="flex flex-col gap-2 text-white w-[257px] p-5 items-center rounded-lg relative"
           style={`background-image: linear-gradient(to bottom, #0A66A5, #1677B9);`}
