@@ -33,6 +33,7 @@ export type FeelingReport = {
   entries: {
     grade: number;
     date: string;
+    feedback_message?: string;
   }[];
 };
 
@@ -130,6 +131,17 @@ function PrescriberPatientTreatmentReport() {
     }
   }, []);
 
+  useEffect(() => {
+    const goodFeeling = report?.feelingCountReport.find((r) => r.isGood);
+    const badFeeling = report?.feelingCountReport.find((r) => !r.isGood);
+    if (!goodFeelingSelected && goodFeeling) {
+      setGoodFeelingSelected(goodFeeling);
+    }
+    if (!badFeelingSelected && badFeeling) {
+      setBadFeelingSelected(badFeeling);
+    }
+  }, [report]);
+
   return (
     <>
       <div class="w-full flex justify-center mb-4">
@@ -176,7 +188,7 @@ function PrescriberPatientTreatmentReport() {
 
               <div class="w-full px-4">
                 <h3 class="text-md">Condição geral do paciente</h3>
-                <p class="text-sm mb-4">
+                <p class="text-xs mb-4">
                   Soma das notas do efeitos positivos subtraído pela soma das
                   notas dos efeitos negativos relatados
                 </p>
@@ -228,19 +240,21 @@ function PrescriberPatientTreatmentReport() {
                     class={`flex flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
                     <div class="flex flex-col gap-6 pb-3">
-                      {report?.goodFeelingsReports.map((goodReport) => (
+                      {report?.feelingCountReport.filter((r) => r.isGood).map((
+                        goodReport,
+                      ) => (
                         <div
                           class="cursor-pointer"
                           onClick={() => {
                             const feeling = report?.feelingCountReport.find(
-                              (f) => f.name === goodReport.feeling.name,
+                              (f) => f.name === goodReport.name,
                             ) ?? null;
                             setGoodFeelingSelected(feeling);
                           }}
                         >
                           <MedicationEffectsCard
-                            icon={goodReport.feeling.icon as AvailableIcons}
-                            name={goodReport.feeling.name}
+                            icon={goodReport.icon as AvailableIcons}
+                            name={goodReport.name}
                           />
                         </div>
                       ))}
@@ -294,6 +308,27 @@ function PrescriberPatientTreatmentReport() {
                               type="line"
                               options={{
                                 scales: { y: { min: 1, max: 10 } },
+                                plugins: {
+                                  tooltip: {
+                                    callbacks: {
+                                      title: function (tooltipItems) {
+                                        return "Data: " + tooltipItems[0].label;
+                                      },
+                                      label: function (tooltipItem) {
+                                        const dataset = tooltipItem.dataset;
+                                        const index = tooltipItem.dataIndex;
+                                        const value = dataset.data[index];
+                                        const feedback = report.entries[index]
+                                          .feedback_message;
+                                        return `Nota: ${value}\n ${
+                                          feedback
+                                            ? `Feedback: ${feedback}`
+                                            : ""
+                                        }`;
+                                      },
+                                    },
+                                  },
+                                },
                               }}
                               data={{
                                 labels: report.entries.map((entry) =>
@@ -306,8 +341,9 @@ function PrescriberPatientTreatmentReport() {
                                       (entry) => entry.grade,
                                     ),
                                     spanGaps: 1,
-                                    borderColor: "#32b541",
+                                    borderColor: "green",
                                     borderWidth: 1,
+                                    backgroundColor: "green",
                                   },
                                 ],
                               }}
@@ -327,19 +363,21 @@ function PrescriberPatientTreatmentReport() {
                     class={`flex flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
                     <div class="flex flex-col gap-6 pb-3">
-                      {report?.badFeelingsReports.map((badReport) => (
+                      {report?.feelingCountReport.filter((r) => !r.isGood).map((
+                        badReport,
+                      ) => (
                         <div
                           class="cursor-pointer"
                           onClick={() => {
                             const feeling = report?.feelingCountReport.find(
-                              (f) => f.name === badReport.feeling.name,
+                              (f) => f.name === badReport.name,
                             ) ?? null;
                             setBadFeelingSelected(feeling);
                           }}
                         >
                           <MedicationEffectsCard
-                            icon={badReport.feeling.icon as AvailableIcons}
-                            name={badReport.feeling.name}
+                            icon={badReport.icon as AvailableIcons}
+                            name={badReport.name}
                           />
                         </div>
                       ))}
@@ -394,6 +432,27 @@ function PrescriberPatientTreatmentReport() {
                               type="line"
                               options={{
                                 scales: { y: { min: 1, max: 10 } },
+                                plugins: {
+                                  tooltip: {
+                                    callbacks: {
+                                      title: function (tooltipItems) {
+                                        return "Data: " + tooltipItems[0].label;
+                                      },
+                                      label: function (tooltipItem) {
+                                        const dataset = tooltipItem.dataset;
+                                        const index = tooltipItem.dataIndex;
+                                        const value = dataset.data[index];
+                                        const feedback = report.entries[index]
+                                          .feedback_message;
+                                        return `Nota: ${value}\n ${
+                                          feedback
+                                            ? `Feedback: ${feedback}`
+                                            : ""
+                                        }`;
+                                      },
+                                    },
+                                  },
+                                },
                               }}
                               data={{
                                 labels: report.entries.map((entry) =>
@@ -406,8 +465,9 @@ function PrescriberPatientTreatmentReport() {
                                       (entry) => entry.grade,
                                     ),
                                     spanGaps: 1,
-                                    borderColor: "#32b541",
+                                    borderColor: "red",
                                     borderWidth: 1,
+                                    backgroundColor: "red",
                                   },
                                 ],
                               }}
