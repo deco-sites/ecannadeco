@@ -35,7 +35,7 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
     >
       <div
         class={`p-0 ${
-          treatment.isActive ? "bg-[#ffffff]" : "bg-[#d3d3d3]"
+          treatment.isActive ? "bg-[#ffffff]" : "bg-[#ececec]"
         } rounded-md text-[10px] shadow`}
       >
         <div class="flex justify-between p-3">
@@ -63,13 +63,14 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
               <span>{timeAgo(new Date(treatment.updated_at))}</span>
             </div>
             <div
-              class={`${
-                treatment.status !== "BAD" ? "text-green-600" : "text-red-600"
+              class={`p-4 ${
+                treatment.status !== "BAD" ? "text-green-800" : "text-red-600"
               }`}
             >
               <Icon
                 id={`${treatment.status !== "BAD" ? "HappyFace" : "SadFace"}`}
-                size={19}
+                size={24}
+                strokeWidth={0.5}
               />
             </div>
             {treatment.prescription && (
@@ -79,16 +80,18 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
             )}
           </div>
         </div>
-        <TreatmentJourneyTimeline
-          journeyStatus={treatment.treatmentJourneyStatus}
-        />
+        {!isPatient && (
+          <TreatmentJourneyTimeline
+            journeyStatus={treatment.treatmentJourneyStatus}
+          />
+        )}
         {(treatment.patient || treatment.prescriber) && (
           <div
             class={`${
               treatment.isActive
-                ? "bg-secondary text-white"
+                ? "bg-primary text-white"
                 : "bg-[#e5e5e5] text-[#555555]"
-            } px-3 py-1 rounded-b-md `}
+            } px-3 py-1 rounded-b-md text-sm `}
           >
             {!isPatient
               ? <span>Paciente: {treatment.patient!.name}</span>

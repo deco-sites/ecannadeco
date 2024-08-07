@@ -173,7 +173,7 @@ function PrescriberPatients() {
             <Icon id="GoBack" size={19} />
           </button>
           <button
-            class="btn btn-xs bg-[#d8d8d8] text-[#8c8c8c] border-none rounded-full"
+            class="btn btn-xs bg-primary text-white border-none rounded-full"
             onClick={() => (displayVideoModal.value = true)}
           >
             <Icon id="Help" size={19} />

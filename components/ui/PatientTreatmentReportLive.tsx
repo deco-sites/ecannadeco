@@ -1,8 +1,3 @@
-/**
- * This component was made to control if user is logged in to access pages
- */
-// import type { SectionProps } from "deco/types.ts";
-// import { useUI } from "../../sdk/useUI.ts";
 import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import PageWrap from "./PageWrap.tsx";
@@ -38,9 +33,27 @@ export type FeelingReport = {
   }[];
 };
 
+export type FeelingCountReport = FeelingCount[];
+
+type FeelingCount = {
+  _id: string;
+  count: number;
+  name: string;
+  isGood: boolean;
+  icon: string;
+};
+
+export type AverageRationReport = {
+  _id: string;
+  resultGrade: number;
+  created_at: string;
+}[];
+
 export type Report = {
   goodFeelingsReports: FeelingReport[];
   badFeelingsReports: FeelingReport[];
+  feelingCountReport: FeelingCountReport;
+  averageRatio: AverageRationReport;
 };
 
 function PrescriberPatientTreatmentReport() {
@@ -50,7 +63,12 @@ function PrescriberPatientTreatmentReport() {
   >(null);
   const [treatment, setTreatment] = useState<Treatment | null>(null);
   const [report, setReport] = useState<Report | null>(null);
-
+  const [goodFeelingSelected, setGoodFeelingSelected] = useState<
+    FeelingCount | null
+  >(null);
+  const [badFeelingSelected, setBadFeelingSelected] = useState<
+    FeelingCount | null
+  >(null);
   const getTreatment = async (accessToken: string) => {
     setIsLoading(true);
     const reportId = window.location.pathname.split("/").pop();
@@ -90,6 +108,17 @@ function PrescriberPatientTreatmentReport() {
     }
   }, []);
 
+  useEffect(() => {
+    const goodFeeling = report?.feelingCountReport.find((r) => r.isGood);
+    const badFeeling = report?.feelingCountReport.find((r) => !r.isGood);
+    if (!goodFeelingSelected && goodFeeling) {
+      setGoodFeelingSelected(goodFeeling);
+    }
+    if (!badFeelingSelected && badFeeling) {
+      setBadFeelingSelected(badFeeling);
+    }
+  }, [report]);
+
   return (
     <>
       <div class="w-full flex justify-center mb-4">
@@ -112,6 +141,11 @@ function PrescriberPatientTreatmentReport() {
                   Relatório de Tratamento
                 </h3>
               </div>
+              <div>
+                {treatment && (
+                  <TreatmentCard treatment={treatment!} isPatient={true} />
+                )}
+              </div>
               {
                 /* <div>
                 <div class="bg-white rounded-md shadow flex items-center justify-center gap-4 p-3">
@@ -127,11 +161,52 @@ function PrescriberPatientTreatmentReport() {
                 </div>
               </div> */
               }
-              <div>
-                {treatment && (
-                  <TreatmentCard treatment={treatment!} isPatient={true} />
-                )}
+
+              <div class="w-full px-4">
+                <h3 class="text-md">Condição geral do paciente</h3>
+                <p class="text-xs mb-4">
+                  Soma das notas do efeitos positivos subtraído pela soma das
+                  notas dos efeitos negativos relatados
+                </p>
+                <Chart
+                  type="line"
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                      tooltip: {
+                        enabled: true,
+                      },
+                    },
+                  }}
+                  data={{
+                    datasets: [
+                      {
+                        data: report?.averageRatio
+                          .filter((r) => r.resultGrade)
+                          .map((r) => r.resultGrade) || [],
+                        backgroundColor: function (context) {
+                          const value = context.dataset.data[context.dataIndex];
+                          if (Number(value) > 0) {
+                            return "green";
+                          } else {
+                            return "red";
+                          }
+                        },
+                      },
+                    ],
+
+                    // These labels appear in the legend and in the tooltips when hovering different arcs
+                    labels: report?.averageRatio
+                      .filter((r) => r.resultGrade)
+                      .map((r) => format(new Date(r.created_at), "dd/MM/yy")) ||
+                      [],
+                  }}
+                />
               </div>
+
               {report &&
                 report?.goodFeelingsReports.length === 0 &&
                 report?.badFeelingsReports.length === 0 && (
@@ -148,30 +223,76 @@ function PrescriberPatientTreatmentReport() {
                     Efeitos Desejados Relatados
                   </h3>
                   <div
-                    class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+                    class={`flex flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
-                    <div class="flex gap-6 overflow-x-scroll pb-3">
-                      {report?.goodFeelingsReports.map((report) => (
-                        <MedicationEffectsCard
-                          icon={report.feeling.icon as AvailableIcons}
-                          name={report.feeling.name}
-                        />
-                      ))}
+                    <div class="flex flex-col gap-6 pb-3">
+                      {report?.feelingCountReport
+                        .filter((r) => r.isGood)
+                        .map((goodReport) => (
+                          <div
+                            class="cursor-pointer"
+                            onClick={() => {
+                              const feeling = report?.feelingCountReport.find(
+                                (f) => f.name === goodReport.name,
+                              ) ?? null;
+                              setGoodFeelingSelected(feeling);
+                            }}
+                          >
+                            <MedicationEffectsCard
+                              icon={goodReport.icon as AvailableIcons}
+                              name={goodReport.name}
+                              isActive={goodFeelingSelected?.name ===
+                                goodReport.name}
+                              isGood={true}
+                            />
+                          </div>
+                        ))}
                     </div>
-                    <div class="collapse collapse-arrow border border-base-300 bg-base-200">
-                      <input type="checkbox" />
-                      <div class="collapse-title text-xl font-medium">
-                        <span class="underline text-sm">
-                          Histórico dos efeitos
-                        </span>
+                    <div class="flex flex-col w-full">
+                      <div class="max-h-[500px] my-0 mx-auto">
+                        <Chart
+                          type="pie"
+                          options={{
+                            responsive: true,
+                            plugins: {
+                              legend: {
+                                position: "right",
+                                onClick: function (_e, legendItem) {
+                                  const feeling =
+                                    report?.feelingCountReport.find(
+                                      (f) => f.name === legendItem.text,
+                                    ) ?? null;
+                                  setGoodFeelingSelected(feeling);
+                                },
+                              },
+                            },
+                          }}
+                          data={{
+                            datasets: [
+                              {
+                                data: report?.feelingCountReport
+                                  .filter((r) => r.isGood === true)
+                                  .map((r) => r.count) || [],
+                              },
+                            ],
+                            // These labels appear in the legend and in the tooltips when hovering different arcs
+                            labels: report?.feelingCountReport
+                              .filter((r) => r.isGood === true)
+                              .map((r) => r.name) || [],
+                          }}
+                        />
                       </div>
-                      <div class="collapse-content flex flex-col gap-[48px]">
-                        {report?.goodFeelingsReports.map((report) => (
+                      {report?.goodFeelingsReports
+                        .filter((f) =>
+                          f.feeling._id === goodFeelingSelected?._id
+                        )
+                        .map((report) => (
                           <div>
                             <MedicationEffectsCard
                               icon={report.feeling.icon as AvailableIcons}
                               name={""}
                             />
+
                             <Chart
                               type="line"
                               options={{
@@ -188,15 +309,15 @@ function PrescriberPatientTreatmentReport() {
                                       (entry) => entry.grade,
                                     ),
                                     spanGaps: 1,
-                                    borderColor: "#32b541",
+                                    borderColor: "green",
                                     borderWidth: 1,
+                                    backgroundColor: "green",
                                   },
                                 ],
                               }}
                             />
                           </div>
                         ))}
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -207,30 +328,77 @@ function PrescriberPatientTreatmentReport() {
                     Efeitos Indesejados Relatados
                   </h3>
                   <div
-                    class={`flex flex-col gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+                    class={`flex flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
-                    <div class="flex gap-6 overflow-x-scroll pb-3">
-                      {report?.badFeelingsReports.map((report) => (
-                        <MedicationEffectsCard
-                          icon={report.feeling.icon as AvailableIcons}
-                          name={report.feeling.name}
-                        />
-                      ))}
+                    <div class="flex flex-col gap-6 pb-3">
+                      {report?.feelingCountReport
+                        .filter((r) => !r.isGood)
+                        .map((badReport) => (
+                          <div
+                            class="cursor-pointer"
+                            onClick={() => {
+                              const feeling = report?.feelingCountReport.find(
+                                (f) => f.name === badReport.name,
+                              ) ?? null;
+                              setBadFeelingSelected(feeling);
+                            }}
+                          >
+                            <MedicationEffectsCard
+                              icon={badReport.icon as AvailableIcons}
+                              name={badReport.name}
+                              isActive={badFeelingSelected?.name ===
+                                badReport.name}
+                              isGood={false}
+                            />
+                          </div>
+                        ))}
                     </div>
-                    <div class="collapse collapse-arrow border border-base-300 bg-base-200">
-                      <input type="checkbox" />
-                      <div class="collapse-title text-xl font-medium">
-                        <span class="underline text-sm">
-                          Histórico dos efeitos
-                        </span>
+
+                    <div class="flex flex-col w-full">
+                      <div class="max-h-[500px] my-0 mx-auto">
+                        <Chart
+                          type="pie"
+                          options={{
+                            responsive: true,
+                            plugins: {
+                              legend: {
+                                position: "right",
+                                onClick: function (_e, legendItem) {
+                                  const feeling =
+                                    report?.feelingCountReport.find(
+                                      (f) => f.name === legendItem.text,
+                                    ) ?? null;
+                                  setBadFeelingSelected(feeling);
+                                },
+                              },
+                            },
+                          }}
+                          data={{
+                            datasets: [
+                              {
+                                data: report?.feelingCountReport
+                                  .filter((r) => r.isGood === false)
+                                  .map((r) => r.count) || [],
+                              },
+                            ],
+                            // These labels appear in the legend and in the tooltips when hovering different arcs
+                            labels: report?.feelingCountReport
+                              .filter((r) => r.isGood === false)
+                              .map((r) => r.name) || [],
+                          }}
+                        />
                       </div>
-                      <div class="collapse-content flex flex-col gap-[48px]">
-                        {report?.badFeelingsReports.map((report) => (
+                      {report?.badFeelingsReports
+                        .filter((f) =>
+                          f.feeling._id === badFeelingSelected?._id
+                        )
+                        .map((report) => (
                           <div>
                             <MedicationEffectsCard
                               icon={report.feeling.icon as AvailableIcons}
                               name={""}
                             />
+
                             <Chart
                               type="line"
                               options={{
@@ -247,7 +415,8 @@ function PrescriberPatientTreatmentReport() {
                                       (entry) => entry.grade,
                                     ),
                                     spanGaps: 1,
-                                    borderColor: "#d93939",
+                                    borderColor: "red",
+                                    backgroundColor: "red",
                                     borderWidth: 1,
                                   },
                                 ],
@@ -255,7 +424,6 @@ function PrescriberPatientTreatmentReport() {
                             />
                           </div>
                         ))}
-                      </div>
                     </div>
                   </div>
                 </div>
