@@ -240,24 +240,27 @@ function PrescriberPatientTreatmentReport() {
                     class={`flex flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
                     <div class="flex flex-col gap-6 pb-3">
-                      {report?.feelingCountReport.filter((r) => r.isGood).map((
-                        goodReport,
-                      ) => (
-                        <div
-                          class="cursor-pointer"
-                          onClick={() => {
-                            const feeling = report?.feelingCountReport.find(
-                              (f) => f.name === goodReport.name,
-                            ) ?? null;
-                            setGoodFeelingSelected(feeling);
-                          }}
-                        >
-                          <MedicationEffectsCard
-                            icon={goodReport.icon as AvailableIcons}
-                            name={goodReport.name}
-                          />
-                        </div>
-                      ))}
+                      {report?.feelingCountReport
+                        .filter((r) => r.isGood)
+                        .map((goodReport) => (
+                          <div
+                            class="cursor-pointer"
+                            onClick={() => {
+                              const feeling = report?.feelingCountReport.find(
+                                (f) => f.name === goodReport.name,
+                              ) ?? null;
+                              setGoodFeelingSelected(feeling);
+                            }}
+                          >
+                            <MedicationEffectsCard
+                              icon={goodReport.icon as AvailableIcons}
+                              isActive={goodFeelingSelected?.name ===
+                                goodReport.name}
+                              name={goodReport.name}
+                              isGood={true}
+                            />
+                          </div>
+                        ))}
                     </div>
                     <div class="flex flex-col w-full">
                       <div class="max-h-[500px] my-0 mx-auto">
@@ -363,24 +366,26 @@ function PrescriberPatientTreatmentReport() {
                     class={`flex flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
                     <div class="flex flex-col gap-6 pb-3">
-                      {report?.feelingCountReport.filter((r) => !r.isGood).map((
-                        badReport,
-                      ) => (
-                        <div
-                          class="cursor-pointer"
-                          onClick={() => {
-                            const feeling = report?.feelingCountReport.find(
-                              (f) => f.name === badReport.name,
-                            ) ?? null;
-                            setBadFeelingSelected(feeling);
-                          }}
-                        >
-                          <MedicationEffectsCard
-                            icon={badReport.icon as AvailableIcons}
-                            name={badReport.name}
-                          />
-                        </div>
-                      ))}
+                      {report?.feelingCountReport
+                        .filter((r) => !r.isGood)
+                        .map((badReport) => (
+                          <div
+                            class="cursor-pointer"
+                            onClick={() => {
+                              const feeling = report?.feelingCountReport.find(
+                                (f) => f.name === badReport.name,
+                              ) ?? null;
+                              setBadFeelingSelected(feeling);
+                            }}
+                          >
+                            <MedicationEffectsCard
+                              icon={badReport.icon as AvailableIcons}
+                              isActive={badFeelingSelected?.name ===
+                                badReport.name}
+                              name={badReport.name}
+                            />
+                          </div>
+                        ))}
                     </div>
 
                     <div class="flex flex-col w-full">
