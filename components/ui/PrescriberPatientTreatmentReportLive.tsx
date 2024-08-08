@@ -378,7 +378,7 @@ function PrescriberPatientTreatmentReport() {
                   <div
                     class={`flex flex-col lg:flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
-                    <div class="flex flex-row lg:flex-col gap-6 pb-3">
+                    <div class="flex flex-row lg:flex-col gap-2 pb-3 flex-wrap">
                       {report?.feelingCountReport
                         .filter((r) => !r.isGood)
                         .map((badReport) => (
