@@ -4,7 +4,7 @@ import PageWrap from "./PageWrap.tsx";
 import Icon, { AvailableIcons } from "./Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import type { Treatment } from "./PrescriberPatientsLive.tsx";
-import MedicationEffectsCard from "./MedicationEffectsCardLive.tsx";
+import MedicationEffectsCard from "./MedicationEffectsCardCompact.tsx";
 import TreatmentCard from "./TreatmentCardLive.tsx";
 import Chart from "deco-sites/ecannadeco/islands/FreshChart.tsx";
 import { format } from "datetime";
@@ -30,6 +30,7 @@ export type FeelingReport = {
   entries: {
     grade: number;
     date: string;
+    feedback_message: string;
   }[];
 };
 
@@ -223,9 +224,9 @@ function PrescriberPatientTreatmentReport() {
                     Efeitos Desejados Relatados
                   </h3>
                   <div
-                    class={`flex flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+                    class={`flex flex-col lg:flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
-                    <div class="flex flex-col gap-6 pb-3">
+                    <div class="flex flex-row lg:flex-col gap-6 pb-3">
                       {report?.feelingCountReport
                         .filter((r) => r.isGood)
                         .map((goodReport) => (
@@ -248,7 +249,7 @@ function PrescriberPatientTreatmentReport() {
                           </div>
                         ))}
                     </div>
-                    <div class="flex flex-col w-full">
+                    <div class="flex flex-col flex-grow">
                       <div class="max-h-[500px] my-0 mx-auto">
                         <Chart
                           type="pie"
@@ -288,11 +289,6 @@ function PrescriberPatientTreatmentReport() {
                         )
                         .map((report) => (
                           <div>
-                            <MedicationEffectsCard
-                              icon={report.feeling.icon as AvailableIcons}
-                              name={""}
-                            />
-
                             <Chart
                               type="line"
                               options={{
@@ -316,6 +312,24 @@ function PrescriberPatientTreatmentReport() {
                                 ],
                               }}
                             />
+                            <div class="w-full p-4">
+                              {report.entries.filter((e) => e.feedback_message)
+                                    .length > 0 && (
+                                <h5 class="text-sm font-bold">
+                                  Relatório de feedbacks
+                                </h5>
+                              )}
+                              {report.entries
+                                .filter((e) => e.feedback_message)
+                                .map((entry) => (
+                                  <p class="text-xs leading-6 border-b border-gray-300">
+                                    {format(new Date(entry.date), "dd/MM/yy") +
+                                        " - " +
+                                        entry.feedback_message ||
+                                      "Não informado"}
+                                  </p>
+                                ))}
+                            </div>
                           </div>
                         ))}
                     </div>
@@ -328,9 +342,9 @@ function PrescriberPatientTreatmentReport() {
                     Efeitos Indesejados Relatados
                   </h3>
                   <div
-                    class={`flex flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
+                    class={`flex flex-col lg:flex-row gap-6 p-3 bg-[#ffffff] rounded-md text-[10px] sm:text-xs md:text-sm shadow`}
                   >
-                    <div class="flex flex-col gap-6 pb-3">
+                    <div class="flex flex-row lg:flex-col gap-6 pb-3">
                       {report?.feelingCountReport
                         .filter((r) => !r.isGood)
                         .map((badReport) => (
@@ -354,7 +368,7 @@ function PrescriberPatientTreatmentReport() {
                         ))}
                     </div>
 
-                    <div class="flex flex-col w-full">
+                    <div class="flex flex-col flex-grow">
                       <div class="max-h-[500px] my-0 mx-auto">
                         <Chart
                           type="pie"
@@ -394,11 +408,6 @@ function PrescriberPatientTreatmentReport() {
                         )
                         .map((report) => (
                           <div>
-                            <MedicationEffectsCard
-                              icon={report.feeling.icon as AvailableIcons}
-                              name={""}
-                            />
-
                             <Chart
                               type="line"
                               options={{
@@ -422,6 +431,24 @@ function PrescriberPatientTreatmentReport() {
                                 ],
                               }}
                             />
+                            <div class="w-full p-4">
+                              {report.entries.filter((e) => e.feedback_message)
+                                    .length > 0 && (
+                                <h5 class="text-sm font-bold">
+                                  Relatório de feedbacks
+                                </h5>
+                              )}
+                              {report.entries
+                                .filter((e) => e.feedback_message)
+                                .map((entry) => (
+                                  <p class="text-xs leading-6 border-b border-gray-300">
+                                    {format(new Date(entry.date), "dd/MM/yy") +
+                                        " - " +
+                                        entry.feedback_message ||
+                                      "Não informado"}
+                                  </p>
+                                ))}
+                            </div>
                           </div>
                         ))}
                     </div>
