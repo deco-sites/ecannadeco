@@ -37,6 +37,7 @@ import * as $Header_Cart_vtex from "./islands/Header/Cart/vtex.tsx";
 import * as $Header_Cart_wake from "./islands/Header/Cart/wake.tsx";
 import * as $Header_Drawers from "./islands/Header/Drawers.tsx";
 import * as $Header_Searchbar from "./islands/Header/Searchbar.tsx";
+import * as $MyAccount_copy from "./islands/MyAccount copy.tsx";
 import * as $MyAccount from "./islands/MyAccount.tsx";
 import * as $MyDocs from "./islands/MyDocs.tsx";
 import * as $MyInfo from "./islands/MyInfo.tsx";
@@ -130,6 +131,7 @@ const manifest = {
     "./islands/Header/Cart/wake.tsx": $Header_Cart_wake,
     "./islands/Header/Drawers.tsx": $Header_Drawers,
     "./islands/Header/Searchbar.tsx": $Header_Searchbar,
+    "./islands/MyAccount copy.tsx": $MyAccount_copy,
     "./islands/MyAccount.tsx": $MyAccount,
     "./islands/MyDocs.tsx": $MyDocs,
     "./islands/MyInfo.tsx": $MyInfo,

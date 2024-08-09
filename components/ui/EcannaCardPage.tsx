@@ -27,6 +27,13 @@ export interface UserData {
     ecannacard_url: string;
     _id: string;
     pin: string;
+    referral?: {
+      description: string;
+      type: string;
+      partner_name: string;
+      name: string;
+      discount: number;
+    };
   };
 }
 

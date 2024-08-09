@@ -34,16 +34,18 @@ export interface Props {
     number: string;
     complement: string;
   };
+  discount?: number;
 }
 
 const CheckoutUpsellModal = (props: Props) => {
-  const { creditCards, plan, product } = props;
+  const { creditCards, plan, product, discount } = props;
   const holderInfo = useHolderInfo();
   const { displayCheckoutUpsellModal, displayAlert, alertText, alertType } =
     useUI();
   const [loading, setLoading] = useState(false);
   const [invalidForm, setInvalidForm] = useState(false);
-  const [addNewCard, setAddNewCard] = useState(creditCards.length === 0);
+  const [addNewCard, _setAddNewCard] = useState(true);
+  // const [addNewCard, setAddNewCard] = useState(creditCards.length === 0);
   const [isLoadingPostalCode, setIsLoadingPostalCode] = useState(false);
   const [creditCardNumber, setCreditCardNumber] = useState<string>("");
   const [creditCardExpMonth, setCreditCardExpMonth] = useState<string>("");
@@ -66,7 +68,7 @@ const CheckoutUpsellModal = (props: Props) => {
     plan ? "CREDIT_CARD" : "PIX",
   );
   const [clipboardText, setClipboardText] = useState("Copiar");
-  const [cardSelected, setCardSelected] = useState(0);
+  const [cardSelected, _setCardSelected] = useState(0);
   const [filledFields, setFilledFields] = useState(false);
   const [orderId, setOrderId] = useState<string>("");
 
@@ -347,8 +349,11 @@ const CheckoutUpsellModal = (props: Props) => {
                   <span class="font-bold">
                     {plan &&
                       "R$ " +
-                        (plan.price / 100).toFixed(2) +
-                        (plan?.period == "MONTHLY" && "/mês")}
+                        (discount
+                          ? (plan.price / 100) * (1 - discount)
+                          : plan.price / 100).toFixed(2) +
+                        (plan?.period == "MONTHLY" ? "/mês" : "") +
+                        (plan?.period == "YEARLY" ? "/ano" : "")}
                   </span>
                 </>
               )
@@ -396,7 +401,8 @@ const CheckoutUpsellModal = (props: Props) => {
         {!isPix && (
           <>
             <div>
-              {(creditCards && creditCards.length) > 0 &&
+              {
+                /* {(creditCards && creditCards.length) > 0 &&
                 creditCards.map((card, i) => {
                   return (
                     <div>
@@ -441,7 +447,8 @@ const CheckoutUpsellModal = (props: Props) => {
                       </span>
                     </div>
                   );
-                })}
+                })} */
+              }
             </div>
             <div class={`${!addNewCard && "hidden"}`}>
               <form class="flex flex-wrap gap-[2%]">

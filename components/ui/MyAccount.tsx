@@ -40,6 +40,13 @@ function MyAccount() {
   const { displayConfirmCancelSubscription, displayCheckoutUpsellModal } =
     useUI();
   const holderInfo = useHolderInfo();
+  const [referral, setReferral] = useState<{
+    description: string;
+    type: string;
+    partner_name: string;
+    name: string;
+    discount: number;
+  }>();
 
   function formatPeriod(period: string) {
     if (period === "MONTHLY") {
@@ -103,7 +110,7 @@ function MyAccount() {
           setCurrentPlan(res.dataProfile.plan);
           setNewPlan(plans.find((p) => p.name === res.dataProfile.plan));
           setCreditCards(res.dataProfile.credit_cards);
-
+          setReferral(res.dataProfile.referral);
           setIsLoading(false);
         });
 
@@ -206,20 +213,222 @@ function MyAccount() {
                 Minha Conta
               </h3>
             </div>
-            {(currentPlan == "TREATMENT" || currentPlan == "DEFAULT") && (
-              <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
-                <Icon id="Profile" size={16} />
-                <span class="text-lg">
-                  GARANTA SUA CARTEIRINHA DE PACIENTE!
-                </span>
-                <span class="text-center text-sm">
-                  Para obter sua carteirinha de paciente de cannabis medicinal,
-                  garantindo sua segurança no uso da medicina, faça upgrade do
-                  seu plano na seção abaixo!
-                </span>
-                <a class="btn bg-white text-primary btn-sm" href="#planUpgrade">
-                  Fazer Upgrade
-                </a>
+            {(currentPlan == "TREATMENT" || currentPlan == "DEFAULT") &&
+              (referral && referral.type === "DISCOUNT"
+                ? (
+                  referral &&
+                  referral.type === "DISCOUNT" && (
+                    <div
+                      class="flex flex-col md:flex-row p-4 text-white rounded-md items-center gap-4"
+                      style={`background-image: linear-gradient(to bottom, #00426f, #1777b8);`}
+                    >
+                      <Icon id="Celebration" size={36} />
+                      <span>
+                        Oba!{" "}
+                        <span class="font-bold">{referral.partner_name}</span>
+                        {" "}
+                        está oferecendo{" "}
+                        <span class="font-bold">
+                          {referral.discount * 100}% de desconto
+                        </span>{" "}
+                        para você tirar a sua carteirinha. Esta é a hora certa
+                        de continuar sua jornada como paciente!
+                      </span>
+                      <button
+                        onClick={() => {
+                          setNewPlan(plans[0]);
+                        }}
+                        class="btn bg-white text-primary btn-sm uppercase"
+                        href="#planUpgrade"
+                      >
+                        Usar meu desconto
+                      </button>
+                    </div>
+                  )
+                )
+                : (
+                  <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
+                    <Icon id="Profile" size={16} />
+                    <span class="text-lg">
+                      GARANTA SUA CARTEIRINHA DE PACIENTE!
+                    </span>
+                    <span class="text-center text-sm">
+                      Para obter sua carteirinha de paciente de cannabis
+                      medicinal, garantindo sua segurança no uso da medicina,
+                      faça upgrade do seu plano clicando no botão abaixo!
+                    </span>
+                    <button
+                      onClick={() => {
+                        setNewPlan(plans[0]);
+                      }}
+                      class="btn bg-white text-primary btn-sm"
+                      href="#planUpgrade"
+                    >
+                      Fazer Upgrade
+                    </button>
+                  </div>
+                ))}
+            {currentPlan !== "CARD_ASSOCIATED" && (
+              <div id="planUpgrade" class="flex flex-col gap-3">
+                <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+                  Plano
+                </h2>
+                <Slider class="carousel gap-3 max-w-[105%]">
+                  {plans.map((plan, i) => (
+                    <Slider.Item class="carousel-item" index={i}>
+                      <div
+                        class="bg-white rounded-md p-3 flex flex-col justify-between"
+                        onClick={() =>
+                          setNewPlan(plans.find((p) =>
+                            p.name === plan.name
+                          ))}
+                      >
+                        <div class="flex items-center gap-4">
+                          <div
+                            class={`h-8 w-8 rounded-full ${
+                              plan.plan == (newPlan?.plan || currentPlan)
+                                ? "bg-primary flex items-center justify-center"
+                                : "bg-white"
+                            }`}
+                            style={{
+                              "box-shadow":
+                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                            }}
+                          >
+                            {plan.plan == (newPlan?.plan || currentPlan) && (
+                              <Icon class="text-white" id="Check" size={19} />
+                            )}
+                          </div>
+                          <div class="flex flex-col text-[#898989]">
+                            <span class=" uppercase text-sm">{plan.name}</span>
+                            <span
+                              class={`text-xs ${
+                                referral &&
+                                referral.type == "DISCOUNT" &&
+                                "line-through"
+                              }`}
+                            >
+                              {"R$ " +
+                                (plan.price / 100).toFixed(2) +
+                                (formatPeriod(plan.period) || "")}
+                            </span>
+                            {referral && referral.type === "DISCOUNT" && (
+                              <div class="flex flex-col gap-2">
+                                <span class="text-xs text-[#0ca118] font-bold">
+                                  {"R$ " +
+                                    (
+                                      (plan.price / 100) *
+                                      (1 - referral.discount)
+                                    ).toFixed(2) +
+                                    (formatPeriod(plan.period) || "")}
+                                </span>
+                                <span class="text-xs text-[#0ca118]">
+                                  ({referral.discount * 100}% off -{" "}
+                                  {referral.partner_name})
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                          <ul class="flex flex-col gap-3 py-3">
+                            <li class="flex gap-3 items-center">
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Carteirinha digital oficial
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Upload ilimitado de documentos
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Direito a solicitar via física
+                              </span>
+                            </li>
+                            <li
+                              // class={`flex gap-3 items-center ${
+                              //   plan.name == "FREE" && "opacity-20"
+                              // }`}
+                              class={`flex gap-3 items-center`}
+                            >
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Acesso acompanhamento de Tratamento
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </Slider.Item>
+                  ))}
+                </Slider>
+                <div class="flex  flex-col justify-end mt-4">
+                  <ModalConfirm
+                    text="Tem certeza que deseja encerrar sua assinatura?"
+                    confirmButtonText="Encerrar"
+                    open={displayConfirmCancelSubscription.value}
+                    onClose={() => {
+                      displayConfirmCancelSubscription.value = false;
+                    }}
+                    onConfirm={handleCancelSubscription}
+                    loading={isCanceling}
+                  />
+                  <CheckoutUpsellModal
+                    creditCards={creditCards}
+                    plan={newPlan!}
+                    discount={referral?.discount}
+                    address={address!}
+                  />
+                  <button
+                    class="btn btn-primary text-white"
+                    disabled={(newPlan?.name || currentPlan) == currentPlan}
+                    onClick={() => {
+                      console.log({ creditCards });
+                      displayCheckoutUpsellModal.value = true;
+                    }}
+                  >
+                    Alterar Plano
+                  </button>
+                  <button
+                    class="btn btn-ghost text-xs font-normal text-red-500"
+                    onClick={() => {
+                      displayConfirmCancelSubscription.value = true;
+                    }}
+                  >
+                    Cancelar Assinatura
+                  </button>
+                </div>
               </div>
             )}
             <div class="flex flex-col gap-3">
@@ -315,147 +524,6 @@ function MyAccount() {
                 </button>
               </div>
             </div>
-            {currentPlan !== "CARD_ASSOCIATED" && (
-              <div id="planUpgrade">
-                <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
-                  Plano
-                </h2>
-                {/* <div class="flex gap-3"> */}
-                <Slider class="carousel gap-3 max-w-[105%]">
-                  {plans.map((plan, i) => (
-                    <Slider.Item class="carousel-item" index={i}>
-                      <div
-                        class="bg-white rounded-md p-3 flex flex-col justify-between"
-                        onClick={() =>
-                          setNewPlan(plans.find((p) =>
-                            p.name === plan.name
-                          ))}
-                      >
-                        <div class="flex items-center gap-4">
-                          <div
-                            class={`h-8 w-8 rounded-full ${
-                              plan.plan == (newPlan?.plan || currentPlan)
-                                ? "bg-primary flex items-center justify-center"
-                                : "bg-white"
-                            }`}
-                            style={{
-                              "box-shadow":
-                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
-                            }}
-                          >
-                            {plan.plan == (newPlan?.plan || currentPlan) && (
-                              <Icon class="text-white" id="Check" size={19} />
-                            )}
-                          </div>
-                          <div class="flex flex-col text-[#898989]">
-                            <span class=" uppercase text-sm">{plan.name}</span>
-                            <span class="text-xs">
-                              {"R$ " +
-                                (plan.price / 100).toFixed(2) +
-                                (formatPeriod(plan.period) || "")}
-                            </span>
-                          </div>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                          <ul class="flex flex-col gap-3 py-3">
-                            <li class="flex gap-3 items-center">
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Carteirinha digital oficial
-                              </span>
-                            </li>
-                            <li
-                              // class={`flex gap-3 items-center ${
-                              //   plan.name == "FREE" && "opacity-20"
-                              // }`}
-                              class={`flex gap-3 items-center`}
-                            >
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Upload ilimitado de documentos
-                              </span>
-                            </li>
-                            <li
-                              // class={`flex gap-3 items-center ${
-                              //   plan.name == "FREE" && "opacity-20"
-                              // }`}
-                              class={`flex gap-3 items-center`}
-                            >
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Direito a solicitar via física
-                              </span>
-                            </li>
-                            <li
-                              // class={`flex gap-3 items-center ${
-                              //   plan.name == "FREE" && "opacity-20"
-                              // }`}
-                              class={`flex gap-3 items-center`}
-                            >
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Acesso acompanhamento de Tratamento
-                              </span>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </Slider.Item>
-                  ))}
-                </Slider>
-                <div class="flex  flex-col justify-end mt-4">
-                  <ModalConfirm
-                    text="Tem certeza que deseja encerrar sua assinatura?"
-                    confirmButtonText="Encerrar"
-                    open={displayConfirmCancelSubscription.value}
-                    onClose={() => {
-                      displayConfirmCancelSubscription.value = false;
-                    }}
-                    onConfirm={handleCancelSubscription}
-                    loading={isCanceling}
-                  />
-                  <CheckoutUpsellModal
-                    creditCards={creditCards}
-                    plan={newPlan!}
-                    address={address!}
-                  />
-                  <button
-                    class="btn btn-primary text-white"
-                    disabled={(newPlan?.name || currentPlan) == currentPlan}
-                    onClick={() => {
-                      console.log({ creditCards });
-                      displayCheckoutUpsellModal.value = true;
-                    }}
-                  >
-                    Alterar Plano
-                  </button>
-                  <button
-                    class="btn btn-ghost text-xs font-normal text-red-500"
-                    onClick={() => {
-                      displayConfirmCancelSubscription.value = true;
-                    }}
-                  >
-                    Cancelar Assinatura
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
         )}
     </PageWrap>

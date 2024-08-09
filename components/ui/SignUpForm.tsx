@@ -23,14 +23,19 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   const [whatsapp, setWhatsapp] = useState("");
   const [interest, setInterest] = useState("");
   const [associationCNPJ, setAssociationCNPJ] = useState("");
+  const [dealName, setDealName] = useState("");
   // const { displayAlert, alertText, alertType } = useUI();
 
   useEffect(() => {
     if (IS_BROWSER) {
       const params = new URLSearchParams(globalThis.location.search);
       const cnpj = params.get("cnpj");
+      const ref = localStorage.getItem("referral");
       if (cnpj) {
         setAssociationCNPJ(cnpj);
+      }
+      if (ref) {
+        setDealName(ref);
       }
       const servicePipeline = localStorage.getItem("servicePipeline");
       setInterest(servicePipeline || "");
@@ -89,6 +94,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
           phone: whatsapp,
           interest,
           associationCNPJ,
+          dealName,
         });
 
         const dataS = dataSignup as {
