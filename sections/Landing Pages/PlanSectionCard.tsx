@@ -1,1 +1,1 @@
-export { default } from "../../components/landingpages/PlanSectionCard.tsx";
+export { default } from "../../islands/PlanSectionCard.tsx";

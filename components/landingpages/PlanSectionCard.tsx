@@ -1,6 +1,16 @@
 import Icon from "deco-sites/ecannadeco/components/ui/Icon.tsx";
 import type { ImageWidget } from "apps/admin/widgets.ts";
 import Image from "apps/website/components/Image.tsx";
+import { IS_BROWSER } from "$fresh/runtime.ts";
+import { useEffect, useState } from "preact/hooks";
+import { invoke } from "../../runtime.ts";
+
+export type Deal = {
+  _id: string;
+  type: string;
+  partner_name: string;
+  discount?: number;
+};
 
 export interface Props {
   title: string;
@@ -17,6 +27,24 @@ export interface Props {
 
 // Make it sure to render it on the server only. DO NOT render it on an island
 function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
+  const [deal, setDeal] = useState<Deal>();
+
+  useEffect(() => {
+    if (IS_BROWSER) {
+      const params = new URLSearchParams(globalThis.location.search);
+      const ref = params.get("ref");
+      if (ref) {
+        invoke["deco-sites/ecannadeco"].actions
+          .getDeal({
+            term: ref,
+          })
+          .then((r) => {
+            setDeal(r as Deal);
+          });
+      }
+    }
+  }, []);
+
   return (
     <div
       class=" w-full flex flex-col gap-12 items-center my-14"
@@ -33,8 +61,22 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
           style={`background-image: linear-gradient(to bottom, #0A66A5, #1677B9);`}
         >
           <span class="uppercase tracking-[5px]">{plan.title}</span>
-          <div class="flex items-end">
-            <span class="text-5xl font-thin">R$ {plan.price}</span>
+          <div class="flex flex-col items-center">
+            <span
+              class={` font-thin ${
+                deal?.discount ? "line-through" : "text-5xl"
+              }`}
+            >
+              R$ {plan.price}
+            </span>
+            {deal?.discount && (
+              <>
+                <span class="text-5xl font-thin">
+                  R$ {plan.price * (1 - deal.discount)}
+                </span>
+                <span>(Desconto {deal.partner_name})</span>
+              </>
+            )}
           </div>
           <ul class="flex flex-col gap-3 text-xs mt-4 mb-6">
             <li class="flex gap-2">
