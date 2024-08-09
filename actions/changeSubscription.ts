@@ -1,3 +1,5 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
+
 export interface Props {
   token?: string;
   sku: string;
@@ -27,7 +29,7 @@ const changeSubscription = async (
   const params = { ...props };
   delete params.token;
   const response = await fetch(
-    "https://api.ecanna.com.br/checkout/upgrade",
+    `${API_URL}/checkout/upgrade`,
     {
       method: "POST",
       headers: {

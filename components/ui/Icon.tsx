@@ -7,6 +7,7 @@ export type AvailableIcons =
   | "Anexo"
   | "Bars3"
   | "Calendar"
+  | "Celebration"
   | "Check"
   | "Chart"
   | "ChevronLeft"

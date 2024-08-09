@@ -7,6 +7,7 @@ export interface Props {
   phone: string;
   interest?: string;
   associationCNPJ?: string;
+  dealName?: string;
 }
 
 const signUpCognito = async (
@@ -27,6 +28,7 @@ const signUpCognito = async (
         phone: props.phone,
         interest: props.interest,
         association: props.associationCNPJ,
+        dealName: props.dealName,
       }),
     });
 

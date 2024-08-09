@@ -10,6 +10,7 @@ import { lazy, Suspense } from "preact/compat";
 import type { Logo } from "./Header.tsx";
 import Image from "apps/website/components/Image.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { useEffect } from "preact/hooks";
 
 const Menu = lazy(() => import("../../components/header/Menu.tsx"));
 const Searchbar = lazy(() => import("../../components/search/Searchbar.tsx"));
@@ -24,14 +25,17 @@ export interface Props {
   platform: ReturnType<typeof usePlatform>;
 }
 
-const Aside = (
-  { logo, title, onClose, children }: {
-    logo?: Logo;
-    title: string;
-    onClose?: () => void;
-    children: ComponentChildren;
-  },
-) => (
+const Aside = ({
+  logo,
+  title,
+  onClose,
+  children,
+}: {
+  logo?: Logo;
+  title: string;
+  onClose?: () => void;
+  children: ComponentChildren;
+}) => (
   <div class="bg-base-100 grid grid-rows-[auto_1fr] h-full divide-y max-w-[100vw]">
     <div class="flex justify-between items-center">
       <h1 class="px-4 py-3">
@@ -67,6 +71,16 @@ const Aside = (
 function Drawers({ menu, searchbar, children }: Props) {
   const { displayMenu, displaySearchDrawer } = useUI();
 
+  useEffect(() => {
+    if (IS_BROWSER) {
+      const params = new URLSearchParams(globalThis.location.search);
+      const ref = params.get("ref");
+      if (ref) {
+        localStorage.setItem("referral", ref);
+      }
+    }
+  }, []);
+
   //if user is not loggedin, use the public navitems in the menu
   if (IS_BROWSER) {
     if (
@@ -98,7 +112,8 @@ function Drawers({ menu, searchbar, children }: Props) {
         if (
           element.url === "/meus-dados" ||
           element.url === "/minha-carteirinha" ||
-          element.url === "/meus-documentos" || element.url === "/meus-pedidos"
+          element.url === "/meus-documentos" ||
+          element.url === "/meus-pedidos"
         ) {
           return {
             ...element,
