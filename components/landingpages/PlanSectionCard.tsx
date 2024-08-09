@@ -31,8 +31,9 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
 
   useEffect(() => {
     if (IS_BROWSER) {
-      const params = new URLSearchParams(globalThis.location.search);
-      const ref = params.get("ref");
+      // const params = new URLSearchParams(globalThis.location.search);
+      // const ref = params.get("ref");
+      const ref = localStorage.getItem("referral");
       if (ref) {
         invoke["deco-sites/ecannadeco"].actions
           .getDeal({
@@ -40,7 +41,6 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
           })
           .then((r) => {
             setDeal(r as Deal);
-            console.log({ r });
           });
       }
     }
@@ -70,14 +70,14 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
             >
               R$ {plan.price}
             </span>
-            {deal?.discount && (
+            {deal?.discount ? (
               <>
                 <span class="text-5xl font-thin">
                   R$ {plan.price * (1 - deal.discount)}
                 </span>
                 <span>(Desconto {deal.partner_name})</span>
               </>
-            )}
+            ) : null}
           </div>
           <ul class="flex flex-col gap-3 text-xs mt-4 mb-6">
             <li class="flex gap-2">
