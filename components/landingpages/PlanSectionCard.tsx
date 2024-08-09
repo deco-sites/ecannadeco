@@ -40,6 +40,7 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
           })
           .then((r) => {
             setDeal(r as Deal);
+            console.log({ r });
           });
       }
     }
