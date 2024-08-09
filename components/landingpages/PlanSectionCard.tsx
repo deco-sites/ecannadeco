@@ -70,14 +70,16 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
             >
               R$ {plan.price}
             </span>
-            {deal?.discount ? (
-              <>
-                <span class="text-5xl font-thin">
-                  R$ {plan.price * (1 - deal.discount)}
-                </span>
-                <span>(Desconto {deal.partner_name})</span>
-              </>
-            ) : null}
+            {deal?.discount
+              ? (
+                <>
+                  <span class="text-5xl font-thin">
+                    R$ {plan.price * (1 - deal.discount)}
+                  </span>
+                  <span>(Desconto {deal.partner_name})</span>
+                </>
+              )
+              : null}
           </div>
           <ul class="flex flex-col gap-3 text-xs mt-4 mb-6">
             <li class="flex gap-2">
