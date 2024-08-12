@@ -109,7 +109,7 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
   const handleSubmit = async () => {
     setUpdating(true);
 
-    let treatmentJourneyStatus = "DEFAULT";
+    let treatmentJourneyStatus = "RECEIVED_PRESCRIPTION";
 
     if (startedTreatment) {
       treatmentJourneyStatus = "STARTED_TREATMENT";
@@ -132,17 +132,14 @@ const PrescriberUpdateTreatmentModal = ({ onFinished }: Props) => {
     formData.append("treatmentJourneyStatus", treatmentJourneyStatus);
 
     try {
-      const response = await fetch(
-        `${API_URL}/prescribers/treatments`,
-        {
-          method: "POST",
-          body: formData,
-          headers: {
-            Authorization: accessToken,
-            ContentType: "multipart/form-data",
-          },
+      const response = await fetch(`${API_URL}/prescribers/treatments`, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: accessToken,
+          ContentType: "multipart/form-data",
         },
-      );
+      });
 
       setUpdating(false);
       onFinished();
