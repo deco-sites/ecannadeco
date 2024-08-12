@@ -41,7 +41,7 @@ function ImageSteps({
           </div>
         </div>
         <div class="flex flex-col justify-center items-center sm:justify-end self-end sm:items-end gap-7">
-          <Image src={mainImage} width={585} height={529} alt="banner image" />
+          <Image src={mainImage} width={585} height={495} alt="banner image" />
           <a
             href="#planSection"
             class="btn bg-primary rounded-full uppercase text-white max-w-[300px] border-none"
