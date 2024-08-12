@@ -439,7 +439,9 @@ function MyInfo() {
             <div class="join">
               <label class="join-item">
                 <div class="label pb-1">
-                  <span class="label-text text-xs text-[#585858]">CEP</span>
+                  <span class="label-text text-xs text-[#585858]">
+                    CEP (apenas números)
+                  </span>
                 </div>
                 <input
                   placeholder="CEP"
