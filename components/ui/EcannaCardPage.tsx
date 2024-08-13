@@ -230,7 +230,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
             </div>
           )}
       </div>
-      <div>
+      <div class="mt-12 lg:mt-3">
         <div class="join w-full">
           <label class="join-item">
             {
