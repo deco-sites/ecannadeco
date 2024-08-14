@@ -330,10 +330,11 @@ function SignUpFormPrescriber({
             }}
           >
             <option value="">Selecione</option>
-            <option value="CRM">CRM - Médico</option>
-            <option value="CRMV">CRMV - Veterinário</option>
-            <option value="CRO">CRO - Dentista</option>
-            <option value="CRP">CRP - Psicólogo</option>
+            <option value="CRM">CRM - Conselho Médico</option>
+            <option value="CRMV">CRMV - Conselho Veterinário</option>
+            <option value="CRO">CRO - Conselho Dentista</option>
+            <option value="CRP">CRP - Conselho Psicólogo</option>
+            <option value="CRF">CRF - Conselho Farmacêutico</option>
           </select>
         </label>
         <label className="w-full">
