@@ -137,7 +137,8 @@ function PrescriberPatientTreatments() {
                       accessToken =
                         localStorage.getItem("PrescriberAccessToken") || "";
                     }
-                    getTreatmentsByPatient(accessToken, patientId);
+                    getTreatmentsByPatient(accessToken, patientId, 1, true);
+                    getTreatmentsByPatient(accessToken, patientId, 1, false);
                   }}
                 />
                 <h3 class="text-2xl text-[#8b8b8b] text-center">Tratamento</h3>
