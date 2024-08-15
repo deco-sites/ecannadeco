@@ -81,8 +81,8 @@ function PrescriberPatients() {
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [emailSearch, setEmailSearch] = useState("");
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [hasNextPage, setHasNextPage] = useState(false);
-  const [hasPrevPage, setHasPrevPage] = useState(false);
+  // const [hasNextPage, setHasNextPage] = useState(false);
+  // const [hasPrevPage, setHasPrevPage] = useState(false);
   const [page, setPage] = useState<number | null>(1);
   const [totalPages, setTotalPages] = useState<number | null>(1);
   const [totalDocs, setTotalDocs] = useState<number | null>(1);
@@ -92,6 +92,7 @@ function PrescriberPatients() {
     search?: string,
     page?: number,
   ) => {
+    console.log({ page });
     setIsLoadingUsers(true);
     const response = await invoke[
       "deco-sites/ecannadeco"
@@ -108,8 +109,8 @@ function PrescriberPatients() {
       setPatients(response.docs as Patient[]);
       setPage(response.page);
       setTotalPages(response.totalPages);
-      setHasNextPage(response.hasNextPage);
-      setHasPrevPage(response.hasPrevPage);
+      // setHasNextPage(response.hasNextPage);
+      // setHasPrevPage(response.hasPrevPage);
       setTotalDocs(response.totalDocs);
     }
   };
@@ -297,7 +298,7 @@ function PrescriberPatients() {
                 )}
               <div class="flex justify-center mt-4">
                 <div>
-                  {hasPrevPage && (
+                  {page! > 1 && (
                     <span
                       class="p-4 cursor-pointer"
                       onClick={() => {
@@ -307,7 +308,7 @@ function PrescriberPatients() {
                           accessToken =
                             localStorage.getItem("PrescriberAccessToken") || "";
                         }
-                        getPatients(accessToken, undefined, page! - 1);
+                        getPatients(accessToken, undefined, Number(page!) - 1);
                       }}
                     >
                       {`<`}
@@ -318,7 +319,7 @@ function PrescriberPatients() {
                   <span class="text-xs">{`Página ${page}/${totalPages}`}</span>
                 </div>
                 <div>
-                  {hasNextPage && (
+                  {page! < totalPages! && (
                     <span
                       class="p-4 cursor-pointer"
                       onClick={() => {
@@ -328,7 +329,7 @@ function PrescriberPatients() {
                           accessToken =
                             localStorage.getItem("PrescriberAccessToken") || "";
                         }
-                        getPatients(accessToken, undefined, page! + 1);
+                        getPatients(accessToken, undefined, Number(page!) + 1);
                       }}
                     >
                       {`>`}
