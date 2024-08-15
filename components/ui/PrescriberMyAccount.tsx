@@ -42,6 +42,7 @@ function MyAccount() {
     useUI();
   const id = useId();
   const [daysToEndTrial, setDaysToEndTrial] = useState(0);
+  const [trialEnded, setTrialEnded] = useState(false);
 
   useEffect(() => {
     // Pega accessCode no localStorage para verificar se ainda está válida a sessão via api
@@ -95,6 +96,10 @@ function MyAccount() {
             const daysLeft = difference(new Date(), endTrialDate, {
               units: ["days"],
             });
+
+            if (new Date() > endTrialDate) {
+              setTrialEnded(true);
+            }
 
             setDaysToEndTrial(Number(daysLeft.days));
 
@@ -208,7 +213,7 @@ function MyAccount() {
                 Minha Conta
               </h3>
             </div>
-            {currentPlan == "DEFAULT" && daysToEndTrial > 0 && (
+            {currentPlan == "DEFAULT" && !trialEnded && (
               <div class="rounded p-4 bg-green-700 text-white flex flex-col gap-3 items-center justify-center">
                 <Icon id="LoyaltyClub" size={28} />
                 <span class="text-lg">
@@ -223,7 +228,7 @@ function MyAccount() {
                 </span>
               </div>
             )}
-            {currentPlan == "DEFAULT" && daysToEndTrial <= 0 && (
+            {currentPlan == "DEFAULT" && trialEnded && (
               <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
                 <Icon id="Info" size={28} />
                 <span class="text-lg">
