@@ -327,6 +327,7 @@ const CheckoutUpsellModal = (props: Props) => {
   ]);
 
   function ConfirmOrder() {
+    const currentPrice = plan ? plan.price : product ? product.price : 0;
     return (
       <>
         <h3 class="text-xl text-[#8b8b8b] font-semibold text-center mb-4">
@@ -336,7 +337,7 @@ const CheckoutUpsellModal = (props: Props) => {
           <span>
             {plan
               ? "Você está fazendo a mudança do seu plano atual para o plano: "
-              : "Você está comprando: "}
+              : "Você está pedindo: "}
             <span class="font-bold">
               {plan ? plan.name : product && product.name}
             </span>
@@ -361,7 +362,9 @@ const CheckoutUpsellModal = (props: Props) => {
                 <>
                   Valor do produto:{" "}
                   <span class="font-bold">
-                    {product && "R$ " + (product.price / 100).toFixed(2)}
+                    {product && product.price > 0
+                      ? "R$ " + (product.price / 100).toFixed(2)
+                      : "Grátis"}
                   </span>
                 </>
               )}
@@ -369,32 +372,37 @@ const CheckoutUpsellModal = (props: Props) => {
         </div>
 
         {/* Forma de Pagamento */}
-        <div class="flex flex-col text-sm">
-          <div class="label pb-1">
-            <span class="label-text text-xs text-[#585858]">
-              Forma de Pagamento
-            </span>
-          </div>
-          <select
-            name="payment-type"
-            class="select select-sm w-full max-w-xs"
-            disabled={plan ? true : false}
-            value={paymentType}
-            onChange={(e) => {
-              if (e.target) {
-                setPaymentType(e.currentTarget.value);
-                setIsPix(e.currentTarget.value === "PIX");
-              }
-            }}
-          >
-            <option name="PIX" value="PIX">
-              PIX
-            </option>
-            <option name="CREDIT_CARD" value="CREDIT_CARD">
-              Cartão de Crédito
-            </option>
-          </select>
-        </div>
+
+        {currentPrice
+          ? (
+            <div class="flex flex-col text-sm">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Forma de Pagamento
+                </span>
+              </div>
+              <select
+                name="payment-type"
+                class="select select-sm w-full max-w-xs"
+                disabled={plan ? true : false}
+                value={paymentType}
+                onChange={(e) => {
+                  if (e.target) {
+                    setPaymentType(e.currentTarget.value);
+                    setIsPix(e.currentTarget.value === "PIX");
+                  }
+                }}
+              >
+                <option name="PIX" value="PIX">
+                  PIX
+                </option>
+                <option name="CREDIT_CARD" value="CREDIT_CARD">
+                  Cartão de Crédito
+                </option>
+              </select>
+            </div>
+          )
+          : null}
 
         {/* Cartão de crédito */}
 

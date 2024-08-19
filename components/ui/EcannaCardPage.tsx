@@ -307,9 +307,6 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
           onClick={() => {
             displayCheckoutUpsellModal.value = true;
-            console.log({
-              displayCheckoutUpsellModal: displayCheckoutUpsellModal.value,
-            });
           }}
         >
           <div class="flex items-center gap-2">
