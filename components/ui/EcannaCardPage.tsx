@@ -56,6 +56,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
   const [_qrcode, setQrcode] = useState<string>();
   const [creditCards, setCreditCards] = useState<SavedCreditCard[]>([]);
   const [cardProduct, setCardProduct] = useState<Product>({} as Product);
+  const [orderInProgress, setOrderInProgress] = useState(false);
 
   const { displayCheckoutUpsellModal } = useUI();
   const holderInfo = useHolderInfo();
@@ -116,8 +117,14 @@ function EcannaCardPage({ cardSkeleton }: Props) {
             token: accessToken,
           });
 
+          // console.log({ cardsResponse });
+
           setLoadingProduct(false);
 
+          const orderProgressResponse = cardsResponse as {
+            orderInProgress: boolean;
+          };
+          setOrderInProgress(orderProgressResponse.orderInProgress);
           const cardProducts = cardsResponse as { docs: Product[] };
 
           setCardProduct(cardProducts.docs[0]);
@@ -262,6 +269,14 @@ function EcannaCardPage({ cardSkeleton }: Props) {
       </div>
       <div class="max-w-[472px] w-[90%] mt-10 sm:mt-0">
         <div class="bg-[#ececec] p-4 rounded-md">
+          {orderInProgress && (
+            <div class="bg-green-700 flex items-center gap-3 justify-center text-center p-3 rounded-md text-white">
+              <Icon id="CardID" size={19} />
+              <span class=" uppercase font-bold text-xs">
+                Você Já tem um pedido de carteirinha em andamento!
+              </span>
+            </div>
+          )}
           <span class="text-xs">
             O envio de nova via física de carteirinha leva até 7 dias úteis
             (tempo de produção). Você pode acompanhar seu pedido de nova via
@@ -301,8 +316,9 @@ function EcannaCardPage({ cardSkeleton }: Props) {
 
         <button
           type="button"
-          disabled={userData?.dataProfile?.association &&
-            !userData?.dataProfile?.associationApproved}
+          disabled={(userData?.dataProfile?.association &&
+            !userData?.dataProfile?.associationApproved) ||
+            orderInProgress}
           download="carteirinha.png"
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
           onClick={() => {
