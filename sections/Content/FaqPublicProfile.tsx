@@ -4,6 +4,10 @@ export interface Answer {
   videoUrl?: string;
   /** @format html */
   text: string;
+  link?: {
+    description?: string;
+    url?: string;
+  };
 }
 
 export interface Question {
@@ -26,8 +30,7 @@ const DEFAULT_PROPS = {
     {
       question: "Como faço para acompanhar o meu pedido?",
       answer: {
-        text:
-          "Acompanhar o seu pedido é fácil! Assim que o seu pedido for enviado, enviaremos um e-mail de confirmação com um número de rastreamento. Basta clicar no número de rastreamento ou visitar o nosso site e inserir o número de rastreamento na seção designada para obter atualizações em tempo real sobre a localização e o status de entrega do seu pedido.",
+        text: "Acompanhar o seu pedido é fácil! Assim que o seu pedido for enviado, enviaremos um e-mail de confirmação com um número de rastreamento. Basta clicar no número de rastreamento ou visitar o nosso site e inserir o número de rastreamento na seção designada para obter atualizações em tempo real sobre a localização e o status de entrega do seu pedido.",
         videoUrl:
           "https://www.youtube.com/embed/plJd00hPDIo?si=iIbpelcHSjjrj4Vg",
       },
@@ -35,8 +38,7 @@ const DEFAULT_PROPS = {
     {
       question: "Como faço para acompanhar o meu pedido?",
       answer: {
-        text:
-          "Acompanhar o seu pedido é fácil! Assim que o seu pedido for enviado, enviaremos um e-mail de confirmação com um número de rastreamento. Basta clicar no número de rastreamento ou visitar o nosso site e inserir o número de rastreamento na seção designada para obter atualizações em tempo real sobre a localização e o status de entrega do seu pedido.",
+        text: "Acompanhar o seu pedido é fácil! Assim que o seu pedido for enviado, enviaremos um e-mail de confirmação com um número de rastreamento. Basta clicar no número de rastreamento ou visitar o nosso site e inserir o número de rastreamento na seção designada para obter atualizações em tempo real sobre a localização e o status de entrega do seu pedido.",
         videoUrl:
           "https://www.youtube.com/embed/plJd00hPDIo?si=iIbpelcHSjjrj4Vg",
       },
@@ -53,11 +55,10 @@ const DEFAULT_PROPS = {
 };
 
 function Question({ question, answer }: Question) {
+  console.log({ answer });
   return (
     <details class="collapse collapse-arrow border-t bg-[#EDEDED]">
-      <summary class="collapse-title text-lg font-medium">
-        {question}
-      </summary>
+      <summary class="collapse-title text-lg font-medium">{question}</summary>
       <div class="collapse-content">
         {answer.videoUrl && (
           <div class="w-full flex justify-center mb-4">
@@ -71,9 +72,14 @@ function Question({ question, answer }: Question) {
             />
           </div>
         )}
-        <div
-          dangerouslySetInnerHTML={{ __html: answer.text }}
-        />
+        <div dangerouslySetInnerHTML={{ __html: answer.text }} />
+        {answer.link && (
+          <div class="w-full flex my-4 text-blue-600 underline">
+            <a href={answer.link.url} target="_blank">
+              {answer.link.description}
+            </a>
+          </div>
+        )}
       </div>
     </details>
   );
@@ -98,7 +104,9 @@ export default function FAQ(props: Props) {
               alignment={layout?.headerAlignment || "center"}
             />
             <div class="join join-vertical w-full flex flex-col gap-2">
-              {questions.map((question) => <Question {...question} />)}
+              {questions.map((question) => (
+                <Question {...question} />
+              ))}
             </div>
           </div>
         </div>
@@ -113,7 +121,9 @@ export default function FAQ(props: Props) {
               alignment={layout?.headerAlignment || "center"}
             />
             <div class="join join-vertical w-full">
-              {questions.map((question) => <Question {...question} />)}
+              {questions.map((question) => (
+                <Question {...question} />
+              ))}
             </div>
           </div>
         </div>
@@ -130,11 +140,12 @@ export default function FAQ(props: Props) {
           </div>
           <div class="order-2 lg:order-3 lg:row-span-2">
             <div class="join join-vertical">
-              {questions.map((question) => <Question {...question} />)}
+              {questions.map((question) => (
+                <Question {...question} />
+              ))}
             </div>
           </div>
-          <div class="order-3 lg:order-2">
-          </div>
+          <div class="order-3 lg:order-2"></div>
         </div>
       )}
     </>
