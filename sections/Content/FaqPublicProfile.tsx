@@ -30,7 +30,8 @@ const DEFAULT_PROPS = {
     {
       question: "Como faço para acompanhar o meu pedido?",
       answer: {
-        text: "Acompanhar o seu pedido é fácil! Assim que o seu pedido for enviado, enviaremos um e-mail de confirmação com um número de rastreamento. Basta clicar no número de rastreamento ou visitar o nosso site e inserir o número de rastreamento na seção designada para obter atualizações em tempo real sobre a localização e o status de entrega do seu pedido.",
+        text:
+          "Acompanhar o seu pedido é fácil! Assim que o seu pedido for enviado, enviaremos um e-mail de confirmação com um número de rastreamento. Basta clicar no número de rastreamento ou visitar o nosso site e inserir o número de rastreamento na seção designada para obter atualizações em tempo real sobre a localização e o status de entrega do seu pedido.",
         videoUrl:
           "https://www.youtube.com/embed/plJd00hPDIo?si=iIbpelcHSjjrj4Vg",
       },
@@ -38,7 +39,8 @@ const DEFAULT_PROPS = {
     {
       question: "Como faço para acompanhar o meu pedido?",
       answer: {
-        text: "Acompanhar o seu pedido é fácil! Assim que o seu pedido for enviado, enviaremos um e-mail de confirmação com um número de rastreamento. Basta clicar no número de rastreamento ou visitar o nosso site e inserir o número de rastreamento na seção designada para obter atualizações em tempo real sobre a localização e o status de entrega do seu pedido.",
+        text:
+          "Acompanhar o seu pedido é fácil! Assim que o seu pedido for enviado, enviaremos um e-mail de confirmação com um número de rastreamento. Basta clicar no número de rastreamento ou visitar o nosso site e inserir o número de rastreamento na seção designada para obter atualizações em tempo real sobre a localização e o status de entrega do seu pedido.",
         videoUrl:
           "https://www.youtube.com/embed/plJd00hPDIo?si=iIbpelcHSjjrj4Vg",
       },
@@ -104,9 +106,7 @@ export default function FAQ(props: Props) {
               alignment={layout?.headerAlignment || "center"}
             />
             <div class="join join-vertical w-full flex flex-col gap-2">
-              {questions.map((question) => (
-                <Question {...question} />
-              ))}
+              {questions.map((question) => <Question {...question} />)}
             </div>
           </div>
         </div>
@@ -121,9 +121,7 @@ export default function FAQ(props: Props) {
               alignment={layout?.headerAlignment || "center"}
             />
             <div class="join join-vertical w-full">
-              {questions.map((question) => (
-                <Question {...question} />
-              ))}
+              {questions.map((question) => <Question {...question} />)}
             </div>
           </div>
         </div>
@@ -140,9 +138,7 @@ export default function FAQ(props: Props) {
           </div>
           <div class="order-2 lg:order-3 lg:row-span-2">
             <div class="join join-vertical">
-              {questions.map((question) => (
-                <Question {...question} />
-              ))}
+              {questions.map((question) => <Question {...question} />)}
             </div>
           </div>
           <div class="order-3 lg:order-2"></div>
