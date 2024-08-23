@@ -324,6 +324,7 @@ const CheckoutUpsellModal = (props: Props) => {
     addressStreet,
     addressCity,
     addressState,
+    birthDate,
   ]);
 
   function ConfirmOrder() {
@@ -534,7 +535,9 @@ const CheckoutUpsellModal = (props: Props) => {
                 </span>
               </div>
               <input
-                class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
+                class={`input input-sm rounded-md text-[#8b8b8b] w-full ${
+                  birthDate ? " border-none" : "border border-red-700"
+                }`}
                 type="date"
                 placeholder="Data de Nascimento"
                 value={birthDate}
@@ -667,7 +670,22 @@ const CheckoutUpsellModal = (props: Props) => {
         </div>
 
         <div class="flex flex-col gap-2">
-          <span class={!invalidForm ? "hidden" : "flex text-xs"}>
+          <span
+            class={`text-red-700 ${!invalidForm ? "hidden" : "flex text-xs"}`}
+            onClick={() => {
+              console.log({
+                cep,
+                addressNumber,
+                holderCPF,
+                birthDate,
+                phone,
+                addressStreet,
+                addressCity,
+                addressState,
+                holderName,
+              });
+            }}
+          >
             * Verifique se todos os campos estão preenchidos corretamente
           </span>
 

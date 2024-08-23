@@ -97,11 +97,7 @@ function AdminOrders() {
     }
   }, []); // Passando um array de dependências vazio
 
-  const handleGetOrders = (
-    pageParam: number,
-    status?: string,
-    type?: string,
-  ) => {
+  const handleGetOrders = (pageParam: number, status?: string) => {
     let accessToken = "";
 
     if (IS_BROWSER) {
@@ -117,7 +113,7 @@ function AdminOrders() {
           params: {
             status: status,
             page: pageParam,
-            type: type,
+            type: typeFilter,
             limit: limit || 25,
           },
         })
@@ -146,10 +142,10 @@ function AdminOrders() {
   const handleToggleOnTimeFilter = () => {
     if (typeFilter === "") {
       setTypeFilter("ON_TIME");
-      handleGetOrders(1, "", "ON_TIME");
+      handleGetOrders(1, "");
     } else {
       setTypeFilter("");
-      handleGetOrders(1, "", "");
+      handleGetOrders(1, "");
     }
   };
 
