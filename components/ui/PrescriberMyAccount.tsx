@@ -86,6 +86,7 @@ function MyAccount() {
               email: string;
               free_days: number;
               created_at: string;
+              isExpiredTrial: boolean;
             };
 
             //calculate end of trial date, based on created_at and free_days
@@ -97,7 +98,7 @@ function MyAccount() {
               units: ["days"],
             });
 
-            if (new Date() > endTrialDate) {
+            if (res.isExpiredTrial) {
               setTrialEnded(true);
             }
 
