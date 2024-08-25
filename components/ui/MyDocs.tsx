@@ -226,6 +226,8 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
       setIsUploading(false);
       if (r.message === "You need to upgrade your plan to create documents") {
         displayPlanLimit.value = true;
+      } else if (r.errors) {
+        throw new Error(r.errors[0].message);
       } else {
         //update uploadedFile flag state
         await invoke["deco-sites/ecannadeco"].actions.updateProfile({
@@ -237,7 +239,7 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
         alert("Upload concluído");
       }
     } catch (e) {
-      console.log({ erroUpload: e });
+      alert(`Não foi possível fazer upload do documento: ${e}`);
       setIsUploading(false);
     }
   };
