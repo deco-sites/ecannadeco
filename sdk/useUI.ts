@@ -33,6 +33,7 @@ const displayModalTextAction = signal(false);
 const displayVideoModal = signal(false);
 const updatedData = signal(true);
 const uploadedFile = signal(true);
+const hasFreeCard = signal(false);
 const user = signal<UserSession | null>(null);
 const userToAdminCreateDoc = signal({
   email: "",
@@ -71,6 +72,7 @@ const state = {
   displayModalTextAction,
   displayNewTreatmentModal,
   displayVideoModal,
+  hasFreeCard,
   user,
   modalTextAction,
 };

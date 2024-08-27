@@ -58,7 +58,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
   const [cardProduct, setCardProduct] = useState<Product>({} as Product);
   const [orderInProgress, setOrderInProgress] = useState(false);
 
-  const { displayCheckoutUpsellModal } = useUI();
+  const { displayCheckoutUpsellModal, hasFreeCard } = useUI();
   const holderInfo = useHolderInfo();
 
   useEffect(() => {
@@ -128,6 +128,10 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           const cardProducts = cardsResponse as { docs: Product[] };
 
           setCardProduct(cardProducts.docs[0]);
+
+          if (cardProducts.docs[0].price === 0) {
+            hasFreeCard.value = true;
+          }
 
           setCreditCards(res.dataProfile.credit_cards);
 
@@ -315,6 +319,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           : null}
 
         <button
+          id="viaFisica"
           type="button"
           disabled={(userData?.dataProfile?.association &&
             !userData?.dataProfile?.associationApproved) ||
@@ -329,7 +334,11 @@ function EcannaCardPage({ cardSkeleton }: Props) {
             <span class="w-32">Pedir Via Física</span> {loadingProduct
               ? <Loading style="loading-spinner" size="loading-xs" />
               : (
-                <div class="p-2 bg-white text-primary text-xs rounded-md">
+                <div
+                  class={`p-2 bg-white text-primary text-xs rounded-md ${
+                    cardProduct.price == 0 && "animate-bounce"
+                  }`}
+                >
                   {cardProduct.price == 0
                     ? "Grátis"
                     : "R$" + (cardProduct.price / 100).toFixed(2)}

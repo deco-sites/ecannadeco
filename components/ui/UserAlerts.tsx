@@ -7,7 +7,7 @@ import { useUI } from "../../sdk/useUI.ts";
 import Icon from "../../components/ui/Icon.tsx";
 
 function PrivatePageControl() {
-  const { updatedData, uploadedFile } = useUI();
+  const { updatedData, uploadedFile, hasFreeCard } = useUI();
 
   if (!updatedData.value) {
     return (
@@ -38,6 +38,24 @@ function PrivatePageControl() {
           </span>
         </div>
       </div>
+    );
+  } else if (hasFreeCard.value) {
+    return (
+      <a
+        href="/minha-carteirinha#viaFisica"
+        class="flex w-full justify-center mb-5"
+      >
+        <div
+          role="alert"
+          class="alert bg-[#2a9632] text-white w-[90%] sm:max-w-[800px]"
+        >
+          <Icon id="CardID" size={24} />
+          <span>
+            Você ainda não pediu a via física da sua carteirinha. Clique no
+            botão "Pedir Via física"
+          </span>
+        </div>
+      </a>
     );
   } else {
     return null;
