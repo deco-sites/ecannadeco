@@ -274,12 +274,15 @@ function EcannaCardPage({ cardSkeleton }: Props) {
       <div class="max-w-[472px] w-[90%] mt-10 sm:mt-0">
         <div class="bg-[#ececec] p-4 rounded-md">
           {orderInProgress && (
-            <div class="bg-green-700 flex items-center gap-3 justify-center text-center p-3 rounded-md text-white">
+            <a
+              href="/meus-pedidos"
+              class="bg-green-700 flex items-center gap-3 justify-center text-center p-3 rounded-md text-white"
+            >
               <Icon id="CardID" size={19} />
               <span class=" uppercase font-bold text-xs">
                 Você Já tem um pedido de carteirinha em andamento!
               </span>
-            </div>
+            </a>
           )}
           <span class="text-xs">
             O envio de nova via física de carteirinha leva até 7 dias úteis

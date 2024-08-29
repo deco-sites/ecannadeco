@@ -65,7 +65,7 @@ const CheckoutUpsellModal = (props: Props) => {
   const [isPix, setIsPix] = useState(plan ? false : true);
   const [pixImg, setPixImg] = useState<string | QRCode>("");
   const [paymentType, setPaymentType] = useState<string>(
-    plan ? "CREDIT_CARD" : "PIX",
+    plan ? "CREDIT_CARD" : "PIX"
   );
   const [clipboardText, setClipboardText] = useState("Copiar");
   const [cardSelected, _setCardSelected] = useState(0);
@@ -229,6 +229,10 @@ const CheckoutUpsellModal = (props: Props) => {
       displayAlert.value = true;
       alertText.value = "Operação realizada com sucesso!";
       alertType.value = "success";
+      displayCheckoutUpsellModal.value = false;
+      setTimeout(function () {
+        globalThis.location.reload();
+      }, 2000);
       setLoading(false);
     } catch (_e) {
       displayAlert.value = true;
@@ -344,74 +348,70 @@ const CheckoutUpsellModal = (props: Props) => {
             </span>
           </span>
           <span>
-            {plan
-              ? (
-                <>
-                  Valor da assinatura:{" "}
-                  <span class="font-bold">
-                    {plan &&
-                      "R$ " +
-                        (discount
-                          ? (plan.price / 100) * (1 - discount)
-                          : plan.price / 100).toFixed(2) +
-                        (plan?.period == "MONTHLY" ? "/mês" : "") +
-                        (plan?.period == "YEARLY" ? "/ano" : "")}
-                  </span>
-                </>
-              )
-              : (
-                <>
-                  Valor do produto:{" "}
-                  <span class="font-bold">
-                    {product && product.price > 0
-                      ? "R$ " + (product.price / 100).toFixed(2)
-                      : "Grátis"}
-                  </span>
-                </>
-              )}
+            {plan ? (
+              <>
+                Valor da assinatura:{" "}
+                <span class="font-bold">
+                  {plan &&
+                    "R$ " +
+                      (discount
+                        ? (plan.price / 100) * (1 - discount)
+                        : plan.price / 100
+                      ).toFixed(2) +
+                      (plan?.period == "MONTHLY" ? "/mês" : "") +
+                      (plan?.period == "YEARLY" ? "/ano" : "")}
+                </span>
+              </>
+            ) : (
+              <>
+                Valor do produto:{" "}
+                <span class="font-bold">
+                  {product && product.price > 0
+                    ? "R$ " + (product.price / 100).toFixed(2)
+                    : "Grátis"}
+                </span>
+              </>
+            )}
           </span>
         </div>
 
         {/* Forma de Pagamento */}
 
-        {currentPrice
-          ? (
-            <div class="flex flex-col text-sm">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Forma de Pagamento
-                </span>
-              </div>
-              <select
-                name="payment-type"
-                class="select select-sm w-full max-w-xs"
-                disabled={plan ? true : false}
-                value={paymentType}
-                onChange={(e) => {
-                  if (e.target) {
-                    setPaymentType(e.currentTarget.value);
-                    setIsPix(e.currentTarget.value === "PIX");
-                  }
-                }}
-              >
-                <option name="PIX" value="PIX">
-                  PIX
-                </option>
-                <option name="CREDIT_CARD" value="CREDIT_CARD">
-                  Cartão de Crédito
-                </option>
-              </select>
+        {currentPrice ? (
+          <div class="flex flex-col text-sm">
+            <div class="label pb-1">
+              <span class="label-text text-xs text-[#585858]">
+                Forma de Pagamento
+              </span>
             </div>
-          )
-          : null}
+            <select
+              name="payment-type"
+              class="select select-sm w-full max-w-xs"
+              disabled={plan ? true : false}
+              value={paymentType}
+              onChange={(e) => {
+                if (e.target) {
+                  setPaymentType(e.currentTarget.value);
+                  setIsPix(e.currentTarget.value === "PIX");
+                }
+              }}
+            >
+              <option name="PIX" value="PIX">
+                PIX
+              </option>
+              <option name="CREDIT_CARD" value="CREDIT_CARD">
+                Cartão de Crédito
+              </option>
+            </select>
+          </div>
+        ) : null}
 
         {/* Cartão de crédito */}
 
         {!isPix && (
           <>
             <div>
-              {
-                /* {(creditCards && creditCards.length) > 0 &&
+              {/* {(creditCards && creditCards.length) > 0 &&
                 creditCards.map((card, i) => {
                   return (
                     <div>
@@ -456,8 +456,7 @@ const CheckoutUpsellModal = (props: Props) => {
                       </span>
                     </div>
                   );
-                })} */
-              }
+                })} */}
             </div>
             <div class={`${!addNewCard && "hidden"}`}>
               <form class="flex flex-wrap gap-[2%]">
@@ -484,8 +483,8 @@ const CheckoutUpsellModal = (props: Props) => {
                       value={creditCardExpMonth}
                       maxLength={2}
                       onChange={(e) =>
-                        e.target &&
-                        setCreditCardExpMonth(e.currentTarget.value)}
+                        e.target && setCreditCardExpMonth(e.currentTarget.value)
+                      }
                     />
                     <input
                       placeholder="Ano (Ex: 2030)"
@@ -493,7 +492,8 @@ const CheckoutUpsellModal = (props: Props) => {
                       value={creditCardExpYear}
                       maxlength={4}
                       onChange={(e) =>
-                        e.target && setCreditCardExpYear(e.currentTarget.value)}
+                        e.target && setCreditCardExpYear(e.currentTarget.value)
+                      }
                     />
                   </div>
                 </fieldset>
@@ -513,7 +513,8 @@ const CheckoutUpsellModal = (props: Props) => {
                 placeholder="Nome"
                 value={holderName}
                 onChange={(e) =>
-                  e.target && setHolderName(e.currentTarget.value)}
+                  e.target && setHolderName(e.currentTarget.value)
+                }
               />
             </label>
             <label class="w-full sm:w-[48%]  flex flex-col">
@@ -525,7 +526,8 @@ const CheckoutUpsellModal = (props: Props) => {
                 placeholder="CPF"
                 value={holderCPF}
                 onChange={(e) =>
-                  e.target && setHolderCPF(e.currentTarget.value)}
+                  e.target && setHolderCPF(e.currentTarget.value)
+                }
               />
             </label>
             <label class="w-full sm:w-[48%]  flex flex-col">
@@ -542,7 +544,8 @@ const CheckoutUpsellModal = (props: Props) => {
                 placeholder="Data de Nascimento"
                 value={birthDate}
                 onChange={(e) =>
-                  e.target && setBirthDate(e.currentTarget.value)}
+                  e.target && setBirthDate(e.currentTarget.value)
+                }
               />
             </label>
           </div>
@@ -572,8 +575,7 @@ const CheckoutUpsellModal = (props: Props) => {
                   >
                     Validar CEP{" "}
                     {isLoadingPostalCode && (
-                      <span class="loading loading-spinner text-green-600">
-                      </span>
+                      <span class="loading loading-spinner text-green-600"></span>
                     )}
                   </button>
                 </label>
