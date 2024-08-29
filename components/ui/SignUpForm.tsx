@@ -97,18 +97,19 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
           dealName,
         });
 
+        console.log({ dataSignup });
+
         const dataS = dataSignup as {
           errors?: Array<unknown>;
+          message?: string;
           data?: { association?: { _id: string }; plan: string };
         };
 
         const association = dataS.data?.association;
         const plan = dataS.data?.plan;
 
-        if (dataS.errors && dataS.errors.length > 0) {
-          alert(
-            "Não foi possível fazer signup. Verifique as informações fornecidas e tente novamente.",
-          );
+        if (dataS.message) {
+          alert(`Não foi possível fazer signup: ${dataS.message}`);
           setLoading(false);
         } else {
           if (IS_BROWSER) {
@@ -129,10 +130,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
           window.location.href = "/confirmar-cadastro";
         }
       } catch (e) {
-        alert(
-          "Não foi possível fazer signup. Verifique as informações fornecidas e tente novamente.",
-        );
-        console.log({ e });
+        alert(`Não foi possível fazer signup: ${e}`);
         setLoading(false);
       }
     } else {

@@ -229,6 +229,10 @@ const CheckoutUpsellModal = (props: Props) => {
       displayAlert.value = true;
       alertText.value = "Operação realizada com sucesso!";
       alertType.value = "success";
+      displayCheckoutUpsellModal.value = false;
+      setTimeout(function () {
+        globalThis.location.reload();
+      }, 2000);
       setLoading(false);
     } catch (_e) {
       displayAlert.value = true;
