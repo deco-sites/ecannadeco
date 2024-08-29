@@ -30,6 +30,7 @@ function MyInfo() {
   const [addressNumber, setAddressNumber] = useState("");
   const [addressComplement, setAddressComplement] = useState("");
   const [name, setName] = useState("");
+  const [cardName, setCardName] = useState("");
   const [cpf, setCpf] = useState("");
   const [phone, setPhone] = useState("");
   const [cidSearchTerm, setCidSearchTerm] = useState("");
@@ -69,6 +70,7 @@ function MyInfo() {
             data: { UserAttributes: { Name: string; Value: string }[] };
             dataProfile: Omit<UpdateDataProps, "name cpf address"> & {
               _id: string;
+              card_name: string;
               address: UpdateDataProps["address"][];
               associationApproved?: boolean;
               association: { name: string; logo_url: string; cnpj: string };
@@ -88,6 +90,7 @@ function MyInfo() {
           setName(userName?.Value || "NOME NÃO CADASTRADO");
           setCpf(userCpf?.Value || "CPF NÃO CADASTRADO");
           setBirthDate((res.dataProfile.birth_date || "").slice(0, 10));
+          setCardName(res.dataProfile.card_name || "NOME NÃO CADASTRADO");
 
           setPhone(res.dataProfile.phone);
           setProfile(res.dataProfile._id);
@@ -249,6 +252,7 @@ function MyInfo() {
       cpf,
       phone,
       cids: idsCids,
+      card_name: cardName,
       address: {
         cep: postalCode,
         street: addressStreet,
@@ -387,7 +391,7 @@ function MyInfo() {
             Dados Pessoais
           </h2>
           <div class="flex flex-wrap gap-[4%] w-full">
-            <label class="form-control w-full sm:w-[48%]">
+            <label class="form-control w-full sm:w-[48%] mb-2">
               <div class="label pb-1">
                 <span class="label-text text-xs text-[#585858]">Nome</span>
               </div>
@@ -399,7 +403,7 @@ function MyInfo() {
                 value={name}
               />
             </label>
-            <label class="w-full sm:w-[48%]">
+            <label class="w-full sm:w-[48%] mb-2">
               <div class="label pb-1">
                 <span class="label-text text-xs text-[#585858]">CPF</span>
               </div>
@@ -414,7 +418,22 @@ function MyInfo() {
                 )}
               />
             </label>
-            <label class="w-full sm:w-[48%]  flex flex-col">
+            <label class="form-control w-full sm:w-[48%] mb-2">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">
+                  Nome na Carteirinha (20 caracteres)
+                </span>
+              </div>
+              <input
+                placeholder="Nome"
+                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                name="cardName"
+                value={cardName}
+                maxLength={20}
+                onChange={(e) => e.target && setCardName(e.currentTarget.value)}
+              />
+            </label>
+            <label class="w-full sm:w-[48%]  flex flex-col mb-2">
               <div class="label pb-1">
                 <span class="label-text text-xs text-[#585858]">
                   Data de Nascimento

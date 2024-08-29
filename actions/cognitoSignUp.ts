@@ -13,7 +13,7 @@ export interface Props {
 const signUpCognito = async (
   props: Props,
   _req: Request,
-): Promise<unknown | null> => {
+) => {
   try {
     const response = await fetch(`${API_URL}/auth`, {
       method: "POST",
@@ -32,13 +32,12 @@ const signUpCognito = async (
       }),
     });
 
-    if (response.status > 400) {
-      throw new Error("Erro ao criar conta");
-    }
-
     const res = await response.json();
+    console.log({ responseSignup: res });
+
     return res;
   } catch (e) {
+    console.log({ e });
     throw e;
   }
 };

@@ -8,6 +8,7 @@ export interface Props {
   cids: string[];
   phone: string;
   birth_date: string;
+  card_name: string;
   address: {
     cep: string;
     street: string;
@@ -24,8 +25,17 @@ const updateUserData = async (
   props: Props,
   _req: Request,
 ): Promise<unknown | null> => {
-  const { token, avatar_photo, name, cpf, address, cids, phone, birth_date } =
-    props;
+  const {
+    token,
+    avatar_photo,
+    name,
+    cpf,
+    address,
+    cids,
+    phone,
+    birth_date,
+    card_name,
+  } = props;
 
   const updateCognitoUserBody = {
     name,
@@ -40,6 +50,7 @@ const updateUserData = async (
     address,
     phone,
     birth_date,
+    card_name,
   };
 
   try {
