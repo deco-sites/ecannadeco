@@ -5,6 +5,7 @@ import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 import OrderStatus from "../../components/ui/OrderStatus.tsx";
+import OrderShippingTrackingCode from "../../components/ui/OrderShippingTrackingCode.tsx";
 import { format } from "datetime";
 import type {
   Order,
@@ -12,23 +13,28 @@ import type {
 } from "../../actions/getUserOrders.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
-const OrderItem = (
-  { name, value, created_at, status }: {
-    name: string;
-    value: string;
-    created_at: string;
-    status:
-      | "PAID"
-      | "PENDING"
-      | "CANCELED"
-      | "IN_PRODUCTION"
-      | "PENDING_SHIPPING"
-      | "SHIPPED"
-      | "DELIVERED";
-  },
-) => {
+const OrderItem = ({
+  name,
+  value,
+  created_at,
+  status,
+  shipping_tracking_code,
+}: {
+  name: string;
+  value: string;
+  created_at: string;
+  shipping_tracking_code?: string;
+  status:
+    | "PAID"
+    | "PENDING"
+    | "CANCELED"
+    | "IN_PRODUCTION"
+    | "PENDING_SHIPPING"
+    | "SHIPPED"
+    | "DELIVERED";
+}) => {
   return (
-    <li class="p-3 bg-[#cacaca] flex justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
+    <li class="p-3 bg-[#cacaca] flex justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm flex-wrap">
       <div class="w-[25%] flex justify-start">
         <span>{name}</span>
       </div>
@@ -36,13 +42,16 @@ const OrderItem = (
         <span>{"RS " + value}</span>
       </div>
       <div class="w-[25%] flex justify-center">
-        <span>
-          {created_at}
-        </span>
+        <span>{created_at}</span>
       </div>
       <div class="w-[25%] flex justify-end">
         <OrderStatus status={status} />
       </div>
+      {shipping_tracking_code && (
+        <div class="w-full">
+          <OrderShippingTrackingCode code={shipping_tracking_code!} />
+        </div>
+      )}
     </li>
   );
 };
@@ -61,17 +70,19 @@ function MyOrders() {
     }
 
     try {
-      invoke["deco-sites/ecannadeco"].actions.getUserOrders({
-        token: accessToken,
-      }).then((r) => {
-        const res = r as PaginationOrderResponse;
+      invoke["deco-sites/ecannadeco"].actions
+        .getUserOrders({
+          token: accessToken,
+        })
+        .then((r) => {
+          const res = r as PaginationOrderResponse;
 
-        setOrders(res.docs);
+          setOrders(res.docs);
 
-        console.log({ res });
+          console.log({ res });
 
-        setIsLoading(false);
-      });
+          setIsLoading(false);
+        });
     } catch (_e) {
       setIsLoading(false);
       alert(
@@ -100,25 +111,28 @@ function MyOrders() {
                   <span class="text-xs">Valor</span>
                 </div>
                 <div class="w-[25%] flex justify-center">
-                  <span class="text-xs">
-                    Data
-                  </span>
+                  <span class="text-xs">Data</span>
                 </div>
                 <div class="w-[25%] flex justify-end">
                   <span class="text-xs">Status</span>
                 </div>
               </div>
               <ul class="flex flex-col gap-2">
-                {orders && orders.map((o) => {
-                  return (
-                    <OrderItem
-                      name={o.items[0].sku.name}
-                      value={(o.value / 100).toFixed(2)}
-                      created_at={format(new Date(o.created_at), "dd/MM/yyyy")}
-                      status={o.status}
-                    />
-                  );
-                })}
+                {orders &&
+                  orders.map((o) => {
+                    return (
+                      <OrderItem
+                        name={o.items[0].sku.name}
+                        value={(o.value / 100).toFixed(2)}
+                        created_at={format(
+                          new Date(o.created_at),
+                          "dd/MM/yyyy",
+                        )}
+                        status={o.status}
+                        shipping_tracking_code={o.shipping_tracking_code}
+                      />
+                    );
+                  })}
               </ul>
             </div>
           </div>

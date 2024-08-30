@@ -44,7 +44,7 @@ function OrderStatus({ status, id, adminView }: Props) {
     },
     SHIPPED: {
       title: "ENVIADO",
-      style: "bg-primary",
+      style: "bg-[#2ea714]",
     },
     DELIVERED: {
       title: "ENTREGUE",

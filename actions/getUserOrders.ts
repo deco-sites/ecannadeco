@@ -26,6 +26,7 @@ export interface Order {
   payment: string;
   created_at: string;
   updated_at: string;
+  shipping_tracking_code?: string;
   items: {
     sku: Sku;
     quantity: number;

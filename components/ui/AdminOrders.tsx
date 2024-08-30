@@ -7,6 +7,7 @@ import { useEffect, useState } from "preact/hooks";
 import { invoke } from "../../runtime.ts";
 import PageWrap from "./PageWrap.tsx";
 import OrderStatus from "./OrderStatus.tsx";
+import OrderShippingTrackingCode from "./OrderShippingTrackingCode.tsx";
 import Icon from "deco-sites/ecannadeco/components/ui/Icon.tsx";
 import { format } from "datetime";
 import { IS_BROWSER } from "$fresh/runtime.ts";
@@ -19,6 +20,7 @@ const OrderItem = ({
   productPrice,
   created_at,
   status,
+  shipping_tracking_code,
   id,
 }: {
   userEmail: string;
@@ -26,6 +28,7 @@ const OrderItem = ({
   productPrice: string;
   created_at: string;
   id: string;
+  shipping_tracking_code?: string;
   status:
     | "PAID"
     | "PENDING"
@@ -36,7 +39,7 @@ const OrderItem = ({
     | "DELIVERED";
 }) => {
   return (
-    <li class="p-3 bg-[#cacaca] flex justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm">
+    <li class="p-3 bg-[#cacaca] flex justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm flex-wrap">
       <div class="w-[40%] flex justify-start truncate pr-4">
         <span>{userEmail ? userEmail : "n/a"}</span>
       </div>
@@ -50,6 +53,15 @@ const OrderItem = ({
       <div class="w-[20%] flex justify-end">
         <OrderStatus status={status} id={id} adminView={true} />
       </div>
+      {status === "SHIPPED" && (
+        <div class="w-full">
+          <OrderShippingTrackingCode
+            code={shipping_tracking_code!}
+            id={id}
+            adminView={true}
+          />
+        </div>
+      )}
     </li>
   );
 };
@@ -220,6 +232,7 @@ function AdminOrders() {
                           "dd/MM/yyyy",
                         )}
                         status={o.status}
+                        shipping_tracking_code={o.shipping_tracking_code}
                       />
                     );
                   })}
