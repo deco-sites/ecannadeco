@@ -1,9 +1,11 @@
 import { Product } from "deco-sites/ecannadeco/components/ui/CheckoutUpsellModal.tsx";
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 
 export interface Props {
   token: string;
   orderId: string;
-  newStatus: string;
+  newStatus?: string;
+  shippingTrackingCode?: string;
 }
 
 export interface Sku {
@@ -28,6 +30,7 @@ export interface Order {
   payment: string;
   created_at: string;
   updated_at: string;
+  shipping_tracking_code?: string;
   items: {
     sku: Sku;
     quantity: number;
@@ -35,10 +38,17 @@ export interface Order {
 }
 
 const adminUpdateOrder = async (
-  { token, orderId, newStatus }: Props,
+  { token, orderId, newStatus, shippingTrackingCode }: Props,
   _req: Request,
 ): Promise<unknown> => {
-  const url = `https://api.ecanna.com.br/admin/orders/${orderId}`;
+  const url = `${API_URL}/admin/orders/${orderId}`;
+
+  let body = {};
+  if (newStatus) {
+    body = { status: newStatus };
+  } else if (shippingTrackingCode) {
+    body = { shipping_tracking_code: shippingTrackingCode };
+  }
 
   try {
     const response = await fetch(url, {
@@ -47,7 +57,7 @@ const adminUpdateOrder = async (
         "Content-Type": "application/json",
         Authorization: token,
       },
-      body: JSON.stringify({ status: newStatus }),
+      body: JSON.stringify(body),
     });
 
     const res = await response.json();
