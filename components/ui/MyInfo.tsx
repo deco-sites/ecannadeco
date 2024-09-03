@@ -190,6 +190,8 @@ function MyInfo() {
 
       const r = await response.json();
 
+      console.log({ responseCEP: r });
+
       setAddressStreet(r.logradouro);
       setAddressCity(r.localidade);
       setAddressState(r.uf);
@@ -487,21 +489,28 @@ function MyInfo() {
             </div>
             <div
               class={`flex flex-wrap gap-[2%] justify-left ${
-                addressStreet !== "" ? "" : "hidden"
+                addressState !== "" ? "" : "hidden"
               }`}
             >
               <label class="w-full sm:w-[32%]">
                 <div class="label pb-1">
                   <span class="label-text text-xs text-[#585858]">
-                    Logradouro
+                    Logradouro/Rua
                   </span>
                 </div>
                 <input
-                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  class={`input rounded-md text-[#8b8b8b] ${
+                    addressStreet === ""
+                      ? "border border-red-600"
+                      : "border-none"
+                  } w-full disabled:bg-[#e3e3e3]`}
                   placeholder="logradouro"
                   name="cep"
-                  disabled
+                  // disabled
                   value={addressStreet}
+                  onChange={(e) => {
+                    setAddressStreet(e.currentTarget.value);
+                  }}
                 />
               </label>
               <label class="w-full sm:w-[32%]">
@@ -509,7 +518,11 @@ function MyInfo() {
                   <span class="label-text text-xs text-[#585858]">Número*</span>
                 </div>
                 <input
-                  class="input rounded-md text-[#8b8b8b] border-none w-full"
+                  class={`input rounded-md text-[#8b8b8b] ${
+                    addressNumber === ""
+                      ? "border border-red-600"
+                      : "border-none"
+                  } w-full`}
                   placeholder="número"
                   name="cep"
                   value={addressNumber}
@@ -531,6 +544,24 @@ function MyInfo() {
                   value={addressComplement}
                   onChange={(e) => {
                     setAddressComplement(e.currentTarget.value);
+                  }}
+                />
+              </label>
+              <label class="w-full sm:w-[32%]">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">Bairro</span>
+                </div>
+                <input
+                  class={`input rounded-md text-[#8b8b8b] ${
+                    addressNeighborhood === ""
+                      ? "border border-red-600"
+                      : "border-none"
+                  } w-full`}
+                  placeholder="bairro"
+                  name="neighborhood"
+                  value={addressNeighborhood}
+                  onChange={(e) => {
+                    setAddressNeighborhood(e.currentTarget.value);
                   }}
                 />
               </label>

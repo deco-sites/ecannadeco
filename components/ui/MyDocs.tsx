@@ -197,6 +197,12 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
   const handleCreate = async () => {
     setIsUploading(true);
 
+    if (docCategory === "") {
+      alert("Selecione o tipo do documento para continuar!");
+      setIsUploading(false);
+      return null;
+    }
+
     let accessToken = "";
 
     if (IS_BROWSER) {
