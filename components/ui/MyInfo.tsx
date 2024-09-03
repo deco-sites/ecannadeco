@@ -538,7 +538,11 @@ function MyInfo() {
                   </span>
                 </div>
                 <input
-                  class="input rounded-md text-[#8b8b8b] border-none w-full"
+                  class={`input rounded-md text-[#8b8b8b] ${
+                    addressComplement === ""
+                      ? "border border-red-600"
+                      : "border-none"
+                  } w-full`}
                   placeholder="complemento"
                   name="cep"
                   value={addressComplement}
