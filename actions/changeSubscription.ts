@@ -18,6 +18,9 @@ export interface Props {
     postal_code: string;
     address_number: string;
     address_complement: string;
+    address_street: string;
+    address_state: string;
+    address_city: string;
     phone: string;
   };
 }
