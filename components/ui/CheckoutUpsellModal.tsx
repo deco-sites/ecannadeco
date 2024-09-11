@@ -127,6 +127,9 @@ const CheckoutUpsellModal = (props: Props) => {
             postal_code: cep,
             address_number: addressNumber,
             address_complement: addressComplement,
+            address_city: addressCity,
+            address_state: addressState,
+            address_street: addressStreet,
           },
         };
       }
