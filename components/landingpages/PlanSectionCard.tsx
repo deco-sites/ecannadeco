@@ -121,7 +121,7 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
             </li>
           </ul>
           <a
-            href={`/cadastrar${cnpj ? `?cnpj=${cnpj}` : null}`}
+            href={`/cadastrar${cnpj ? `?cnpj=${cnpj}` : ""}`}
             class="btn bg-[#3094D7] uppercase text-white border-none rounded-full w-[190px] absolute bottom-[-20px]"
           >
             Cadastrar grátis
