@@ -28,19 +28,29 @@ export interface Props {
 // Make it sure to render it on the server only. DO NOT render it on an island
 function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
   const [deal, setDeal] = useState<Deal>();
+  const [cnpj, setCNPJ] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (IS_BROWSER) {
       // const params = new URLSearchParams(globalThis.location.search);
       // const ref = params.get("ref");
       const ref = localStorage.getItem("referral");
+      const cnpj = localStorage.getItem("legacyAssociationCNPJ");
+
+      if (cnpj) {
+        setCNPJ(cnpj);
+      }
+
       if (ref) {
+        setLoading(true);
         invoke["deco-sites/ecannadeco"].actions
           .getDeal({
             term: ref,
           })
           .then((r) => {
             setDeal(r as Deal);
+            setLoading(false);
           });
       }
     }
@@ -62,25 +72,36 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
           style={`background-image: linear-gradient(to bottom, #0A66A5, #1677B9);`}
         >
           <span class="uppercase tracking-[5px]">{plan.title}</span>
-          <div class="flex flex-col items-center">
-            <span
-              class={` font-thin ${
-                deal?.discount ? "line-through" : "text-5xl"
-              }`}
-            >
-              R$ {plan.price}
-            </span>
-            {deal?.discount
-              ? (
-                <>
-                  <span class="text-5xl font-thin">
-                    R$ {plan.price * (1 - deal.discount)}
+          {loading
+            ? (
+              <div class="flex flex-col items-center">
+                <span class="text-5xl font-thin">Carregando...</span>
+              </div>
+            )
+            : (
+              <>
+                <div class="flex flex-col items-center">
+                  <span
+                    class={` font-thin ${
+                      deal?.discount ? "line-through" : "text-5xl"
+                    }`}
+                  >
+                    R$ {plan.price}
                   </span>
-                  <span>(Desconto {deal.partner_name})</span>
-                </>
-              )
-              : null}
-          </div>
+                  {deal?.discount
+                    ? (
+                      <>
+                        <span class="text-5xl font-thin">
+                          R$ {plan.price * (1 - deal.discount)}
+                        </span>
+                        <span>(Desconto {deal.partner_name})</span>
+                      </>
+                    )
+                    : null}
+                </div>
+              </>
+            )}
+
           <ul class="flex flex-col gap-3 text-xs mt-4 mb-6">
             <li class="flex gap-2">
               <Icon id="CircleCheck" size={22} />{" "}
@@ -100,7 +121,7 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
             </li>
           </ul>
           <a
-            href="/cadastrar"
+            href={`/cadastrar${cnpj ? `?cnpj=${cnpj}` : null}`}
             class="btn bg-[#3094D7] uppercase text-white border-none rounded-full w-[190px] absolute bottom-[-20px]"
           >
             Cadastrar grátis

@@ -74,7 +74,24 @@ function Drawers({ menu, searchbar, children }: Props) {
   useEffect(() => {
     if (IS_BROWSER) {
       const params = new URLSearchParams(globalThis.location.search);
-      const ref = params.get("ref");
+
+      const pathname = globalThis.location.pathname;
+
+      let ref = undefined;
+      let cnpj = undefined;
+
+      if (pathname === "/legacy") {
+        ref = "Legacy";
+        cnpj = params.get("cnpj");
+        if (cnpj) {
+          localStorage.setItem("legacyAssociationCNPJ", cnpj);
+        }
+      } else {
+        ref = params.get("ref");
+      }
+
+      console.log({ ref });
+
       if (ref) {
         localStorage.setItem("referral", ref);
       }
