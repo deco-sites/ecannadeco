@@ -35,6 +35,7 @@ export interface PublicProfile {
   documents: Document[];
   associationDocuments: Document[];
   pin: string;
+  associationApproved?: boolean;
 }
 
 const getPublicProfile = async (

@@ -11,6 +11,8 @@ export interface Props {
 function PublicProfileComponent({ publicProfile }: Props) {
   const [insertedPin, setInsertedPin] = useState("");
   const [pinError, _setPinError] = useState("");
+
+  console.log({ publicProfile });
   return (
     <PageWrap>
       {publicProfile.name
@@ -66,6 +68,7 @@ function PublicProfileComponent({ publicProfile }: Props) {
                 )}
 
               {publicProfile?.association &&
+                publicProfile.associationApproved &&
                 publicProfile?.association.cnpj !== "47774121000154" && (
                 <div class="flex flex-col items-center mt-4">
                   <span class="text-[#5B5B5B] font-semibold text-sm">
@@ -77,6 +80,16 @@ function PublicProfileComponent({ publicProfile }: Props) {
                       "$1.$2.$3/$4-$5",
                     )}
                   </span>
+                  <div>
+                    {publicProfile.associationApproved && (
+                      <div class="bg-primary text-white p-1 flex items-center gap-2 rounded-md mt-2">
+                        <Icon id="Verified" size={18} />
+                        <span class="font-semibold text-[10px]">
+                          Vínculo associativo comprovado
+                        </span>
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -146,6 +159,7 @@ function PublicProfileComponent({ publicProfile }: Props) {
               </ul>
             </div>
             {publicProfile?.association &&
+              publicProfile.associationApproved &&
               publicProfile?.association.cnpj !== "47774121000154" && (
               <div class="flex flex-col items-start w-full">
                 <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
