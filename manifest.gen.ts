@@ -30,39 +30,40 @@ import * as $$$$$$$$$24 from "./actions/forgotPassword.ts";
 import * as $$$$$$$$$25 from "./actions/forgotPasswordPrescriber.ts";
 import * as $$$$$$$$$26 from "./actions/generateLead.ts";
 import * as $$$$$$$$$27 from "./actions/getAssociation.ts";
-import * as $$$$$$$$$28 from "./actions/getAssociationDocs.ts";
-import * as $$$$$$$$$29 from "./actions/getCardProduct.ts";
-import * as $$$$$$$$$30 from "./actions/getCids.ts";
-import * as $$$$$$$$$31 from "./actions/getDeal.ts";
-import * as $$$$$$$$$32 from "./actions/getDocs.ts";
-import * as $$$$$$$$$33 from "./actions/getFeelings.ts";
-import * as $$$$$$$$$34 from "./actions/getPlans.ts";
-import * as $$$$$$$$$35 from "./actions/getPrescriberOrders.ts";
-import * as $$$$$$$$$36 from "./actions/getProfile.ts";
-import * as $$$$$$$$$37 from "./actions/getPublicProfile.ts";
-import * as $$$$$$$$$38 from "./actions/getTreatment.ts";
-import * as $$$$$$$$$39 from "./actions/getTreatments.ts";
-import * as $$$$$$$$$40 from "./actions/getUser.ts";
-import * as $$$$$$$$$41 from "./actions/getUserAdmin.ts";
-import * as $$$$$$$$$42 from "./actions/getUserOrder.ts";
-import * as $$$$$$$$$43 from "./actions/getUserOrders.ts";
-import * as $$$$$$$$$44 from "./actions/getUserPrescriber.ts";
-import * as $$$$$$$$$45 from "./actions/prescriberCheckout.ts";
-import * as $$$$$$$$$46 from "./actions/prescriberCreatePatient.ts";
-import * as $$$$$$$$$47 from "./actions/prescriberCreateTreatment.ts";
-import * as $$$$$$$$$48 from "./actions/prescriberGetActiveTreatmentByPatient.ts";
-import * as $$$$$$$$$49 from "./actions/prescriberGetPatient.ts";
-import * as $$$$$$$$$50 from "./actions/prescriberGetPatients.ts";
-import * as $$$$$$$$$51 from "./actions/prescriberGetTreatmentByPatient.ts";
-import * as $$$$$$$$$52 from "./actions/prescriberGetTreatmentsByPatient.ts";
-import * as $$$$$$$$$53 from "./actions/prescriberSignOut.ts";
-import * as $$$$$$$$$54 from "./actions/prescriberUpdateJourneyStatus.ts";
-import * as $$$$$$$$$55 from "./actions/resendConfirmationCode.ts";
-import * as $$$$$$$$$56 from "./actions/signOut.ts";
-import * as $$$$$$$$$57 from "./actions/updateProfile.ts";
-import * as $$$$$$$$$58 from "./actions/updateUserData.ts";
-import * as $$$$$$$$$59 from "./actions/updateUserPin.ts";
-import * as $$$$$$$$$60 from "./actions/uploadFile.ts";
+import * as $$$$$$$$$28 from "./actions/getAssociationByCNPJ.ts";
+import * as $$$$$$$$$29 from "./actions/getAssociationDocs.ts";
+import * as $$$$$$$$$30 from "./actions/getCardProduct.ts";
+import * as $$$$$$$$$31 from "./actions/getCids.ts";
+import * as $$$$$$$$$32 from "./actions/getDeal.ts";
+import * as $$$$$$$$$33 from "./actions/getDocs.ts";
+import * as $$$$$$$$$34 from "./actions/getFeelings.ts";
+import * as $$$$$$$$$35 from "./actions/getPlans.ts";
+import * as $$$$$$$$$36 from "./actions/getPrescriberOrders.ts";
+import * as $$$$$$$$$37 from "./actions/getProfile.ts";
+import * as $$$$$$$$$38 from "./actions/getPublicProfile.ts";
+import * as $$$$$$$$$39 from "./actions/getTreatment.ts";
+import * as $$$$$$$$$40 from "./actions/getTreatments.ts";
+import * as $$$$$$$$$41 from "./actions/getUser.ts";
+import * as $$$$$$$$$42 from "./actions/getUserAdmin.ts";
+import * as $$$$$$$$$43 from "./actions/getUserOrder.ts";
+import * as $$$$$$$$$44 from "./actions/getUserOrders.ts";
+import * as $$$$$$$$$45 from "./actions/getUserPrescriber.ts";
+import * as $$$$$$$$$46 from "./actions/prescriberCheckout.ts";
+import * as $$$$$$$$$47 from "./actions/prescriberCreatePatient.ts";
+import * as $$$$$$$$$48 from "./actions/prescriberCreateTreatment.ts";
+import * as $$$$$$$$$49 from "./actions/prescriberGetActiveTreatmentByPatient.ts";
+import * as $$$$$$$$$50 from "./actions/prescriberGetPatient.ts";
+import * as $$$$$$$$$51 from "./actions/prescriberGetPatients.ts";
+import * as $$$$$$$$$52 from "./actions/prescriberGetTreatmentByPatient.ts";
+import * as $$$$$$$$$53 from "./actions/prescriberGetTreatmentsByPatient.ts";
+import * as $$$$$$$$$54 from "./actions/prescriberSignOut.ts";
+import * as $$$$$$$$$55 from "./actions/prescriberUpdateJourneyStatus.ts";
+import * as $$$$$$$$$56 from "./actions/resendConfirmationCode.ts";
+import * as $$$$$$$$$57 from "./actions/signOut.ts";
+import * as $$$$$$$$$58 from "./actions/updateProfile.ts";
+import * as $$$$$$$$$59 from "./actions/updateUserData.ts";
+import * as $$$$$$$$$60 from "./actions/updateUserPin.ts";
+import * as $$$$$$$$$61 from "./actions/uploadFile.ts";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
@@ -110,82 +111,83 @@ import * as $$$$$$36 from "./sections/Landing Pages/ImageTextTopics.tsx";
 import * as $$$$$$37 from "./sections/Landing Pages/ImageTextTopicsCard.tsx";
 import * as $$$$$$38 from "./sections/Landing Pages/MainBanner.tsx";
 import * as $$$$$$39 from "./sections/Landing Pages/MainBannerCard.tsx";
-import * as $$$$$$40 from "./sections/Landing Pages/PatientServicesLP.tsx";
-import * as $$$$$$41 from "./sections/Landing Pages/PlanSection.tsx";
-import * as $$$$$$42 from "./sections/Landing Pages/PlanSectionCard.tsx";
-import * as $$$$$$43 from "./sections/Landing Pages/ServiceDescriptionPage.tsx";
-import * as $$$$$$44 from "./sections/Layout/Container.tsx";
-import * as $$$$$$45 from "./sections/Layout/Flex.tsx";
-import * as $$$$$$46 from "./sections/Layout/Grid.tsx";
-import * as $$$$$$47 from "./sections/Layout/GridItem.tsx";
-import * as $$$$$$48 from "./sections/Links/LinkTree.tsx";
-import * as $$$$$$49 from "./sections/Links/Shortcuts.tsx";
-import * as $$$$$$50 from "./sections/Miscellaneous/AdminOrders.tsx";
-import * as $$$$$$51 from "./sections/Miscellaneous/AssociationAdmin.tsx";
-import * as $$$$$$52 from "./sections/Miscellaneous/CampaignTimer.tsx";
-import * as $$$$$$53 from "./sections/Miscellaneous/Checkout.tsx";
-import * as $$$$$$54 from "./sections/Miscellaneous/CheckoutPrescriber.tsx";
-import * as $$$$$$55 from "./sections/Miscellaneous/ChoosePlanSignup.tsx";
-import * as $$$$$$56 from "./sections/Miscellaneous/ChoosePlanSignupPrescriber.tsx";
-import * as $$$$$$57 from "./sections/Miscellaneous/ConfirmForgotPassword.tsx";
-import * as $$$$$$58 from "./sections/Miscellaneous/ConfirmForgotPasswordPrescriber.tsx";
-import * as $$$$$$59 from "./sections/Miscellaneous/ConfirmPrescriberSignup.tsx";
-import * as $$$$$$60 from "./sections/Miscellaneous/ConfirmSignup.tsx";
-import * as $$$$$$61 from "./sections/Miscellaneous/CookieConsent.tsx";
-import * as $$$$$$62 from "./sections/Miscellaneous/EcannaCardPage.tsx";
-import * as $$$$$$63 from "./sections/Miscellaneous/ForgotPassword.tsx";
-import * as $$$$$$64 from "./sections/Miscellaneous/ForgotPasswordPrescriber.tsx";
-import * as $$$$$$65 from "./sections/Miscellaneous/MyAccount.tsx";
-import * as $$$$$$66 from "./sections/Miscellaneous/MyDocs.tsx";
-import * as $$$$$$67 from "./sections/Miscellaneous/MyInfo.tsx";
-import * as $$$$$$68 from "./sections/Miscellaneous/MyOrders.tsx";
-import * as $$$$$$69 from "./sections/Miscellaneous/PatientDashboard.tsx";
-import * as $$$$$$70 from "./sections/Miscellaneous/PatientNewTreatmentEntry.tsx";
-import * as $$$$$$71 from "./sections/Miscellaneous/PatientNewTreatmentEntryLive.tsx";
-import * as $$$$$$72 from "./sections/Miscellaneous/PatientTreatment.tsx";
-import * as $$$$$$73 from "./sections/Miscellaneous/PatientTreatmentLive.tsx";
-import * as $$$$$$74 from "./sections/Miscellaneous/PatientTreatmentReport.tsx";
-import * as $$$$$$75 from "./sections/Miscellaneous/PatientTreatmentReportLive.tsx";
-import * as $$$$$$76 from "./sections/Miscellaneous/PrescriberMyAccount.tsx";
-import * as $$$$$$77 from "./sections/Miscellaneous/PrescriberMyOrders.tsx";
-import * as $$$$$$82 from "./sections/Miscellaneous/PrescriberPatients.tsx";
-import * as $$$$$$83 from "./sections/Miscellaneous/PrescriberPatientsLive.tsx";
-import * as $$$$$$78 from "./sections/Miscellaneous/PrescriberPatientTreatment.tsx";
-import * as $$$$$$79 from "./sections/Miscellaneous/PrescriberPatientTreatmentLive.tsx";
-import * as $$$$$$80 from "./sections/Miscellaneous/PrescriberPatientTreatmentReport.tsx";
-import * as $$$$$$81 from "./sections/Miscellaneous/PrescriberPatientTreatmentReportLive.tsx";
-import * as $$$$$$84 from "./sections/Miscellaneous/PrescriberSignout.tsx";
-import * as $$$$$$85 from "./sections/Miscellaneous/PrivatePageControl.tsx";
-import * as $$$$$$86 from "./sections/Miscellaneous/PrivatePageControlAdmin.tsx";
-import * as $$$$$$87 from "./sections/Miscellaneous/PrivatePageControlPrescriber.tsx";
-import * as $$$$$$88 from "./sections/Miscellaneous/PublicPageControl.tsx";
-import * as $$$$$$89 from "./sections/Miscellaneous/PublicProfile.tsx";
-import * as $$$$$$90 from "./sections/Miscellaneous/RootNavigationTree.tsx";
-import * as $$$$$$91 from "./sections/Miscellaneous/SignIn.tsx";
-import * as $$$$$$92 from "./sections/Miscellaneous/SignInAdmin.tsx";
-import * as $$$$$$93 from "./sections/Miscellaneous/SignInPrescriber.tsx";
-import * as $$$$$$96 from "./sections/Miscellaneous/Signout.tsx";
-import * as $$$$$$94 from "./sections/Miscellaneous/SignUp.tsx";
-import * as $$$$$$95 from "./sections/Miscellaneous/SignUpPrescriber.tsx";
-import * as $$$$$$97 from "./sections/Miscellaneous/Slide.tsx";
-import * as $$$$$$98 from "./sections/Miscellaneous/UserAlerts.tsx";
-import * as $$$$$$99 from "./sections/Miscellaneous/UserAssociatedSignup.tsx";
-import * as $$$$$$100 from "./sections/Miscellaneous/VideoPage.tsx";
-import * as $$$$$$101 from "./sections/Newsletter/Newsletter.tsx";
-import * as $$$$$$102 from "./sections/Product/ImageGalleryFrontBack.tsx";
-import * as $$$$$$103 from "./sections/Product/ImageGallerySlider.tsx";
-import * as $$$$$$104 from "./sections/Product/NotFound.tsx";
-import * as $$$$$$105 from "./sections/Product/NotFoundChallenge.tsx";
-import * as $$$$$$106 from "./sections/Product/ProductDetails.tsx";
-import * as $$$$$$107 from "./sections/Product/ProductInfo.tsx";
-import * as $$$$$$108 from "./sections/Product/ProductShelf.tsx";
-import * as $$$$$$109 from "./sections/Product/ProductShelfTabbed.tsx";
-import * as $$$$$$110 from "./sections/Product/SearchResult.tsx";
-import * as $$$$$$111 from "./sections/Product/ShelfWithImage.tsx";
-import * as $$$$$$112 from "./sections/Product/Wishlist.tsx";
-import * as $$$$$$113 from "./sections/Social/InstagramPosts.tsx";
-import * as $$$$$$114 from "./sections/Social/WhatsApp.tsx";
-import * as $$$$$$115 from "./sections/Theme/Theme.tsx";
+import * as $$$$$$40 from "./sections/Landing Pages/MainBannerCardLegacy.tsx";
+import * as $$$$$$41 from "./sections/Landing Pages/PatientServicesLP.tsx";
+import * as $$$$$$42 from "./sections/Landing Pages/PlanSection.tsx";
+import * as $$$$$$43 from "./sections/Landing Pages/PlanSectionCard.tsx";
+import * as $$$$$$44 from "./sections/Landing Pages/ServiceDescriptionPage.tsx";
+import * as $$$$$$45 from "./sections/Layout/Container.tsx";
+import * as $$$$$$46 from "./sections/Layout/Flex.tsx";
+import * as $$$$$$47 from "./sections/Layout/Grid.tsx";
+import * as $$$$$$48 from "./sections/Layout/GridItem.tsx";
+import * as $$$$$$49 from "./sections/Links/LinkTree.tsx";
+import * as $$$$$$50 from "./sections/Links/Shortcuts.tsx";
+import * as $$$$$$51 from "./sections/Miscellaneous/AdminOrders.tsx";
+import * as $$$$$$52 from "./sections/Miscellaneous/AssociationAdmin.tsx";
+import * as $$$$$$53 from "./sections/Miscellaneous/CampaignTimer.tsx";
+import * as $$$$$$54 from "./sections/Miscellaneous/Checkout.tsx";
+import * as $$$$$$55 from "./sections/Miscellaneous/CheckoutPrescriber.tsx";
+import * as $$$$$$56 from "./sections/Miscellaneous/ChoosePlanSignup.tsx";
+import * as $$$$$$57 from "./sections/Miscellaneous/ChoosePlanSignupPrescriber.tsx";
+import * as $$$$$$58 from "./sections/Miscellaneous/ConfirmForgotPassword.tsx";
+import * as $$$$$$59 from "./sections/Miscellaneous/ConfirmForgotPasswordPrescriber.tsx";
+import * as $$$$$$60 from "./sections/Miscellaneous/ConfirmPrescriberSignup.tsx";
+import * as $$$$$$61 from "./sections/Miscellaneous/ConfirmSignup.tsx";
+import * as $$$$$$62 from "./sections/Miscellaneous/CookieConsent.tsx";
+import * as $$$$$$63 from "./sections/Miscellaneous/EcannaCardPage.tsx";
+import * as $$$$$$64 from "./sections/Miscellaneous/ForgotPassword.tsx";
+import * as $$$$$$65 from "./sections/Miscellaneous/ForgotPasswordPrescriber.tsx";
+import * as $$$$$$66 from "./sections/Miscellaneous/MyAccount.tsx";
+import * as $$$$$$67 from "./sections/Miscellaneous/MyDocs.tsx";
+import * as $$$$$$68 from "./sections/Miscellaneous/MyInfo.tsx";
+import * as $$$$$$69 from "./sections/Miscellaneous/MyOrders.tsx";
+import * as $$$$$$70 from "./sections/Miscellaneous/PatientDashboard.tsx";
+import * as $$$$$$71 from "./sections/Miscellaneous/PatientNewTreatmentEntry.tsx";
+import * as $$$$$$72 from "./sections/Miscellaneous/PatientNewTreatmentEntryLive.tsx";
+import * as $$$$$$73 from "./sections/Miscellaneous/PatientTreatment.tsx";
+import * as $$$$$$74 from "./sections/Miscellaneous/PatientTreatmentLive.tsx";
+import * as $$$$$$75 from "./sections/Miscellaneous/PatientTreatmentReport.tsx";
+import * as $$$$$$76 from "./sections/Miscellaneous/PatientTreatmentReportLive.tsx";
+import * as $$$$$$77 from "./sections/Miscellaneous/PrescriberMyAccount.tsx";
+import * as $$$$$$78 from "./sections/Miscellaneous/PrescriberMyOrders.tsx";
+import * as $$$$$$83 from "./sections/Miscellaneous/PrescriberPatients.tsx";
+import * as $$$$$$84 from "./sections/Miscellaneous/PrescriberPatientsLive.tsx";
+import * as $$$$$$79 from "./sections/Miscellaneous/PrescriberPatientTreatment.tsx";
+import * as $$$$$$80 from "./sections/Miscellaneous/PrescriberPatientTreatmentLive.tsx";
+import * as $$$$$$81 from "./sections/Miscellaneous/PrescriberPatientTreatmentReport.tsx";
+import * as $$$$$$82 from "./sections/Miscellaneous/PrescriberPatientTreatmentReportLive.tsx";
+import * as $$$$$$85 from "./sections/Miscellaneous/PrescriberSignout.tsx";
+import * as $$$$$$86 from "./sections/Miscellaneous/PrivatePageControl.tsx";
+import * as $$$$$$87 from "./sections/Miscellaneous/PrivatePageControlAdmin.tsx";
+import * as $$$$$$88 from "./sections/Miscellaneous/PrivatePageControlPrescriber.tsx";
+import * as $$$$$$89 from "./sections/Miscellaneous/PublicPageControl.tsx";
+import * as $$$$$$90 from "./sections/Miscellaneous/PublicProfile.tsx";
+import * as $$$$$$91 from "./sections/Miscellaneous/RootNavigationTree.tsx";
+import * as $$$$$$92 from "./sections/Miscellaneous/SignIn.tsx";
+import * as $$$$$$93 from "./sections/Miscellaneous/SignInAdmin.tsx";
+import * as $$$$$$94 from "./sections/Miscellaneous/SignInPrescriber.tsx";
+import * as $$$$$$97 from "./sections/Miscellaneous/Signout.tsx";
+import * as $$$$$$95 from "./sections/Miscellaneous/SignUp.tsx";
+import * as $$$$$$96 from "./sections/Miscellaneous/SignUpPrescriber.tsx";
+import * as $$$$$$98 from "./sections/Miscellaneous/Slide.tsx";
+import * as $$$$$$99 from "./sections/Miscellaneous/UserAlerts.tsx";
+import * as $$$$$$100 from "./sections/Miscellaneous/UserAssociatedSignup.tsx";
+import * as $$$$$$101 from "./sections/Miscellaneous/VideoPage.tsx";
+import * as $$$$$$102 from "./sections/Newsletter/Newsletter.tsx";
+import * as $$$$$$103 from "./sections/Product/ImageGalleryFrontBack.tsx";
+import * as $$$$$$104 from "./sections/Product/ImageGallerySlider.tsx";
+import * as $$$$$$105 from "./sections/Product/NotFound.tsx";
+import * as $$$$$$106 from "./sections/Product/NotFoundChallenge.tsx";
+import * as $$$$$$107 from "./sections/Product/ProductDetails.tsx";
+import * as $$$$$$108 from "./sections/Product/ProductInfo.tsx";
+import * as $$$$$$109 from "./sections/Product/ProductShelf.tsx";
+import * as $$$$$$110 from "./sections/Product/ProductShelfTabbed.tsx";
+import * as $$$$$$111 from "./sections/Product/SearchResult.tsx";
+import * as $$$$$$112 from "./sections/Product/ShelfWithImage.tsx";
+import * as $$$$$$113 from "./sections/Product/Wishlist.tsx";
+import * as $$$$$$114 from "./sections/Social/InstagramPosts.tsx";
+import * as $$$$$$115 from "./sections/Social/WhatsApp.tsx";
+import * as $$$$$$116 from "./sections/Theme/Theme.tsx";
 
 const manifest = {
   "loaders": {
@@ -240,118 +242,120 @@ const manifest = {
       $$$$$$37,
     "deco-sites/ecannadeco/sections/Landing Pages/MainBanner.tsx": $$$$$$38,
     "deco-sites/ecannadeco/sections/Landing Pages/MainBannerCard.tsx": $$$$$$39,
-    "deco-sites/ecannadeco/sections/Landing Pages/PatientServicesLP.tsx":
+    "deco-sites/ecannadeco/sections/Landing Pages/MainBannerCardLegacy.tsx":
       $$$$$$40,
-    "deco-sites/ecannadeco/sections/Landing Pages/PlanSection.tsx": $$$$$$41,
+    "deco-sites/ecannadeco/sections/Landing Pages/PatientServicesLP.tsx":
+      $$$$$$41,
+    "deco-sites/ecannadeco/sections/Landing Pages/PlanSection.tsx": $$$$$$42,
     "deco-sites/ecannadeco/sections/Landing Pages/PlanSectionCard.tsx":
-      $$$$$$42,
-    "deco-sites/ecannadeco/sections/Landing Pages/ServiceDescriptionPage.tsx":
       $$$$$$43,
-    "deco-sites/ecannadeco/sections/Layout/Container.tsx": $$$$$$44,
-    "deco-sites/ecannadeco/sections/Layout/Flex.tsx": $$$$$$45,
-    "deco-sites/ecannadeco/sections/Layout/Grid.tsx": $$$$$$46,
-    "deco-sites/ecannadeco/sections/Layout/GridItem.tsx": $$$$$$47,
-    "deco-sites/ecannadeco/sections/Links/LinkTree.tsx": $$$$$$48,
-    "deco-sites/ecannadeco/sections/Links/Shortcuts.tsx": $$$$$$49,
-    "deco-sites/ecannadeco/sections/Miscellaneous/AdminOrders.tsx": $$$$$$50,
+    "deco-sites/ecannadeco/sections/Landing Pages/ServiceDescriptionPage.tsx":
+      $$$$$$44,
+    "deco-sites/ecannadeco/sections/Layout/Container.tsx": $$$$$$45,
+    "deco-sites/ecannadeco/sections/Layout/Flex.tsx": $$$$$$46,
+    "deco-sites/ecannadeco/sections/Layout/Grid.tsx": $$$$$$47,
+    "deco-sites/ecannadeco/sections/Layout/GridItem.tsx": $$$$$$48,
+    "deco-sites/ecannadeco/sections/Links/LinkTree.tsx": $$$$$$49,
+    "deco-sites/ecannadeco/sections/Links/Shortcuts.tsx": $$$$$$50,
+    "deco-sites/ecannadeco/sections/Miscellaneous/AdminOrders.tsx": $$$$$$51,
     "deco-sites/ecannadeco/sections/Miscellaneous/AssociationAdmin.tsx":
-      $$$$$$51,
-    "deco-sites/ecannadeco/sections/Miscellaneous/CampaignTimer.tsx": $$$$$$52,
-    "deco-sites/ecannadeco/sections/Miscellaneous/Checkout.tsx": $$$$$$53,
+      $$$$$$52,
+    "deco-sites/ecannadeco/sections/Miscellaneous/CampaignTimer.tsx": $$$$$$53,
+    "deco-sites/ecannadeco/sections/Miscellaneous/Checkout.tsx": $$$$$$54,
     "deco-sites/ecannadeco/sections/Miscellaneous/CheckoutPrescriber.tsx":
-      $$$$$$54,
-    "deco-sites/ecannadeco/sections/Miscellaneous/ChoosePlanSignup.tsx":
       $$$$$$55,
-    "deco-sites/ecannadeco/sections/Miscellaneous/ChoosePlanSignupPrescriber.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/ChoosePlanSignup.tsx":
       $$$$$$56,
-    "deco-sites/ecannadeco/sections/Miscellaneous/ConfirmForgotPassword.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/ChoosePlanSignupPrescriber.tsx":
       $$$$$$57,
-    "deco-sites/ecannadeco/sections/Miscellaneous/ConfirmForgotPasswordPrescriber.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/ConfirmForgotPassword.tsx":
       $$$$$$58,
-    "deco-sites/ecannadeco/sections/Miscellaneous/ConfirmPrescriberSignup.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/ConfirmForgotPasswordPrescriber.tsx":
       $$$$$$59,
-    "deco-sites/ecannadeco/sections/Miscellaneous/ConfirmSignup.tsx": $$$$$$60,
-    "deco-sites/ecannadeco/sections/Miscellaneous/CookieConsent.tsx": $$$$$$61,
-    "deco-sites/ecannadeco/sections/Miscellaneous/EcannaCardPage.tsx": $$$$$$62,
-    "deco-sites/ecannadeco/sections/Miscellaneous/ForgotPassword.tsx": $$$$$$63,
+    "deco-sites/ecannadeco/sections/Miscellaneous/ConfirmPrescriberSignup.tsx":
+      $$$$$$60,
+    "deco-sites/ecannadeco/sections/Miscellaneous/ConfirmSignup.tsx": $$$$$$61,
+    "deco-sites/ecannadeco/sections/Miscellaneous/CookieConsent.tsx": $$$$$$62,
+    "deco-sites/ecannadeco/sections/Miscellaneous/EcannaCardPage.tsx": $$$$$$63,
+    "deco-sites/ecannadeco/sections/Miscellaneous/ForgotPassword.tsx": $$$$$$64,
     "deco-sites/ecannadeco/sections/Miscellaneous/ForgotPasswordPrescriber.tsx":
-      $$$$$$64,
-    "deco-sites/ecannadeco/sections/Miscellaneous/MyAccount.tsx": $$$$$$65,
-    "deco-sites/ecannadeco/sections/Miscellaneous/MyDocs.tsx": $$$$$$66,
-    "deco-sites/ecannadeco/sections/Miscellaneous/MyInfo.tsx": $$$$$$67,
-    "deco-sites/ecannadeco/sections/Miscellaneous/MyOrders.tsx": $$$$$$68,
+      $$$$$$65,
+    "deco-sites/ecannadeco/sections/Miscellaneous/MyAccount.tsx": $$$$$$66,
+    "deco-sites/ecannadeco/sections/Miscellaneous/MyDocs.tsx": $$$$$$67,
+    "deco-sites/ecannadeco/sections/Miscellaneous/MyInfo.tsx": $$$$$$68,
+    "deco-sites/ecannadeco/sections/Miscellaneous/MyOrders.tsx": $$$$$$69,
     "deco-sites/ecannadeco/sections/Miscellaneous/PatientDashboard.tsx":
-      $$$$$$69,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PatientNewTreatmentEntry.tsx":
       $$$$$$70,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PatientNewTreatmentEntryLive.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PatientNewTreatmentEntry.tsx":
       $$$$$$71,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PatientTreatment.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PatientNewTreatmentEntryLive.tsx":
       $$$$$$72,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PatientTreatmentLive.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PatientTreatment.tsx":
       $$$$$$73,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PatientTreatmentReport.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PatientTreatmentLive.tsx":
       $$$$$$74,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PatientTreatmentReportLive.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PatientTreatmentReport.tsx":
       $$$$$$75,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberMyAccount.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PatientTreatmentReportLive.tsx":
       $$$$$$76,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberMyOrders.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberMyAccount.tsx":
       $$$$$$77,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatients.tsx":
-      $$$$$$82,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatientsLive.tsx":
-      $$$$$$83,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatientTreatment.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberMyOrders.tsx":
       $$$$$$78,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatientTreatmentLive.tsx":
-      $$$$$$79,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatientTreatmentReport.tsx":
-      $$$$$$80,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatientTreatmentReportLive.tsx":
-      $$$$$$81,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberSignout.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatients.tsx":
+      $$$$$$83,
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatientsLive.tsx":
       $$$$$$84,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrivatePageControl.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatientTreatment.tsx":
+      $$$$$$79,
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatientTreatmentLive.tsx":
+      $$$$$$80,
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatientTreatmentReport.tsx":
+      $$$$$$81,
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberPatientTreatmentReportLive.tsx":
+      $$$$$$82,
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrescriberSignout.tsx":
       $$$$$$85,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrivatePageControlAdmin.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrivatePageControl.tsx":
       $$$$$$86,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PrivatePageControlPrescriber.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrivatePageControlAdmin.tsx":
       $$$$$$87,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PublicPageControl.tsx":
+    "deco-sites/ecannadeco/sections/Miscellaneous/PrivatePageControlPrescriber.tsx":
       $$$$$$88,
-    "deco-sites/ecannadeco/sections/Miscellaneous/PublicProfile.tsx": $$$$$$89,
+    "deco-sites/ecannadeco/sections/Miscellaneous/PublicPageControl.tsx":
+      $$$$$$89,
+    "deco-sites/ecannadeco/sections/Miscellaneous/PublicProfile.tsx": $$$$$$90,
     "deco-sites/ecannadeco/sections/Miscellaneous/RootNavigationTree.tsx":
-      $$$$$$90,
-    "deco-sites/ecannadeco/sections/Miscellaneous/SignIn.tsx": $$$$$$91,
-    "deco-sites/ecannadeco/sections/Miscellaneous/SignInAdmin.tsx": $$$$$$92,
+      $$$$$$91,
+    "deco-sites/ecannadeco/sections/Miscellaneous/SignIn.tsx": $$$$$$92,
+    "deco-sites/ecannadeco/sections/Miscellaneous/SignInAdmin.tsx": $$$$$$93,
     "deco-sites/ecannadeco/sections/Miscellaneous/SignInPrescriber.tsx":
-      $$$$$$93,
-    "deco-sites/ecannadeco/sections/Miscellaneous/Signout.tsx": $$$$$$96,
-    "deco-sites/ecannadeco/sections/Miscellaneous/SignUp.tsx": $$$$$$94,
+      $$$$$$94,
+    "deco-sites/ecannadeco/sections/Miscellaneous/Signout.tsx": $$$$$$97,
+    "deco-sites/ecannadeco/sections/Miscellaneous/SignUp.tsx": $$$$$$95,
     "deco-sites/ecannadeco/sections/Miscellaneous/SignUpPrescriber.tsx":
-      $$$$$$95,
-    "deco-sites/ecannadeco/sections/Miscellaneous/Slide.tsx": $$$$$$97,
-    "deco-sites/ecannadeco/sections/Miscellaneous/UserAlerts.tsx": $$$$$$98,
+      $$$$$$96,
+    "deco-sites/ecannadeco/sections/Miscellaneous/Slide.tsx": $$$$$$98,
+    "deco-sites/ecannadeco/sections/Miscellaneous/UserAlerts.tsx": $$$$$$99,
     "deco-sites/ecannadeco/sections/Miscellaneous/UserAssociatedSignup.tsx":
-      $$$$$$99,
-    "deco-sites/ecannadeco/sections/Miscellaneous/VideoPage.tsx": $$$$$$100,
-    "deco-sites/ecannadeco/sections/Newsletter/Newsletter.tsx": $$$$$$101,
+      $$$$$$100,
+    "deco-sites/ecannadeco/sections/Miscellaneous/VideoPage.tsx": $$$$$$101,
+    "deco-sites/ecannadeco/sections/Newsletter/Newsletter.tsx": $$$$$$102,
     "deco-sites/ecannadeco/sections/Product/ImageGalleryFrontBack.tsx":
-      $$$$$$102,
-    "deco-sites/ecannadeco/sections/Product/ImageGallerySlider.tsx": $$$$$$103,
-    "deco-sites/ecannadeco/sections/Product/NotFound.tsx": $$$$$$104,
-    "deco-sites/ecannadeco/sections/Product/NotFoundChallenge.tsx": $$$$$$105,
-    "deco-sites/ecannadeco/sections/Product/ProductDetails.tsx": $$$$$$106,
-    "deco-sites/ecannadeco/sections/Product/ProductInfo.tsx": $$$$$$107,
-    "deco-sites/ecannadeco/sections/Product/ProductShelf.tsx": $$$$$$108,
-    "deco-sites/ecannadeco/sections/Product/ProductShelfTabbed.tsx": $$$$$$109,
-    "deco-sites/ecannadeco/sections/Product/SearchResult.tsx": $$$$$$110,
-    "deco-sites/ecannadeco/sections/Product/ShelfWithImage.tsx": $$$$$$111,
-    "deco-sites/ecannadeco/sections/Product/Wishlist.tsx": $$$$$$112,
-    "deco-sites/ecannadeco/sections/Social/InstagramPosts.tsx": $$$$$$113,
-    "deco-sites/ecannadeco/sections/Social/WhatsApp.tsx": $$$$$$114,
-    "deco-sites/ecannadeco/sections/Theme/Theme.tsx": $$$$$$115,
+      $$$$$$103,
+    "deco-sites/ecannadeco/sections/Product/ImageGallerySlider.tsx": $$$$$$104,
+    "deco-sites/ecannadeco/sections/Product/NotFound.tsx": $$$$$$105,
+    "deco-sites/ecannadeco/sections/Product/NotFoundChallenge.tsx": $$$$$$106,
+    "deco-sites/ecannadeco/sections/Product/ProductDetails.tsx": $$$$$$107,
+    "deco-sites/ecannadeco/sections/Product/ProductInfo.tsx": $$$$$$108,
+    "deco-sites/ecannadeco/sections/Product/ProductShelf.tsx": $$$$$$109,
+    "deco-sites/ecannadeco/sections/Product/ProductShelfTabbed.tsx": $$$$$$110,
+    "deco-sites/ecannadeco/sections/Product/SearchResult.tsx": $$$$$$111,
+    "deco-sites/ecannadeco/sections/Product/ShelfWithImage.tsx": $$$$$$112,
+    "deco-sites/ecannadeco/sections/Product/Wishlist.tsx": $$$$$$113,
+    "deco-sites/ecannadeco/sections/Social/InstagramPosts.tsx": $$$$$$114,
+    "deco-sites/ecannadeco/sections/Social/WhatsApp.tsx": $$$$$$115,
+    "deco-sites/ecannadeco/sections/Theme/Theme.tsx": $$$$$$116,
   },
   "actions": {
     "deco-sites/ecannadeco/actions/adminGetAssociation.ts": $$$$$$$$$0,
@@ -384,43 +388,44 @@ const manifest = {
     "deco-sites/ecannadeco/actions/forgotPasswordPrescriber.ts": $$$$$$$$$25,
     "deco-sites/ecannadeco/actions/generateLead.ts": $$$$$$$$$26,
     "deco-sites/ecannadeco/actions/getAssociation.ts": $$$$$$$$$27,
-    "deco-sites/ecannadeco/actions/getAssociationDocs.ts": $$$$$$$$$28,
-    "deco-sites/ecannadeco/actions/getCardProduct.ts": $$$$$$$$$29,
-    "deco-sites/ecannadeco/actions/getCids.ts": $$$$$$$$$30,
-    "deco-sites/ecannadeco/actions/getDeal.ts": $$$$$$$$$31,
-    "deco-sites/ecannadeco/actions/getDocs.ts": $$$$$$$$$32,
-    "deco-sites/ecannadeco/actions/getFeelings.ts": $$$$$$$$$33,
-    "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$34,
-    "deco-sites/ecannadeco/actions/getPrescriberOrders.ts": $$$$$$$$$35,
-    "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$36,
-    "deco-sites/ecannadeco/actions/getPublicProfile.ts": $$$$$$$$$37,
-    "deco-sites/ecannadeco/actions/getTreatment.ts": $$$$$$$$$38,
-    "deco-sites/ecannadeco/actions/getTreatments.ts": $$$$$$$$$39,
-    "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$40,
-    "deco-sites/ecannadeco/actions/getUserAdmin.ts": $$$$$$$$$41,
-    "deco-sites/ecannadeco/actions/getUserOrder.ts": $$$$$$$$$42,
-    "deco-sites/ecannadeco/actions/getUserOrders.ts": $$$$$$$$$43,
-    "deco-sites/ecannadeco/actions/getUserPrescriber.ts": $$$$$$$$$44,
-    "deco-sites/ecannadeco/actions/prescriberCheckout.ts": $$$$$$$$$45,
-    "deco-sites/ecannadeco/actions/prescriberCreatePatient.ts": $$$$$$$$$46,
-    "deco-sites/ecannadeco/actions/prescriberCreateTreatment.ts": $$$$$$$$$47,
+    "deco-sites/ecannadeco/actions/getAssociationByCNPJ.ts": $$$$$$$$$28,
+    "deco-sites/ecannadeco/actions/getAssociationDocs.ts": $$$$$$$$$29,
+    "deco-sites/ecannadeco/actions/getCardProduct.ts": $$$$$$$$$30,
+    "deco-sites/ecannadeco/actions/getCids.ts": $$$$$$$$$31,
+    "deco-sites/ecannadeco/actions/getDeal.ts": $$$$$$$$$32,
+    "deco-sites/ecannadeco/actions/getDocs.ts": $$$$$$$$$33,
+    "deco-sites/ecannadeco/actions/getFeelings.ts": $$$$$$$$$34,
+    "deco-sites/ecannadeco/actions/getPlans.ts": $$$$$$$$$35,
+    "deco-sites/ecannadeco/actions/getPrescriberOrders.ts": $$$$$$$$$36,
+    "deco-sites/ecannadeco/actions/getProfile.ts": $$$$$$$$$37,
+    "deco-sites/ecannadeco/actions/getPublicProfile.ts": $$$$$$$$$38,
+    "deco-sites/ecannadeco/actions/getTreatment.ts": $$$$$$$$$39,
+    "deco-sites/ecannadeco/actions/getTreatments.ts": $$$$$$$$$40,
+    "deco-sites/ecannadeco/actions/getUser.ts": $$$$$$$$$41,
+    "deco-sites/ecannadeco/actions/getUserAdmin.ts": $$$$$$$$$42,
+    "deco-sites/ecannadeco/actions/getUserOrder.ts": $$$$$$$$$43,
+    "deco-sites/ecannadeco/actions/getUserOrders.ts": $$$$$$$$$44,
+    "deco-sites/ecannadeco/actions/getUserPrescriber.ts": $$$$$$$$$45,
+    "deco-sites/ecannadeco/actions/prescriberCheckout.ts": $$$$$$$$$46,
+    "deco-sites/ecannadeco/actions/prescriberCreatePatient.ts": $$$$$$$$$47,
+    "deco-sites/ecannadeco/actions/prescriberCreateTreatment.ts": $$$$$$$$$48,
     "deco-sites/ecannadeco/actions/prescriberGetActiveTreatmentByPatient.ts":
-      $$$$$$$$$48,
-    "deco-sites/ecannadeco/actions/prescriberGetPatient.ts": $$$$$$$$$49,
-    "deco-sites/ecannadeco/actions/prescriberGetPatients.ts": $$$$$$$$$50,
+      $$$$$$$$$49,
+    "deco-sites/ecannadeco/actions/prescriberGetPatient.ts": $$$$$$$$$50,
+    "deco-sites/ecannadeco/actions/prescriberGetPatients.ts": $$$$$$$$$51,
     "deco-sites/ecannadeco/actions/prescriberGetTreatmentByPatient.ts":
-      $$$$$$$$$51,
-    "deco-sites/ecannadeco/actions/prescriberGetTreatmentsByPatient.ts":
       $$$$$$$$$52,
-    "deco-sites/ecannadeco/actions/prescriberSignOut.ts": $$$$$$$$$53,
+    "deco-sites/ecannadeco/actions/prescriberGetTreatmentsByPatient.ts":
+      $$$$$$$$$53,
+    "deco-sites/ecannadeco/actions/prescriberSignOut.ts": $$$$$$$$$54,
     "deco-sites/ecannadeco/actions/prescriberUpdateJourneyStatus.ts":
-      $$$$$$$$$54,
-    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$55,
-    "deco-sites/ecannadeco/actions/signOut.ts": $$$$$$$$$56,
-    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$57,
-    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$58,
-    "deco-sites/ecannadeco/actions/updateUserPin.ts": $$$$$$$$$59,
-    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$60,
+      $$$$$$$$$55,
+    "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$56,
+    "deco-sites/ecannadeco/actions/signOut.ts": $$$$$$$$$57,
+    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$58,
+    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$59,
+    "deco-sites/ecannadeco/actions/updateUserPin.ts": $$$$$$$$$60,
+    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$61,
   },
   "apps": {
     "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,

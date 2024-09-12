@@ -3,7 +3,8 @@ import { useEffect, useState } from "preact/hooks";
 import StepTimeline from "../../components/ui/StepTimeline.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 // import { firstMessages, isEmail, required, validate } from "validasaur";
-// import { useUI } from "../../sdk/useUI.ts";
+import type { Association } from "../../components/ui/UserAssociatedSignup.tsx";
+import Image from "apps/website/components/Image.tsx";
 
 export interface Props {
   formTitle?: string;
@@ -24,6 +25,8 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   const [interest, setInterest] = useState("");
   const [associationCNPJ, setAssociationCNPJ] = useState("");
   const [dealName, setDealName] = useState("");
+  const [associationName, setAssociationName] = useState("");
+  const [associationLogo, setAssociationLogo] = useState("");
   // const { displayAlert, alertText, alertType } = useUI();
 
   useEffect(() => {
@@ -33,6 +36,17 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
       const ref = localStorage.getItem("referral");
       if (cnpj) {
         setAssociationCNPJ(cnpj);
+        invoke["deco-sites/ecannadeco"].actions
+          .getAssociationByCNPJ({
+            cnpj,
+          })
+          .then((r) => {
+            console.log({ associationResponse: r });
+            const resp = r as Association;
+            setAssociationName(resp.name);
+            setAssociationLogo(resp.logo_url);
+            setLoading(false);
+          });
       }
       if (ref) {
         setDealName(ref);
@@ -249,6 +263,30 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   return (
     <div class="max-w-[480px] flex flex-col">
       <StepTimeline step={1} />
+      {associationName
+        ? (
+          <div class="bg-white rounded-md p-4 flex flex-col items-center gap-4">
+            <Image
+              src={associationLogo}
+              alt={`logo ${associationName}`}
+              width={117}
+              height={32}
+            />
+            <span class="text-center text-xs">
+              Você está se cadastrando como associado da{" "}
+              <span class="font-bold">{associationName}</span>
+              {" "}
+            </span>
+            <span class="text-xs text-center text-red-500">
+              Caso você não possua vínculo com a {associationName}, se cadastre
+              {" "}
+              <a class="text-blue-600 underline" href="/cadastrar">
+                clicando aqui
+              </a>
+            </span>
+          </div>
+        )
+        : null}
       <form
         class="form-control flex flex-col gap-2"
         onSubmit={(e) => handleSubmit(e)}
