@@ -35,7 +35,7 @@ function OrderStatus({ status, id, adminView }: Props) {
       style: "bg-[#e82222]",
     },
     IN_PRODUCTION: {
-      title: "EM PRODUÇÃO",
+      title: "PRODUÇÃO",
       style: "bg-primary",
     },
     PENDING_SHIPPING: {
