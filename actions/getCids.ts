@@ -1,3 +1,5 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
+
 export interface Props {
   term: string;
   token: string;
@@ -9,7 +11,7 @@ const getCids = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      `https://api.ecanna.com.br/cids?name=${term}`,
+      `${API_URL}/cids?name=${term}`,
       {
         method: "GET",
         headers: {
