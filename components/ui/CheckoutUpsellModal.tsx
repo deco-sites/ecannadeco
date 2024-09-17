@@ -350,38 +350,42 @@ const CheckoutUpsellModal = (props: Props) => {
               {plan ? plan.name : product && product.name}
             </span>
           </span>
-          <span>
-            {plan
-              ? (
-                <>
-                  Valor da assinatura:{" "}
-                  <span class="font-bold">
-                    {plan &&
-                      "R$ " +
-                        (discount
-                          ? (plan.price / 100) * (1 - discount)
-                          : plan.price / 100).toFixed(2) +
-                        (plan?.period == "MONTHLY" ? "/mês" : "") +
-                        (plan?.period == "YEARLY" ? "/ano" : "")}
-                  </span>
-                </>
-              )
-              : (
-                <>
-                  Valor do produto:{" "}
-                  <span class="font-bold">
-                    {product && product.price > 0
-                      ? "R$ " + (product.price / 100).toFixed(2)
-                      : "Grátis"}
-                  </span>
-                </>
-              )}
-          </span>
+          {discount !== 1
+            ? (
+              <span>
+                {plan
+                  ? (
+                    <>
+                      Valor da assinatura:{" "}
+                      <span class="font-bold">
+                        {plan &&
+                          "R$ " +
+                            (discount
+                              ? (plan.price / 100) * (1 - discount)
+                              : plan.price / 100).toFixed(2) +
+                            (plan?.period == "MONTHLY" ? "/mês" : "") +
+                            (plan?.period == "YEARLY" ? "/ano" : "")}
+                      </span>
+                    </>
+                  )
+                  : (
+                    <>
+                      Valor do produto:{" "}
+                      <span class="font-bold">
+                        {product && product.price > 0
+                          ? "R$ " + (product.price / 100).toFixed(2)
+                          : "Grátis"}
+                      </span>
+                    </>
+                  )}
+              </span>
+            )
+            : null}
         </div>
 
         {/* Forma de Pagamento */}
 
-        {currentPrice
+        {currentPrice && currentPrice > 0 && discount !== 1
           ? (
             <div class="flex flex-col text-sm">
               <div class="label pb-1">
@@ -466,46 +470,51 @@ const CheckoutUpsellModal = (props: Props) => {
                 })} */
               }
             </div>
-            <div class={`${!addNewCard && "hidden"}`}>
-              <form class="flex flex-wrap gap-[2%]">
-                <div class="flex w-[80%]">
-                  <CreditCardInput
-                    onChange={(value) => setCreditCardNumber(value)}
-                    value={creditCardNumber}
-                  />
+            {discount !== 1
+              ? (
+                <div class={`${!addNewCard && "hidden"}`}>
+                  <form class="flex flex-wrap gap-[2%]">
+                    <div class="flex w-[80%]">
+                      <CreditCardInput
+                        onChange={(value) => setCreditCardNumber(value)}
+                        value={creditCardNumber}
+                      />
+                    </div>
+                    <div class="flex w-[18%]">
+                      <CVVInput
+                        value={creditCardCCV}
+                        onChange={(value) => setCreditCardCCV(value)}
+                      />
+                    </div>
+                    <fieldset class="w-full sm:w-[48%] flex flex-col">
+                      <legend class="label-text text-xs text-[#585858] p-1 pt-2">
+                        Validade do Cartão
+                      </legend>
+                      <div class="flex gap-2">
+                        <input
+                          placeholder="Mês (Ex: 05)"
+                          class="input input-sm rounded-md text-[#8b8b8b] border-none w-1/2"
+                          value={creditCardExpMonth}
+                          maxLength={2}
+                          onChange={(e) =>
+                            e.target &&
+                            setCreditCardExpMonth(e.currentTarget.value)}
+                        />
+                        <input
+                          placeholder="Ano (Ex: 2030)"
+                          class="input input-sm rounded-md text-[#8b8b8b] border-none w-1/2"
+                          value={creditCardExpYear}
+                          maxlength={4}
+                          onChange={(e) =>
+                            e.target &&
+                            setCreditCardExpYear(e.currentTarget.value)}
+                        />
+                      </div>
+                    </fieldset>
+                  </form>
                 </div>
-                <div class="flex w-[18%]">
-                  <CVVInput
-                    value={creditCardCCV}
-                    onChange={(value) => setCreditCardCCV(value)}
-                  />
-                </div>
-                <fieldset class="w-full sm:w-[48%] flex flex-col">
-                  <legend class="label-text text-xs text-[#585858] p-1 pt-2">
-                    Validade do Cartão
-                  </legend>
-                  <div class="flex gap-2">
-                    <input
-                      placeholder="Mês (Ex: 05)"
-                      class="input input-sm rounded-md text-[#8b8b8b] border-none w-1/2"
-                      value={creditCardExpMonth}
-                      maxLength={2}
-                      onChange={(e) =>
-                        e.target &&
-                        setCreditCardExpMonth(e.currentTarget.value)}
-                    />
-                    <input
-                      placeholder="Ano (Ex: 2030)"
-                      class="input input-sm rounded-md text-[#8b8b8b] border-none w-1/2"
-                      value={creditCardExpYear}
-                      maxlength={4}
-                      onChange={(e) =>
-                        e.target && setCreditCardExpYear(e.currentTarget.value)}
-                    />
-                  </div>
-                </fieldset>
-              </form>
-            </div>
+              )
+              : null}
           </>
         )}
 
