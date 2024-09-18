@@ -36,14 +36,20 @@ const checkoutv2 = async (
 ): Promise<unknown | null> => {
   const params = { ...props };
   delete params.token;
-
+  const complement = props.holder_info?.address_complement ?? "não informado";
   const response = await fetch(`${API_URL}/checkout/v2`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: props.token || "",
     },
-    body: JSON.stringify(params),
+    body: JSON.stringify({
+      items: params.items,
+      credit_card_token: params.credit_card_token,
+      credit_card: params.credit_card,
+      pix: params.pix,
+      holder_info: { ...params.holder_info, address_complement: complement },
+    }),
   });
 
   if (response.status > 401) {

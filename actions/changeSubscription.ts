@@ -31,6 +31,7 @@ const changeSubscription = async (
 ): Promise<unknown | null> => {
   const params = { ...props };
   delete params.token;
+  const complement = props.holder_info?.address_complement ?? "não informado";
   const response = await fetch(
     `${API_URL}/checkout/upgrade`,
     {
@@ -39,7 +40,12 @@ const changeSubscription = async (
         "Content-Type": "application/json",
         Authorization: props.token!,
       },
-      body: JSON.stringify({ ...params }),
+      body: JSON.stringify({
+        sku: params.sku,
+        credit_card_token: params.credit_card_token,
+        credit_card: params.credit_card,
+        holder_info: { ...params.holder_info, address_complement: complement },
+      }),
     },
   );
 
