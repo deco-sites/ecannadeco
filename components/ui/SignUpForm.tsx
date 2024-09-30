@@ -219,7 +219,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
       setPasswordError("");
     } else {
       setPasswordError(
-        "A senha deve conter pelo menos 8 caracteres, incluindo: letras maiúsculas, minúsculas, números e caracteres especiais.",
+        "Corrija: Sua senha deve conter pelo menos 8 caracteres, incluindo: letras maiúsculas, minúsculas, números e caracteres especiais ( $ # % ! )",
       );
     }
   };
