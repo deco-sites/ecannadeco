@@ -5,17 +5,16 @@ export interface Props {
   id: string;
 }
 
-const getAssociation = async (
+const adminApproveAssociationUser = async (
   { token, id }: Props,
   _req: Request,
 ) => {
   try {
-    // const url = `http://localhost/profile/admin/approve`;
-    const url = `${API_URL}/profile/admin/approve`;
+    const url = `${API_URL}/admin/approve-association-user`;
 
     const response = await fetch(url, {
       method: "PUT",
-      body: JSON.stringify({ patient: id }),
+      body: JSON.stringify({ associationUser: id }),
       headers: {
         "Content-Type": "application/json",
         Authorization: token,
@@ -31,4 +30,4 @@ const getAssociation = async (
   }
 };
 
-export default getAssociation;
+export default adminApproveAssociationUser;

@@ -15,11 +15,6 @@ export type AssociationUsers = {
   email: string;
   cognito_id: string;
   associationApproved?: boolean;
-  card_name?: string;
-  created_at?: string;
-  association?: {
-    name: string;
-  };
   cognito_data: {
     cpf: string;
     name: string;
@@ -38,18 +33,19 @@ export type AssociationUsersResponse = {
   hasNextPage: boolean;
 };
 
-const getAssociation = async (
+const adminGetPendingAssociationUsers = async (
   { token, params }: Props,
   _req: Request,
 ): Promise<AssociationUsersResponse> => {
   try {
-    let url = `${API_URL}/profile/admin`;
+    let url =
+      `${API_URL}/admin/profiles?association=not_empty&plan=CARD_ASSOCIATED&associationApproved=false`;
 
     if (params) {
       const query = `?limit=${params.limit}&page=${params.page}${
-        params.email && `&email=${params.email}`
-      }`;
-      url = `${API_URL}/profile/admin${query}`;
+        params.email ? `&email=${params.email}` : ""
+      }&association=not_empty&plan=CARD_ASSOCIATED&associationApproved=false`;
+      url = `${API_URL}/admin/profiles${query}`;
     }
 
     const response = await fetch(url, {
@@ -69,4 +65,4 @@ const getAssociation = async (
   }
 };
 
-export default getAssociation;
+export default adminGetPendingAssociationUsers;
