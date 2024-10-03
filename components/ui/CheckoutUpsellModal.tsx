@@ -229,14 +229,16 @@ const CheckoutUpsellModal = (props: Props) => {
         }
       }
 
-      // displayCheckoutUpsellModal.value = false;
       displayAlert.value = true;
       alertText.value = "Operação realizada com sucesso!";
       alertType.value = "success";
-      displayCheckoutUpsellModal.value = false;
-      setTimeout(function () {
-        globalThis.location.reload();
-      }, 2000);
+
+      if (!isPix) {
+        setTimeout(function () {
+          displayCheckoutUpsellModal.value = false;
+          globalThis.location.reload();
+        }, 2000);
+      }
       setLoading(false);
     } catch (_e) {
       displayAlert.value = true;
