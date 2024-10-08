@@ -606,11 +606,11 @@ function MyInfo() {
 
           {/* CIDs */}
           <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
-            CIDs (Diagnósticos)
+            Patologias tratadas com cannabis (nome ou CID)
           </h2>
           <div class="join flex flex-col w-full">
             <input
-              placeholder="Pesquise e selecione seus CIDs"
+              placeholder="Pesquise e selecione por nome ou CID"
               class="input rounded-md text-[#8b8b8b] border-none join-item mb-2"
               name="cids"
               value={cidSearchTerm}
