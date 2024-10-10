@@ -17,17 +17,23 @@ import type { Order } from "../../actions/getUserOrders.ts";
 const OrderItem = ({
   productName,
   userEmail,
+  name,
   productPrice,
   created_at,
   status,
   shipping_tracking_code,
+  address,
+  association,
   id,
 }: {
   userEmail: string;
+  name: string;
   productName: string;
   productPrice: string;
   created_at: string;
   id: string;
+  address?: string;
+  association?: string;
   shipping_tracking_code?: string;
   status:
     | "PAID"
@@ -40,11 +46,12 @@ const OrderItem = ({
 }) => {
   return (
     <li class="p-3 bg-[#cacaca] flex justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm flex-wrap">
-      <div class="w-[40%] flex justify-start truncate pr-4">
-        <span>{userEmail ? userEmail : "n/a"}</span>
+      <div class="w-[40%] flex flex-col justify-start truncate pr-4">
+        <span class="font-bold">{name ? name : "sem nome"}</span>
+        <span class="text-xs">{userEmail ? userEmail : "sem email"}</span>
       </div>
       <div class="w-[20%] flex flex-col justify-start">
-        <span>{productName}</span>
+        <span class="font-bold">{productName}</span>
         <span>{"RS " + productPrice}</span>
       </div>
       <div class="w-[20%] flex justify-center">
@@ -52,6 +59,28 @@ const OrderItem = ({
       </div>
       <div class="w-[20%] flex justify-end">
         <OrderStatus status={status} id={id} adminView={true} />
+      </div>
+      <div class="mt-3">
+        {address &&
+          (productName === "CARTEIRINHA" ||
+            productName === "CARTEIRINHA FREE") &&
+          (
+            <div class="w-full">
+              <span class="text-xs">
+                <span class="font-bold">Endereço:</span> {address}
+              </span>
+            </div>
+          )}
+        {association &&
+          (productName === "CARTEIRINHA" ||
+            productName === "CARTEIRINHA FREE") &&
+          (
+            <div class="w-full">
+              <span class="text-xs">
+                <span class="font-bold">Associação:</span> {association}
+              </span>
+            </div>
+          )}
       </div>
       {status === "SHIPPED" && (
         <div class="w-full">
@@ -221,9 +250,19 @@ function AdminOrders() {
               <ul class="flex flex-col gap-2">
                 {orders &&
                   orders.map((o) => {
+                    const adrss = o.user_data?.address &&
+                      o.user_data.address[0];
+                    console.log({ adrss });
                     return (
                       <OrderItem
                         userEmail={o.user_data?.email || ""}
+                        name={o.user_data?.name || ""}
+                        address={adrss
+                          ? `${adrss.street} ${adrss.number}, ${adrss.complement} - ${adrss.neighborhood} - ${adrss.city}/${adrss.state}, ${adrss.cep}`
+                          : undefined}
+                        association={o.user_data?.association
+                          ? o.user_data?.association.name
+                          : undefined}
                         id={o._id}
                         productName={o.items[0].sku.name}
                         productPrice={(o.value / 100).toFixed(2)}

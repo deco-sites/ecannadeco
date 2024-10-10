@@ -32,7 +32,20 @@ export interface Order {
     quantity: number;
   }[];
   user_data?: {
-    email: string;
+    name: string;
+    email?: string;
+    association?: {
+      name: string;
+    };
+    address?: {
+      street: string;
+      number: string;
+      complement: string;
+      neighborhood: string;
+      city: string;
+      state: string;
+      cep: string;
+    }[];
   };
 }
 
