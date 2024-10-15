@@ -27,6 +27,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   const [dealName, setDealName] = useState("");
   const [associationName, setAssociationName] = useState("");
   const [associationLogo, setAssociationLogo] = useState("");
+  const [legacyCPF, setLegacyCPF] = useState("");
   // const { displayAlert, alertText, alertType } = useUI();
 
   useEffect(() => {
@@ -34,6 +35,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
       const params = new URLSearchParams(globalThis.location.search);
       const cnpj = params.get("cnpj");
       const ref = localStorage.getItem("referral");
+      setLegacyCPF(localStorage.getItem("legacyPatientCPF") || "");
       if (cnpj) {
         setAssociationCNPJ(cnpj);
         invoke["deco-sites/ecannadeco"].actions
@@ -105,6 +107,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
           password,
           name,
           cpf,
+          legacyCPF,
           phone: whatsapp,
           interest,
           associationCNPJ,
@@ -313,13 +316,14 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
             <span class="label-text text-xs text-[#585858]">CPF</span>
           </div>
           <input
-            class="input rounded-md text-[#8b8b8b] border-none w-full"
+            class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#dedede]"
             placeholder="Seu CPF"
             name="cpf"
-            value={maskCPF(cpf)}
+            value={legacyCPF ? maskCPF(legacyCPF) : maskCPF(cpf)}
             onChange={(e) => {
               handleCPFInputChange(e);
             }}
+            disabled={legacyCPF !== ""}
           />
           {cpfError !== "" && (
             <div class="label">
