@@ -11,6 +11,7 @@ import type { Logo } from "./Header.tsx";
 import Image from "apps/website/components/Image.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useEffect } from "preact/hooks";
+import { decodeBase64 } from "base64";
 
 const Menu = lazy(() => import("../../components/header/Menu.tsx"));
 const Searchbar = lazy(() => import("../../components/search/Searchbar.tsx"));
@@ -79,10 +80,22 @@ function Drawers({ menu, searchbar, children }: Props) {
 
       let ref = undefined;
       let cnpj = undefined;
+      let code = undefined;
 
       if (pathname === "/legacy") {
         ref = "Legacy";
         cnpj = params.get("cnpj");
+        code = params.get("code");
+
+        console.log({ cnpj, code });
+
+        if (code) {
+          const decodedCode = decodeBase64(code);
+          const cpf = new TextDecoder().decode(decodedCode);
+          console.log({ cpf });
+          localStorage.setItem("legacyPatientCPF", cpf);
+        }
+
         if (cnpj) {
           localStorage.setItem("legacyAssociationCNPJ", cnpj);
         }

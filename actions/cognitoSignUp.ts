@@ -3,11 +3,12 @@ export interface Props {
   email: string;
   password: string;
   name: string;
-  cpf: string;
+  cpf?: string;
   phone: string;
   interest?: string;
   associationCNPJ?: string;
   dealName?: string;
+  legacyCPF?: string;
 }
 
 const signUpCognito = async (
@@ -15,6 +16,8 @@ const signUpCognito = async (
   _req: Request,
 ) => {
   try {
+    const cpf = props.legacyCPF ? props.legacyCPF : props.cpf;
+
     const response = await fetch(`${API_URL}/auth`, {
       method: "POST",
       headers: {
@@ -24,11 +27,12 @@ const signUpCognito = async (
         email: props.email,
         password: props.password,
         name: props.name,
-        cpf: props.cpf,
+        cpf,
         phone: props.phone,
         interest: props.interest,
         association: props.associationCNPJ,
         dealName: props.dealName,
+        associationApproved: Boolean(props.legacyCPF),
       }),
     });
 

@@ -1,5 +1,6 @@
 {
   "imports": {
+    "base64": "https://deno.land/std@0.224.0/encoding/base64.ts",
     "deco-sites/ecannadeco/": "./",
     "dom-to-image": "https://esm.sh/dom-to-image@2.6.0",
     "puppeteer": "https://deno.land/x/pptr/mod.ts",
