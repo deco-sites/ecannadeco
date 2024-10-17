@@ -15,6 +15,7 @@ export interface Props {
     ccv: string;
   };
   pix?: boolean;
+  voucher?: string;
   holder_info?: {
     full_name: string;
     email: string;
@@ -46,8 +47,18 @@ const checkoutv2 = async (
     body: JSON.stringify(params),
   });
 
-  if (response.status > 401) {
-    throw new Error("Unauthorized");
+
+  if(response.status === 422) {
+    const res = await response.json();
+    return { errors: [res.message], ...res };
+  }
+
+  if (response.status === 401) {
+    throw new Error("Não autorizado");
+  }
+
+  if (response.status >= 400) {
+    throw new Error("Error");
   }
 
   const res = await response.json();
