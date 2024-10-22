@@ -47,8 +47,7 @@ const checkoutv2 = async (
     body: JSON.stringify(params),
   });
 
-
-  if(response.status === 422) {
+  if (response.status === 422) {
     const res = await response.json();
     return { errors: [res.message], ...res };
   }
