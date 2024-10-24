@@ -22,6 +22,7 @@ function MyInfo() {
   const [termsAgree, setTermsAgree] = useState(false);
   const [authorization, setAuthorization] = useState("");
   const [postalCode, setPostalCode] = useState("");
+  const [postalCodeError, setPostalCodeError] = useState("");
   const [addressStreet, setAddressStreet] = useState("");
   const [birthDate, setBirthDate] = useState("");
   const [addressCity, setAddressCity] = useState("");
@@ -192,6 +193,14 @@ function MyInfo() {
 
       console.log({ responseCEP: r });
 
+      if (!r.uf) {
+        setPostalCodeError("CEP inválido");
+        setIsLoadingPostalCode(false);
+        return null;
+      } else {
+        setPostalCodeError("");
+      }
+
       setAddressStreet(r.logradouro);
       setAddressCity(r.localidade);
       setAddressState(r.uf);
@@ -231,6 +240,12 @@ function MyInfo() {
 
     if (!userImg) {
       alert("Você deve subir uma foto 3x4 para continuar");
+      setIsSubmitting(false);
+      return null;
+    }
+
+    if (postalCodeError) {
+      alert("Preencha um CEP válido para continuar");
       setIsSubmitting(false);
       return null;
     }
@@ -467,29 +482,44 @@ function MyInfo() {
                 <input
                   placeholder="CEP"
                   name="cep"
-                  class="input rounded-md text-[#8b8b8b] border-none"
+                  class={`input rounded-md text-[#8b8b8b] ${
+                    postalCodeError ? "border border-red-600" : "border-none"
+                  }`}
+                  maxLength={8}
                   // disabled={addressStreet != "" ? true : false}
                   value={postalCode}
                   onChange={(e) => {
+                    const value = e.currentTarget.value;
                     setPostalCode(e.currentTarget.value);
+                    if (value.length === 8) {
+                      handleValidatePostalCode(value);
+                    }
                   }}
-                  // onFocus={() => setDisplayCidResults(true)}
-                  // onBlur={() => setDisplayCidResults(false)}
                 />
-                <button
-                  class="btn btn-ghost bg-[#dedede] text-[#5d5d5d] join-item"
-                  onClick={() => handleValidatePostalCode(postalCode)}
-                >
-                  Validar CEP{" "}
-                  {isLoadingPostalCode && (
-                    <span class="loading loading-spinner text-green-600"></span>
-                  )}
-                </button>
+                {isLoadingPostalCode && (
+                  <span class="loading loading-spinner join-item" />
+                )}
+                {postalCodeError && (
+                  <div class="label-text-alt text-red-500">
+                    {postalCodeError}
+                  </div>
+                )}
+                {
+                  /* <button
+                class="btn btn-ghost bg-[#dedede] text-[#5d5d5d] join-item"
+                onClick={() => handleValidatePostalCode(postalCode)}
+              >
+                Validar CEP{" "}
+                {isLoadingPostalCode && (
+                  <span class="loading loading-spinner text-green-600"></span>
+                )}
+              </button> */
+                }
               </label>
             </div>
             <div
               class={`flex flex-wrap gap-[2%] justify-left ${
-                addressState !== "" ? "" : "hidden"
+                !postalCodeError && addressState !== "" ? "" : "hidden"
               }`}
             >
               <label class="w-full sm:w-[32%]">

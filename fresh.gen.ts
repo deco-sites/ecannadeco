@@ -86,6 +86,7 @@ import * as $SignUpForm from "./islands/SignUpForm.tsx";
 import * as $SignUpFormPrescriber from "./islands/SignUpFormPrescriber.tsx";
 import * as $Signout from "./islands/Signout.tsx";
 import * as $SliderJS from "./islands/SliderJS.tsx";
+import * as $TreatmentAccess from "./islands/TreatmentAccess.tsx";
 import * as $UserAlerts from "./islands/UserAlerts.tsx";
 import * as $UserAssociatedSignup from "./islands/UserAssociatedSignup.tsx";
 import * as $WishlistButton_vtex from "./islands/WishlistButton/vtex.tsx";
@@ -188,6 +189,7 @@ const manifest = {
     "./islands/SignUpFormPrescriber.tsx": $SignUpFormPrescriber,
     "./islands/Signout.tsx": $Signout,
     "./islands/SliderJS.tsx": $SliderJS,
+    "./islands/TreatmentAccess.tsx": $TreatmentAccess,
     "./islands/UserAlerts.tsx": $UserAlerts,
     "./islands/UserAssociatedSignup.tsx": $UserAssociatedSignup,
     "./islands/WishlistButton/vtex.tsx": $WishlistButton_vtex,
