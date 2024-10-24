@@ -272,7 +272,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         </div>
       </div>
       <div class="max-w-[472px] w-[90%] mt-10 sm:mt-0">
-        <div class="bg-[#ececec] p-4 rounded-md">
+        <div class="bg-[#fafafa] p-4 rounded-md">
           {orderInProgress && (
             <a
               href="/meus-pedidos"
@@ -333,12 +333,12 @@ function EcannaCardPage({ cardSkeleton }: Props) {
             displayCheckoutUpsellModal.value = true;
           }}
         >
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 px-2">
             <span class="w-32">Pedir Via Física</span> {loadingProduct
               ? <Loading style="loading-spinner" size="loading-xs" />
               : (
                 <div
-                  class={`p-2 bg-white text-primary text-xs rounded-md ${
+                  class={`p-2 bg-white text-primary text-xs rounded-lg ${
                     cardProduct.price == 0 && "animate-bounce"
                   }`}
                 >

@@ -746,7 +746,9 @@ const CheckoutUpsellModal = (props: Props) => {
 
         <div class="flex flex-col gap-2">
           <span
-            class={`text-red-700 ${!invalidForm ? "hidden" : "flex text-xs"}`}
+            class={`text-red-700 mt-2 ${
+              !invalidForm ? "hidden" : "flex text-xs"
+            }`}
             onClick={() => {
               console.log({
                 cep,
