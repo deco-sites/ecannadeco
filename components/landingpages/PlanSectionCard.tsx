@@ -94,7 +94,9 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
                         <span class="text-5xl font-thin">
                           R$ {plan.price * (1 - deal.discount)}
                         </span>
-                        <span>(Desconto {deal.partner_name})</span>
+                        <span class="text-sm text-[#4bf07f]">
+                          (Desconto {deal.partner_name})
+                        </span>
                       </>
                     )
                     : null}
