@@ -548,9 +548,11 @@ const CheckoutUpsellModal = (props: Props) => {
 
         {isVoucher && (
           <div class="flex flex-col md:flex-row md:gap-4 gap-1">
-            <label class="w-full sm:w-[48%]  flex flex-col">
+            <label class="w-full sm:w-[48%] flex flex-col text-center mb-2 mt-4 mx-auto bg-primary rounded-md p-2">
               <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">Voucher</span>
+                <span class="label-text text-xs text-white font-bold">
+                  Voucher
+                </span>
               </div>
               <input
                 class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
@@ -767,7 +769,7 @@ const CheckoutUpsellModal = (props: Props) => {
           </span>
 
           <button
-            class="my-4 btn btn-sm btn-secondary text-white"
+            class="my-4 btn btn-sm btn-primary text-white"
             onClick={handleCheckout}
             disabled={loading || invalidForm}
           >
