@@ -264,7 +264,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   };
 
   return (
-    <div class="max-w-[480px] flex flex-col">
+    <div class="max-w-[480px] flex flex-col flex-grow">
       <StepTimeline step={1} />
       {associationName
         ? (

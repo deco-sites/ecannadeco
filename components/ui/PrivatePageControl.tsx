@@ -73,16 +73,13 @@ function PrivatePageControl(_props: Props) {
         }
       }
 
-      if (currentPlan === "CARD" || currentPlan === "CARD_ASSOCIATED") {
+      if (
+        currentPlan === "CARD" || currentPlan === "CARD_ASSOCIATED" ||
+        currentPlan === "CARD_PARTNER"
+      ) {
         if (!r.dataProfile.updatedData) {
-          console.log("não fez updatedData");
           if (window.location.pathname !== "/meus-dados") {
             window.location.href = "/meus-dados";
-          }
-        } else if (!r.dataProfile.uploadedFile) {
-          console.log("não fez uploadedFile");
-          if (window.location.pathname !== "/meus-documentos") {
-            window.location.href = "/meus-documentos";
           }
         }
       }

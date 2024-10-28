@@ -11,6 +11,7 @@ import CreditCardInput from "deco-sites/ecannadeco/components/ui/CreditCardInput
 import CVVInput from "deco-sites/ecannadeco/components/ui/CVVInput.tsx";
 import { useHolderInfo } from "deco-sites/ecannadeco/sdk/useHolderInfo.ts";
 import { qrcode } from "qrcode";
+
 export interface Product {
   description: string;
   name: string;
@@ -63,6 +64,9 @@ const CheckoutUpsellModal = (props: Props) => {
   const [addressComplement, setAddressComplement] = useState<string>("");
   const [pixCode, setPixCode] = useState<string>("");
   const [isPix, setIsPix] = useState(plan ? false : true);
+  const [isCreditCard, setIsCreditCard] = useState(plan ? true : false);
+  const [isVoucher, setIsVoucher] = useState(false);
+  const [voucher, setVoucher] = useState<string>("");
   const [isFree] = useState(discount === 1);
   const [pixImg, setPixImg] = useState<string | QRCode>("");
   const [paymentType, setPaymentType] = useState<string>(
@@ -160,7 +164,11 @@ const CheckoutUpsellModal = (props: Props) => {
           },
         };
 
-        if (!isPix) {
+        if (isVoucher) {
+          paramsCheckoutV2.voucher = voucher;
+        }
+
+        if (isCreditCard) {
           paramsCheckoutV2.credit_card = {
             holder: holderName,
             number: creditCardNumber,
@@ -221,7 +229,7 @@ const CheckoutUpsellModal = (props: Props) => {
         };
 
         if (respCheckoutV2.errors) {
-          throw new Error();
+          throw new Error(respCheckoutV2.message);
         }
         if (isPix) {
           setPixCode(respCheckoutV2?.qrCode || "");
@@ -240,9 +248,15 @@ const CheckoutUpsellModal = (props: Props) => {
         }, 2000);
       }
       setLoading(false);
-    } catch (_e) {
+    } catch (error) {
       displayAlert.value = true;
-      alertText.value =
+
+      const messages: { [key: string]: string } = {
+        "INVALID_VOUCHER": "Voucher inválido",
+        "VOUCHER_USED": "Voucher já foi utilizado",
+      };
+
+      alertText.value = messages[error.message as keyof typeof messages] ||
         "Não foi possível finalizar o checkout. Contacte o suporte.";
       alertType.value = "error";
       setLoading(false);
@@ -281,7 +295,7 @@ const CheckoutUpsellModal = (props: Props) => {
   }, [pixCode]);
 
   useEffect(() => {
-    if (isPix || isFree) {
+    if (isPix || isFree || isVoucher) {
       if (
         cep &&
         addressNumber &&
@@ -293,7 +307,11 @@ const CheckoutUpsellModal = (props: Props) => {
         addressState &&
         holderName
       ) {
-        setInvalidForm(false);
+        if (isVoucher && voucher === "") {
+          setInvalidForm(true);
+        } else {
+          setInvalidForm(false);
+        }
       } else {
         setInvalidForm(true);
       }
@@ -335,6 +353,8 @@ const CheckoutUpsellModal = (props: Props) => {
     addressCity,
     addressState,
     birthDate,
+    voucher,
+    paymentType,
   ]);
 
   function ConfirmOrder() {
@@ -405,6 +425,8 @@ const CheckoutUpsellModal = (props: Props) => {
                   if (e.target) {
                     setPaymentType(e.currentTarget.value);
                     setIsPix(e.currentTarget.value === "PIX");
+                    setIsCreditCard(e.currentTarget.value === "CREDIT_CARD");
+                    setIsVoucher(e.currentTarget.value === "VOUCHER");
                   }
                 }}
               >
@@ -414,6 +436,9 @@ const CheckoutUpsellModal = (props: Props) => {
                 <option name="CREDIT_CARD" value="CREDIT_CARD">
                   Cartão de Crédito
                 </option>
+                <option name="VOUCHER" value="VOUCHER">
+                  Voucher
+                </option>
               </select>
             </div>
           )
@@ -421,7 +446,7 @@ const CheckoutUpsellModal = (props: Props) => {
 
         {/* Cartão de crédito */}
 
-        {!isPix && (
+        {isCreditCard && (
           <>
             <div>
               {
@@ -519,6 +544,24 @@ const CheckoutUpsellModal = (props: Props) => {
               )
               : null}
           </>
+        )}
+
+        {isVoucher && (
+          <div class="flex flex-col md:flex-row md:gap-4 gap-1">
+            <label class="w-full sm:w-[48%] flex flex-col text-center mb-2 mt-4 mx-auto bg-primary rounded-md p-2">
+              <div class="label pb-1">
+                <span class="label-text text-xs text-white font-bold">
+                  Voucher
+                </span>
+              </div>
+              <input
+                class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
+                placeholder="Digite aqui seu voucher"
+                value={voucher}
+                onChange={(e) => e.target && setVoucher(e.currentTarget.value)}
+              />
+            </label>
+          </div>
         )}
 
         <div>
@@ -705,7 +748,9 @@ const CheckoutUpsellModal = (props: Props) => {
 
         <div class="flex flex-col gap-2">
           <span
-            class={`text-red-700 ${!invalidForm ? "hidden" : "flex text-xs"}`}
+            class={`text-red-700 mt-2 ${
+              !invalidForm ? "hidden" : "flex text-xs"
+            }`}
             onClick={() => {
               console.log({
                 cep,
@@ -724,7 +769,7 @@ const CheckoutUpsellModal = (props: Props) => {
           </span>
 
           <button
-            class="my-4 btn btn-sm btn-secondary text-white"
+            class="my-4 btn btn-sm btn-primary text-white"
             onClick={handleCheckout}
             disabled={loading || invalidForm}
           >

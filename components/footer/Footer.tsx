@@ -16,7 +16,7 @@ function Footer({ logo, text, hideMarginTop }: Props) {
   return (
     <>
       <AlertInfo />
-      <footer class="bg-[#eeeeee] flex-col sm:flex-row">
+      <footer class="bg-[#fafafa] flex-col sm:flex-row">
         <div
           class={`flex justify-center items-center bottom-0 w-full p-4 gap-5 ${
             !hideMarginTop && "mt-20"

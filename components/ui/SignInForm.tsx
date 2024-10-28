@@ -63,7 +63,7 @@ function SignInForm({ formTitle }: Props) {
               </span>
             </div>
             <input
-              class="input rounded-md text-[#8b8b8b] border-none w-full"
+              class="input rounded-md text-[#8b8b8b] border border-[#f1f1f1] w-full"
               placeholder="Seu email"
               name="email"
               value={email}
@@ -78,7 +78,7 @@ function SignInForm({ formTitle }: Props) {
             </div>
             <input
               type="password"
-              class="input rounded-md text-[#8b8b8b] border-none w-full"
+              class="input rounded-md text-[#8b8b8b] border border-[#f1f1f1] w-full"
               placeholder="Sua senha"
               name="password"
               value={password}
