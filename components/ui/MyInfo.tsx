@@ -294,7 +294,7 @@ function MyInfo() {
             })
             .then((_res) => {
               setChangedSelfie(false);
-              window.location.href = window.location.pathname;
+              window.location.href = "/minha-carteirinha";
             });
         });
     } catch (e) {
