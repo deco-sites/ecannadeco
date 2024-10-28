@@ -99,6 +99,8 @@ function Drawers({ menu, searchbar, children }: Props) {
         if (cnpj) {
           localStorage.setItem("legacyAssociationCNPJ", cnpj);
         }
+      } else if (pathname === "/expocannabis") {
+        ref = "ExpoCannabis";
       } else {
         ref = params.get("ref");
       }
