@@ -212,7 +212,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
           <Icon id="Form" size={19} /> Ficha Pública
         </a>
       </div>
-      <div class="rotate-90 sm:rotate-0 flex justify-center p-3 sm:p-12 bg-[#252525] rounded-xl max-w-[424px] sm:max-w-[90%] text-[#1878b8]">
+      <div class="rotate-90 my-6 sm:my-0 sm:rotate-0 flex justify-center p-3 sm:p-12 bg-[#252525] rounded-xl max-w-[424px] sm:max-w-[90%] text-[#1878b8]">
         {isLoading
           ? <span class="loading loading-spinner loading-xs" />
           : (
@@ -233,8 +233,7 @@ function EcannaCardPage({ cardSkeleton }: Props) {
                     class="card"
                     src={userData?.dataProfile?.ecannacard_url || cardSkeleton}
                     alt="Carteirinha eCanna"
-                    width={352}
-                    height={234}
+                    width={487}
                     loading="lazy"
                   />
                 )}
