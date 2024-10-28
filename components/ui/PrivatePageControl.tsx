@@ -73,7 +73,10 @@ function PrivatePageControl(_props: Props) {
         }
       }
 
-      if (currentPlan === "CARD" || currentPlan === "CARD_ASSOCIATED") {
+      if (
+        currentPlan === "CARD" || currentPlan === "CARD_ASSOCIATED" ||
+        currentPlan === "CARD_PARTNER"
+      ) {
         if (!r.dataProfile.updatedData) {
           if (window.location.pathname !== "/meus-dados") {
             window.location.href = "/meus-dados";
