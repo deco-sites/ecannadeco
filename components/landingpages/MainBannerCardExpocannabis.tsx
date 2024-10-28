@@ -24,7 +24,7 @@ function MainBanner({
   logo_2,
   separator,
 }: // partnerAssociations,
-Props) {
+  Props) {
   return (
     <>
       <div class="w-full bg-cover bg-center bg-[#004B7E]">
