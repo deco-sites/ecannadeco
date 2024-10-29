@@ -24,6 +24,7 @@ const OrderItem = ({
   shipping_tracking_code,
   address,
   association,
+  pdf_card,
   id,
 }: {
   userEmail: string;
@@ -35,6 +36,7 @@ const OrderItem = ({
   address?: string;
   association?: string;
   shipping_tracking_code?: string;
+  pdf_card?: string;
   status:
     | "PAID"
     | "PENDING"
@@ -44,6 +46,32 @@ const OrderItem = ({
     | "SHIPPED"
     | "DELIVERED";
 }) => {
+  function downloadFile(fileUrl: string, filename: string) {
+    // Fetch the file data
+    fetch(fileUrl)
+      .then((response) => response.blob())
+      .then((blob) => {
+        // Create a temporary anchor element
+        const a = document.createElement("a");
+        a.style.display = "none";
+
+        // Set the download attribute and file URL
+        a.download = filename;
+        a.href = window.URL.createObjectURL(blob);
+
+        // Append the anchor to the body and trigger the download
+        document.body.appendChild(a);
+        a.click();
+
+        // Clean up
+        window.URL.revokeObjectURL(a.href);
+        document.body.removeChild(a);
+      })
+      .catch((error) => {
+        console.error("Error downloading file:", error);
+      });
+  }
+
   return (
     <li class="p-3 bg-[#cacaca] flex justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm flex-wrap">
       <div class="w-[40%] flex flex-col justify-start truncate pr-4">
@@ -82,15 +110,27 @@ const OrderItem = ({
             </div>
           )}
       </div>
-      {status === "SHIPPED" && (
-        <div class="w-full">
-          <OrderShippingTrackingCode
-            code={shipping_tracking_code!}
-            id={id}
-            adminView={true}
-          />
-        </div>
-      )}
+      <div class="flex justify-between">
+        {status === "SHIPPED" && (
+          <div class="w-full">
+            <OrderShippingTrackingCode
+              code={shipping_tracking_code!}
+              id={id}
+              adminView={true}
+            />
+          </div>
+        )}
+        {pdf_card && (
+          <div
+            href={pdf_card}
+            class="flex btn btn-ghost w-full"
+            onClick={() =>
+              downloadFile(pdf_card, `${name}-ecanna-carteirinha.pdf`)}
+          >
+            <Icon id="Download" size={19} />
+          </div>
+        )}
+      </div>
     </li>
   );
 };
@@ -272,6 +312,7 @@ function AdminOrders() {
                         )}
                         status={o.status}
                         shipping_tracking_code={o.shipping_tracking_code}
+                        pdf_card={o.user_data?.pdf_card}
                       />
                     );
                   })}

@@ -46,6 +46,7 @@ export interface Order {
       state: string;
       cep: string;
     }[];
+    pdf_card?: string;
   };
 }
 
