@@ -27,18 +27,18 @@ function UserAssociatedSignup() {
   useEffect(() => {
     setLoading(true);
     try {
-      invoke["deco-sites/ecannadeco"].actions.getAssociation({
-        id: associationSignup,
-      }).then((r) => {
-        const resp = r as Association;
-        setAssociationName(resp.name);
-        setAssociationLogo(resp.logo_url);
-        setLoading(false);
-      });
+      invoke["deco-sites/ecannadeco"].actions
+        .getAssociation({
+          id: associationSignup,
+        })
+        .then((r) => {
+          const resp = r as Association;
+          setAssociationName(resp.name);
+          setAssociationLogo(resp.logo_url);
+          setLoading(false);
+        });
     } catch (_e) {
-      alert(
-        "Não foi possível carregar associação. Contacte o suporte.",
-      );
+      alert("Não foi possível carregar associação. Contacte o suporte.");
     }
   }, []); // Passando um array de dependências vazio
 
@@ -79,45 +79,21 @@ function UserAssociatedSignup() {
             <div class="flex w-full">
               <ul class="flex flex-col gap-3 w-full">
                 <li class="flex gap-3 items-center">
-                  <Icon
-                    class="text-primary"
-                    id="CircleCheck"
-                    size={17}
-                  />
-                  <span class="text-[10px]">
-                    Uso gratuito estendido
-                  </span>
+                  <Icon class="text-primary" id="CircleCheck" size={17} />
+                  <span class="text-[10px]">Uso gratuito estendido</span>
                 </li>
                 <li class="flex gap-3 items-center">
-                  <Icon
-                    class="text-primary"
-                    id="CircleCheck"
-                    size={17}
-                  />
-                  <span class="text-[10px]">
-                    Carteirinha digital oficial
-                  </span>
+                  <Icon class="text-primary" id="CircleCheck" size={17} />
+                  <span class="text-[10px]">Carteirinha digital oficial</span>
                 </li>
-                <li
-                  class={`flex gap-3 items-center`}
-                >
-                  <Icon
-                    class="text-primary"
-                    id="CircleCheck"
-                    size={17}
-                  />
+                <li class={`flex gap-3 items-center`}>
+                  <Icon class="text-primary" id="CircleCheck" size={17} />
                   <span class="text-[10px]">
                     Upload ilimitado de documentos
                   </span>
                 </li>
-                <li
-                  class={`flex gap-3 items-center`}
-                >
-                  <Icon
-                    class="text-primary"
-                    id="CircleCheck"
-                    size={17}
-                  />
+                <li class={`flex gap-3 items-center`}>
+                  <Icon class="text-primary" id="CircleCheck" size={17} />
                   <span class="text-[10px]">
                     Suporte ilimitado do uso da plataforma
                   </span>
@@ -126,8 +102,9 @@ function UserAssociatedSignup() {
             </div>
             <div class="flex flex-col gap-4">
               <span>
-                Agora que o seu cadastro está feito, basta prosseguir para o
-                login e acessar sua conta.
+                Agora que o seu cadastro está feito, basta prosseguir para fazer
+                o login, preencher seus dados e, caso queira, pedir sua via
+                física.
               </span>
               <button
                 onClick={handleProceed}
