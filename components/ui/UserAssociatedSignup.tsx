@@ -67,8 +67,7 @@ function UserAssociatedSignup() {
                 <Image
                   src={associationLogo}
                   alt={"logo associação"}
-                  width={117}
-                  height={32}
+                  width={179}
                 />
               </div>
               <span>
