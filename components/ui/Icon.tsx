@@ -17,6 +17,7 @@ export type AvailableIcons =
   | "CreditCard"
   | "CardID"
   | "Close"
+  | "Copy"
   | "Dangerous"
   | "Deco"
   | "Diners"

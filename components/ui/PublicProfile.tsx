@@ -135,31 +135,33 @@ function PublicProfileComponent({ publicProfile }: Props) {
                 Documentos do Paciente
               </h2>
               <ul class="flex flex-col gap-2 w-full">
-                {publicProfile?.documents.map((doc) => {
-                  return (
-                    <li>
-                      <a class="w-full" href={doc.file_url}>
-                        <div class="flex justify-between rounded-md bg-[#C8C8C8] w-full px-5 h-10 items-center">
-                          <div class="flex gap-2">
-                            <span class="text-[#8F8D8D]">
-                              <Icon id="Anexo" size={19} />
-                            </span>
-                            <span class="text-[#393939] text-xs sm:text-sm truncate max-w-[230px] sm:max-w-full">
-                              {doc.title}
+                {publicProfile?.documents &&
+                  publicProfile?.documents.map((doc) => {
+                    return (
+                      <li>
+                        <a class="w-full" href={doc.file_url}>
+                          <div class="flex justify-between rounded-md bg-[#C8C8C8] w-full px-5 h-10 items-center">
+                            <div class="flex gap-2">
+                              <span class="text-[#8F8D8D]">
+                                <Icon id="Anexo" size={19} />
+                              </span>
+                              <span class="text-[#393939] text-xs sm:text-sm truncate max-w-[230px] sm:max-w-full">
+                                {doc.title}
+                              </span>
+                            </div>
+                            <span class="text-[#8F8D8D] flex justify-end w-6">
+                              <Icon id="Download" height={16} />
                             </span>
                           </div>
-                          <span class="text-[#8F8D8D] flex justify-end w-6">
-                            <Icon id="Download" height={16} />
-                          </span>
-                        </div>
-                      </a>
-                    </li>
-                  );
-                })}
+                        </a>
+                      </li>
+                    );
+                  })}
               </ul>
             </div>
             {publicProfile?.association &&
                 publicProfile.associationApproved &&
+                publicProfile?.associationDocuments &&
                 publicProfile?.associationDocuments.length &&
                 publicProfile?.association.cnpj !== "47774121000154"
               ? (
