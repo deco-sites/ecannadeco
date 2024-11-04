@@ -4,6 +4,7 @@ import Slider from "../../components/ui/Slider.tsx";
 import { Plan } from "../../components/ui/Checkout.tsx";
 import Icon from "../../components/ui/Icon.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 
 function ConfirmSignup() {
   const [newPlan, setNewPlan] = useState<Plan>();
@@ -12,7 +13,7 @@ function ConfirmSignup() {
   useEffect(() => {
     try {
       const _params = fetch(
-        `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=false`,
+        `${API_URL}/v1/products/subscriptions?isPrescriber=false`,
       ).then(async (r) => {
         const c = await r.json();
         console.log({ plans: c.docs });

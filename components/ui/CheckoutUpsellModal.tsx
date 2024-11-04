@@ -168,7 +168,7 @@ const CheckoutUpsellModal = (props: Props) => {
           paramsCheckoutV2.voucher = voucher;
         }
 
-        if (isCreditCard) {
+        if (isCreditCard || plan) {
           paramsCheckoutV2.credit_card = {
             holder: holderName,
             number: creditCardNumber,
@@ -359,6 +359,7 @@ const CheckoutUpsellModal = (props: Props) => {
 
   function ConfirmOrder() {
     const currentPrice = plan ? plan.price : product ? product.price : 0;
+
     return (
       <>
         <h3 class="text-xl text-[#8b8b8b] font-semibold text-center mb-4">
@@ -373,7 +374,7 @@ const CheckoutUpsellModal = (props: Props) => {
               {plan ? plan.name : product && product.name}
             </span>
           </span>
-          {discount !== 1
+          {!discount || discount !== 1
             ? (
               <span>
                 {plan
@@ -446,7 +447,7 @@ const CheckoutUpsellModal = (props: Props) => {
 
         {/* Cartão de crédito */}
 
-        {isCreditCard && (
+        {(isCreditCard || plan) && (
           <>
             <div>
               {
@@ -498,7 +499,8 @@ const CheckoutUpsellModal = (props: Props) => {
                 })} */
               }
             </div>
-            {discount !== 1
+
+            {!discount || discount !== 1
               ? (
                 <div class={`${!addNewCard && "hidden"}`}>
                   <form class="flex flex-wrap gap-[2%]">
