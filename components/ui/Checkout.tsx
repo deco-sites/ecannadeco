@@ -1,3 +1,4 @@
+import { Sku } from "deco-sites/ecannadeco/actions/adminGetOrders.ts";
 import CheckoutForm from "../../islands/CheckoutForm.tsx";
 import FormWrap from "./FormWrap.tsx";
 
@@ -7,7 +8,8 @@ export type Plan = {
   plan?: string;
   price: number;
   description: string;
-  skus: string[];
+  plan_description: [string];
+  skus: string[] | Sku[];
   period: string;
   status: string;
   created_at: string;

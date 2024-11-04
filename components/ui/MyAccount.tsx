@@ -16,6 +16,7 @@ import { useUI } from "../../sdk/useUI.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useHolderInfo } from "deco-sites/ecannadeco/sdk/useHolderInfo.ts";
 import { UserData } from "deco-sites/ecannadeco/components/ui/EcannaCardPage.tsx";
+import { Sku } from "deco-sites/ecannadeco/actions/adminGetOrders.ts";
 
 export type Address = {
   cep: string;
@@ -46,6 +47,7 @@ function MyAccount() {
     partner_name: string;
     name: string;
     discount: number;
+    allowed_skus?: Sku[];
   }>();
 
   function formatPeriod(period: string) {
@@ -118,7 +120,7 @@ function MyAccount() {
         `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=false`,
       ).then(async (r) => {
         const c = await r.json();
-        const plansList = c.docs as Plan[];
+        const plansList = c.docs.filter((doc: Plan) => doc.plan) as Plan[];
         setPlans(plansList);
       });
     } catch (_e) {
@@ -268,20 +270,97 @@ function MyAccount() {
                     </button>
                   </div>
                 ))}
-            {currentPlan !== "CARD_ASSOCIATED" && (
+            {
               <div id="planUpgrade" class="flex flex-col gap-3">
                 <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
                   Plano
                 </h2>
-                <Slider class="carousel gap-3 max-w-[105%]">
+                <Slider class="flex-col sm:flex-row sm:carousel gap-3 max-w-[105%]">
+                  {currentPlan === "CARD_ASSOCIATED" && (
+                    <Slider.Item
+                      class="carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4"
+                      index={9999}
+                    >
+                      <div class="bg-white rounded-md p-3 flex flex-col w-full">
+                        <div class="flex items-center gap-4">
+                          <div
+                            class={`h-8 w-8 rounded-full ${
+                              !newPlan ? "bg-primary" : ""
+                            } flex items-center justify-center`}
+                            style={{
+                              "box-shadow":
+                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                            }}
+                          >
+                            {!newPlan && (
+                              <Icon class="text-white" id="Check" size={19} />
+                            )}
+                          </div>
+                          <div class="flex flex-col text-[#898989]">
+                            <span class=" uppercase text-sm">
+                              Plano Associação
+                            </span>
+                            <span class={`text-xs`}>
+                              Gratuito
+                            </span>
+                          </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                          <ul class="flex flex-col gap-3 py-3">
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Anuidade gratuita por associação
+                              </span>
+                            </li>
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Carteirinha digital oficial
+                              </span>
+                            </li>
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Acompanhamento de tratamento
+                              </span>
+                            </li>
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Emissão de via física por R$ 25,00
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </Slider.Item>
+                  )}
                   {plans.map((plan, i) => (
-                    <Slider.Item class="carousel-item" index={i}>
+                    <Slider.Item
+                      class="carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4"
+                      index={i}
+                    >
                       <div
-                        class="bg-white rounded-md p-3 flex flex-col justify-between"
+                        class="bg-white rounded-md p-3 flex flex-col w-full"
                         onClick={() =>
-                          setNewPlan(plans.find((p) =>
-                            p.name === plan.name
-                          ))}
+                          setNewPlan(plans.find((p) => p.name === plan.name))}
                       >
                         <div class="flex items-center gap-4">
                           <div
@@ -305,6 +384,9 @@ function MyAccount() {
                               class={`text-xs ${
                                 referral &&
                                 referral.type == "DISCOUNT" &&
+                                referral?.allowed_skus?.includes(
+                                  plan.skus[0],
+                                ) &&
                                 "line-through"
                               }`}
                             >
@@ -312,81 +394,42 @@ function MyAccount() {
                                 (plan.price / 100).toFixed(2) +
                                 (formatPeriod(plan.period) || "")}
                             </span>
-                            {referral && referral.type === "DISCOUNT" && (
-                              <div class="flex flex-col gap-2">
-                                <span class="text-xs text-[#0ca118] font-bold">
-                                  {"R$ " +
-                                    (
-                                      (plan.price / 100) *
-                                      (1 - referral.discount)
-                                    ).toFixed(2) +
-                                    (formatPeriod(plan.period) || "")}
-                                </span>
-                                <span class="text-xs text-[#0ca118]">
-                                  ({referral.discount * 100}% off -{" "}
-                                  {referral.partner_name})
-                                </span>
-                              </div>
-                            )}
+                            {referral && referral.type === "DISCOUNT" &&
+                              referral?.allowed_skus?.includes(plan.skus[0]) &&
+                              (
+                                <div class="flex flex-col gap-2">
+                                  <span class="text-xs text-[#0ca118] font-bold">
+                                    {"R$ " +
+                                      (
+                                        (plan.price / 100) *
+                                        (1 - referral.discount)
+                                      ).toFixed(2) +
+                                      (formatPeriod(plan.period) || "")}
+                                  </span>
+                                  <span class="text-xs text-[#0ca118]">
+                                    ({referral.discount * 100}% off -{" "}
+                                    {referral.partner_name})
+                                  </span>
+                                </div>
+                              )}
                           </div>
                         </div>
                         <div class="flex flex-col gap-2">
                           <ul class="flex flex-col gap-3 py-3">
-                            <li class="flex gap-3 items-center">
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Carteirinha digital oficial
-                              </span>
-                            </li>
-                            <li
-                              // class={`flex gap-3 items-center ${
-                              //   plan.name == "FREE" && "opacity-20"
-                              // }`}
-                              class={`flex gap-3 items-center`}
-                            >
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Upload ilimitado de documentos
-                              </span>
-                            </li>
-                            <li
-                              // class={`flex gap-3 items-center ${
-                              //   plan.name == "FREE" && "opacity-20"
-                              // }`}
-                              class={`flex gap-3 items-center`}
-                            >
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Direito a solicitar via física
-                              </span>
-                            </li>
-                            <li
-                              // class={`flex gap-3 items-center ${
-                              //   plan.name == "FREE" && "opacity-20"
-                              // }`}
-                              class={`flex gap-3 items-center`}
-                            >
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Acesso acompanhamento de Tratamento
-                              </span>
-                            </li>
+                            {plan.plan_description?.map((desc) => (
+                              <li
+                                class={`flex gap-2 items-center ${
+                                  plan.name == "FREE" && "opacity-20"
+                                }`}
+                              >
+                                <Icon
+                                  class="text-primary"
+                                  id="CircleCheck"
+                                  size={17}
+                                />
+                                <span class="text-[10px]">{desc}</span>
+                              </li>
+                            ))}
                           </ul>
                         </div>
                       </div>
@@ -412,7 +455,7 @@ function MyAccount() {
                   />
                   <button
                     class="btn btn-primary text-white"
-                    disabled={(newPlan?.name || currentPlan) == currentPlan}
+                    disabled={(newPlan?.plan ?? currentPlan) == currentPlan}
                     onClick={() => {
                       console.log({ creditCards });
                       displayCheckoutUpsellModal.value = true;
@@ -430,7 +473,7 @@ function MyAccount() {
                   </button>
                 </div>
               </div>
-            )}
+            }
             <div class="flex flex-col gap-3">
               <label class="form-control w-full">
                 <div class="label pb-1">
