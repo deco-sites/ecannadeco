@@ -244,9 +244,9 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         <div class="join w-full">
           <label class="join-item">
             {
-              /* <div class="label pb-1">
-              <span class="label-text text-xs text-[#585858]">CEP</span>
-            </div> */
+              <div class="label pb-1">
+                <span class="label-text text-xs text-[#585858]">Seu PIN</span>
+              </div>
             }
             <input
               placeholder="PIN"
