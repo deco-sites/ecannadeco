@@ -16,7 +16,6 @@ import { useUI } from "../../sdk/useUI.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useHolderInfo } from "deco-sites/ecannadeco/sdk/useHolderInfo.ts";
 import { UserData } from "deco-sites/ecannadeco/components/ui/EcannaCardPage.tsx";
-import { Sku } from "deco-sites/ecannadeco/actions/adminGetOrders.ts";
 import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 
 export type Address = {
@@ -451,7 +450,11 @@ function MyAccount() {
                   <CheckoutUpsellModal
                     creditCards={creditCards}
                     plan={newPlan!}
-                    discount={referral?.allowed_skus?.includes(newPlan?.skus[0] ?? "") ? referral?.discount : undefined}
+                    discount={referral?.allowed_skus?.includes(
+                        newPlan?.skus[0] ?? "",
+                      )
+                      ? referral?.discount
+                      : undefined}
                     address={address!}
                   />
                   <button

@@ -1,4 +1,3 @@
-import { Sku } from "deco-sites/ecannadeco/actions/adminGetOrders.ts";
 import CheckoutForm from "../../islands/CheckoutForm.tsx";
 import FormWrap from "./FormWrap.tsx";
 

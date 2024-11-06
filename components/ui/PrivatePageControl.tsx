@@ -85,7 +85,11 @@ function PrivatePageControl(_props: Props) {
         }
       }
 
-      if(currentPlan === "CARD_PLUS" && window.location.pathname === "/clube-de-beneficios" && r.dataProfile.lecoupon_smartLink) {
+      if (
+        currentPlan === "CARD_PLUS" &&
+        window.location.pathname === "/clube-de-beneficios" &&
+        r.dataProfile.lecoupon_smartLink
+      ) {
         window.location.href = r.dataProfile.lecoupon_smartLink;
       }
 
