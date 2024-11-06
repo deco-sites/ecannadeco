@@ -46,6 +46,7 @@ const OrderItem = ({
     | "SHIPPED"
     | "DELIVERED";
 }) => {
+  const [copied, setCopied] = useState(false);
   function downloadFile(fileUrl: string, filename: string) {
     // Fetch the file data
     fetch(fileUrl)
@@ -72,10 +73,32 @@ const OrderItem = ({
       });
   }
 
+  const handleCopy = (elementId: string) => {
+    const textToCopy = document.getElementById(elementId)?.innerText;
+    navigator.clipboard
+      .writeText(textToCopy!)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      })
+      .catch((err) => console.error("Failed to copy text: ", err));
+  };
+
   return (
     <li class="p-3 bg-[#cacaca] flex justify-between items-center rounded-md text-[10px] sm:text-xs md:text-sm flex-wrap">
       <div class="w-[40%] flex flex-col justify-start truncate pr-4">
-        <span class="font-bold">{name ? name : "sem nome"}</span>
+        <div class="flex gap-2">
+          <span class="font-bold" id={`name-${userEmail}`}>
+            {name ? name : "sem nome"}
+          </span>
+          <div class={`cursor-pointer ${copied ? "text-green-400" : ""}`}>
+            <Icon
+              id="Copy"
+              size={19}
+              onClick={() => handleCopy(`name-${userEmail}`)}
+            />
+          </div>
+        </div>
         <span class="text-xs">{userEmail ? userEmail : "sem email"}</span>
       </div>
       <div class="w-[20%] flex flex-col justify-start">
@@ -93,10 +116,18 @@ const OrderItem = ({
           (productName === "CARTEIRINHA" ||
             productName === "CARTEIRINHA FREE") &&
           (
-            <div class="w-full">
+            <div class="w-full flex gap-2">
               <span class="text-xs">
-                <span class="font-bold">Endereço:</span> {address}
+                <span class="font-bold">Endereço:</span>{" "}
+                <span id={`address-${userEmail}`}>{address}</span>
               </span>
+              <div class="cursor-pointer">
+                <Icon
+                  id="Copy"
+                  size={19}
+                  onClick={() => handleCopy(`address-${userEmail}`)}
+                />
+              </div>
             </div>
           )}
         {association &&
@@ -195,7 +226,7 @@ function AdminOrders() {
             status: status,
             page: pageParam,
             type: typeFilter,
-            limit: limit || 25,
+            limit: limit || 100,
           },
         })
         .then((r) => {

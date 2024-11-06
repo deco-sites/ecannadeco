@@ -1,7 +1,9 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
+
 const getPlans = async (_req: Request): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "https://api.ecanna.com.br/products/subscriptions",
+      API_URL + "/products/subscriptions",
       {
         method: "GET",
         headers: {

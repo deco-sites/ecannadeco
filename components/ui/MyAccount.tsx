@@ -17,6 +17,7 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useHolderInfo } from "deco-sites/ecannadeco/sdk/useHolderInfo.ts";
 import { UserData } from "deco-sites/ecannadeco/components/ui/EcannaCardPage.tsx";
 import { Sku } from "deco-sites/ecannadeco/actions/adminGetOrders.ts";
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 
 export type Address = {
   cep: string;
@@ -47,7 +48,7 @@ function MyAccount() {
     partner_name: string;
     name: string;
     discount: number;
-    allowed_skus?: Sku[];
+    allowed_skus?: string[];
   }>();
 
   function formatPeriod(period: string) {
@@ -117,7 +118,7 @@ function MyAccount() {
         });
 
       fetch(
-        `https://api.ecanna.com.br/v1/products/subscriptions?isPrescriber=false`,
+        `${API_URL}/v1/products/subscriptions?isPrescriber=false`,
       ).then(async (r) => {
         const c = await r.json();
         const plansList = c.docs.filter((doc: Plan) => doc.plan) as Plan[];
@@ -450,7 +451,7 @@ function MyAccount() {
                   <CheckoutUpsellModal
                     creditCards={creditCards}
                     plan={newPlan!}
-                    discount={referral?.discount}
+                    discount={referral?.allowed_skus?.includes(newPlan?.skus[0] ?? "") ? referral?.discount : undefined}
                     address={address!}
                   />
                   <button

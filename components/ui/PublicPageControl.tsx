@@ -13,10 +13,9 @@ export interface Props {
 function PublicPageControl(props: Props) {
   async function isLogged({ accessToken }: { accessToken: string }) {
     try {
-      const r = await invoke["deco-sites/ecannadeco"].actions
-        .getUser({
-          token: accessToken,
-        });
+      const r = await invoke["deco-sites/ecannadeco"].actions.getUser({
+        token: accessToken,
+      });
 
       const response = r as {
         data: {
@@ -36,7 +35,7 @@ function PublicPageControl(props: Props) {
       };
 
       if (response.data && response.data.Username) {
-        window.location.href = props.redirectTo || "/tratamentos";
+        window.location.href = props.redirectTo || "/dashboard";
       } else {
         if (IS_BROWSER) {
           localStorage.setItem("AccessToken", "");

@@ -9,7 +9,7 @@ export type Plan = {
   price: number;
   description: string;
   plan_description: [string];
-  skus: string[] | Sku[];
+  skus: string[];
   period: string;
   status: string;
   created_at: string;

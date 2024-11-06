@@ -38,6 +38,7 @@ function PrivatePageControl(_props: Props) {
           uploadedFile: boolean;
           email: string;
           plan: string;
+          lecoupon_smartLink?: string;
         };
       };
 
@@ -82,6 +83,10 @@ function PrivatePageControl(_props: Props) {
             window.location.href = "/meus-dados";
           }
         }
+      }
+
+      if(currentPlan === "CARD_PLUS" && window.location.pathname === "/clube-de-beneficios" && r.dataProfile.lecoupon_smartLink) {
+        window.location.href = r.dataProfile.lecoupon_smartLink;
       }
 
       const username = r.data.Username;
