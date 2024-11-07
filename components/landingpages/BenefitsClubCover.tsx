@@ -43,7 +43,7 @@ Props) {
             {ctaText}
           </a>
         </div>
-        <div class="flex w-full md:w-[50%] justify-center">
+        <div class="flex w-full md:w-[50%] justify-center p-3">
           <Image
             class="object-contain"
             src={mainImage}

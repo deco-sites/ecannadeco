@@ -51,7 +51,7 @@ function PrivatePageControl(_props: Props) {
         if (r.dataProfile.association?.user === r.data.Username) {
           localStorage.setItem(
             "AssociationAdmin",
-            r.dataProfile.association._id
+            r.dataProfile.association._id,
           );
         }
       }
