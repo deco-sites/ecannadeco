@@ -16,7 +16,7 @@ function PartnerBenefitsClub({
   title,
   description,
 }: // partnerAssociations,
-Props) {
+  Props) {
   const [companyName, setCompanyName] = useState("");
   const [companyPerson, setCompanyPerson] = useState("");
   const [whatsapp, setWhatsapp] = useState("");

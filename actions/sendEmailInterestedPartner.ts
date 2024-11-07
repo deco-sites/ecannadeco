@@ -1,4 +1,3 @@
-import { Treatment } from "deco-sites/ecannadeco/components/ui/PrescriberPatientsLive.tsx";
 import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 
 export interface Props {
