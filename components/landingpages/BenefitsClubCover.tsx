@@ -18,7 +18,7 @@ function MainBanner({
   ctaText,
   mainImage,
 }: // partnerAssociations,
-Props) {
+  Props) {
   return (
     <div
       class="container rounded-lg max-w-[90%]"
