@@ -20,10 +20,9 @@ function PrivatePageControl(_props: Props) {
     }
 
     try {
-      const res = await invoke["deco-sites/ecannadeco"].actions
-        .getUser({
-          token: accessToken,
-        });
+      const res = await invoke["deco-sites/ecannadeco"].actions.getUser({
+        token: accessToken,
+      });
 
       const r = res as {
         data: {
@@ -75,7 +74,8 @@ function PrivatePageControl(_props: Props) {
       }
 
       if (
-        currentPlan === "CARD" || currentPlan === "CARD_ASSOCIATED" ||
+        currentPlan === "CARD" ||
+        currentPlan === "CARD_ASSOCIATED" ||
         currentPlan === "CARD_PARTNER"
       ) {
         if (!r.dataProfile.updatedData) {
@@ -91,15 +91,16 @@ function PrivatePageControl(_props: Props) {
         r.dataProfile.lecoupon_smartLink
       ) {
         window.location.href = r.dataProfile.lecoupon_smartLink;
-      } else if (
-        window.location.pathname === "/clube-de-beneficios" &&
-        currentPlan !== "CARD_PLUS"
-      ) {
-        alert(
-          "Faça o upgrade para do seu plano para acessar o Clube de Benefícios",
-        );
-        window.location.href = "/minha-conta";
       }
+      // else if (
+      //   window.location.pathname === "/clube-de-beneficios" &&
+      //   currentPlan !== "CARD_PLUS"
+      // ) {
+      //   alert(
+      //     "Faça o upgrade para do seu plano para acessar o Clube de Benefícios",
+      //   );
+      //   window.location.href = "/minha-conta";
+      // }
 
       const username = r.data.Username;
 
