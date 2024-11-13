@@ -21,13 +21,20 @@ export interface Props {
   plan: {
     title: string;
     price: number;
+    description: string[];
+  };
+  freePlan: {
+    title: string;
+    price: number;
+    description: string[];
   };
   auxImg: ImageWidget;
 }
 
 // Make it sure to render it on the server only. DO NOT render it on an island
-function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
+function PlanSelection({ title, subtitle, plan, auxImg, freePlan }: Props) {
   const [deal, setDeal] = useState<Deal>();
+  const [isFree, setIsFree] = useState(false);
   const [cnpj, setCNPJ] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -49,7 +56,9 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
             term: ref,
           })
           .then((r) => {
-            setDeal(r as Deal);
+            const deal = r as Deal;
+            setDeal(deal);
+            setIsFree(deal?.discount === 1);
             setLoading(false);
           });
       }
@@ -71,7 +80,9 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
           class="flex flex-col gap-2 text-white w-[257px] p-5 items-center rounded-lg relative"
           style={`background-image: linear-gradient(to bottom, #0A66A5, #1677B9);`}
         >
-          <span class="uppercase tracking-[5px]">{plan.title}</span>
+          <span class="uppercase tracking-[5px]">
+            {isFree ? freePlan.title : plan.title}
+          </span>
           {loading
             ? (
               <div class="flex flex-col items-center">
@@ -80,48 +91,58 @@ function PlanSelection({ title, subtitle, plan, auxImg }: Props) {
             )
             : (
               <>
-                <div class="flex flex-col items-center">
-                  <span
-                    class={` font-thin ${
-                      deal?.discount ? "line-through" : "text-5xl"
-                    }`}
-                  >
-                    R$ {plan.price}
-                  </span>
-                  {deal?.discount
-                    ? (
-                      <>
-                        <span class="text-5xl font-thin">
-                          R$ {plan.price * (1 - deal.discount)}
-                        </span>
-                        <span class="text-sm text-[#4bf07f]">
-                          (Desconto {deal.partner_name})
-                        </span>
-                      </>
-                    )
-                    : null}
-                </div>
+                {isFree
+                  ? (
+                    <div class="flex flex-col items-center">
+                      <span
+                        class={` font-thin ${
+                          deal?.discount ? "line-through" : "text-5xl"
+                        }`}
+                      >
+                        R$ {isFree ? freePlan.price : plan.price}
+                      </span>
+                      {deal?.discount
+                        ? (
+                          <>
+                            <span class="text-5xl font-thin">
+                              R$ {isFree ? 0 : plan.price * (1 - deal.discount)}
+                            </span>
+                            <span class="text-sm text-[#4bf07f]">
+                              (Desconto {deal.partner_name})
+                            </span>
+                          </>
+                        )
+                        : null}
+                    </div>
+                  )
+                  : (
+                    <div class="flex flex-col items-center">
+                      <span class="text-5xl font-thin">
+                        R$ {isFree ? freePlan.price : plan.price}
+                      </span>
+                    </div>
+                  )}
               </>
             )}
-
-          <ul class="flex flex-col gap-3 text-xs mt-4 mb-6">
-            <li class="flex gap-2">
-              <Icon id="CircleCheck" size={22} />{" "}
-              <span>Carteirinha digital oficial</span>
-            </li>
-            <li class="flex gap-2">
-              <Icon id="CircleCheck" size={22} />{" "}
-              <span>Upload ilimitado de docs</span>
-            </li>
-            <li class="flex gap-2">
-              <Icon id="CircleCheck" size={22} />{" "}
-              <span>Segurança contra perdas e furtos</span>
-            </li>
-            <li class="flex gap-2">
-              <Icon id="CircleCheck" size={22} />{" "}
-              <span>Opção de pedir via física</span>
-            </li>
-          </ul>
+          {isFree
+            ? (
+              <ul class="flex flex-col gap-3 text-xs mt-4 mb-6">
+                {freePlan.description?.map((desc) => (
+                  <li class="flex gap-2">
+                    <Icon id="CircleCheck" size={22} /> {desc}
+                  </li>
+                ))}
+              </ul>
+            )
+            : (
+              <ul class="flex flex-col gap-3 text-xs mt-4 mb-6">
+                {plan.description?.map((desc) => (
+                  <li class="flex gap-2">
+                    <Icon id="CircleCheck" size={22} /> {desc}
+                  </li>
+                ))}
+              </ul>
+            )}
           <a
             href={`/cadastrar${cnpj ? `?cnpj=${cnpj}` : ""}`}
             class="btn bg-[#3094D7] uppercase text-white border-none rounded-full w-[190px] absolute bottom-[-20px]"

@@ -13,7 +13,6 @@ export interface Props {
 
 function PrivatePageControl(_props: Props) {
   const { updatedData, uploadedFile } = useUI();
-
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
       window.location.href = "/";
@@ -74,9 +73,9 @@ function PrivatePageControl(_props: Props) {
       }
 
       if (
-        currentPlan === "CARD" ||
-        currentPlan === "CARD_ASSOCIATED" ||
-        currentPlan === "CARD_PARTNER"
+        ["CARD", "CARD_ASSOCIATED", "CARD_PARTNER", "CARD_PLUS"].includes(
+          currentPlan,
+        )
       ) {
         if (!r.dataProfile.updatedData) {
           if (window.location.pathname !== "/meus-dados") {
