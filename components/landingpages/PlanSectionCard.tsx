@@ -81,7 +81,7 @@ function PlanSelection({ title, subtitle, plan, auxImg, freePlan }: Props) {
           style={`background-image: linear-gradient(to bottom, #0A66A5, #1677B9);`}
         >
           <span class="uppercase tracking-[5px]">
-            {isFree ? freePlan.title : plan.title}
+            {isFree ? freePlan?.title ?? plan.title : plan.title}
           </span>
           {loading
             ? (
@@ -99,7 +99,7 @@ function PlanSelection({ title, subtitle, plan, auxImg, freePlan }: Props) {
                           deal?.discount ? "line-through" : "text-5xl"
                         }`}
                       >
-                        R$ {isFree ? freePlan.price : plan.price}
+                        R$ {isFree ? freePlan?.price ?? plan.price : plan.price}
                       </span>
                       {deal?.discount
                         ? (
@@ -127,7 +127,7 @@ function PlanSelection({ title, subtitle, plan, auxImg, freePlan }: Props) {
           {isFree
             ? (
               <ul class="flex flex-col gap-3 text-xs mt-4 mb-6">
-                {freePlan.description?.map((desc) => (
+                {(freePlan?.description ?? plan.description)?.map((desc) => (
                   <li class="flex gap-2">
                     <Icon id="CircleCheck" size={22} /> {desc}
                   </li>
