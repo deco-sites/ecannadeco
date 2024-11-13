@@ -350,6 +350,80 @@ function MyAccount() {
                       </div>
                     </Slider.Item>
                   )}
+                  {currentPlan === "CARD_PARTNER" && (
+                    <Slider.Item
+                      class="carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4"
+                      index={9999}
+                    >
+                      <div class="bg-white rounded-md p-3 flex flex-col w-full">
+                        <div class="flex items-center gap-4">
+                          <div
+                            class={`h-8 w-8 rounded-full ${
+                              !newPlan ? "bg-primary" : ""
+                            } flex items-center justify-center`}
+                            style={{
+                              "box-shadow":
+                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                            }}
+                          >
+                            {!newPlan && (
+                              <Icon class="text-white" id="Check" size={19} />
+                            )}
+                          </div>
+                          <div class="flex flex-col text-[#898989]">
+                            <span class=" uppercase text-sm">
+                              Plano ExpoCannabis
+                            </span>
+                            <span class={`text-xs`}>Gratuito</span>
+                          </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                          <ul class="flex flex-col gap-3 py-3">
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Anuidade gratuita por parceria com ExpoCannabis
+                              </span>
+                            </li>
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Carteirinha digital oficial
+                              </span>
+                            </li>
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Acompanhamento de tratamento
+                              </span>
+                            </li>
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Emissão de via física por R$ 25,00
+                              </span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </Slider.Item>
+                  )}
                   {plans.map((plan, i) => {
                     const isSelected = newPlan
                       ? plan._id == newPlan?._id
@@ -358,7 +432,9 @@ function MyAccount() {
                       <Slider.Item
                         class={` ${
                           plan.plan === "CARD" &&
-                            currentPlan === "CARD_ASSOCIATED"
+                            ["CARD_ASSOCIATED", "CARD_PARTNER"].includes(
+                              currentPlan,
+                            )
                             ? "hidden"
                             : ""
                         } carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4`}
