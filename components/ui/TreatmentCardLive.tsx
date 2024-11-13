@@ -95,7 +95,8 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
           >
             {!isPatient
               ? <span>Paciente: {treatment.patient!.name}</span>
-              : (
+              : treatment.prescriber
+              ? (
                 <span>
                   {`Prescritor: ${treatment.prescriber!.name} | ${
                     treatment.prescriber!.registry_type
@@ -103,7 +104,8 @@ const TreatmentCard = ({ treatment, hideLastFeedback, isPatient }: Props) => {
                     treatment.prescriber!.registry_state
                   }`}
                 </span>
-              )}
+              )
+              : null}
           </div>
         )}
       </div>

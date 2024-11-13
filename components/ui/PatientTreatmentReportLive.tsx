@@ -19,6 +19,7 @@ export type Address = {
 export type TreatmentResponse = {
   treatment: Treatment;
   report: Report;
+  message: string;
 };
 
 export type FeelingReport = {

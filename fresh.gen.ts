@@ -46,6 +46,7 @@ import * as $MyOrders from "./islands/MyOrders.tsx";
 import * as $NewTicketModal from "./islands/NewTicketModal.tsx";
 import * as $Newsletter from "./islands/Newsletter.tsx";
 import * as $OutOfStock from "./islands/OutOfStock.tsx";
+import * as $PartnerBenefitsClub from "./islands/PartnerBenefitsClub.tsx";
 import * as $PatientNewTreatmentEntry from "./islands/PatientNewTreatmentEntry.tsx";
 import * as $PatientNewTreatmentEntryLive from "./islands/PatientNewTreatmentEntryLive.tsx";
 import * as $PatientServicesLP from "./islands/PatientServicesLP.tsx";
@@ -143,6 +144,7 @@ const manifest = {
     "./islands/NewTicketModal.tsx": $NewTicketModal,
     "./islands/Newsletter.tsx": $Newsletter,
     "./islands/OutOfStock.tsx": $OutOfStock,
+    "./islands/PartnerBenefitsClub.tsx": $PartnerBenefitsClub,
     "./islands/PatientNewTreatmentEntry.tsx": $PatientNewTreatmentEntry,
     "./islands/PatientNewTreatmentEntryLive.tsx": $PatientNewTreatmentEntryLive,
     "./islands/PatientServicesLP.tsx": $PatientServicesLP,

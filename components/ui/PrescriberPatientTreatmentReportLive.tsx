@@ -81,8 +81,13 @@ function PrescriberPatientTreatmentReport() {
     });
     setIsLoading(false);
     if (response) {
-      setTreatment(response?.treatment as Treatment);
-      setReport(response?.report as Report);
+      if (!response?.treatment && response.message) {
+        alert(response.message);
+        window.location.href = "/prescritor/meus-pacientes";
+      } else {
+        setTreatment(response?.treatment as Treatment);
+        setReport(response?.report as Report);
+      }
     }
   };
 

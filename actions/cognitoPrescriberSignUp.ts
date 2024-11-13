@@ -1,3 +1,5 @@
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
+
 export interface Props {
   email: string;
   cpf: string;
@@ -15,7 +17,7 @@ const signUpCognitoPrescriber = async (
 ): Promise<unknown | null> => {
   try {
     const response = await fetch(
-      "https://api.ecanna.com.br/prescribers/sign-up",
+      API_URL + "/prescribers/sign-up",
       {
         method: "POST",
         headers: {

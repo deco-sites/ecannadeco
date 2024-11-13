@@ -7,6 +7,7 @@ export type Plan = {
   plan?: string;
   price: number;
   description: string;
+  plan_description: [string];
   skus: string[];
   period: string;
   status: string;

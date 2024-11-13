@@ -12,6 +12,7 @@ import TreatmentCard from "deco-sites/ecannadeco/components/ui/TreatmentCardLive
 import Icon from "./Icon.tsx";
 import { useUI } from "../../sdk/useUI.ts";
 import ModalVideo from "deco-sites/ecannadeco/components/ui/ModalVideo.tsx";
+import PatientUpdateTreatmentModal from "deco-sites/ecannadeco/components/ui/PatientUpdateTreatmentModalLive.tsx";
 export type Address = {
   cep: string;
   number: string;
@@ -25,7 +26,7 @@ function PrescriberPatientTreatments() {
   const [currentTreatment, setCurrentTreatment] = useState<Treatment | null>(
     null,
   );
-  const { displayVideoModal } = useUI();
+  const { displayVideoModal, displayNewTreatmentModal } = useUI();
 
   const getTreatments = async (accessToken: string) => {
     setIsLoading(true);
@@ -39,6 +40,7 @@ function PrescriberPatientTreatments() {
       const treatments = response as Treatment[];
       const currentTreatment = treatments.find((t) => t.isActive) || null;
       const pastTreatments = treatments.filter((t) => !t.isActive);
+      console.log({ pastTreatments, currentTreatment });
       setTreatments(pastTreatments);
       setCurrentTreatment(currentTreatment);
     }
@@ -78,6 +80,39 @@ function PrescriberPatientTreatments() {
             </div>
             <div class="flex flex-col gap-8">
               <div class="flex flex-col gap-4">
+                <PatientUpdateTreatmentModal
+                  onFinished={() => {
+                    displayNewTreatmentModal.value = false;
+                    let accessToken = "";
+
+                    if (IS_BROWSER) {
+                      accessToken = localStorage.getItem("AccessToken") || "";
+                    }
+                    getTreatments(accessToken);
+                  }}
+                />
+                <button
+                  class="btn btn-sm btn-secondary text-white"
+                  onClick={() => {
+                    displayNewTreatmentModal.value = true;
+                  }}
+                >
+                  <Icon id="Drop" size={12} />
+                  <span class="flex gap-[6px]">
+                    {currentTreatment
+                      ? (
+                        <>
+                          Atualizar{" "}
+                          <span class="hidden sm:block">Tratamento</span>
+                        </>
+                      )
+                      : (
+                        <>
+                          Criar <span class="hidden sm:block">Tratamento</span>
+                        </>
+                      )}
+                  </span>
+                </button>
                 <div>
                   {currentTreatment
                     ? (
