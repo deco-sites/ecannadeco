@@ -154,7 +154,7 @@ function PrescriberPatients() {
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
       if (IS_BROWSER) {
-        localStorage.setItem("AccessToken", "");
+        localStorage.setItem("PrescriberAccessToken", "");
       }
       window.location.href = "/";
     }

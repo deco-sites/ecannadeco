@@ -93,7 +93,7 @@ function PrivatePageControl(_props: Props) {
         window.location.href = r.dataProfile.lecoupon_smartLink;
       } else if (
         window.location.pathname === "/clube-de-beneficios" &&
-        currentPlan === "CARD_PARTNER" &&
+        ["CARD_PARTNER", "CARD_ASSOCIATED"].includes(currentPlan) &&
         r.dataProfile.lecoupon_free_month_date &&
         r.dataProfile.lecoupon_smartLink
       ) {
@@ -109,6 +109,7 @@ function PrivatePageControl(_props: Props) {
       console.error("Erro ao carregar dados:", error);
       if (IS_BROWSER) {
         localStorage.setItem("AccessToken", "");
+        localStorage.clear();
       }
       window.location.href = "/";
     }
