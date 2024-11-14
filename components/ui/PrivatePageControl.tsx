@@ -38,6 +38,7 @@ function PrivatePageControl(_props: Props) {
           email: string;
           plan: string;
           lecoupon_smartLink?: string;
+          lecoupon_free_month_date?: string;
         };
       };
 
@@ -90,16 +91,14 @@ function PrivatePageControl(_props: Props) {
         r.dataProfile.lecoupon_smartLink
       ) {
         window.location.href = r.dataProfile.lecoupon_smartLink;
+      } else if (
+        window.location.pathname === "/clube-de-beneficios" &&
+        currentPlan === "CARD_PARTNER" &&
+        r.dataProfile.lecoupon_free_month_date &&
+        r.dataProfile.lecoupon_smartLink
+      ) {
+        window.location.href = r.dataProfile.lecoupon_smartLink;
       }
-      // else if (
-      //   window.location.pathname === "/clube-de-beneficios" &&
-      //   currentPlan !== "CARD_PLUS"
-      // ) {
-      //   alert(
-      //     "Faça o upgrade para do seu plano para acessar o Clube de Benefícios",
-      //   );
-      //   window.location.href = "/minha-conta";
-      // }
 
       const username = r.data.Username;
 
