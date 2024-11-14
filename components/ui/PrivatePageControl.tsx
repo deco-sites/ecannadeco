@@ -109,6 +109,7 @@ function PrivatePageControl(_props: Props) {
       console.error("Erro ao carregar dados:", error);
       if (IS_BROWSER) {
         localStorage.setItem("AccessToken", "");
+        localStorage.clear();
       }
       window.location.href = "/";
     }

@@ -25,6 +25,7 @@ function Signout({ redirectTo = "/" }) {
         });
       if (IS_BROWSER) {
         localStorage.setItem("PrescriberAccessToken", "");
+        localStorage.clear();
       }
       window.location.href = redirectTo;
     } catch (e) {

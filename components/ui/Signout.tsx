@@ -27,6 +27,7 @@ function Signout(_props: Props) {
       if (IS_BROWSER) {
         localStorage.setItem("AccessToken", "");
         localStorage.setItem("currentPatientPlan", "");
+        localStorage.clear();
       }
       window.location.href = "/";
     } catch (e) {
