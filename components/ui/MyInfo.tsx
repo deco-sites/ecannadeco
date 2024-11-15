@@ -414,7 +414,7 @@ function MyInfo() {
               </div>
               <input
                 placeholder="Nome"
-                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                class="input rounded-md text-[#8b8b8b] border border-gray-400 w-full disabled:bg-[#e3e3e3]"
                 name="name"
                 disabled={name ? true : false}
                 value={name}
@@ -426,7 +426,7 @@ function MyInfo() {
               </div>
               <input
                 placeholder="CPF"
-                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                class="input rounded-md text-[#8b8b8b] border border-gray-400 w-full disabled:bg-[#e3e3e3]"
                 name="cpf"
                 disabled={cpf ? true : false}
                 value={cpf.replace(
@@ -443,7 +443,7 @@ function MyInfo() {
               </div>
               <input
                 placeholder="Nome"
-                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                class="input rounded-md text-[#8b8b8b] border border-gray-400 w-full disabled:bg-[#e3e3e3]"
                 name="cardName"
                 value={cardName}
                 maxLength={20}
@@ -457,7 +457,7 @@ function MyInfo() {
                 </span>
               </div>
               <input
-                class="input rounded-md text-[#8b8b8b] border-none w-full"
+                class="input rounded-md text-[#8b8b8b] border border-gray-400 w-full"
                 type="date"
                 placeholder="Data de Nascimento"
                 value={birthDate}
