@@ -63,11 +63,12 @@ import * as $$$$$$$$$57 from "./actions/prescriberGetTreatmentsByPatient.ts";
 import * as $$$$$$$$$58 from "./actions/prescriberSignOut.ts";
 import * as $$$$$$$$$59 from "./actions/prescriberUpdateJourneyStatus.ts";
 import * as $$$$$$$$$60 from "./actions/resendConfirmationCode.ts";
-import * as $$$$$$$$$61 from "./actions/signOut.ts";
-import * as $$$$$$$$$62 from "./actions/updateProfile.ts";
-import * as $$$$$$$$$63 from "./actions/updateUserData.ts";
-import * as $$$$$$$$$64 from "./actions/updateUserPin.ts";
-import * as $$$$$$$$$65 from "./actions/uploadFile.ts";
+import * as $$$$$$$$$61 from "./actions/sendEmailInterestedPartner.ts";
+import * as $$$$$$$$$62 from "./actions/signOut.ts";
+import * as $$$$$$$$$63 from "./actions/updateProfile.ts";
+import * as $$$$$$$$$64 from "./actions/updateUserData.ts";
+import * as $$$$$$$$$65 from "./actions/updateUserPin.ts";
+import * as $$$$$$$$$66 from "./actions/uploadFile.ts";
 import * as $$$$$$$$$$$0 from "./apps/decohub.ts";
 import * as $$$$$$$$$$$1 from "./apps/site.ts";
 import * as $$$2 from "./loaders/availableIcons.ts";
@@ -447,11 +448,12 @@ const manifest = {
     "deco-sites/ecannadeco/actions/prescriberUpdateJourneyStatus.ts":
       $$$$$$$$$59,
     "deco-sites/ecannadeco/actions/resendConfirmationCode.ts": $$$$$$$$$60,
-    "deco-sites/ecannadeco/actions/signOut.ts": $$$$$$$$$61,
-    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$62,
-    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$63,
-    "deco-sites/ecannadeco/actions/updateUserPin.ts": $$$$$$$$$64,
-    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$65,
+    "deco-sites/ecannadeco/actions/sendEmailInterestedPartner.ts": $$$$$$$$$61,
+    "deco-sites/ecannadeco/actions/signOut.ts": $$$$$$$$$62,
+    "deco-sites/ecannadeco/actions/updateProfile.ts": $$$$$$$$$63,
+    "deco-sites/ecannadeco/actions/updateUserData.ts": $$$$$$$$$64,
+    "deco-sites/ecannadeco/actions/updateUserPin.ts": $$$$$$$$$65,
+    "deco-sites/ecannadeco/actions/uploadFile.ts": $$$$$$$$$66,
   },
   "apps": {
     "deco-sites/ecannadeco/apps/decohub.ts": $$$$$$$$$$$0,

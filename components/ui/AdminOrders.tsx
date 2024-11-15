@@ -12,7 +12,7 @@ import Icon from "deco-sites/ecannadeco/components/ui/Icon.tsx";
 import { format } from "datetime";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 
-import type { Order } from "../../actions/getUserOrders.ts";
+import type { Order } from "../../actions/adminGetOrders.ts";
 
 const OrderItem = ({
   productName,
@@ -111,7 +111,7 @@ const OrderItem = ({
       <div class="w-[20%] flex justify-end">
         <OrderStatus status={status} id={id} adminView={true} />
       </div>
-      <div class="mt-3">
+      <div class="flex mt-3 justify-between">
         {address &&
           (productName === "CARTEIRINHA" ||
             productName === "CARTEIRINHA FREE") &&
@@ -140,6 +140,16 @@ const OrderItem = ({
               </span>
             </div>
           )}
+        {pdf_card && (
+          <div
+            href={pdf_card}
+            class="flex btn btn-ghost"
+            onClick={() =>
+              downloadFile(pdf_card, `${name}-ecanna-carteirinha.pdf`)}
+          >
+            <Icon id="Download" size={19} />
+          </div>
+        )}
       </div>
       <div class="flex justify-between">
         {status === "SHIPPED" && (
@@ -151,16 +161,6 @@ const OrderItem = ({
             />
           </div>
         )}
-        {pdf_card && (
-          <div
-            href={pdf_card}
-            class="flex btn btn-ghost w-full"
-            onClick={() =>
-              downloadFile(pdf_card, `${name}-ecanna-carteirinha.pdf`)}
-          >
-            <Icon id="Download" size={19} />
-          </div>
-        )}
       </div>
     </li>
   );
@@ -168,14 +168,15 @@ const OrderItem = ({
 
 function AdminOrders() {
   const [isLoading, setIsLoading] = useState(true);
-  const [orders, setOrders] = useState<Order[]>();
+  const [expoFilter, setExpoFilter] = useState(true);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [limit, setLimit] = useState<number>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(false);
   const [hasPrevPage, setHasPrevPage] = useState<boolean>(false);
   const [page, setPage] = useState<number>();
   const [totalPages, setTotalPages] = useState<number>();
   const [statusSearch, setStatusSearch] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("ON_TIME");
 
   useEffect(() => {
     setIsLoading(true);
@@ -198,9 +199,6 @@ function AdminOrders() {
           setHasNextPage(r.hasNextPage);
           setHasPrevPage(r.hasPrevPage);
           setOrders(r.docs);
-
-          console.log({ r });
-
           setIsLoading(false);
         });
     } catch (_e) {
@@ -226,6 +224,7 @@ function AdminOrders() {
             status: status,
             page: pageParam,
             type: typeFilter,
+            isExpo: expoFilter,
             limit: limit || 100,
           },
         })
@@ -259,6 +258,10 @@ function AdminOrders() {
       setTypeFilter("");
       handleGetOrders(1, "");
     }
+  };
+  const handleToggleExpoFilter = () => {
+    setExpoFilter(!expoFilter);
+    handleGetOrders(1, "");
   };
 
   return (
@@ -302,6 +305,15 @@ function AdminOrders() {
                 />
                 <span>Pedidos de Carteirinha</span>
               </div>
+              <div class="flex gap-1">
+                <input
+                  type="checkbox"
+                  class="toggle"
+                  checked={!expoFilter}
+                  onChange={handleToggleExpoFilter}
+                />
+                <span>Pedidos da Expo</span>
+              </div>
             </div>
             <div>
               <div class="flex pb-2 px-2 border-b border-[#cdcdcd] mb-4">
@@ -323,7 +335,6 @@ function AdminOrders() {
                   orders.map((o) => {
                     const adrss = o.user_data?.address &&
                       o.user_data.address[0];
-                    console.log({ adrss });
                     return (
                       <OrderItem
                         userEmail={o.user_data?.email || ""}
@@ -331,11 +342,12 @@ function AdminOrders() {
                         address={adrss
                           ? `${adrss.street} ${adrss.number}, ${adrss.complement} - ${adrss.neighborhood} - ${adrss.city}/${adrss.state}, ${adrss.cep}`
                           : undefined}
-                        association={o.user_data?.association
-                          ? o.user_data?.association.name
+                        association={o.user_data?.association &&
+                            o.user_data?.association[0]
+                          ? o.user_data?.association[0].name
                           : undefined}
                         id={o._id}
-                        productName={o.items[0].sku.name}
+                        productName={o.items[0].name}
                         productPrice={(o.value / 100).toFixed(2)}
                         created_at={format(
                           new Date(o.created_at),

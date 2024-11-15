@@ -1,4 +1,5 @@
 import { Product } from "deco-sites/ecannadeco/components/ui/CheckoutUpsellModal.tsx";
+import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
 
 export interface Props {
   token: string;
@@ -6,6 +7,7 @@ export interface Props {
     status?: string;
     type?: string;
     page: number;
+    isExpo?: boolean;
     limit: number;
   };
 }
@@ -32,10 +34,25 @@ export interface Order {
   payment: string;
   created_at: string;
   updated_at: string;
-  items: {
-    sku: Sku;
-    quantity: number;
-  }[];
+  shipping_tracking_code?: string;
+  items: Sku[];
+  user_data?: {
+    name: string;
+    email: string;
+    pdf_card?: string;
+    association: {
+      name: string;
+    }[];
+    address: {
+      street?: string;
+      number?: string;
+      complement?: string;
+      neighborhood?: string;
+      city?: string;
+      state?: string;
+      cep?: string;
+    }[];
+  };
 }
 
 export interface PaginationOrderResponse {
@@ -53,13 +70,15 @@ const adminGetOrders = async (
   { token, params }: Props,
   _req: Request,
 ): Promise<PaginationOrderResponse> => {
-  let url = `https://api.ecanna.com.br/admin/orders?limit=100`;
+  let url = `${API_URL}/admin/orders?limit=100`;
 
   if (params) {
     const query = `?limit=${params.limit}&page=${params.page}${
       params.status && `&status=${params.status}`
-    }${(params.type && params.type !== "") && `&type=${params.type}`}`;
-    url = `https://api.ecanna.com.br/admin/orders${query}`;
+    }${(params.type && params.type !== "") && `&type=${params.type}`}${
+      params.isExpo ? `&isExpo=${params.isExpo}` : ""
+    }`;
+    url = `${API_URL}/admin/orders${query}`;
   }
 
   console.log({ url });
