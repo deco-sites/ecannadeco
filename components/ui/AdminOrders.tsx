@@ -225,7 +225,7 @@ function AdminOrders() {
             page: pageParam,
             type: typeFilter,
             isExpo: expoFilter,
-            limit: limit || 100,
+            limit: limit || 15,
           },
         })
         .then((r) => {
