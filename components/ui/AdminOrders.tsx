@@ -197,7 +197,6 @@ const OrderItem = ({
 
 function AdminOrders() {
   const [isLoading, setIsLoading] = useState(true);
-  const [expoFilter, setExpoFilter] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
   const [limit, setLimit] = useState<number>();
   const [hasNextPage, setHasNextPage] = useState<boolean>(false);
@@ -253,7 +252,6 @@ function AdminOrders() {
             status: status,
             page: pageParam,
             type: typeFilter,
-            isExpo: expoFilter,
             limit: limit || 15,
           },
         })
@@ -288,10 +286,7 @@ function AdminOrders() {
       handleGetOrders(1, "");
     }
   };
-  const handleToggleExpoFilter = () => {
-    setExpoFilter(!expoFilter);
-    handleGetOrders(1, "");
-  };
+
 
   return (
     <PageWrap>
@@ -333,15 +328,6 @@ function AdminOrders() {
                   onChange={handleToggleOnTimeFilter}
                 />
                 <span>Pedidos de Carteirinha</span>
-              </div>
-              <div class="flex gap-1">
-                <input
-                  type="checkbox"
-                  class="toggle"
-                  checked={!expoFilter}
-                  onChange={handleToggleExpoFilter}
-                />
-                <span>Pedidos da Expo</span>
               </div>
             </div>
             <div>

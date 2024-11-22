@@ -76,9 +76,9 @@ const adminGetOrders = async (
 
   if (params) {
     const query = `?limit=${params.limit}&page=${params.page}${
-      params.status && `&status=${params.status}`
+      params.status ? `&status=${params.status}` : ''
     }${(params.type && params.type !== "") && `&type=${params.type}`}${
-      params.isExpo ? `&isExpo=${params.isExpo}` : ""
+      params.isExpo === true ? `&isExpo=${params.isExpo}` : ""
     }`;
     url = `${API_URL}/admin/orders${query}`;
   }
