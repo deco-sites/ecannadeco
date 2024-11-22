@@ -39,6 +39,8 @@ export interface Order {
   user_data?: {
     name: string;
     email: string;
+    cognito_id: string;
+    tag?: string;
     pdf_card?: string;
     association: {
       name: string;

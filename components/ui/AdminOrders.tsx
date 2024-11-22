@@ -25,9 +25,13 @@ const OrderItem = ({
   address,
   association,
   pdf_card,
+  tag,
+  cognito_id,
   id,
 }: {
   userEmail: string;
+  cognito_id?: string;
+  tag?: string;
   name: string;
   productName: string;
   productPrice: string;
@@ -47,6 +51,23 @@ const OrderItem = ({
     | "DELIVERED";
 }) => {
   const [copied, setCopied] = useState(false);
+  function generateCard(cognito_id: string) {
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AdminAccessToken") || "";
+    }
+    invoke["deco-sites/ecannadeco"].actions
+      .adminGenerateCard({
+        token: accessToken,
+        params: { cognito_id },
+      })
+      .then((r) => {
+        if (r.message) {
+          console.log(r.message);
+        }
+      });
+  }
   function downloadFile(fileUrl: string, filename: string) {
     // Fetch the file data
     fetch(fileUrl)
@@ -140,16 +161,24 @@ const OrderItem = ({
               </span>
             </div>
           )}
-        {pdf_card && (
+        {pdf_card && tag && (
           <div
             href={pdf_card}
             class="flex btn btn-ghost"
-            onClick={() =>
-              downloadFile(pdf_card, `${name}-ecanna-carteirinha.pdf`)}
+            onClick={() => {
+              downloadFile(pdf_card, `${name}-ecanna-carteirinha.pdf`);
+              downloadFile(tag, `${name}-ecanna-tag.pdf`);
+            }}
           >
             <Icon id="Download" size={19} />
           </div>
         )}
+        <div
+          class="flex btn btn-ghost"
+          onClick={() => generateCard(cognito_id)}
+        >
+          Gerar nova carteirinha
+        </div>
       </div>
       <div class="flex justify-between">
         {status === "SHIPPED" && (
@@ -347,6 +376,7 @@ function AdminOrders() {
                           ? o.user_data?.association[0].name
                           : undefined}
                         id={o._id}
+                        cognito_id={o.user_data?.cognito_id}
                         productName={o.items[0].name}
                         productPrice={(o.value / 100).toFixed(2)}
                         created_at={format(
@@ -356,6 +386,7 @@ function AdminOrders() {
                         status={o.status}
                         shipping_tracking_code={o.shipping_tracking_code}
                         pdf_card={o.user_data?.pdf_card}
+                        tag={o.user_data?.tag}
                       />
                     );
                   })}
