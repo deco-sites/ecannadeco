@@ -72,7 +72,7 @@ const adminGetOrders = async (
   { token, params }: Props,
   _req: Request,
 ): Promise<PaginationOrderResponse> => {
-  let url = `${API_URL}/admin/orders?limit=25`;
+  let url = `${API_URL}/admin/orders?limit=100`;
 
   if (params) {
     const query = `?limit=${params.limit}&page=${params.page}${
