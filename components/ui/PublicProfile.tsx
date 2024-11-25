@@ -94,41 +94,28 @@ function PublicProfileComponent({ publicProfile }: Props) {
               )}
             </div>
             <div class="flex flex-col items-start w-full overflow-hidden">
-              <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
-                CIDs (Diagnósticos)
-              </h2>
               {publicProfile?.cids && publicProfile?.cids.length
                 ? (
-                  <ul class="flex flex-col gap-2 max-w-[100%]">
-                    {publicProfile?.cids.map((c) => {
-                      return (
-                        <li>
-                          <div class="badge badge-secondary text-white gap-2 p-3 max-w-[100%]">
-                            <span class="text-[10px] sm:text-sm truncate">
-                              CID{" " + c.full_code + " - " + c.name}
-                            </span>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  <>
+                    <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+                      CIDs (Diagnósticos)
+                    </h2>
+                    <ul class="flex flex-col gap-2 max-w-[100%]">
+                      {publicProfile?.cids.map((c) => {
+                        return (
+                          <li>
+                            <div class="badge badge-secondary text-white gap-2 p-3 max-w-[100%]">
+                              <span class="text-[10px] sm:text-sm truncate">
+                                CID{" " + c.full_code + " - " + c.name}
+                              </span>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </>
                 )
-                : (
-                  <div class="p-3 flex flex-col items-center text-[#5e5e5e] text-sm bg-[#cecece] rounded-md gap-3">
-                    <span class="text-center">
-                      Informação Pendente: Paciente deve fazer cadastro com
-                      email{" "}
-                      <span class="font-bold">{publicProfile?.email}</span>{" "}
-                      e atualizar dados médicos / pessoais.
-                    </span>
-                    <a
-                      href="/cadastrar"
-                      class="btn btn-primary btn-xs text-white"
-                    >
-                      Clique aqui para cadastrar
-                    </a>
-                  </div>
-                )}
+                : null}
             </div>
             <div class="flex flex-col items-start w-full">
               <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">

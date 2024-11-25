@@ -287,7 +287,6 @@ function AdminOrders() {
     }
   };
 
-
   return (
     <PageWrap>
       {isLoading

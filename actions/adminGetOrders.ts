@@ -76,7 +76,7 @@ const adminGetOrders = async (
 
   if (params) {
     const query = `?limit=${params.limit}&page=${params.page}${
-      params.status ? `&status=${params.status}` : ''
+      params.status ? `&status=${params.status}` : ""
     }${(params.type && params.type !== "") && `&type=${params.type}`}${
       params.isExpo === true ? `&isExpo=${params.isExpo}` : ""
     }`;

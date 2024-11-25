@@ -250,11 +250,11 @@ function MyInfo() {
       return null;
     }
 
-    if (cids.length < 1) {
-      alert("Insira pelo menos um diagnóstico (CID) para continuar");
-      setIsSubmitting(false);
-      return null;
-    }
+    // if (cids.length < 1) {
+    //   alert("Insira pelo menos um diagnóstico (CID) para continuar");
+    //   setIsSubmitting(false);
+    //   return null;
+    // }
 
     const idsCids = cids.map((c) => {
       const cid = c as { _id: string };
