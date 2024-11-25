@@ -28,6 +28,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   const [associationName, setAssociationName] = useState("");
   const [associationLogo, setAssociationLogo] = useState("");
   const [legacyCPF, setLegacyCPF] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   // const { displayAlert, alertText, alertType } = useUI();
 
   useEffect(() => {
@@ -159,7 +160,8 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
   };
 
   const validatePassword = (password: string) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$=%()!%*#_+-?&]).{8,}$/;
     return regex.test(password);
   };
 
@@ -372,10 +374,18 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
         <label class="w-full">
           <div class="label pb-1">
             <span class="label-text text-xs text-[#585858]">Senha</span>
+            <span
+              class="p-2 underline text-xs text-blue-600 cursor-pointer"
+              onClick={() => {
+                setShowPassword(!showPassword);
+              }}
+            >
+              {showPassword ? "Ocultar" : "Mostrar"}
+            </span>
           </div>
           <input
             class="input rounded-md text-[#8b8b8b] border-none w-full"
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="Senha (8 caracteres)"
             name="password"
             value={password}
@@ -383,6 +393,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
               handlePasswordInputChange(e);
             }}
           />
+
           {passwordError !== "" && (
             <div class="label">
               <span class="label-text-alt text-red-500">{passwordError}</span>
