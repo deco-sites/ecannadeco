@@ -252,8 +252,8 @@ const CheckoutUpsellModal = (props: Props) => {
       displayAlert.value = true;
 
       const messages: { [key: string]: string } = {
-        "INVALID_VOUCHER": "Voucher inválido",
-        "VOUCHER_USED": "Voucher já foi utilizado",
+        INVALID_VOUCHER: "Voucher inválido",
+        VOUCHER_USED: "Voucher já foi utilizado",
       };
 
       alertText.value = messages[error.message as keyof typeof messages] ||
@@ -612,34 +612,36 @@ const CheckoutUpsellModal = (props: Props) => {
           </div>
           <div class="flex flex-wrap gap-[2%]">
             <div class="flex flex-wrap gap-5 justify-left w-full">
-              <div class="join">
+              <div class="w-full">
                 <label class="join-item">
                   <div class="label pb-1">
                     <span class="label-text text-xs text-[#585858]">CEP</span>
                   </div>
-                  <input
-                    placeholder="CEP"
-                    name="cep"
-                    type="tel"
-                    class="input input-sm rounded-md text-[#8b8b8b] border-none"
-                    // disabled={addressStreet != "" ? true : false}
-                    value={cep}
-                    onChange={(e) => {
-                      setCep(e.currentTarget.value);
-                    }}
-                    // onFocus={() => setDisplayCidResults(true)}
-                    // onBlur={() => setDisplayCidResults(false)}
-                  />
-                  <button
-                    class="btn btn-sm btn-ghost bg-[#dedede] text-[#5d5d5d] join-item"
-                    onClick={() => handleValidatePostalCode(cep)}
-                  >
-                    Validar CEP{" "}
-                    {isLoadingPostalCode && (
-                      <span class="loading loading-spinner text-green-600">
-                      </span>
-                    )}
-                  </button>
+                  <div class="flex gap-1 w-full">
+                    <input
+                      placeholder="CEP"
+                      name="cep"
+                      type="tel"
+                      class="input input-sm rounded-md text-[#8b8b8b] border-none w-2/3"
+                      // disabled={addressStreet != "" ? true : false}
+                      value={cep}
+                      onChange={(e) => {
+                        setCep(e.currentTarget.value);
+                      }}
+                      // onFocus={() => setDisplayCidResults(true)}
+                      // onBlur={() => setDisplayCidResults(false)}
+                    />
+                    <button
+                      class="btn btn-sm btn-ghost bg-[#dedede] text-[#5d5d5d] join-item w-1/3"
+                      onClick={() => handleValidatePostalCode(cep)}
+                    >
+                      Validar CEP{" "}
+                      {isLoadingPostalCode && (
+                        <span class="loading loading-spinner text-green-600">
+                        </span>
+                      )}
+                    </button>
+                  </div>
                 </label>
               </div>
               <div
@@ -647,6 +649,20 @@ const CheckoutUpsellModal = (props: Props) => {
                   addressCity !== "" ? "" : "hidden"
                 }`}
               >
+                <label class="w-full sm:w-[32%]">
+                  <div class="label pb-1">
+                    <span class="label-text text-xs text-[#585858]">
+                      Cidade / Estado
+                    </span>
+                  </div>
+                  <input
+                    class="input input-sm rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                    placeholder="Cidade / Estado"
+                    name="cidadeestado"
+                    disabled
+                    value={`${addressCity + "/" + addressState}`}
+                  />
+                </label>
                 <label class="w-full sm:w-[32%]">
                   <div class="label pb-1">
                     <span class="label-text text-xs text-[#585858]">
@@ -710,20 +726,7 @@ const CheckoutUpsellModal = (props: Props) => {
                     }}
                   />
                 </label>
-                <label class="w-full sm:w-[32%]">
-                  <div class="label pb-1">
-                    <span class="label-text text-xs text-[#585858]">
-                      Cidade / Estado
-                    </span>
-                  </div>
-                  <input
-                    class="input input-sm rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
-                    placeholder="Cidade / Estado"
-                    name="cidadeestado"
-                    disabled
-                    value={`${addressCity + "/" + addressState}`}
-                  />
-                </label>
+
                 <div class="w-full sm:w-[32%]">
                   <label class="w-full">
                     <div class="label pb-1">
@@ -771,18 +774,11 @@ const CheckoutUpsellModal = (props: Props) => {
           </span>
 
           <button
-            class="my-4 btn btn-sm btn-primary text-white"
+            class="my-4 btn btn-md btn-primary text-white"
             onClick={handleCheckout}
             disabled={loading || invalidForm}
           >
             {loading ? "Processando..." : "Confirmar Pedido"}
-          </button>
-          <button
-            onClick={() => (displayCheckoutUpsellModal.value = false)}
-            class="btn btn-sm btn-ghost uppercase font-medium"
-            disabled={loading}
-          >
-            Cancelar
           </button>
         </div>
       </>
@@ -819,40 +815,43 @@ const CheckoutUpsellModal = (props: Props) => {
         </h3>
         <span class="text-xs">Código PIX:</span>
         <div class="flex">
-          <div class="rounded-sm border border-gray-500 bg-gray-200 text-black px-1 h-9 leading-9 w-96 overflow-clip">
+          <div class="rounded-sm border border-gray-500 bg-gray-200 text-black p-1 leading-tight w-full text-xs overflow-hidden">
             {pixCode}
           </div>
-          <button
-            class="btn h-9 min-h-9 btn-secondary"
-            onClick={() => {
-              navigator.clipboard.writeText(pixCode);
-              setClipboardText("Copiado!");
-            }}
-          >
-            {clipboardText}
-          </button>
         </div>
         <img
           src={pixImg.toString()}
           class="m-auto"
           alt="QR Code"
-          width="120"
-          height="120"
+          width="240"
+          height="240"
         />
         <button
           class="btn btn-secondary text-white"
-          onClick={() => confirmPayment()}
+          onClick={() => {
+            navigator.clipboard.writeText(pixCode);
+            setClipboardText("Copiado!");
+          }}
           disabled={loading || invalidForm}
         >
-          {loading ? "Processando..." : "Confirmar Pagamento"}
+          {clipboardText === "Copiar" ? "Copiar Código" : "Código Copiado"}
         </button>
-        <button
-          onClick={() => (displayCheckoutUpsellModal.value = false)}
-          class="btn btn-ghost uppercase font-medium"
-          disabled={loading}
-        >
-          Cancelar
-        </button>
+        <div class="flex flex-row">
+          <button
+            onClick={() => (displayCheckoutUpsellModal.value = false)}
+            class="btn btn-ghost uppercase font-medium w-1/2"
+            disabled={loading}
+          >
+            Cancelar
+          </button>
+          <button
+            class="btn btn-secondary text-white w-1/2"
+            onClick={() => confirmPayment()}
+            disabled={loading || invalidForm}
+          >
+            {loading ? "Processando..." : "Confirmar Pagamento"}
+          </button>
+        </div>
       </div>
     );
   }

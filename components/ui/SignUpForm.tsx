@@ -340,6 +340,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
           <input
             class="input rounded-md text-[#8b8b8b] border-none w-full"
             placeholder="Seu email"
+            type="email"
             name="email"
             value={email}
             onChange={(e) => {
