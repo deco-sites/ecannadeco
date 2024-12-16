@@ -198,7 +198,7 @@ function SignUpFormPrescriber({
       setPasswordError("");
     } else {
       setPasswordError(
-        "A senha deve conter pelo menos 8 caracteres, incluindo: letras maiúsculas, minúsculas, números e caracteres especiais.",
+        "A senha deve conter pelo menos 8 caracteres, incluindo: letras maiúsculas, minúsculas, números e caracteres especiais."
       );
     }
   };
@@ -224,7 +224,7 @@ function SignUpFormPrescriber({
     const inputValue = (event.target as HTMLInputElement).value;
     setWhatsapp(stripWhatsappNonNumericCharacters(inputValue));
     setWhatsappError(
-      validateWhatsapp(inputValue) ? "" : "Número de WhatsApp inválido",
+      validateWhatsapp(inputValue) ? "" : "Número de WhatsApp inválido"
     );
   };
 
@@ -335,6 +335,7 @@ function SignUpFormPrescriber({
             <option value="CRO">CRO - Conselho Dentista</option>
             <option value="CRP">CRP - Conselho Psicólogo</option>
             <option value="CRF">CRF - Conselho Farmacêutico</option>
+            <option value="CREFITO">CREFITO - Conselho de Fisioterapia</option>
           </select>
         </label>
         <label className="w-full">
