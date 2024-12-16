@@ -135,7 +135,8 @@ const OrderItem = ({
       <div class="flex mt-3 justify-between">
         {address &&
           (productName === "CARTEIRINHA" ||
-            productName === "CARTEIRINHA FREE") && (
+            productName === "CARTEIRINHA FREE") &&
+          (
             <div class="w-full flex gap-2">
               <span class="text-xs">
                 <span class="font-bold">Endereço:</span>{" "}
@@ -152,7 +153,8 @@ const OrderItem = ({
           )}
         {association &&
           (productName === "CARTEIRINHA" ||
-            productName === "CARTEIRINHA FREE") && (
+            productName === "CARTEIRINHA FREE") &&
+          (
             <div class="w-full">
               <span class="text-xs">
                 <span class="font-bold">Associação:</span> {association}
@@ -269,7 +271,7 @@ function AdminOrders() {
         });
     } catch (_e) {
       alert(
-        "Não foi possível carregar usuários. Tente novamente mais tarde ou contecte o suporte."
+        "Não foi possível carregar usuários. Tente novamente mais tarde ou contecte o suporte.",
       );
       setIsLoading(false);
     }
@@ -287,125 +289,126 @@ function AdminOrders() {
 
   return (
     <PageWrap>
-      {isLoading ? (
-        <span class="loading loading-spinner text-green-600"></span>
-      ) : (
-        <div class="flex flex-col gap-5 w-full">
-          <div class="flex justify-center">
-            <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
-              Pedidos Do Sistema
-            </h3>
-          </div>
-          <div class="my-5 flex gap-8">
-            <select
-              value={statusSearch}
-              onChange={(e) => {
-                setStatusSearch(e.currentTarget.value);
-                handleGetOrders(1, e.currentTarget.value);
-              }}
-              class="select select-primary h-[35px] rounded-full max-w-xs text-[#8b8b8b] border-none disabled:bg-[#e3e3e3] bg-white"
-            >
-              <option disabled selected>
-                Selecione o Status
-              </option>
-              <option value="">Todos</option>
-              <option value="PAID">Pago</option>
-              <option value="PENDING">Pendente</option>
-              <option value="CANCELED">Cancelado</option>
-              <option value="IN_PRODUCTION">Em Produção</option>
-              <option value="PENDING_SHIPPING">Envio Pendente</option>
-              <option value="SHIPPED">Enviado</option>
-              <option value="DELIVERED">Entregue</option>
-            </select>
-            <div class="flex gap-1">
-              <input
-                type="checkbox"
-                class="toggle"
-                checked={typeFilter === "ON_TIME"}
-                onChange={handleToggleOnTimeFilter}
-              />
-              <span>Pedidos de Carteirinha</span>
+      {isLoading
+        ? <span class="loading loading-spinner text-green-600"></span>
+        : (
+          <div class="flex flex-col gap-5 w-full">
+            <div class="flex justify-center">
+              <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
+                Pedidos Do Sistema
+              </h3>
             </div>
-          </div>
-          <div class="w-full">
-            <span>
-              Pedidos nesta página:{" "}
-              <span class="font-bold">{orders.length}</span>
-            </span>
-          </div>
-          <div>
-            <div class="flex pb-2 px-2 border-b border-[#cdcdcd] mb-4">
-              <div class="w-[40%] flex justify-start">
-                <span class="text-xs">Paciente</span>
-              </div>
-              <div class="w-[20%] flex justify-start">
-                <span class="text-xs">Produto</span>
-              </div>
-              <div class="w-[20%] flex justify-center">
-                <span class="text-xs">Data</span>
-              </div>
-              <div class="w-[20%] flex justify-end">
-                <span class="text-xs">Status</span>
+            <div class="my-5 flex gap-8">
+              <select
+                value={statusSearch}
+                onChange={(e) => {
+                  setStatusSearch(e.currentTarget.value);
+                  handleGetOrders(1, e.currentTarget.value);
+                }}
+                class="select select-primary h-[35px] rounded-full max-w-xs text-[#8b8b8b] border-none disabled:bg-[#e3e3e3] bg-white"
+              >
+                <option disabled selected>
+                  Selecione o Status
+                </option>
+                <option value="">Todos</option>
+                <option value="PAID">Pago</option>
+                <option value="PENDING">Pendente</option>
+                <option value="CANCELED">Cancelado</option>
+                <option value="IN_PRODUCTION">Em Produção</option>
+                <option value="PENDING_SHIPPING">Envio Pendente</option>
+                <option value="SHIPPED">Enviado</option>
+                <option value="DELIVERED">Entregue</option>
+              </select>
+              <div class="flex gap-1">
+                <input
+                  type="checkbox"
+                  class="toggle"
+                  checked={typeFilter === "ON_TIME"}
+                  onChange={handleToggleOnTimeFilter}
+                />
+                <span>Pedidos de Carteirinha</span>
               </div>
             </div>
-            <ul class="flex flex-col gap-2">
-              {orders &&
-                orders.map((o) => {
-                  const adrss = o.user_data?.address && o.user_data.address[0];
-                  return (
-                    <OrderItem
-                      userEmail={o.user_data?.email || ""}
-                      name={o.user_data?.name || ""}
-                      address={
-                        adrss
+            <div class="w-full">
+              <span>
+                Pedidos nesta página:{" "}
+                <span class="font-bold">{orders.length}</span>
+              </span>
+            </div>
+            <div>
+              <div class="flex pb-2 px-2 border-b border-[#cdcdcd] mb-4">
+                <div class="w-[40%] flex justify-start">
+                  <span class="text-xs">Paciente</span>
+                </div>
+                <div class="w-[20%] flex justify-start">
+                  <span class="text-xs">Produto</span>
+                </div>
+                <div class="w-[20%] flex justify-center">
+                  <span class="text-xs">Data</span>
+                </div>
+                <div class="w-[20%] flex justify-end">
+                  <span class="text-xs">Status</span>
+                </div>
+              </div>
+              <ul class="flex flex-col gap-2">
+                {orders &&
+                  orders.map((o) => {
+                    const adrss = o.user_data?.address &&
+                      o.user_data.address[0];
+                    return (
+                      <OrderItem
+                        userEmail={o.user_data?.email || ""}
+                        name={o.user_data?.name || ""}
+                        address={adrss
                           ? `${adrss.street} ${adrss.number}, ${adrss.complement} - ${adrss.neighborhood} - ${adrss.city}/${adrss.state}, ${adrss.cep}`
-                          : undefined
-                      }
-                      association={
-                        o.user_data?.association && o.user_data?.association[0]
+                          : undefined}
+                        association={o.user_data?.association &&
+                            o.user_data?.association[0]
                           ? o.user_data?.association[0].name
-                          : undefined
-                      }
-                      id={o._id}
-                      cognito_id={o.user_data?.cognito_id}
-                      productName={o.items[0].name}
-                      productPrice={(o.value / 100).toFixed(2)}
-                      created_at={format(new Date(o.created_at), "dd/MM/yyyy")}
-                      status={o.status}
-                      shipping_tracking_code={o.shipping_tracking_code}
-                      pdf_card={o.user_data?.pdf_card}
-                      tag={o.user_data?.tag}
+                          : undefined}
+                        id={o._id}
+                        cognito_id={o.user_data?.cognito_id}
+                        productName={o.items[0].name}
+                        productPrice={(o.value / 100).toFixed(2)}
+                        created_at={format(
+                          new Date(o.created_at),
+                          "dd/MM/yyyy",
+                        )}
+                        status={o.status}
+                        shipping_tracking_code={o.shipping_tracking_code}
+                        pdf_card={o.user_data?.pdf_card}
+                        tag={o.user_data?.tag}
+                      />
+                    );
+                  })}
+              </ul>
+              {/* pagination */}
+              <div class="flex justify-center mt-4">
+                <div>
+                  {hasPrevPage && (
+                    <Icon
+                      onClick={() => handleGetOrders(page! - 1)}
+                      id="ChevronLeft"
+                      size={19}
                     />
-                  );
-                })}
-            </ul>
-            {/* pagination */}
-            <div class="flex justify-center mt-4">
-              <div>
-                {hasPrevPage && (
-                  <Icon
-                    onClick={() => handleGetOrders(page! - 1)}
-                    id="ChevronLeft"
-                    size={19}
-                  />
-                )}
-              </div>
-              <div>
-                <span class="text-xs">{`Página ${page}/${totalPages}`}</span>
-              </div>
-              <div>
-                {hasNextPage && (
-                  <Icon
-                    onClick={() => handleGetOrders(page! + 1)}
-                    id="ChevronRight"
-                    size={19}
-                  />
-                )}
+                  )}
+                </div>
+                <div>
+                  <span class="text-xs">{`Página ${page}/${totalPages}`}</span>
+                </div>
+                <div>
+                  {hasNextPage && (
+                    <Icon
+                      onClick={() => handleGetOrders(page! + 1)}
+                      id="ChevronRight"
+                      size={19}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </PageWrap>
   );
 }
