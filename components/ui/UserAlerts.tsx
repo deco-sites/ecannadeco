@@ -65,16 +65,15 @@ function PrivatePageControl() {
           role="alert"
           class="alert bg-[#c40000] text-white w-[90%] sm:max-w-[800px]"
         >
-          <Icon id="Christmas" size={24} />
+          <Icon id="Christmas" size={33} />
           <span>
             Atenção! Entraremos em recesso a partir do dia{" "}
             <span class="font-bold">23/12/2024</span> até o dia{" "}
             <span class="font-bold">06/01/2025</span>. Portanto, pedidos de
             carteirinhas físicas realizados{" "}
-            <span class="font-bold">após 11h do dia 23/12</span>{" "}
-            serão enviados a partir do dia{" "}
-            <span class="font-bold">07/01/2025</span>. Desejamos a todos um
-            feliz natal e um feliz ano novo!
+            <span class="font-bold">após 11h do dia 23/12</span> serão enviados
+            a partir do dia <span class="font-bold">07/01/2025</span>. Desejamos
+            a todos um feliz natal e um feliz ano novo!
           </span>
         </div>
       </div>
