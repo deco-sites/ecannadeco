@@ -15,7 +15,7 @@ function PrivatePageControl(_props: Props) {
   const { updatedData, uploadedFile } = useUI();
   async function isLogged({ accessToken }: { accessToken: string }) {
     if (accessToken === "") {
-      window.location.href = "/";
+      window.location.href = "/entrar";
     }
 
     try {
@@ -111,7 +111,7 @@ function PrivatePageControl(_props: Props) {
         localStorage.setItem("AccessToken", "");
         localStorage.clear();
       }
-      window.location.href = "/";
+      window.location.href = "/entrar";
     }
   }
 
