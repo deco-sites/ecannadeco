@@ -431,15 +431,19 @@ const CheckoutUpsellModal = (props: Props) => {
                   }
                 }}
               >
-                {/* <option name="PIX" value="PIX">
+                {
+                  /* <option name="PIX" value="PIX">
                   PIX
-                </option> */}
+                </option> */
+                }
                 <option name="CREDIT_CARD" value="CREDIT_CARD">
                   Cartão de Crédito
                 </option>
-                <option name="VOUCHER" value="VOUCHER">
+                {
+                  /* <option name="VOUCHER" value="VOUCHER">
                   Voucher
-                </option>
+                </option> */
+                }
               </select>
             </div>
           )
