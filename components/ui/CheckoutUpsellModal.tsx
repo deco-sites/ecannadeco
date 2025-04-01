@@ -63,7 +63,8 @@ const CheckoutUpsellModal = (props: Props) => {
   const [addressNumber, setAddressNumber] = useState<string>("");
   const [addressComplement, setAddressComplement] = useState<string>("");
   const [pixCode, setPixCode] = useState<string>("");
-  const [isPix, setIsPix] = useState(plan ? false : true);
+  // const [isPix, setIsPix] = useState(plan ? false : true);
+  const [isPix, setIsPix] = useState(false);
   // const [isCreditCard, setIsCreditCard] = useState(plan ? true : false);
   const [isCreditCard, setIsCreditCard] = useState(true);
   const [isVoucher, setIsVoucher] = useState(false);
