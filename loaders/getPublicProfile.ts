@@ -21,6 +21,7 @@ export interface Document {
 export interface Association {
   name: string;
   cnpj: string;
+  status: string;
 }
 
 export interface PublicProfile {
