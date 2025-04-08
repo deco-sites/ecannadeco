@@ -35,6 +35,7 @@ function MyAccount() {
   const [associationName, setAssociationName] = useState("");
   const [associationCnpj, setAssociationCnpj] = useState("");
   const [associationLogo, setAssociationLogo] = useState("");
+  const [copied, setCopied] = useState("");
   const [createType, setCreateType] = useState<"user" | "association">(
     "association",
   );
@@ -440,6 +441,35 @@ function MyAccount() {
                   {updating ? "Atualizando..." : "Atualizar Dados"}
                 </button>
               </div>
+            </div>
+            <div>
+              <label class="form-control w-full">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Link para novos associados (Clique para Copiar)
+                  </span>
+                </div>
+                <input
+                  placeholder="Nome da Associação"
+                  class={`input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] cursor-pointer ${
+                    copied && "text-green-500"
+                  }`}
+                  name="associationName"
+                  value={copied
+                    ? copied
+                    : `https://ecanna.com.br/cadastrar?cnpj=${associationCnpj}`}
+                  onClick={() => {
+                    navigator.clipboard.writeText(
+                      `https://ecanna.com.br/cadastrar?cnpj=${associationCnpj}`,
+                    );
+                    setCopied("Copiado!");
+                    setTimeout(() => {
+                      setCopied("");
+                    }, 1500);
+                  }}
+                  readOnly
+                />
+              </label>
             </div>
             <div>
               <div class="flex justify-start gap-4 items-center mb-4 mt-10">
