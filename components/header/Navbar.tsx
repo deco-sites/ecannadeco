@@ -2,16 +2,16 @@ import { MenuButton } from "../../islands/Header/Buttons.tsx";
 import Image from "apps/website/components/Image.tsx";
 import { navbarHeight } from "./constants.ts";
 import { Logo } from "../../components/header/Header.tsx";
-import Icon from "../ui/Icon.tsx";
+// import Icon from "../ui/Icon.tsx";
 
 // Make it sure to render it on the server only. DO NOT render it on an island
 function Navbar({
   logo,
-  prescriberAreaDisplay,
-}: {
-  logo?: Logo;
-  prescriberAreaDisplay?: boolean;
-}) {
+}: // prescriberAreaDisplay,
+  {
+    logo?: Logo;
+    prescriberAreaDisplay?: boolean;
+  }) {
   return (
     <div
       style={{ height: navbarHeight }}
@@ -33,7 +33,8 @@ function Navbar({
         </a>
       )}
       <div class="flex gap-2 sm:gap-4 items-center">
-        {prescriberAreaDisplay && (
+        {
+          /* {prescriberAreaDisplay && (
           <a
             class="btn btn-xs text-primary bg-white rounded-full"
             href="/prescritor"
@@ -43,7 +44,8 @@ function Navbar({
               <span class="hidden sm:block">Área do</span>Prescritor
             </span>
           </a>
-        )}
+        )} */
+        }
         <MenuButton />
       </div>
     </div>
