@@ -18,7 +18,8 @@ function PublicProfileComponent({ publicProfile }: Props) {
       {publicProfile.name
         ? (
           publicProfile?.plan === "DEFAULT" ||
-            publicProfile?.association.status === "INACTIVE" ||
+            (publicProfile?.association &&
+              publicProfile?.association.status === "INACTIVE") ||
             !publicProfile.associationApproved
             ? (
               <div class="join w-full flex justify-center flex-col items-center gap-5">
