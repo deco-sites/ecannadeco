@@ -8,7 +8,7 @@ import { invoke } from "../../runtime.ts";
 import { Plan } from "../../components/ui/Checkout.tsx";
 import PageWrap from "../../components/ui/PageWrap.tsx";
 import Icon from "../../components/ui/Icon.tsx";
-import ModalConfirm from "../../components/ui/ModalConfirm.tsx";
+// import ModalConfirm from "../../components/ui/ModalConfirm.tsx";
 import { SavedCreditCard } from "../../components/ui/CheckoutUpsellModal.tsx";
 import CheckoutUpsellModal from "../../islands/CheckoutUpsellModal.tsx";
 import Slider from "../../components/ui/Slider.tsx";
@@ -28,7 +28,7 @@ export type Address = {
 function MyAccount() {
   const [isLoading, setIsLoading] = useState(false);
   const [isChanging, setIsChanging] = useState(false);
-  const [isCanceling, setIsCanceling] = useState(false);
+  // const [isCanceling, setIsCanceling] = useState(false);
   const [email, setEmail] = useState("");
   const [currentPlan, setCurrentPlan] = useState<string>("");
   const [newPlan, setNewPlan] = useState<Plan>();
@@ -38,8 +38,7 @@ function MyAccount() {
   const [creditCards, setCreditCards] = useState<SavedCreditCard[]>([]);
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmNewPassword, setConfirmNewPassword] = useState<string>("");
-  const { displayConfirmCancelSubscription, displayCheckoutUpsellModal } =
-    useUI();
+  const { displayCheckoutUpsellModal } = useUI();
   const holderInfo = useHolderInfo();
   const [referral, setReferral] = useState<{
     description: string;
@@ -174,35 +173,35 @@ function MyAccount() {
     }
   };
 
-  const handleCancelSubscription = async () => {
-    setIsCanceling(true);
-    try {
-      const r = await invoke["deco-sites/ecannadeco"].actions.createTicket({
-        email,
-        subject: "[CANCELAR] Pedido para cancelar assinatura",
-        content: "Olá, gostaria de cancelar minha assinatura.",
-      });
+  // const handleCancelSubscription = async () => {
+  //   setIsCanceling(true);
+  //   try {
+  //     const r = await invoke["deco-sites/ecannadeco"].actions.createTicket({
+  //       email,
+  //       subject: "[CANCELAR] Pedido para cancelar assinatura",
+  //       content: "Olá, gostaria de cancelar minha assinatura.",
+  //     });
 
-      const resp = r as { inlineMessage?: string };
+  //     const resp = r as { inlineMessage?: string };
 
-      if (
-        resp.inlineMessage &&
-        resp.inlineMessage == "Obrigado por enviar o formulário."
-      ) {
-        console.log({ responseTicker: r });
+  //     if (
+  //       resp.inlineMessage &&
+  //       resp.inlineMessage == "Obrigado por enviar o formulário."
+  //     ) {
+  //       console.log({ responseTicker: r });
 
-        displayConfirmCancelSubscription.value = false;
-        setIsCanceling(false);
+  //       displayConfirmCancelSubscription.value = false;
+  //       setIsCanceling(false);
 
-        alert(
-          "Foi aberto chamado com requisição de cancelar assinatura! Em breve, te retornaremos no email da conta.",
-        );
-      }
-    } catch (_e) {
-      alert("Erro ao enviar solicitação. Tente mais tarde");
-      setIsCanceling(false);
-    }
-  };
+  //       alert(
+  //         "Foi aberto chamado com requisição de cancelar assinatura! Em breve, te retornaremos no email da conta."
+  //       );
+  //     }
+  //   } catch (_e) {
+  //     alert("Erro ao enviar solicitação. Tente mais tarde");
+  //     setIsCanceling(false);
+  //   }
+  // };
 
   return (
     <PageWrap>
@@ -526,7 +525,8 @@ function MyAccount() {
                   })}
                 </Slider>
                 <div class="flex  flex-col justify-end mt-4">
-                  <ModalConfirm
+                  {
+                    /* <ModalConfirm
                     text="Tem certeza que deseja encerrar sua assinatura?"
                     confirmButtonText="Encerrar"
                     open={displayConfirmCancelSubscription.value}
@@ -535,7 +535,8 @@ function MyAccount() {
                     }}
                     onConfirm={handleCancelSubscription}
                     loading={isCanceling}
-                  />
+                  /> */
+                  }
                   <CheckoutUpsellModal
                     creditCards={creditCards}
                     plan={newPlan!}
@@ -556,14 +557,22 @@ function MyAccount() {
                   >
                     Alterar Plano
                   </button>
-                  <button
+                  {
+                    /* <button
                     class="btn btn-ghost text-xs font-normal text-red-500"
                     onClick={() => {
                       displayConfirmCancelSubscription.value = true;
                     }}
                   >
                     Cancelar Assinatura
-                  </button>
+                  </button> */
+                  }
+                  <div class="flex justify-center">
+                    <span class="text-red-600 text-xs">
+                      Para cancelar sua assinatura, abra chamado no suporte pelo
+                      botão azul no canto da tela
+                    </span>
+                  </div>
                 </div>
               </div>
             }
