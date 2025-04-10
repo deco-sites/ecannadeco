@@ -30,10 +30,13 @@ function PatientDashboard({ services }: Props) {
                 href={service.link}
                 class={`flex flex-col gap-2 items-center justify-center text-center p-4 h-28 w-40 sm:w-44 text-primary bg-white rounded-md shadow-lg ${
                   service.hidden && "hidden"
-                }`}
+                } ${service.soon && "opacity-50 pointer-events-none"}`}
               >
                 <Icon id={service.icon} size={24} />
                 <span class="text-sm">{service.title}</span>
+                {service.soon && (
+                  <span class="text-xs text-[#444444]">(Em breve)</span>
+                )}
               </a>
             ))}
           </div>

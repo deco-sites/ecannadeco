@@ -12,6 +12,7 @@ export type Service = {
   ctaText?: string;
   serviceLabel?: string;
   hidden?: boolean;
+  soon?: boolean;
 };
 
 /** @titleBy title */
