@@ -1,5 +1,6 @@
-import NewTicketModal from "../../islands/NewTicketModal.tsx";
+// import NewTicketModal from "../../islands/NewTicketModal.tsx";
 
+/** @titleBy question */
 export interface Question {
   question: string;
   /** @format html */
@@ -39,23 +40,16 @@ const DEFAULT_PROPS = {
 function Question({ question, answer }: Question) {
   return (
     <details class="collapse collapse-arrow border-t bg-[#EDEDED]">
-      <summary class="collapse-title text-lg font-medium">
-        {question}
-      </summary>
+      <summary class="collapse-title text-lg font-medium">{question}</summary>
       <div class="collapse-content">
-        <div
-          dangerouslySetInnerHTML={{ __html: answer }}
-        />
+        <div dangerouslySetInnerHTML={{ __html: answer }} />
       </div>
     </details>
   );
 }
 
 export default function FAQ(props: Props) {
-  const {
-    questions = [],
-    title,
-  } = { ...DEFAULT_PROPS, ...props };
+  const { questions = [], title } = { ...DEFAULT_PROPS, ...props };
 
   return (
     <div class="w-full flex justify-center">
@@ -66,10 +60,12 @@ export default function FAQ(props: Props) {
         <div class="join join-vertical w-full flex flex-col gap-2">
           {questions.map((question) => <Question {...question} />)}
         </div>
-        <div class="flex flex-col items-center gap-2">
+        {
+          /* <div class="flex flex-col items-center gap-2">
           <span class="text-xs">Não encontrou resposta para sua pergunta?</span>
           <NewTicketModal />
-        </div>
+        </div> */
+        }
       </div>
     </div>
   );
