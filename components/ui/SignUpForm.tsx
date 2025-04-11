@@ -274,8 +274,7 @@ function SignUpForm({ formTitle = "Criar Conta" }: Props) {
             <Image
               src={associationLogo}
               alt={`logo ${associationName}`}
-              width={117}
-              height={32}
+              width={179}
             />
             <span class="text-center text-xs">
               Você está se cadastrando como associado da{" "}

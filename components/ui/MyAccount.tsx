@@ -17,6 +17,7 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useHolderInfo } from "deco-sites/ecannadeco/sdk/useHolderInfo.ts";
 import { UserData } from "deco-sites/ecannadeco/components/ui/EcannaCardPage.tsx";
 import { API_URL } from "deco-sites/ecannadeco/sdk/constants.ts";
+import Image from "apps/website/components/Image.tsx";
 
 export type Address = {
   cep: string;
@@ -32,6 +33,7 @@ function MyAccount() {
   const [email, setEmail] = useState("");
   const [currentPlan, setCurrentPlan] = useState<string>("");
   const [associationStatus, setAssociationStatus] = useState<string>("");
+  const [associationImage, setAssociationImage] = useState<string>("");
   const [newPlan, setNewPlan] = useState<Plan>();
   const [plans, setPlans] = useState<Plan[]>([]);
   const [currentPassword, setCurrentPassword] = useState<string>("");
@@ -115,6 +117,7 @@ function MyAccount() {
           setReferral(res.dataProfile.referral);
           setIsLoading(false);
           setAssociationStatus(res.dataProfile.association?.status);
+          setAssociationImage(res.dataProfile.association?.logo_url);
         });
 
       fetch(`${API_URL}/v1/products/subscriptions?isPrescriber=false`).then(
@@ -318,6 +321,13 @@ function MyAccount() {
                       index={9999}
                     >
                       <div class="bg-white rounded-md p-3 flex flex-col w-full">
+                        <div class="flex justify-center my-3">
+                          <Image
+                            src={associationImage}
+                            alt={`logo associação`}
+                            width={179}
+                          />
+                        </div>
                         <div class="flex items-center gap-4">
                           <div
                             class={`h-8 w-8 rounded-full ${
