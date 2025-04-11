@@ -60,7 +60,7 @@ function PrivatePageControl(_props: Props) {
       }
 
       const currentPlan = r.dataProfile.plan;
-      const associationActive = r.dataProfile.association.status === "ACTIVE";
+      const associationActive = r.dataProfile.association.status !== "INACTIVE";
 
       //redirect all these plans to make an upgrade. Associated needs to upgrade just if association is inactive.
       if (
