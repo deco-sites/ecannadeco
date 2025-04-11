@@ -82,8 +82,9 @@ function MyAccount() {
         .then((r) => {
           const res = r as UserData;
           holderInfo.value = {
-            email:
-              res.data.UserAttributes.find((a) => a.Name === "email")?.Value ||
+            email: res.data.UserAttributes.find((a) =>
+              a.Name === "email"
+            )?.Value ||
               "",
             phone: res.dataProfile.phone,
             full_name: res.dataProfile.name,
@@ -97,11 +98,11 @@ function MyAccount() {
             address_street: res.dataProfile.address[0]?.street ?? "",
           };
           const billingAddress = res.dataProfile.address.find(
-            (a) => a.addressType === "BILLING"
+            (a) => a.addressType === "BILLING",
           );
 
           const email = res.data.UserAttributes.find(
-            (a) => a["Name"] === "email"
+            (a) => a["Name"] === "email",
           );
 
           console.log({ dataProfile: res.dataProfile });
@@ -121,11 +122,11 @@ function MyAccount() {
           const c = await r.json();
           const plansList = c.docs.filter((doc: Plan) => doc.plan) as Plan[];
           setPlans(plansList);
-        }
+        },
       );
     } catch (_e) {
       alert(
-        "Não foi possível carregar dados do usuário. Tente novamente mais tarde ou contecte o suporte."
+        "Não foi possível carregar dados do usuário. Tente novamente mais tarde ou contecte o suporte.",
       );
       setIsLoading(false);
     }
@@ -140,7 +141,7 @@ function MyAccount() {
 
     if (confirmNewPassword !== newPassword || !currentPassword) {
       alert(
-        "Verifique os campos necessários para alterar a senha e tente novamente."
+        "Verifique os campos necessários para alterar a senha e tente novamente.",
       );
     } else {
       try {
@@ -206,178 +207,186 @@ function MyAccount() {
 
   return (
     <PageWrap>
-      {isLoading ? (
-        <span class="loading loading-spinner text-green-600"></span>
-      ) : (
-        <div class="flex flex-col gap-3 w-full">
-          <div class="flex justify-center">
-            <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
-              Minha Conta
-            </h3>
-          </div>
-          {currentPlan == "CARD_PARTNER" ||
-          (currentPlan == "CARD_ASSOCIATED" &&
-            associationStatus == "INACTIVE") ? (
-            <div class="flex flex-col p-4 text-white rounded-md items-center gap-4 bg-[#da8f0f] text-xs">
-              <Icon id="Warn" size={36} />
-              <span>
-                Em prol da viabilidade financeira do projeto, o serviço de
-                carteirinha digital do ecanna não é mais oferecido de forma
-                gratuita.
-              </span>
-              <span>
-                Mantivemos o seu QR Code ativo por{" "}
-                <span class="font-bold">tempo limitado</span> caso precise
-                utilizar a carteirinha que já possui. Para atualizar documentos
-                ou dados, pedir nova via física ou baixar novamente a
-                carteirinha digital, faça o upgrade do seu plano{" "}
-                {currentPlan == "CARD_ASSOCIATED" &&
-                  associationStatus == "INACTIVE" &&
-                  " ou fale com sua associação"}
-                !
-              </span>
-              <button
-                onClick={() => {
-                  setNewPlan(plans[0]);
-                }}
-                class="btn bg-white text-[#da8f0f] btn-sm uppercase"
-                href="#planUpgrade"
-              >
-                Selecionar novo plano
-              </button>
+      {isLoading
+        ? <span class="loading loading-spinner text-green-600"></span>
+        : (
+          <div class="flex flex-col gap-3 w-full">
+            <div class="flex justify-center">
+              <h3 class="text-2xl text-[#8b8b8b] font-semibold text-center">
+                Minha Conta
+              </h3>
             </div>
-          ) : null}
-
-          {(currentPlan == "TREATMENT" || currentPlan == "DEFAULT") &&
-            (referral && referral.type === "DISCOUNT" ? (
-              referral &&
-              referral.type === "DISCOUNT" && (
-                <div
-                  class="flex flex-col md:flex-row p-4 text-white rounded-md items-center gap-4"
-                  style={`background-image: linear-gradient(to bottom, #00426f, #1777b8);`}
-                >
-                  <Icon id="Celebration" size={36} />
+            {currentPlan == "CARD_PARTNER" ||
+                (currentPlan == "CARD_ASSOCIATED" &&
+                  associationStatus == "INACTIVE")
+              ? (
+                <div class="flex flex-col p-4 text-white rounded-md items-center gap-4 bg-[#da8f0f] text-xs">
+                  <Icon id="Warn" size={36} />
                   <span>
-                    Oba! <span class="font-bold">{referral.partner_name}</span>{" "}
-                    está oferecendo{" "}
-                    <span class="font-bold">
-                      {referral.discount * 100}% de desconto
-                    </span>{" "}
-                    para você tirar a sua carteirinha. Esta é a hora certa de
-                    continuar sua jornada como paciente!
+                    Em prol da viabilidade financeira do projeto, o serviço de
+                    carteirinha digital do ecanna não é mais oferecido de forma
+                    gratuita.
+                  </span>
+                  <span>
+                    Mantivemos o seu QR Code ativo por{" "}
+                    <span class="font-bold">tempo limitado</span>{" "}
+                    caso precise utilizar a carteirinha que já possui. Para
+                    atualizar documentos ou dados, pedir nova via física ou
+                    baixar novamente a carteirinha digital, faça o upgrade do
+                    seu plano {currentPlan == "CARD_ASSOCIATED" &&
+                      associationStatus == "INACTIVE" &&
+                      " ou fale com sua associação"}
+                    !
                   </span>
                   <button
                     onClick={() => {
                       setNewPlan(plans[0]);
                     }}
-                    class="btn bg-white text-primary btn-sm uppercase"
+                    class="btn bg-white text-[#da8f0f] btn-sm uppercase"
                     href="#planUpgrade"
                   >
-                    Usar meu desconto
+                    Selecionar novo plano
                   </button>
                 </div>
               )
-            ) : (
-              <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
-                <Icon id="Profile" size={16} />
-                <span class="text-lg">
-                  GARANTA SUA CARTEIRINHA DE PACIENTE!
-                </span>
-                <span class="text-center text-sm">
-                  Para obter sua carteirinha de paciente de cannabis medicinal,
-                  garantindo sua segurança no uso da medicina, faça upgrade do
-                  seu plano clicando no botão abaixo!
-                </span>
-                <button
-                  onClick={() => {
-                    setNewPlan(plans[0]);
-                  }}
-                  class="btn bg-white text-primary btn-sm"
-                  href="#planUpgrade"
-                >
-                  Fazer Upgrade
-                </button>
-              </div>
-            ))}
-          {
-            <div id="planUpgrade" class="flex flex-col gap-3">
-              <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
-                Plano
-              </h2>
-              <Slider class="flex-col sm:flex-row sm:carousel gap-3 max-w-[105%]">
-                {currentPlan === "CARD_ASSOCIATED" && (
-                  <Slider.Item
-                    class="carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4"
-                    index={9999}
-                  >
-                    <div class="bg-white rounded-md p-3 flex flex-col w-full">
-                      <div class="flex items-center gap-4">
-                        <div
-                          class={`h-8 w-8 rounded-full ${
-                            !newPlan ? "bg-primary" : ""
-                          } flex items-center justify-center`}
-                          style={{
-                            "box-shadow": "inset 1px 3px 7px rgb(0 0 0 / 20%)",
-                          }}
-                        >
-                          {!newPlan && (
-                            <Icon class="text-white" id="Check" size={19} />
-                          )}
-                        </div>
-                        <div class="flex flex-col text-[#898989]">
-                          <span class=" uppercase text-sm">
-                            Plano Associação
-                          </span>
-                          <span class={`text-xs`}>Gratuito</span>
-                        </div>
-                      </div>
-                      <div class="flex flex-col gap-2">
-                        <ul class="flex flex-col gap-3 py-3">
-                          <li class={`flex gap-2 items-center`}>
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Anuidade gratuita por associação
-                            </span>
-                          </li>
-                          <li class={`flex gap-2 items-center`}>
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Upload ilimitado de documentos
-                            </span>
-                          </li>
-                          <li class={`flex gap-2 items-center`}>
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">
-                              Opção de pedir via física protegida por PIN
-                            </span>
-                          </li>
-                          <li class={`flex gap-2 items-center`}>
-                            <Icon
-                              class="text-primary"
-                              id="CircleCheck"
-                              size={17}
-                            />
-                            <span class="text-[10px]">Proteção por PIN</span>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </Slider.Item>
-                )}
+              : null}
 
-                {/* {currentPlan === "CARD_PARTNER" && (
+            {(currentPlan == "TREATMENT" || currentPlan == "DEFAULT") &&
+              (referral && referral.type === "DISCOUNT"
+                ? (
+                  referral &&
+                  referral.type === "DISCOUNT" && (
+                    <div
+                      class="flex flex-col md:flex-row p-4 text-white rounded-md items-center gap-4"
+                      style={`background-image: linear-gradient(to bottom, #00426f, #1777b8);`}
+                    >
+                      <Icon id="Celebration" size={36} />
+                      <span>
+                        Oba!{" "}
+                        <span class="font-bold">{referral.partner_name}</span>
+                        {" "}
+                        está oferecendo{" "}
+                        <span class="font-bold">
+                          {referral.discount * 100}% de desconto
+                        </span>{" "}
+                        para você tirar a sua carteirinha. Esta é a hora certa
+                        de continuar sua jornada como paciente!
+                      </span>
+                      <button
+                        onClick={() => {
+                          setNewPlan(plans[0]);
+                        }}
+                        class="btn bg-white text-primary btn-sm uppercase"
+                        href="#planUpgrade"
+                      >
+                        Usar meu desconto
+                      </button>
+                    </div>
+                  )
+                )
+                : (
+                  <div class="rounded p-4 bg-primary text-white flex flex-col gap-3 items-center justify-center">
+                    <Icon id="Profile" size={16} />
+                    <span class="text-lg">
+                      GARANTA SUA CARTEIRINHA DE PACIENTE!
+                    </span>
+                    <span class="text-center text-sm">
+                      Para obter sua carteirinha de paciente de cannabis
+                      medicinal, garantindo sua segurança no uso da medicina,
+                      faça upgrade do seu plano clicando no botão abaixo!
+                    </span>
+                    <button
+                      onClick={() => {
+                        setNewPlan(plans[0]);
+                      }}
+                      class="btn bg-white text-primary btn-sm"
+                      href="#planUpgrade"
+                    >
+                      Fazer Upgrade
+                    </button>
+                  </div>
+                ))}
+            {
+              <div id="planUpgrade" class="flex flex-col gap-3">
+                <h2 class="text-[#8b8b8b] font-semibold mb-4 mt-10 w-full">
+                  Plano
+                </h2>
+                <Slider class="flex-col sm:flex-row sm:carousel gap-3 max-w-[105%]">
+                  {currentPlan === "CARD_ASSOCIATED" && (
+                    <Slider.Item
+                      class="carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4"
+                      index={9999}
+                    >
+                      <div class="bg-white rounded-md p-3 flex flex-col w-full">
+                        <div class="flex items-center gap-4">
+                          <div
+                            class={`h-8 w-8 rounded-full ${
+                              !newPlan ? "bg-primary" : ""
+                            } flex items-center justify-center`}
+                            style={{
+                              "box-shadow":
+                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                            }}
+                          >
+                            {!newPlan && (
+                              <Icon class="text-white" id="Check" size={19} />
+                            )}
+                          </div>
+                          <div class="flex flex-col text-[#898989]">
+                            <span class=" uppercase text-sm">
+                              Plano Associação
+                            </span>
+                            <span class={`text-xs`}>Gratuito</span>
+                          </div>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                          <ul class="flex flex-col gap-3 py-3">
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Anuidade gratuita por associação
+                              </span>
+                            </li>
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Upload ilimitado de documentos
+                              </span>
+                            </li>
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">
+                                Opção de pedir via física protegida por PIN
+                              </span>
+                            </li>
+                            <li class={`flex gap-2 items-center`}>
+                              <Icon
+                                class="text-primary"
+                                id="CircleCheck"
+                                size={17}
+                              />
+                              <span class="text-[10px]">Proteção por PIN</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </Slider.Item>
+                  )}
+
+                  {
+                    /* {currentPlan === "CARD_PARTNER" && (
                   <Slider.Item
                     class="carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4"
                     index={9999}
@@ -449,66 +458,69 @@ function MyAccount() {
                       </div>
                     </div>
                   </Slider.Item>
-                )} */}
-                {plans.map((plan, i) => {
-                  const isSelected = newPlan
-                    ? plan._id == newPlan?._id
-                    : currentPlan === plan.plan;
-                  return (
-                    <Slider.Item
-                      class={` ${
-                        plan.plan === "CARD" &&
-                        ["CARD_ASSOCIATED", "CARD_PARTNER"].includes(
-                          currentPlan
-                        )
-                          ? "hidden"
-                          : ""
-                      } carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4`}
-                      index={i}
-                    >
-                      <div
-                        class="bg-white rounded-md p-3 flex flex-col w-full"
-                        onClick={() => {
-                          setNewPlan(plans.find((p) => p.name === plan.name));
-                        }}
+                )} */
+                  }
+                  {plans.map((plan, i) => {
+                    const isSelected = newPlan
+                      ? plan._id == newPlan?._id
+                      : currentPlan === plan.plan;
+                    return (
+                      <Slider.Item
+                        class={` ${
+                          plan.plan === "CARD" &&
+                            ["CARD_ASSOCIATED", "CARD_PARTNER"].includes(
+                              currentPlan,
+                            )
+                            ? "hidden"
+                            : ""
+                        } carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4`}
+                        index={i}
                       >
-                        <div class="flex items-center gap-4">
-                          <div
-                            class={`h-8 w-8 rounded-full ${
-                              isSelected
-                                ? "bg-primary flex items-center justify-center"
-                                : "bg-white"
-                            }`}
-                            style={{
-                              "box-shadow":
-                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
-                            }}
-                          >
-                            {isSelected && (
-                              <Icon class="text-white" id="Check" size={19} />
-                            )}
-                          </div>
-                          <div class="flex flex-col text-[#898989]">
-                            <span class=" uppercase text-sm">{plan.name}</span>
-                            <span
-                              class={`text-xs ${
-                                referral &&
-                                referral.type == "DISCOUNT" &&
-                                referral?.allowed_skus?.includes(
-                                  plan.skus[0]
-                                ) &&
-                                "line-through"
+                        <div
+                          class="bg-white rounded-md p-3 flex flex-col w-full"
+                          onClick={() => {
+                            setNewPlan(plans.find((p) => p.name === plan.name));
+                          }}
+                        >
+                          <div class="flex items-center gap-4">
+                            <div
+                              class={`h-8 w-8 rounded-full ${
+                                isSelected
+                                  ? "bg-primary flex items-center justify-center"
+                                  : "bg-white"
                               }`}
+                              style={{
+                                "box-shadow":
+                                  "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                              }}
                             >
-                              {"R$ " +
-                                (plan.price / 100).toFixed(2) +
-                                (formatPeriod(plan.period) || "")}
-                            </span>
-                            {referral &&
-                              referral.type === "DISCOUNT" &&
-                              referral?.allowed_skus?.includes(
-                                plan.skus[0]
-                              ) && (
+                              {isSelected && (
+                                <Icon class="text-white" id="Check" size={19} />
+                              )}
+                            </div>
+                            <div class="flex flex-col text-[#898989]">
+                              <span class=" uppercase text-sm">
+                                {plan.name}
+                              </span>
+                              <span
+                                class={`text-xs ${
+                                  referral &&
+                                  referral.type == "DISCOUNT" &&
+                                  referral?.allowed_skus?.includes(
+                                    plan.skus[0],
+                                  ) &&
+                                  "line-through"
+                                }`}
+                              >
+                                {"R$ " +
+                                  (plan.price / 100).toFixed(2) +
+                                  (formatPeriod(plan.period) || "")}
+                              </span>
+                              {referral &&
+                                referral.type === "DISCOUNT" &&
+                                referral?.allowed_skus?.includes(
+                                  plan.skus[0],
+                                ) && (
                                 <div class="flex flex-col gap-2">
                                   <span class="text-xs text-[#0ca118] font-bold">
                                     {"R$ " +
@@ -524,33 +536,34 @@ function MyAccount() {
                                   </span>
                                 </div>
                               )}
+                            </div>
+                          </div>
+                          <div class="flex flex-col gap-2">
+                            <ul class="flex flex-col gap-3 py-3">
+                              {plan.plan_description?.map((desc) => (
+                                <li
+                                  class={`flex gap-2 items-center ${
+                                    plan.name == "FREE" && "opacity-20"
+                                  }`}
+                                >
+                                  <Icon
+                                    class="text-primary"
+                                    id="CircleCheck"
+                                    size={17}
+                                  />
+                                  <span class="text-[10px]">{desc}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         </div>
-                        <div class="flex flex-col gap-2">
-                          <ul class="flex flex-col gap-3 py-3">
-                            {plan.plan_description?.map((desc) => (
-                              <li
-                                class={`flex gap-2 items-center ${
-                                  plan.name == "FREE" && "opacity-20"
-                                }`}
-                              >
-                                <Icon
-                                  class="text-primary"
-                                  id="CircleCheck"
-                                  size={17}
-                                />
-                                <span class="text-[10px]">{desc}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </Slider.Item>
-                  );
-                })}
-              </Slider>
-              <div class="flex  flex-col justify-end mt-4">
-                {/* <ModalConfirm
+                      </Slider.Item>
+                    );
+                  })}
+                </Slider>
+                <div class="flex  flex-col justify-end mt-4">
+                  {
+                    /* <ModalConfirm
                     text="Tem certeza que deseja encerrar sua assinatura?"
                     confirmButtonText="Encerrar"
                     open={displayConfirmCancelSubscription.value}
@@ -559,142 +572,142 @@ function MyAccount() {
                     }}
                     onConfirm={handleCancelSubscription}
                     loading={isCanceling}
-                  /> */}
-                <CheckoutUpsellModal
-                  creditCards={creditCards}
-                  plan={newPlan!}
-                  discount={
-                    referral?.allowed_skus?.includes(newPlan?.skus[0] ?? "")
-                      ? referral?.discount
-                      : undefined
+                  /> */
                   }
-                  address={address!}
-                />
-                <button
-                  class="btn btn-primary text-white"
-                  disabled={(newPlan?.plan ?? currentPlan) == currentPlan}
-                  onClick={() => {
-                    console.log({ creditCards });
-                    displayCheckoutUpsellModal.value = true;
-                  }}
-                >
-                  Alterar Plano
-                </button>
-                {/* <button
+                  <CheckoutUpsellModal
+                    creditCards={creditCards}
+                    plan={newPlan!}
+                    discount={referral?.allowed_skus?.includes(
+                        newPlan?.skus[0] ?? "",
+                      )
+                      ? referral?.discount
+                      : undefined}
+                    address={address!}
+                  />
+                  <button
+                    class="btn btn-primary text-white"
+                    disabled={(newPlan?.plan ?? currentPlan) == currentPlan}
+                    onClick={() => {
+                      console.log({ creditCards });
+                      displayCheckoutUpsellModal.value = true;
+                    }}
+                  >
+                    Alterar Plano
+                  </button>
+                  {
+                    /* <button
                     class="btn btn-ghost text-xs font-normal text-red-500"
                     onClick={() => {
                       displayConfirmCancelSubscription.value = true;
                     }}
                   >
                     Cancelar Assinatura
-                  </button> */}
-                <div class="flex justify-center my-4">
-                  <span class="text-red-600 text-xs">
-                    Para cancelar sua assinatura, abra chamado no suporte pelo
-                    botão azul no canto da tela
-                  </span>
+                  </button> */
+                  }
+                  <div class="flex justify-center my-4">
+                    <span class="text-red-600 text-xs">
+                      Para cancelar sua assinatura, abra chamado no suporte pelo
+                      botão azul no canto da tela
+                    </span>
+                  </div>
                 </div>
               </div>
+            }
+            <div class="flex flex-col gap-3">
+              <label class="form-control w-full">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">Email</span>
+                </div>
+                <input
+                  placeholder="Email"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  name="name"
+                  disabled
+                  value={email}
+                />
+              </label>
             </div>
-          }
-          <div class="flex flex-col gap-3">
-            <label class="form-control w-full">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">Email</span>
-              </div>
-              <input
-                placeholder="Email"
-                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
-                name="name"
-                disabled
-                value={email}
-              />
-            </label>
-          </div>
-          <div class="w-full sm:w-[60%] md:w-[40%] flex flex-col gap-3">
-            <h2 class="text-[#8b8b8b] font-semibold mb-4 w-full">
-              Alterar Senha
-            </h2>
-            <label class="form-control w-full">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Senha Atual
-                </span>
-              </div>
-              <input
-                type="password"
-                placeholder="*********"
-                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
-                name="currentPassword"
-                value={currentPassword}
-                onChange={(e) =>
-                  e.target && setCurrentPassword(e.currentTarget.value)
-                }
-                disabled={isChanging}
-              />
-            </label>
-            <label class="form-control w-full">
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Nova Senha
-                </span>
-              </div>
-              <input
-                type="password"
-                placeholder="*********"
-                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
-                name="newPassword"
-                value={newPassword}
-                onChange={(e) =>
-                  e.target && setNewPassword(e.currentTarget.value)
-                }
-                disabled={isChanging}
-              />
-            </label>
-            <label
-              class={`form-control w-full ${
-                confirmNewPassword !== newPassword && "input-error"
-              }`}
-            >
-              <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">
-                  Confirmar Nova Senha
-                </span>
-              </div>
-              <input
-                type="password"
-                placeholder="*********"
-                class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
-                name="confirmNewPassword"
-                value={confirmNewPassword}
-                onChange={(e) =>
-                  e.target && setConfirmNewPassword(e.currentTarget.value)
-                }
-                disabled={isChanging}
-              />
-              {confirmNewPassword !== newPassword && (
-                <div class="label">
-                  <span class="label-text-alt"></span>
-                  <span class="label-text-alt text-red-500">
-                    Não é igual à nova senha
+            <div class="w-full sm:w-[60%] md:w-[40%] flex flex-col gap-3">
+              <h2 class="text-[#8b8b8b] font-semibold mb-4 w-full">
+                Alterar Senha
+              </h2>
+              <label class="form-control w-full">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Senha Atual
                   </span>
                 </div>
-              )}
-            </label>
-            <div class="w-full flex justify-end">
-              <button
-                class="btn btn-primary text-white"
-                onClick={handleChangePassword}
+                <input
+                  type="password"
+                  placeholder="*********"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  name="currentPassword"
+                  value={currentPassword}
+                  onChange={(e) =>
+                    e.target && setCurrentPassword(e.currentTarget.value)}
+                  disabled={isChanging}
+                />
+              </label>
+              <label class="form-control w-full">
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Nova Senha
+                  </span>
+                </div>
+                <input
+                  type="password"
+                  placeholder="*********"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  name="newPassword"
+                  value={newPassword}
+                  onChange={(e) =>
+                    e.target && setNewPassword(e.currentTarget.value)}
+                  disabled={isChanging}
+                />
+              </label>
+              <label
+                class={`form-control w-full ${
+                  confirmNewPassword !== newPassword && "input-error"
+                }`}
               >
-                Alterar Senha{" "}
-                {isChanging && (
-                  <span class="loading loading-spinner text-green-600"></span>
+                <div class="label pb-1">
+                  <span class="label-text text-xs text-[#585858]">
+                    Confirmar Nova Senha
+                  </span>
+                </div>
+                <input
+                  type="password"
+                  placeholder="*********"
+                  class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3]"
+                  name="confirmNewPassword"
+                  value={confirmNewPassword}
+                  onChange={(e) =>
+                    e.target && setConfirmNewPassword(e.currentTarget.value)}
+                  disabled={isChanging}
+                />
+                {confirmNewPassword !== newPassword && (
+                  <div class="label">
+                    <span class="label-text-alt"></span>
+                    <span class="label-text-alt text-red-500">
+                      Não é igual à nova senha
+                    </span>
+                  </div>
                 )}
-              </button>
+              </label>
+              <div class="w-full flex justify-end">
+                <button
+                  class="btn btn-primary text-white"
+                  onClick={handleChangePassword}
+                >
+                  Alterar Senha{" "}
+                  {isChanging && (
+                    <span class="loading loading-spinner text-green-600"></span>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </PageWrap>
   );
 }
