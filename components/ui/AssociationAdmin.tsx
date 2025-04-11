@@ -648,7 +648,7 @@ function MyAccount() {
                                 </span>
                                 <li>
                                   <a
-                                    href={`https://api.ecanna.com.br/ficha/${u._id}`}
+                                    href={`https://ecanna.com.br/ficha/${u._id}`}
                                     target="_blank"
                                     class="flex items-center"
                                   >
