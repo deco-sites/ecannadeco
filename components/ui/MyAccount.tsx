@@ -223,8 +223,9 @@ function MyAccount() {
                   <span>
                     Em prol da viabilidade financeira do projeto, o serviço de
                     carteirinha digital do ecanna não é mais oferecido de forma
-                    gratuita. Mantivemos o seu QR Code ativo por tempo limitado,
-                    caso precise utilizar a carteirinha que já possui. Para
+                    gratuita. Mantivemos o seu QR Code ativo por{" "}
+                    <span class="font-bold">tempo limitado</span>{" "}
+                    , caso precise utilizar a carteirinha que já possui. Para
                     atualizar documentos ou dados, pedir nova via física ou
                     baixar novamente a carteirinha digital, faça o upgrade do
                     seu plano!
