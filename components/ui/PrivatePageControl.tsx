@@ -32,6 +32,7 @@ function PrivatePageControl(_props: Props) {
           association: {
             _id: string;
             user: string;
+            status: string;
           };
           updatedData: boolean;
           uploadedFile: boolean;
@@ -41,6 +42,8 @@ function PrivatePageControl(_props: Props) {
           lecoupon_free_month_date?: string;
         };
       };
+
+      console.log({ r });
 
       updatedData.value = r.dataProfile.updatedData;
       uploadedFile.value = r.dataProfile.uploadedFile;
@@ -57,12 +60,20 @@ function PrivatePageControl(_props: Props) {
       }
 
       const currentPlan = r.dataProfile.plan;
+      const associationActive = r.dataProfile.association.status === "ACTIVE";
 
-      if (currentPlan === "DEFAULT" || currentPlan === "TREATMENT") {
+      //redirect all these plans to make an upgrade. Associated needs to upgrade just if association is inactive.
+      if (
+        currentPlan === "DEFAULT" ||
+        currentPlan === "CARD_PARTNER" ||
+        (currentPlan === "CARD_ASSOCIATED" && !associationActive) ||
+        currentPlan === "TREATMENT"
+      ) {
         const currentUrl = window.location.pathname;
 
         if (
           [
+            "/dashboard",
             "/minha-carteirinha",
             "/meus-documentos",
             "/meus-dados",

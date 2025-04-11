@@ -21,7 +21,12 @@ export interface UserData {
     created_at?: Date;
     plan: string;
     associationApproved?: boolean;
-    association: { name: string; logo_url: string; cnpj: string };
+    association: {
+      name: string;
+      logo_url: string;
+      cnpj: string;
+      status: string;
+    };
     qrcode_url: string;
     credit_cards: SavedCreditCard[];
     ecannacard_url: string;

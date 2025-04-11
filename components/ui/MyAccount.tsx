@@ -31,6 +31,7 @@ function MyAccount() {
   // const [isCanceling, setIsCanceling] = useState(false);
   const [email, setEmail] = useState("");
   const [currentPlan, setCurrentPlan] = useState<string>("");
+  const [associationStatus, setAssociationStatus] = useState<string>("");
   const [newPlan, setNewPlan] = useState<Plan>();
   const [plans, setPlans] = useState<Plan[]>([]);
   const [currentPassword, setCurrentPassword] = useState<string>("");
@@ -113,6 +114,7 @@ function MyAccount() {
           setCreditCards(res.dataProfile.credit_cards);
           setReferral(res.dataProfile.referral);
           setIsLoading(false);
+          setAssociationStatus(res.dataProfile.association?.status);
         });
 
       fetch(`${API_URL}/v1/products/subscriptions?isPrescriber=false`).then(
@@ -214,6 +216,67 @@ function MyAccount() {
                 Minha Conta
               </h3>
             </div>
+            {currentPlan == "CARD_PARTNER"
+              ? (
+                <div class="flex flex-col p-4 text-white rounded-md items-center gap-4 bg-[#da8f0f]">
+                  <Icon id="Warn" size={36} />
+                  <span>
+                    Em prol da viabilidade financeira do projeto, o serviço de
+                    carteirinha digital do ecanna não é mais oferecido de forma
+                    gratuita. Mantivemos o seu QR Code ativo por tempo limitado,
+                    caso precise utilizar a carteirinha que já possui. Para
+                    atualizar documentos ou dados, pedir nova via física ou
+                    baixar novamente a carteirinha digital, faça o upgrade do
+                    seu plano!
+                  </span>
+                  <button
+                    onClick={() => {
+                      setNewPlan(plans[0]);
+                    }}
+                    class="btn bg-white text-[#da8f0f] btn-sm uppercase"
+                    href="#planUpgrade"
+                  >
+                    Selecionar novo plano
+                  </button>
+                </div>
+              )
+              : null}
+            {currentPlan == "CARD_ASSOCIATED" &&
+                associationStatus == "INACTIVE"
+              ? (
+                <div class="flex flex-col p-4 text-white rounded-md items-center gap-4 bg-[#da8f0f]">
+                  <Icon id="Warn" size={36} />
+                  <span>
+                    Em prol da viabilidade financeira do projeto, o serviço de
+                    carteirinha digital do ecanna não é mais oferecido de forma
+                    gratuita.
+                  </span>
+                  <span>
+                    Sua associação ainda não fez a contratação do serviço de
+                    carteirinha para os associados. Porém, você pode fazer o
+                    upgrade do plano individual de serviço para continuar
+                    acessando as funcionalidades.
+                  </span>
+                  <span>
+                    Mantivemos o seu QR Code ativo por{" "}
+                    <span class="font-bold">tempo limitado</span>{" "}
+                    caso precise utilizar a carteirinha que já possui. Para
+                    atualizar documentos ou dados, pedir nova via física ou
+                    baixar novamente a carteirinha digital, faça o upgrade do
+                    seu plano!
+                  </span>
+                  <button
+                    onClick={() => {
+                      setNewPlan(plans[0]);
+                    }}
+                    class="btn bg-white text-[#da8f0f] btn-sm uppercase"
+                    href="#planUpgrade"
+                  >
+                    Selecionar novo plano
+                  </button>
+                </div>
+              )
+              : null}
             {(currentPlan == "TREATMENT" || currentPlan == "DEFAULT") &&
               (referral && referral.type === "DISCOUNT"
                 ? (
@@ -275,154 +338,156 @@ function MyAccount() {
                   Plano
                 </h2>
                 <Slider class="flex-col sm:flex-row sm:carousel gap-3 max-w-[105%]">
-                  {currentPlan === "CARD_ASSOCIATED" && (
-                    <Slider.Item
-                      class="carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4"
-                      index={9999}
-                    >
-                      <div class="bg-white rounded-md p-3 flex flex-col w-full">
-                        <div class="flex items-center gap-4">
-                          <div
-                            class={`h-8 w-8 rounded-full ${
-                              !newPlan ? "bg-primary" : ""
-                            } flex items-center justify-center`}
-                            style={{
-                              "box-shadow":
-                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
-                            }}
-                          >
-                            {!newPlan && (
-                              <Icon class="text-white" id="Check" size={19} />
-                            )}
-                          </div>
-                          <div class="flex flex-col text-[#898989]">
-                            <span class=" uppercase text-sm">
-                              Plano Associação
-                            </span>
-                            <span class={`text-xs`}>Gratuito</span>
-                          </div>
+                  {
+                    /* {currentPlan === "CARD_ASSOCIATED" && (
+                  <Slider.Item
+                    class="carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4"
+                    index={9999}
+                  >
+                    <div class="bg-white rounded-md p-3 flex flex-col w-full">
+                      <div class="flex items-center gap-4">
+                        <div
+                          class={`h-8 w-8 rounded-full ${
+                            !newPlan ? "bg-primary" : ""
+                          } flex items-center justify-center`}
+                          style={{
+                            "box-shadow": "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                          }}
+                        >
+                          {!newPlan && (
+                            <Icon class="text-white" id="Check" size={19} />
+                          )}
                         </div>
-                        <div class="flex flex-col gap-2">
-                          <ul class="flex flex-col gap-3 py-3">
-                            <li class={`flex gap-2 items-center`}>
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Anuidade gratuita por associação
-                              </span>
-                            </li>
-                            <li class={`flex gap-2 items-center`}>
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Carteirinha digital oficial
-                              </span>
-                            </li>
-                            <li class={`flex gap-2 items-center`}>
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Acompanhamento de tratamento
-                              </span>
-                            </li>
-                            <li class={`flex gap-2 items-center`}>
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Emissão de via física por R$ 25,00
-                              </span>
-                            </li>
-                          </ul>
+                        <div class="flex flex-col text-[#898989]">
+                          <span class=" uppercase text-sm">
+                            Plano Associação
+                          </span>
+                          <span class={`text-xs`}>Gratuito</span>
                         </div>
                       </div>
-                    </Slider.Item>
-                  )}
-                  {currentPlan === "CARD_PARTNER" && (
-                    <Slider.Item
-                      class="carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4"
-                      index={9999}
-                    >
-                      <div class="bg-white rounded-md p-3 flex flex-col w-full">
-                        <div class="flex items-center gap-4">
-                          <div
-                            class={`h-8 w-8 rounded-full ${
-                              !newPlan ? "bg-primary" : ""
-                            } flex items-center justify-center`}
-                            style={{
-                              "box-shadow":
-                                "inset 1px 3px 7px rgb(0 0 0 / 20%)",
-                            }}
-                          >
-                            {!newPlan && (
-                              <Icon class="text-white" id="Check" size={19} />
-                            )}
-                          </div>
-                          <div class="flex flex-col text-[#898989]">
-                            <span class=" uppercase text-sm">
-                              Plano ExpoCannabis
+                      <div class="flex flex-col gap-2">
+                        <ul class="flex flex-col gap-3 py-3">
+                          <li class={`flex gap-2 items-center`}>
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Anuidade gratuita por associação
                             </span>
-                            <span class={`text-xs`}>Gratuito</span>
-                          </div>
+                          </li>
+                          <li class={`flex gap-2 items-center`}>
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Carteirinha digital oficial
+                            </span>
+                          </li>
+                          <li class={`flex gap-2 items-center`}>
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Acompanhamento de tratamento
+                            </span>
+                          </li>
+                          <li class={`flex gap-2 items-center`}>
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Emissão de via física por R$ 25,00
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </Slider.Item>
+                )} */
+                  }
+                  {
+                    /* {currentPlan === "CARD_PARTNER" && (
+                  <Slider.Item
+                    class="carousel-item cursor-pointer sm:max-w-[33%] max-w-[100%] w-full mb-4"
+                    index={9999}
+                  >
+                    <div class="bg-white rounded-md p-3 flex flex-col w-full">
+                      <div class="flex items-center gap-4">
+                        <div
+                          class={`h-8 w-8 rounded-full ${
+                            !newPlan ? "bg-primary" : ""
+                          } flex items-center justify-center`}
+                          style={{
+                            "box-shadow": "inset 1px 3px 7px rgb(0 0 0 / 20%)",
+                          }}
+                        >
+                          {!newPlan && (
+                            <Icon class="text-white" id="Check" size={19} />
+                          )}
                         </div>
-                        <div class="flex flex-col gap-2">
-                          <ul class="flex flex-col gap-3 py-3">
-                            <li class={`flex gap-2 items-center`}>
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Anuidade gratuita por parceria com ExpoCannabis
-                              </span>
-                            </li>
-                            <li class={`flex gap-2 items-center`}>
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Carteirinha digital oficial
-                              </span>
-                            </li>
-                            <li class={`flex gap-2 items-center`}>
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Acompanhamento de tratamento
-                              </span>
-                            </li>
-                            <li class={`flex gap-2 items-center`}>
-                              <Icon
-                                class="text-primary"
-                                id="CircleCheck"
-                                size={17}
-                              />
-                              <span class="text-[10px]">
-                                Emissão de via física por R$ 25,00
-                              </span>
-                            </li>
-                          </ul>
+                        <div class="flex flex-col text-[#898989]">
+                          <span class=" uppercase text-sm">
+                            Plano ExpoCannabis
+                          </span>
+                          <span class={`text-xs`}>Gratuito</span>
                         </div>
                       </div>
-                    </Slider.Item>
-                  )}
+                      <div class="flex flex-col gap-2">
+                        <ul class="flex flex-col gap-3 py-3">
+                          <li class={`flex gap-2 items-center`}>
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Anuidade gratuita por parceria com ExpoCannabis
+                            </span>
+                          </li>
+                          <li class={`flex gap-2 items-center`}>
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Carteirinha digital oficial
+                            </span>
+                          </li>
+                          <li class={`flex gap-2 items-center`}>
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Acompanhamento de tratamento
+                            </span>
+                          </li>
+                          <li class={`flex gap-2 items-center`}>
+                            <Icon
+                              class="text-primary"
+                              id="CircleCheck"
+                              size={17}
+                            />
+                            <span class="text-[10px]">
+                              Emissão de via física por R$ 25,00
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </Slider.Item>
+                )} */
+                  }
                   {plans.map((plan, i) => {
                     const isSelected = newPlan
                       ? plan._id == newPlan?._id
@@ -567,7 +632,7 @@ function MyAccount() {
                     Cancelar Assinatura
                   </button> */
                   }
-                  <div class="flex justify-center">
+                  <div class="flex justify-center my-4">
                     <span class="text-red-600 text-xs">
                       Para cancelar sua assinatura, abra chamado no suporte pelo
                       botão azul no canto da tela
