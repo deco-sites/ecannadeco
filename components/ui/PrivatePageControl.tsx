@@ -54,7 +54,7 @@ function PrivatePageControl(_props: Props) {
         if (r.dataProfile.association?.user === r.data.Username) {
           localStorage.setItem(
             "AssociationAdmin",
-            r.dataProfile.association._id
+            r.dataProfile.association._id,
           );
         }
       }
@@ -87,7 +87,7 @@ function PrivatePageControl(_props: Props) {
 
       if (
         ["CARD", "CARD_ASSOCIATED", "CARD_PARTNER", "CARD_PLUS"].includes(
-          currentPlan
+          currentPlan,
         )
       ) {
         if (!r.dataProfile.updatedData) {
