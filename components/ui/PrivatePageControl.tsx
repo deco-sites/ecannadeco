@@ -29,7 +29,7 @@ function PrivatePageControl(_props: Props) {
           Username: string;
         };
         dataProfile: {
-          association: {
+          association?: {
             _id: string;
             user: string;
             status: string;
@@ -54,13 +54,14 @@ function PrivatePageControl(_props: Props) {
         if (r.dataProfile.association?.user === r.data.Username) {
           localStorage.setItem(
             "AssociationAdmin",
-            r.dataProfile.association._id,
+            r.dataProfile.association._id
           );
         }
       }
 
       const currentPlan = r.dataProfile.plan;
-      const associationActive = r.dataProfile.association.status !== "INACTIVE";
+      const associationActive =
+        r.dataProfile.association?.status !== "INACTIVE";
 
       //redirect all these plans to make an upgrade. Associated needs to upgrade just if association is inactive.
       if (
@@ -86,7 +87,7 @@ function PrivatePageControl(_props: Props) {
 
       if (
         ["CARD", "CARD_ASSOCIATED", "CARD_PARTNER", "CARD_PLUS"].includes(
-          currentPlan,
+          currentPlan
         )
       ) {
         if (!r.dataProfile.updatedData) {
