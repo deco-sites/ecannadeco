@@ -11,12 +11,11 @@ const CVVInput = ({ value, onChange }: CVVInputProps) => {
   return (
     <label class="w-full flex flex-col">
       <div class="label pb-1">
-        <span class="label-text text-xs text-[#585858]">
-          CVV
-        </span>
+        <span class="label-text text-xs text-[#585858]">CVV</span>
       </div>
       <input
         class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
+        style={value ? " border: none" : "border: 1px solid red"}
         placeholder="CVV"
         maxLength={4}
         value={value}

@@ -531,6 +531,9 @@ const CheckoutUpsellModal = (props: Props) => {
                         <input
                           placeholder="Mês (Ex: 05)"
                           class="input input-sm rounded-md text-[#8b8b8b] border-none w-1/2"
+                          style={creditCardExpMonth
+                            ? " border: none"
+                            : "border: 1px solid red"}
                           value={creditCardExpMonth}
                           maxLength={2}
                           onChange={(e) =>
@@ -540,6 +543,9 @@ const CheckoutUpsellModal = (props: Props) => {
                         <input
                           placeholder="Ano (Ex: 2030)"
                           class="input input-sm rounded-md text-[#8b8b8b] border-none w-1/2"
+                          style={creditCardExpYear
+                            ? " border: none"
+                            : "border: 1px solid red"}
                           value={creditCardExpYear}
                           maxlength={4}
                           onChange={(e) =>
@@ -577,10 +583,13 @@ const CheckoutUpsellModal = (props: Props) => {
           <div class="flex flex-col md:flex-row md:gap-4 gap-1">
             <label class="w-full sm:w-[48%]  flex flex-col">
               <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">Nome</span>
+                <span class="label-text text-xs text-[#e39411]">
+                  Nome (do titular do cartão)
+                </span>
               </div>
               <input
-                class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
+                class="input input-sm rounded-md text-[#8b8b8b] w-full"
+                style={"border: 1px solid #e39411"}
                 placeholder="Nome"
                 value={holderName}
                 onChange={(e) =>
@@ -589,10 +598,13 @@ const CheckoutUpsellModal = (props: Props) => {
             </label>
             <label class="w-full sm:w-[48%]  flex flex-col">
               <div class="label pb-1">
-                <span class="label-text text-xs text-[#585858]">CPF</span>
+                <span class="label-text text-xs text-[#e39411]">
+                  CPF (do titular do cartão)
+                </span>
               </div>
               <input
-                class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
+                class="input input-sm rounded-md text-[#8b8b8b] w-full"
+                style={"border: 1px solid #e39411"}
                 placeholder="CPF"
                 value={holderCPF}
                 onChange={(e) =>
@@ -606,9 +618,8 @@ const CheckoutUpsellModal = (props: Props) => {
                 </span>
               </div>
               <input
-                class={`input input-sm rounded-md text-[#8b8b8b] w-full ${
-                  birthDate ? " border-none" : "border border-red-700"
-                }`}
+                class={`input input-sm rounded-md text-[#8b8b8b] w-full`}
+                style={birthDate ? " border: none" : "border: 1px solid red"}
                 type="date"
                 placeholder="Data de Nascimento"
                 value={birthDate}
@@ -682,6 +693,9 @@ const CheckoutUpsellModal = (props: Props) => {
                         ? "border border-red-600"
                         : "border-none"
                     } w-full disabled:bg-[#e3e3e3]`}
+                    style={addressStreet
+                      ? " border: none"
+                      : "border: 1px solid red"}
                     placeholder="logradouro"
                     name="cep"
                     // disabled

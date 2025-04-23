@@ -15,6 +15,7 @@ const CreditCardInput = ({ value, onChange }: CreditCardInputProps) => {
       <input
         class="input input-sm rounded-md text-[#8b8b8b] border-none w-full"
         placeholder="0000 0000 0000 0000"
+        style={value ? " border: none" : "border: 1px solid red"}
         maxLength={19}
         value={value}
         onChange={(e) => onChange(maskCardNumber(e.currentTarget.value))}
