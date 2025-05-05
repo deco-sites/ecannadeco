@@ -30,6 +30,7 @@ function MyAccount() {
   const [deleting, setDeleting] = useState(false);
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);
   const [isApproving, setIsApproving] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
   const [updating, setUpdating] = useState(false);
   const [emailSearch, setEmailSearch] = useState("");
   const [associationName, setAssociationName] = useState("");
@@ -286,6 +287,30 @@ function MyAccount() {
     } catch (_e) {
       alert(
         "Não foi possível aprovar paciente. Tente novamente mais tarde ou contecte o suporte.",
+      );
+      setUpdating(false);
+    }
+  };
+
+  const handleRemoveUser = async (id: string) => {
+    let accessToken = "";
+
+    if (IS_BROWSER) {
+      accessToken = localStorage.getItem("AccessToken") || "";
+    }
+    setIsRemoving(true);
+
+    try {
+      await invoke["deco-sites/ecannadeco"].actions.associationAdminRemoveUser({
+        token: accessToken,
+        id,
+      });
+      setIsRemoving(false);
+
+      handleGetUsers(1);
+    } catch (_e) {
+      alert(
+        "Não foi possível remover paciente. Tente novamente mais tarde ou contecte o suporte.",
       );
       setUpdating(false);
     }
@@ -699,6 +724,18 @@ function MyAccount() {
                                     </a>
                                   </li>
                                 )}
+                                <li class="text-red-500">
+                                  <a
+                                    onClick={() => {
+                                      handleRemoveUser(u._id);
+                                    }}
+                                  >
+                                    <Icon id="Close" size={16} />
+                                    {isRemoving
+                                      ? "Removendo..."
+                                      : "Remover Paciente"}
+                                  </a>
+                                </li>
                               </ul>
                             </div>
                           );
