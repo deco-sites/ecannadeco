@@ -738,6 +738,9 @@ const CheckoutUpsellModal = (props: Props) => {
                         ? "border border-red-600"
                         : "border-none"
                     } w-full`}
+                    style={addressComplement
+                      ? " border: none"
+                      : "border: 1px solid red"}
                     placeholder="complemento"
                     name="complemento"
                     type="text"
