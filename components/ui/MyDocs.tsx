@@ -264,6 +264,7 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
           class="input rounded-md text-[#8b8b8b] border-none w-full disabled:bg-[#e3e3e3] bg-white"
           placeholder="Título do Documento"
           value={docTitle}
+          style={docTitle ? " border: none" : "border: 1px solid red"}
           onChange={(e) => {
             setDocTitle(e.currentTarget.value);
           }}
@@ -274,6 +275,7 @@ const NewDocModal = ({ onFinishCreate }: { onFinishCreate: () => void }) => {
             setDocCategory(e.currentTarget.value);
           }}
           class="select select-primary w-full max-w-xs text-[#8b8b8b] border-none disabled:bg-[#e3e3e3] bg-white"
+          style={docCategory ? " border: none" : "border: 1px solid red"}
         >
           <option disabled selected>
             Tipo de Documento
