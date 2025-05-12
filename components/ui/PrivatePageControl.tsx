@@ -85,11 +85,7 @@ function PrivatePageControl(_props: Props) {
         }
       }
 
-      if (
-        ["CARD", "CARD_ASSOCIATED", "CARD_PARTNER", "CARD_PLUS"].includes(
-          currentPlan,
-        )
-      ) {
+      if (["CARD", "CARD_ASSOCIATED", "CARD_PLUS"].includes(currentPlan)) {
         if (!r.dataProfile.updatedData) {
           if (window.location.pathname !== "/meus-dados") {
             window.location.href = "/meus-dados";
