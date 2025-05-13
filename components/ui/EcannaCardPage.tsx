@@ -289,9 +289,9 @@ function EcannaCardPage({ cardSkeleton }: Props) {
             </a>
           )}
           <span class="text-xs">
-            O envio de nova via física de carteirinha leva até 7 dias úteis
-            (tempo de produção). Você pode acompanhar seu pedido de nova via
-            física pela página de{" "}
+            A carteirinha será produzida em até 7 dias e, após enviada, deverá
+            ser entregue em até 20 dias (prazo dos correios). Você pode
+            acompanhar seu pedido de nova via física pela página de{" "}
             <a class="underline" href="/meus-pedidos">
               meus pedidos
             </a>
