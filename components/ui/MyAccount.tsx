@@ -596,7 +596,8 @@ function MyAccount() {
                   />
                   <button
                     class="btn btn-primary text-white"
-                    disabled={(newPlan?.plan ?? currentPlan) == currentPlan}
+                    disabled
+                    // disabled={(newPlan?.plan ?? currentPlan) == currentPlan}
                     onClick={() => {
                       console.log({ creditCards });
                       displayCheckoutUpsellModal.value = true;

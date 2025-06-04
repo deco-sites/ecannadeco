@@ -328,9 +328,10 @@ function EcannaCardPage({ cardSkeleton }: Props) {
         <button
           id="viaFisica"
           type="button"
-          disabled={(userData?.dataProfile?.association &&
-            !userData?.dataProfile?.associationApproved) ||
-            orderInProgress}
+          // disabled={(userData?.dataProfile?.association &&
+          //   !userData?.dataProfile?.associationApproved) ||
+          //   orderInProgress}
+          disabled
           download="carteirinha.png"
           class="flex btn btn-primary text-white w-full sm:w-[48%]"
           onClick={() => {
