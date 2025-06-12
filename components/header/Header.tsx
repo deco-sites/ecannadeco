@@ -6,7 +6,8 @@ import type { ImageWidget } from "apps/admin/widgets.ts";
 import type { SiteNavigationElement } from "apps/commerce/types.ts";
 import type { SectionProps } from "deco/types.ts";
 import Navbar from "./Navbar.tsx";
-import { headerHeight } from "./constants.ts";
+// import { headerHeight } from "./constants.ts";
+import UserAlerts from "deco-sites/ecannadeco/sections/Miscellaneous/UserAlerts.tsx";
 
 export interface Logo {
   src: ImageWidget;
@@ -142,7 +143,9 @@ function Header({
 
   return (
     <>
-      <header style={hideHeaderHight ? {} : { height: headerHeight }}>
+      <header
+        class={hideHeaderHight ? "" : "h-[470px] md:h-[420px] lg:h-[390px]"}
+      >
         <Drawers
           menu={{
             items: navItems || [],
@@ -156,6 +159,7 @@ function Header({
           <div class="bg-base-100 w-full z-50">
             <Navbar logo={logo} prescriberAreaDisplay={prescriberAreaDisplay} />
           </div>
+          <UserAlerts />
         </Drawers>
       </header>
     </>
